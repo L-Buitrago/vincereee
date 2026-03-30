@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,23 +6,23 @@
 
 @layer base {
   :root {
-    --background: 168 100% 8%; /* #002921 */
-    --foreground: 0 0% 95%; /* #f2f2f2 */
+    --background: 0 0% 96%; /* #F5F5F5 Off-White by default for Vendredi */
+    --foreground: 168 100% 8%; /* #002921 Deep Dark Green */
 
-    --card: 168 100% 8%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 96%;
+    --card-foreground: 168 100% 8%;
 
-    --popover: 168 100% 8%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 96%;
+    --popover-foreground: 168 100% 8%;
 
-    --primary: 65 100% 62%; /* #F0FF3D */
+    --primary: 65 100% 62%; /* #F0FF3D Lime Yellow */
     --primary-foreground: 168 100% 8%;
 
-    --secondary: 0 0% 95%;
-    --secondary-foreground: 168 100% 8%;
+    --secondary: 168 100% 8%; /* Dark Green */
+    --secondary-foreground: 0 0% 96%; /* Off White */
 
-    --muted: 168 40% 20%;
-    --muted-foreground: 168 10% 60%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 168 10% 40%;
 
     --accent: 65 100% 62%;
     --accent-foreground: 168 100% 8%;
@@ -30,53 +30,31 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 168 30% 20%;
-    --input: 168 30% 20%;
+    --border: 168 10% 80%;
+    --input: 168 10% 80%;
     --ring: 65 100% 62%;
 
     --radius: 1rem;
-
-    --sidebar-background: 168 100% 10%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 65 100% 62%;
-    --sidebar-primary-foreground: 168 100% 8%;
-    --sidebar-accent: 168 40% 18%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 168 30% 18%;
-    --sidebar-ring: 65 100% 62%;
-
-    --light-bg: 0 0% 96%; /* #f5f5f5 */
-    --light-fg: 168 100% 8%; /* #002921 */
+    
+    --brand-dark: 168 100% 8%;    /* #002921 */
+    --brand-light: 0 0% 96%;      /* #F5F5F5 */
+    --brand-accent: 65 100% 62%;  /* #F0FF3D */
   }
 
   .dark {
+    /* Vendredi alternates sections rather than offering a "dark mode toggle". We force the dark theme manually on sections using `.bg-brand-dark` */
     --background: 168 100% 8%;
-    --foreground: 0 0% 95%;
+    --foreground: 0 0% 96%;
     --card: 168 100% 8%;
-    --card-foreground: 0 0% 95%;
+    --card-foreground: 0 0% 96%;
     --popover: 168 100% 8%;
-    --popover-foreground: 0 0% 95%;
+    --popover-foreground: 0 0% 96%;
     --primary: 65 100% 62%;
     --primary-foreground: 168 100% 8%;
-    --secondary: 0 0% 95%;
+    --secondary: 0 0% 96%;
     --secondary-foreground: 168 100% 8%;
-    --muted: 168 40% 20%;
-    --muted-foreground: 168 10% 60%;
-    --accent: 65 100% 62%;
-    --accent-foreground: 168 100% 8%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
     --border: 168 30% 20%;
     --input: 168 30% 20%;
-    --ring: 65 100% 62%;
-    --sidebar-background: 168 100% 10%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 65 100% 62%;
-    --sidebar-primary-foreground: 168 100% 8%;
-    --sidebar-accent: 168 40% 18%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 168 30% 18%;
-    --sidebar-ring: 65 100% 62%;
   }
 }
 
@@ -86,22 +64,39 @@
   }
 
   html {
-    scroll-behavior: initial; /* Lenis will handle smooth scrolling */
+    scroll-behavior: initial; /* Lenis handles this */
   }
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
 @layer utilities {
-  .section-light {
-    background-color: hsl(var(--light-bg));
-    color: hsl(var(--light-fg));
+  .font-serif-display {
+    font-family: 'Playfair Display', serif;
+    letter-spacing: -0.04em;
   }
   
   .clip-text-container {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  .v-underline {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .v-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0.12em; /* Thin, spaced underline typical of Canela/Vendredi */
+    width: 100%;
+    height: 3px;
+    background-color: currentColor;
   }
 }
