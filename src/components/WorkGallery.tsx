@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 const projects = [
@@ -6,6 +7,7 @@ const projects = [
     category: 'E-commerce solutions',
     title: 'The Merchant Lab',
     image: 'https://images.unsplash.com/photo-1635405074683-96d6921a2a68?w=800&q=80',
+    video: 'https://player.vimeo.com/external/494252666.sd.mp4?s=7223078a1f8c1f0674bd3685f479d2b27cc3b5c6&profile_id=164&oauth2_token_id=57447761',
     tags: ['UX Design', 'Art Direction', 'Motion Design', 'Creative development'],
     dark: true,
   },
@@ -13,12 +15,15 @@ const projects = [
     category: 'Internet of things',
     title: 'Otio Home',
     image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80',
+    video: 'https://player.vimeo.com/external/554160533.sd.mp4?s=67ef379469e3edc4280b18fa65914c62243e88fa&profile_id=165&oauth2_token_id=57447761',
     tags: ['Motion Design', 'Branding', '3D & concepts', 'Product Design'],
     dark: false,
   }
 ];
 
 const WorkGallery = () => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   return (
     <section id="work" className="py-24 px-6 md:px-12 lg:px-16 bg-[#F5F5F5]">
       <div className="max-w-[1700px] mx-auto">
@@ -29,14 +34,37 @@ const WorkGallery = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: idx * 0.1 }}
+              onMouseEnter={() => setHoveredIndex(idx)}
+              onMouseLeave={() => setHoveredIndex(null)}
               viewport={{ once: true }}
               className="group relative aspect-[4/5] md:aspect-[1.1/1] rounded-[2.5rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500"
             >
               <img 
                 src={project.image} 
                 alt={project.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className={cn(
+                  "absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105",
+                  hoveredIndex === idx ? "opacity-0" : "opacity-100"
+                )}
               />
+              
+              <AnimatePresence>
+                {hoveredIndex === idx && project.video && (
+                  <motion.video
+                    key={project.video}
+                    src={project.video}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                )}
+              </AnimatePresence>
               
               {/* Overlay for better text readability if needed */}
               <div className="absolute inset-0 bg-black/5 group-hover:bg-black/20 transition-colors duration-500" />
