@@ -45,42 +45,7 @@ const GreekHero = () => {
             className="text-[18vw] font-bold tracking-[-0.05em] leading-none uppercase flex items-center justify-center w-full mix-blend-difference"
             style={{ fontFamily: "'Aeonik Pro Bold', 'Plus Jakarta Sans', sans-serif" }}
           >
-            VINCE
-            <span className="relative inline-flex items-center justify-center w-[0.8em] h-[1em]" style={{ perspective: "1500px" }}>
-               <motion.span
-                 animate={{ rotateY: 360 }}
-                 transition={{ 
-                   duration: 4, 
-                   repeat: Infinity, 
-                   ease: "linear" 
-                 }}
-                 style={{ 
-                   transformStyle: "preserve-3d",
-                   background: "linear-gradient(135deg, #0F172A 0%, #3B82F6 50%, #0F172A 100%)",
-                   WebkitBackgroundClip: "text",
-                   WebkitTextFillColor: "transparent",
-                   filter: "drop-shadow(0 0 10px rgba(59, 130, 246, 0.2))"
-                 }}
-                 className="inline-block relative w-full h-full"
-               >
-                 {/* High-Fidelity CSS 3D Shadows */}
-                 <span 
-                   className="absolute inset-0 flex items-center justify-center font-extrabold"
-                   style={{ 
-                     textShadow: `
-                       1px 1px 0px #0A101D,
-                       2px 2px 0px #0A101D,
-                       3px 3px 0px #0A101D,
-                       4px 4px 0px #0A101D,
-                       5px 5px 15px rgba(0,0,0,0.5)
-                     `
-                   }}
-                 >
-                   R
-                 </span>
-               </motion.span>
-            </span>
-            E
+            VINCERE
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
