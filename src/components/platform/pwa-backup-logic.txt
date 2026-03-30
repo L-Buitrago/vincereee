@@ -1,0 +1,40 @@
+// PWA Installation Logic - Preserved for future use (2026-03-19)
+// Original implementation in PlatformSidebar.tsx
+
+/*
+  // State and Effects
+  const [installPrompt, setInstallPrompt] = useState<any>((window as any).deferredPrompt || null);
+  const [isIOS, setIsIOS] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
+  const [showQRModal, setShowQRModal] = useState(false);
+
+  useEffect(() => {
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    setIsIOS(ios);
+    const standalone = window.matchMedia('(display-mode: standalone)').matches || ('standalone' in navigator && (navigator as any).standalone);
+    setIsStandalone(standalone);
+    const handlePrompt = () => setInstallPrompt((window as any).deferredPrompt);
+    window.addEventListener("app-install-prompt", handlePrompt);
+    return () => window.removeEventListener("app-install-prompt", handlePrompt);
+  }, []);
+
+  const handleInstallApp = async () => {
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobileDevice) {
+      if (installPrompt) {
+        await installPrompt.prompt();
+        setInstallPrompt(null);
+      } else if (isIOS) {
+        toast.info("Para instalar no iPhone", { description: "..." });
+      }
+    } else {
+      setShowQRModal(true);
+    }
+  };
+
+  // Button JSX
+  <button onClick={handleInstallApp} ...>Instalar App</button>
+
+  // QR Modal JSX
+  <Dialog open={showQRModal} ...>...</Dialog>
+*/

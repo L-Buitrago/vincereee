@@ -1,14 +1,14 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /plataforma/dashboard
+Disallow: /plataforma/clientes
+Disallow: /plataforma/produtos
+Disallow: /plataforma/checkouts
+Disallow: /plataforma/pagamentos
+Disallow: /plataforma/admin
+Disallow: /plataforma/suporte
+Disallow: /plataforma/configuracoes
+Disallow: /plataforma/compras
+
+Sitemap: https://vinceretech.com/sitemap.xml

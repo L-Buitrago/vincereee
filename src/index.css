@@ -1,115 +1,169 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Aeonik Pro Bold';
+  src: url('/fonts/AeonikPro-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
-    --background: 60 11% 90%; /* #e8e8e3 Sand/Olive off-white */
-    --foreground: 120 4% 6%; /* #0e0f0e Very dark slate green/black */
+    --background: 210 20% 98%; /* #FAFAFA soft white */
+    --foreground: 222 47% 11%; /* #0F172A navy deep */
 
-    --card: 60 11% 90%;
-    --card-foreground: 120 4% 6%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --popover: 60 11% 90%;
-    --popover-foreground: 120 4% 6%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 120 4% 6%;
-    --primary-foreground: 60 11% 90%;
+    --primary: 217 91% 60%; /* #3B82F6 electric blue */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 85%;
-    --secondary-foreground: 120 4% 6%;
+    --secondary: 222 47% 11%; /* #0F172A navy deep */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 60 5% 80%;
-    --muted-foreground: 120 2% 40%;
+    --muted: 210 40% 96%; /* #F1F5F9 slate-100 */
+    --muted-foreground: 215 16% 47%; /* #64748B slate-500 */
 
-    --accent: 60 11% 85%;
-    --accent-foreground: 120 4% 6%;
+    --accent: 214 95% 93%; /* #DBEAFE blue-100 */
+    --accent-foreground: 217 91% 60%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 60 5% 82%;
-    --input: 60 5% 82%;
-    --ring: 120 4% 6%;
+    --border: 222 47% 11% / 0.1;
+    --input: 222 47% 11% / 0.1;
+    --ring: 217 91% 60%;
 
-    --radius: 0.75rem;
-    
-    --brand-dark: 120 4% 6%;    
-    --brand-light: 60 11% 90%;  
-    --brand-accent: 120 4% 6%;  
+    --radius: 1.5rem;
+
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 217 91% 60%;
   }
 
   .dark {
-    --background: 120 4% 6%;
-    --foreground: 60 11% 90%;
-    --card: 120 4% 6%;
-    --card-foreground: 60 11% 90%;
-    --popover: 120 4% 6%;
-    --popover-foreground: 60 11% 90%;
-    --primary: 60 11% 90%;
-    --primary-foreground: 120 4% 6%;
-    --secondary: 120 3% 15%;
-    --secondary-foreground: 60 11% 90%;
-    --border: 120 3% 20%;
-    --input: 120 3% 20%;
+    --background: 222 47% 11%; /* Navy deep */
+    --foreground: 0 0% 100%; /* Pure White */
+    --card: 222 47% 14%; 
+    --card-foreground: 0 0% 100%;
+    --border: 0 0% 100% / 0.1;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-white/10;
   }
 
   html {
-    scroll-behavior: initial;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Aeonik Pro Bold', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
 }
 
 @layer utilities {
-  .font-serif-display {
-    font-family: 'Syne', sans-serif;
-    letter-spacing: -0.06em;
-  }
-  
-  .clip-text-container {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(217 91% 60%), hsl(222 47% 30%));
   }
 
-  .v-underline {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .v-underline::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0.12em;
-    width: 100%;
-    height: 2px;
-    background-color: currentColor;
+  .bg-grid-pattern {
+    background-image:
+      linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
   }
 
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  .bg-circuit {
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+      radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
 
-  .glass-panel-light {
-    background: rgba(232, 232, 227, 0.4);
-    backdrop-filter: blur(32px);
-    -webkit-backdrop-filter: blur(32px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite linear;
+  }
+
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+}
+
+/* Custom Reveal Effect (Phase 6) */
+.card-reveal {
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.8s cubic-bezier(.77,0,.18,1), opacity 0.2s;
+}
+
+.card-reveal.visible {
+  opacity: 1;
+  clip-path: inset(0 0% 0 0) !important;
+}
+
+/* AVA SRG Noise Overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: url('./assets/noisemin.png') repeat;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.05;
+  animation: noise-move 0.2s steps(10) infinite;
+}
+
+@keyframes noise-move {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
 }

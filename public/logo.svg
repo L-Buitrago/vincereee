@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="silver-main" x1="12" y1="8" x2="36" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E8E8E8"/>
+      <stop offset="25%" stop-color="#F5F5F5"/>
+      <stop offset="50%" stop-color="#C0C0C0"/>
+      <stop offset="75%" stop-color="#D8D8D8"/>
+      <stop offset="100%" stop-color="#A0A0A0"/>
+    </linearGradient>
+    <linearGradient id="silver-shine" x1="24" y1="6" x2="24" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#E0E0E0" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#888888" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="silver-edge" x1="10" y1="10" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#D4D4D4"/>
+      <stop offset="50%" stop-color="#9A9A9A"/>
+      <stop offset="100%" stop-color="#B8B8B8"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <!-- Main V shape -->
+  <path d="M8 10 L24 40 L40 10 L33 10 L24 30 L15 10 Z" fill="url(#silver-main)" filter="url(#glow)"/>
+  <!-- Inner highlight -->
+  <path d="M12.5 12 L24 36 L35.5 12 L31 12 L24 27 L17 12 Z" fill="url(#silver-shine)"/>
+  <!-- Top edge accent -->
+  <path d="M8 10 L15 10 L12 14 Z" fill="url(#silver-edge)" opacity="0.7"/>
+  <path d="M40 10 L33 10 L36 14 Z" fill="url(#silver-edge)" opacity="0.7"/>
+</svg>
