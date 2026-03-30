@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,77 +6,77 @@
 
 @layer base {
   :root {
-    --background: 163 100% 12%;
-    --foreground: 0 0% 95%;
+    --background: 168 100% 8%; /* #002921 */
+    --foreground: 0 0% 95%; /* #f2f2f2 */
 
-    --card: 163 100% 12%;
+    --card: 168 100% 8%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 163 100% 12%;
+    --popover: 168 100% 8%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 68 100% 62%;
-    --primary-foreground: 163 100% 8%;
+    --primary: 65 100% 62%; /* #F0FF3D */
+    --primary-foreground: 168 100% 8%;
 
     --secondary: 0 0% 95%;
-    --secondary-foreground: 163 100% 12%;
+    --secondary-foreground: 168 100% 8%;
 
-    --muted: 163 40% 20%;
-    --muted-foreground: 163 10% 60%;
+    --muted: 168 40% 20%;
+    --muted-foreground: 168 10% 60%;
 
-    --accent: 68 100% 62%;
-    --accent-foreground: 163 100% 8%;
+    --accent: 65 100% 62%;
+    --accent-foreground: 168 100% 8%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 163 30% 20%;
-    --input: 163 30% 20%;
-    --ring: 68 100% 62%;
+    --border: 168 30% 20%;
+    --input: 168 30% 20%;
+    --ring: 65 100% 62%;
 
     --radius: 1rem;
 
-    --sidebar-background: 163 100% 10%;
+    --sidebar-background: 168 100% 10%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 68 100% 62%;
-    --sidebar-primary-foreground: 163 100% 8%;
-    --sidebar-accent: 163 40% 18%;
+    --sidebar-primary: 65 100% 62%;
+    --sidebar-primary-foreground: 168 100% 8%;
+    --sidebar-accent: 168 40% 18%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 163 30% 18%;
-    --sidebar-ring: 68 100% 62%;
+    --sidebar-border: 168 30% 18%;
+    --sidebar-ring: 65 100% 62%;
 
-    --light-bg: 0 0% 95%;
-    --light-fg: 163 100% 12%;
+    --light-bg: 0 0% 96%; /* #f5f5f5 */
+    --light-fg: 168 100% 8%; /* #002921 */
   }
 
   .dark {
-    --background: 163 100% 12%;
+    --background: 168 100% 8%;
     --foreground: 0 0% 95%;
-    --card: 163 100% 12%;
+    --card: 168 100% 8%;
     --card-foreground: 0 0% 95%;
-    --popover: 163 100% 12%;
+    --popover: 168 100% 8%;
     --popover-foreground: 0 0% 95%;
-    --primary: 68 100% 62%;
-    --primary-foreground: 163 100% 8%;
+    --primary: 65 100% 62%;
+    --primary-foreground: 168 100% 8%;
     --secondary: 0 0% 95%;
-    --secondary-foreground: 163 100% 12%;
-    --muted: 163 40% 20%;
-    --muted-foreground: 163 10% 60%;
-    --accent: 68 100% 62%;
-    --accent-foreground: 163 100% 8%;
+    --secondary-foreground: 168 100% 8%;
+    --muted: 168 40% 20%;
+    --muted-foreground: 168 10% 60%;
+    --accent: 65 100% 62%;
+    --accent-foreground: 168 100% 8%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 163 30% 20%;
-    --input: 163 30% 20%;
-    --ring: 68 100% 62%;
-    --sidebar-background: 163 100% 10%;
+    --border: 168 30% 20%;
+    --input: 168 30% 20%;
+    --ring: 65 100% 62%;
+    --sidebar-background: 168 100% 10%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 68 100% 62%;
-    --sidebar-primary-foreground: 163 100% 8%;
-    --sidebar-accent: 163 40% 18%;
+    --sidebar-primary: 65 100% 62%;
+    --sidebar-primary-foreground: 168 100% 8%;
+    --sidebar-accent: 168 40% 18%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 163 30% 18%;
-    --sidebar-ring: 68 100% 62%;
+    --sidebar-border: 168 30% 18%;
+    --sidebar-ring: 65 100% 62%;
   }
 }
 
@@ -86,22 +86,22 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: initial; /* Lenis will handle smooth scrolling */
   }
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Outfit', sans-serif;
   }
 }
 
 @layer utilities {
-  .font-serif-display {
-    font-family: 'Playfair Display', serif;
-  }
-
   .section-light {
     background-color: hsl(var(--light-bg));
     color: hsl(var(--light-fg));
+  }
+  
+  .clip-text-container {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   }
 }
