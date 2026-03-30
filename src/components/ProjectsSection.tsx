@@ -4,100 +4,96 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const brands = [
-  { name: 'Alinea', tags: [{ lbl: 'CO', color: 'bg-[#FF3333]' }, { lbl: 'RS', color: 'bg-[#33FF55]' }, { lbl: 'VO', color: 'bg-[#1A1A1A]' }] },
-  { name: 'IKKS', tags: [{ lbl: 'RS', color: 'bg-[#33FF55]' }, { lbl: 'VO', color: 'bg-[#1A1A1A]' }] },
-  { name: 'Disque', tags: [{ lbl: 'P', color: 'bg-[#33AAFF]' }, { lbl: 'RS', color: 'bg-[#33FF55]' }] },
-  { name: 'Homiris', tags: [{ lbl: 'M', color: 'bg-[#FFCC33]' }, { lbl: 'RS', color: 'bg-[#33FF55]' }, { lbl: 'VO', color: 'bg-[#1A1A1A]' }] },
-  { name: 'HackMarket', tags: [{ lbl: 'M', color: 'bg-[#FFCC33]' }, { lbl: 'RS', color: 'bg-[#33FF55]' }] },
-  { name: 'Radio France', tags: [{ lbl: 'CO', color: 'bg-[#FF3333]' }, { lbl: 'M', color: 'bg-[#FFCC33]' }, { lbl: 'RS', color: 'bg-[#33FF55]' }, { lbl: 'VO', color: 'bg-[#1A1A1A]' }] },
-  { name: 'Samaritaine', tags: [{ lbl: 'CO', color: 'bg-[#FF3333]' }] },
+const projects = [
+  { name: 'Merchant Lab', img: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1200' },
+  { name: 'Otio Home', img: 'https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=1200' },
+  { name: 'IKKS', img: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200' },
+  { name: 'Radio France', img: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=1200' },
+  { name: 'HackMarket', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200' },
 ];
 
 const ProjectsSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !trackRef.current) return;
+
+    const sections = gsap.utils.toArray('.project-card');
     
-    // Fade in text elements
-    const elements = containerRef.current.querySelectorAll('.animate-on-scroll');
-    gsap.fromTo(
-      elements,
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        stagger: 0.15,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 75%',
-        },
+    // Horizontal scroll animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        pin: true,
+        scrub: 1,
+        end: () => "+=" + trackRef.current?.offsetWidth,
       }
-    );
+    });
+
+    tl.to(sections, {
+      xPercent: -100 * (sections.length - 1),
+      ease: "none",
+    });
+
+    // Parallax effect on images within the cards
+    sections.forEach((section: any) => {
+      const img = section.querySelector('img');
+      gsap.fromTo(img, 
+        { scale: 1.2, xPercent: -10 },
+        {
+          scale: 1,
+          xPercent: 10,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            containerAnimation: tl,
+            start: "left right",
+            end: "right left",
+            scrub: true,
+          }
+        }
+      );
+    });
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, []);
 
   return (
-    <section id="team" ref={containerRef} className="bg-[#f0f2ef] pt-32 pb-48 px-6 md:px-12 lg:px-24">
-      <div className="max-w-[1400px] mx-auto">
-        
-        {/* Section Header */}
-        <div className="text-center mb-40 animate-on-scroll">
-           <h2 className="text-5xl md:text-7xl font-sans tracking-tight leading-[1.05] text-[#0e1711]">
-             An epic team for<br />
-             <span className="v-underline">every vision</span>
-           </h2>
+    <section id="work" ref={containerRef} className="relative w-full h-screen bg-background overflow-hidden flex flex-col justify-center">
+      <div className="absolute top-12 md:top-24 left-6 md:left-12 z-10 w-full pr-12">
+        <div className="flex justify-between items-end w-full">
+          <h2 className="text-4xl md:text-6xl font-serif-display font-medium text-foreground tracking-[-0.04em]">
+            Selected Work
+          </h2>
+          <span className="text-sm font-medium tracking-wide text-foreground/50 mr-6 md:mr-12">
+            01 / {projects.length < 10 ? `0${projects.length}` : projects.length}
+          </span>
         </div>
+      </div>
 
-        {/* Content Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12 lg:gap-x-24">
-          
-          {/* Left: 01 and Red Card */}
-          <div className="md:col-span-7 flex flex-col gap-12">
-             <div className="animate-on-scroll">
-                <span className="text-[14vw] md:text-[10rem] lg:text-[12rem] font-serif-display leading-none tracking-tighter text-[#0e1711]/90">
-                  01
-                </span>
-             </div>
-             
-             {/* Large Red Image Card */}
-             <div className="w-full aspect-[16/9] md:aspect-[4/3] rounded-[3rem] overflow-hidden relative shadow-2xl animate-on-scroll">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#FF3B30] to-[#8E0000]" />
-                <img 
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80" 
-                  alt="Team collaboration"
-                  className="w-full h-full object-cover mix-blend-multiply opacity-60"
-                />
-                
-                {/* Silhouette effect placeholder */}
-                <div className="absolute bottom-0 left-0 w-full h-[60%] bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
-             </div>
+      {/* The scrolling track */}
+      <div ref={trackRef} className="flex h-[60vh] md:h-[70vh] items-center gap-8 px-6 md:px-24 relative mt-16 md:mt-24 w-[fit-content]">
+        {projects.map((project, idx) => (
+          <div key={idx} className="project-card relative w-[85vw] md:w-[60vw] lg:w-[45vw] h-full shrink-0 flex flex-col rounded-[2rem] overflow-hidden group">
+            <div className="w-full h-full relative overflow-hidden bg-muted">
+              <img 
+                src={project.img} 
+                alt={project.name}
+                className="w-full h-full object-cover transform scale-110"
+              />
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
+            </div>
+            
+            <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 mix-blend-difference text-white">
+              <h3 className="text-3xl md:text-5xl font-serif-display font-medium tracking-tight">
+                {project.name}
+              </h3>
+            </div>
           </div>
-
-          {/* Right: Text and Button */}
-          <div className="md:col-span-5 flex flex-col justify-start pt-8 md:pt-[15rem]">
-             <div className="max-w-[400px] animate-on-scroll">
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-sans font-medium tracking-tight leading-[1.1] text-[#0e1711] mb-12">
-                  Your own<br />top-dogs<br />team
-                </h3>
-                
-                <p className="text-lg md:text-xl text-[#0e1711]/70 font-medium leading-[1.5] mb-10">
-                  <strong className="text-[#0e1711]">Custom talents.</strong> The perfect gang of high-profile creatives to exceed your business objectives. Full focus. Full grit.
-                </p>
-                
-                <button className="bg-[#0e1711] text-white px-10 py-3.5 rounded-full hover:bg-black transition-all duration-300 font-bold text-xs uppercase tracking-widest shadow-lg">
-                  Our model
-                </button>
-             </div>
-          </div>
-        </div>
-
+        ))}
       </div>
     </section>
   );

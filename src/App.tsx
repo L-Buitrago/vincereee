@@ -15,7 +15,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <ReactLenis root options={{ lerp: 0.08, duration: 1.5, smoothWheel: true }}>
+      <ReactLenis root options={{ lerp: 0.06, duration: 1.5, smoothWheel: true, wheelMultiplier: 0.8 }}>
         <BrowserRouter>
           <div className="selection:bg-primary selection:text-primary-foreground text-foreground bg-background min-h-screen">
             <Navigation />

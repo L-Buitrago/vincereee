@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,55 +6,54 @@
 
 @layer base {
   :root {
-    --background: 0 0% 96%; /* #F5F5F5 Off-White by default for Vendredi */
-    --foreground: 168 100% 8%; /* #002921 Deep Dark Green */
+    --background: 60 11% 90%; /* #e8e8e3 Sand/Olive off-white */
+    --foreground: 120 4% 6%; /* #0e0f0e Very dark slate green/black */
 
-    --card: 0 0% 96%;
-    --card-foreground: 168 100% 8%;
+    --card: 60 11% 90%;
+    --card-foreground: 120 4% 6%;
 
-    --popover: 0 0% 96%;
-    --popover-foreground: 168 100% 8%;
+    --popover: 60 11% 90%;
+    --popover-foreground: 120 4% 6%;
 
-    --primary: 65 100% 62%; /* #F0FF3D Lime Yellow */
-    --primary-foreground: 168 100% 8%;
+    --primary: 120 4% 6%;
+    --primary-foreground: 60 11% 90%;
 
-    --secondary: 168 100% 8%; /* Dark Green */
-    --secondary-foreground: 0 0% 96%; /* Off White */
+    --secondary: 0 0% 85%;
+    --secondary-foreground: 120 4% 6%;
 
-    --muted: 0 0% 90%;
-    --muted-foreground: 168 10% 40%;
+    --muted: 60 5% 80%;
+    --muted-foreground: 120 2% 40%;
 
-    --accent: 65 100% 62%;
-    --accent-foreground: 168 100% 8%;
+    --accent: 60 11% 85%;
+    --accent-foreground: 120 4% 6%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 168 10% 80%;
-    --input: 168 10% 80%;
-    --ring: 65 100% 62%;
+    --border: 60 5% 82%;
+    --input: 60 5% 82%;
+    --ring: 120 4% 6%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
     
-    --brand-dark: 168 100% 8%;    /* #002921 */
-    --brand-light: 0 0% 96%;      /* #F5F5F5 */
-    --brand-accent: 65 100% 62%;  /* #F0FF3D */
+    --brand-dark: 120 4% 6%;    
+    --brand-light: 60 11% 90%;  
+    --brand-accent: 120 4% 6%;  
   }
 
   .dark {
-    /* Vendredi alternates sections rather than offering a "dark mode toggle". We force the dark theme manually on sections using `.bg-brand-dark` */
-    --background: 168 100% 8%;
-    --foreground: 0 0% 96%;
-    --card: 168 100% 8%;
-    --card-foreground: 0 0% 96%;
-    --popover: 168 100% 8%;
-    --popover-foreground: 0 0% 96%;
-    --primary: 65 100% 62%;
-    --primary-foreground: 168 100% 8%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 168 100% 8%;
-    --border: 168 30% 20%;
-    --input: 168 30% 20%;
+    --background: 120 4% 6%;
+    --foreground: 60 11% 90%;
+    --card: 120 4% 6%;
+    --card-foreground: 60 11% 90%;
+    --popover: 120 4% 6%;
+    --popover-foreground: 60 11% 90%;
+    --primary: 60 11% 90%;
+    --primary-foreground: 120 4% 6%;
+    --secondary: 120 3% 15%;
+    --secondary-foreground: 60 11% 90%;
+    --border: 120 3% 20%;
+    --input: 120 3% 20%;
   }
 }
 
@@ -64,7 +63,7 @@
   }
 
   html {
-    scroll-behavior: initial; /* Lenis handles this */
+    scroll-behavior: initial;
   }
 
   body {
@@ -77,8 +76,8 @@
 
 @layer utilities {
   .font-serif-display {
-    font-family: 'Playfair Display', serif;
-    letter-spacing: -0.04em;
+    font-family: 'Syne', sans-serif;
+    letter-spacing: -0.06em;
   }
   
   .clip-text-container {
@@ -94,9 +93,23 @@
     content: '';
     position: absolute;
     left: 0;
-    bottom: 0.12em; /* Thin, spaced underline typical of Canela/Vendredi */
+    bottom: 0.12em;
     width: 100%;
-    height: 3px;
+    height: 2px;
     background-color: currentColor;
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-panel-light {
+    background: rgba(232, 232, 227, 0.4);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
   }
 }

@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, Suspense } from 'react';
 import gsap from 'gsap';
+import AmorphousBlob from './AmorphousBlob';
 
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -18,16 +19,14 @@ const HeroSection = () => {
     <section 
       id="hero" 
       ref={containerRef} 
-      className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-[#7F8A71]"
+      className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-brand-dark"
     >
-      {/* 3D abstract object placeholder / silhouette */}
-      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
-         <div className="w-[80vw] h-[80vw] md:w-[60vw] md:h-[60vw] bg-black/60 rounded-[45%] mix-blend-overlay filter blur-[60px] animate-[spin_30s_linear_infinite]" />
-         <div className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] bg-[#9ba78a]/50 rounded-[40%] mix-blend-overlay filter blur-[40px] animate-[spin_20s_linear_reverse_infinite]" />
-      </div>
+      <Suspense fallback={<div className="absolute inset-0 bg-[#161a15]" />}>
+        <AmorphousBlob />
+      </Suspense>
 
-      <div className="relative z-10 text-center px-6 max-w-[900px]">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[5.5rem] font-sans font-medium leading-[1.05] tracking-tight text-white">
+      <div className="relative z-10 text-center px-4 max-w-[1200px] w-full mt-20">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[7.5rem] font-serif-display font-medium leading-[1] tracking-[-0.04em] text-[#e8e8e3] mix-blend-plus-lighter drop-shadow-2xl">
           Syncing fast-moving<br className="hidden md:block" />
           brands with fast-moving<br className="hidden md:block" />
           audiences.
