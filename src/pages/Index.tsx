@@ -1,7 +1,7 @@
 import HeroSection from '@/components/HeroSection';
+import IntroText from '@/components/IntroText';
 import ProjectsSection from '@/components/ProjectsSection';
 import VisionSection from '@/components/VisionSection';
-import ReviewsCarousel from '@/components/ReviewsCarousel';
 import FooterSection from '@/components/FooterSection';
 import PageTransition from '@/components/ui/PageTransition';
 
@@ -10,9 +10,9 @@ const Index = () => {
     <PageTransition>
       <main>
         <HeroSection />
+        <IntroText />
         <ProjectsSection />
         <VisionSection />
-        <ReviewsCarousel />
         <FooterSection />
       </main>
     </PageTransition>

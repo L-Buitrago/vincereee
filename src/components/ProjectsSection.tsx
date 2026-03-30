@@ -1,37 +1,17 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitReveal } from '@/components/ui/SplitReveal';
 
-const projects = [
-  {
-    title: 'The Merchant Lab',
-    category: 'E-commerce solutions',
-    image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80',
-    offset: false,
-    aspect: 'aspect-[4/5]'
-  },
-  {
-    title: 'Otio Home',
-    category: 'Internet of things',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80',
-    offset: true,
-    aspect: 'aspect-[4/3] md:aspect-[3/4]'
-  },
-  {
-    title: 'Nova Tech',
-    category: 'Digital Product',
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80',
-    offset: false,
-    aspect: 'aspect-square'
-  },
-  {
-    title: 'Aura Skincare',
-    category: 'Brand Identity',
-    image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=1200&q=80',
-    offset: true,
-    aspect: 'aspect-[4/5]'
-  },
+gsap.registerPlugin(ScrollTrigger);
+
+const brands = [
+  { name: 'Alinea', tags: [{ lbl: 'CO', color: 'bg-[#FF3333]' }, { lbl: 'RS', color: 'bg-[#33FF55]' }, { lbl: 'VO', color: 'bg-[#1A1A1A]' }] },
+  { name: 'IKKS', tags: [{ lbl: 'RS', color: 'bg-[#33FF55]' }, { lbl: 'VO', color: 'bg-[#1A1A1A]' }] },
+  { name: 'Disque', tags: [{ lbl: 'P', color: 'bg-[#33AAFF]' }, { lbl: 'RS', color: 'bg-[#33FF55]' }] },
+  { name: 'Homiris', tags: [{ lbl: 'M', color: 'bg-[#FFCC33]' }, { lbl: 'RS', color: 'bg-[#33FF55]' }, { lbl: 'VO', color: 'bg-[#1A1A1A]' }] },
+  { name: 'HackMarket', tags: [{ lbl: 'M', color: 'bg-[#FFCC33]' }, { lbl: 'RS', color: 'bg-[#33FF55]' }] },
+  { name: 'Radio France', tags: [{ lbl: 'CO', color: 'bg-[#FF3333]' }, { lbl: 'M', color: 'bg-[#FFCC33]' }, { lbl: 'RS', color: 'bg-[#33FF55]' }, { lbl: 'VO', color: 'bg-[#1A1A1A]' }] },
+  { name: 'Samaritaine', tags: [{ lbl: 'CO', color: 'bg-[#FF3333]' }] },
 ];
 
 const ProjectsSection = () => {
@@ -39,24 +19,24 @@ const ProjectsSection = () => {
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const cards = containerRef.current.querySelectorAll('.project-card');
-
-    cards.forEach((card, i) => {
-      gsap.fromTo(
-        card,
-        { y: 150, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 85%',
-          },
-        }
-      );
-    });
+    
+    // Animate brands list items sequentially
+    const items = containerRef.current.querySelectorAll('.brand-item');
+    gsap.fromTo(
+      items,
+      { y: 40, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.brands-container',
+          start: 'top 80%',
+        },
+      }
+    );
 
     return () => {
       ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -64,58 +44,75 @@ const ProjectsSection = () => {
   }, []);
 
   return (
-    <section id="projects" className="bg-brand-light pt-24 pb-40 px-4 md:px-8">
-      <div className="max-w-[1800px] mx-auto">
-        <div className="mb-20 px-4">
-          <h2 className="text-[10vw] md:text-[8vw] lg:text-[6vw] font-serif-display leading-none tracking-tight text-brand-dark">
-            <SplitReveal text="Selected" />
-            <br />
-            <span className="v-underline">
-              <SplitReveal text="Projects." delay={0.1} />
-            </span>
+    <section id="projects" ref={containerRef} className="bg-[#f0f2ef] pt-32 pb-40 px-6 md:px-12 lg:px-24">
+      <div className="max-w-[1400px] mx-auto">
+        
+        {/* Top Title area */}
+        <div className="flex flex-col md:flex-row justify-between items-start mb-16">
+          <h2 className="text-[12vw] md:text-[8rem] font-serif-display leading-none tracking-tighter text-[#0e1711]">
+            01
           </h2>
+          <div className="md:w-1/2 md:pl-16 pt-4 md:pt-[2rem]">
+            <h3 className="text-4xl md:text-5xl lg:text-6xl font-sans tracking-tight leading-[1.05] text-[#0e1711]">
+              Your own<br />top-dogs<br />team
+            </h3>
+          </div>
         </div>
 
-        <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-start">
-          {projects.map((project, i) => (
-            <div
-              key={project.title}
-              className={`project-card relative group cursor-pointer overflow-hidden rounded-[2rem] 
-                          ${project.aspect} 
-                          ${project.offset ? 'md:mt-[20%]' : ''}`}
-            >
-              {/* Image with zoom effect */}
-              <img
-                src={project.image}
-                alt={project.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-110"
-                loading="lazy"
-              />
-              {/* Overlay gradient for readability */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent opacity-80" />
-              
-              {/* Text Top-Left Inside Card */}
-              <div className="absolute top-0 left-0 p-8 md:p-12 text-white z-10 pointer-events-none">
-                <p className="text-sm md:text-base font-medium text-white/70 tracking-wide mb-2">
-                  {project.category}
-                </p>
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight">
-                  {project.title}
-                </h3>
-              </div>
-            </div>
-          ))}
+        {/* Feature Component / Image Card */}
+        <div className="flex flex-col md:flex-row gap-12 lg:gap-24 mb-32 items-start">
+          
+          <div className="w-full md:w-[60%] lg:w-[65%] rounded-3xl overflow-hidden aspect-[4/3] relative">
+             {/* Red Background Silhouette Placeholder */}
+             <div className="absolute inset-0 bg-gradient-to-tr from-[#A00000] to-[#FF2222]"></div>
+             
+             {/* Silhouettes mock - just styled divs for effect */}
+             <div className="absolute bottom-0 left-[10%] w-[30%] h-[70%] bg-black/90 rounded-t-[40%] clip-path-silhouette-1 blur-[1px]"></div>
+             <div className="absolute bottom-0 right-[20%] w-[40%] h-[90%] bg-black/90 rounded-t-[50%] clip-path-silhouette-2 blur-[1px]"></div>
+             
+             {/* Replace with actual video/image component later */}
+             <img 
+               src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80" 
+               alt="Top dogs team"
+               className="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-50"
+             />
+          </div>
+
+          <div className="w-full md:w-[40%] lg:w-[35%] flex flex-col items-start pt-4">
+             <p className="text-[#0e1711]/70 font-medium text-lg lg:text-xl leading-relaxed tracking-tight mb-8">
+               <strong className="text-[#0e1711]">Custom talents.</strong> The perfect gang of high-profile creatives to exceed your business objectives. Full focus. Full grit.
+             </p>
+             <button className="bg-[#0e1711] text-white px-8 py-3 rounded-xl hover:bg-black transition-colors font-medium text-sm">
+               Our model
+             </button>
+          </div>
         </div>
-        
-        <div className="mt-24 flex justify-center">
-            <button className="bg-brand-dark/90 text-white backdrop-blur-md px-8 py-5 rounded-full flex items-center gap-4 hover:bg-brand-dark transition-colors text-lg tracking-tight group">
-                <div className="w-8 h-8 rounded-full bg-brand-accent text-brand-dark justify-center items-center flex font-bold group-hover:rotate-12 transition-transform">
-                   v
+
+        {/* Brands List */}
+        <div className="brands-container bg-white p-12 md:p-24 rounded-3xl shadow-sm border border-black/5 flex flex-col md:flex-row min-h-[500px]">
+           <div className="w-full md:w-1/3 bg-[#0e1711] rounded-l-2xl hidden md:block" />
+           
+           <div className="flex-1 md:pl-24 flex flex-col gap-4">
+              {brands.map((brand, i) => (
+                <div key={i} className="brand-item flex items-center flex-wrap gap-4 py-1">
+                  <h4 className="text-4xl md:text-[3.5rem] lg:text-[4.5rem] text-[#0e1711] tracking-tighter font-bold whitespace-nowrap">
+                    {brand.name}
+                  </h4>
+                  <div className="flex gap-2">
+                    {brand.tags.map((tag, j) => (
+                      <span 
+                        key={j} 
+                        className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${tag.color} text-white font-bold text-xs md:text-sm flex items-center justify-center`}
+                      >
+                        {tag.lbl}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <span>See more work</span>
-                <span className="ml-4 opacity-50 transition-transform group-hover:translate-x-1">→</span>
-            </button>
+              ))}
+           </div>
         </div>
+
       </div>
     </section>
   );

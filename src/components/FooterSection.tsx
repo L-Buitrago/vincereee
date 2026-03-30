@@ -1,73 +1,105 @@
-import { useState } from 'react';
-import { SplitReveal } from '@/components/ui/SplitReveal';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const FooterSection = () => {
-  const [email, setEmail] = useState('');
+  const containerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current || !imageRef.current) return;
+    
+    // Parallax effect for the bottom image border radius
+    gsap.fromTo(
+      imageRef.current,
+      { borderTopLeftRadius: '200px', borderTopRightRadius: '200px' },
+      {
+        borderTopLeftRadius: '0px',
+        borderTopRightRadius: '0px',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top bottom',
+          end: 'bottom bottom',
+          scrub: true,
+        },
+      }
+    );
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, []);
 
   return (
-    <footer id="contact" className="bg-brand-dark pt-32 pb-12 px-6 md:px-12 lg:px-16 text-brand-light">
-      <div className="max-w-[1800px] mx-auto flex flex-col gap-32">
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-16">
-          
-          {/* Huge Serif Header */}
-          <div className="flex-1 w-full relative">
-            <h2 className="text-[12vw] sm:text-[10vw] lg:text-[7vw] font-serif-display leading-[1.05] tracking-tight mb-12">
-              <span className="block overflow-hidden pb-2">
-                <SplitReveal text="Want to reach" />
-              </span>
-              <span className="block overflow-hidden pb-4">
-                <span className="v-underline">
-                  <SplitReveal text="big time?" delay={0.1} />
-                </span>
-              </span>
-            </h2>
-            
-            {/* Direct Email link instead of form to match Vendredi */}
-            <a href="mailto:hello@vinceresociety.com" className="group inline-flex items-center gap-4 mt-8 md:mt-12">
-               <span className="text-3xl md:text-5xl lg:text-6xl tracking-tight text-brand-accent transition-colors">
-                  hello@vinceresociety.com
-               </span>
-               <span className="bg-white text-black p-4 rounded-full group-hover:bg-brand-accent transition-colors duration-300">
-                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                   <path d="M5 12h14"></path>
-                   <path d="M12 5l7 7-7 7"></path>
-                 </svg>
-               </span>
-            </a>
-          </div>
+    <footer id="contact" ref={containerRef} className="bg-white pt-24 min-h-screen flex flex-col justify-between overflow-hidden">
+      
+      {/* Top Contact Row */}
+      <div className="max-w-[1400px] w-full mx-auto px-6 md:px-12 lg:px-24 mb-16 md:mb-32 flex flex-col md:flex-row border-t border-black/10">
+        
+        {/* Wanna start right now? */}
+        <div className="w-full md:w-1/2 py-12 md:py-16 md:pr-16 border-b md:border-b-0 md:border-r border-black/10">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans tracking-tight leading-[1.05] text-[#0e1711] mb-2">
+            Wanna start<br />
+            <span className="border-b-4 border-[#0e1711]">right now?</span>
+          </h2>
+        </div>
+        
+        {/* Mail Us & Book a Call */}
+        <div className="w-full md:w-1/2 flex flex-col md:flex-row">
+           <div className="w-full md:w-1/2 p-12 md:p-16 border-b md:border-b-0 border-r border-black/10 flex flex-col justify-between min-h-[250px] group cursor-pointer hover:bg-neutral-50 transition-colors">
+              <div>
+                 <h3 className="text-xl font-medium tracking-tight text-[#0e1711] mb-4">Mail us</h3>
+                 <p className="text-[#0e1711]/50 text-xs font-medium tracking-wide">Tell us about your vision to get started.</p>
+              </div>
+              <div className="mt-8 flex items-center gap-2">
+                 <span className="text-sm font-semibold tracking-wide text-[#0e1711]">hello@vinceresociety.com</span>
+                 <span className="w-5 h-5 bg-[#D9FF2E] flex items-center justify-center rounded-full transition-transform group-hover:translate-x-1">
+                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
+                 </span>
+              </div>
+           </div>
 
-          {/* Socials & Info right side */}
-          <div className="flex-shrink-0 flex flex-col items-start lg:items-end gap-12 text-left lg:text-right pt-4">
-            <div>
-              <p className="text-brand-light/50 tracking-widest text-sm uppercase mb-6 font-medium">Headquarters</p>
-              <address className="not-italic text-lg md:text-xl font-medium tracking-wide">
-                123 Vincere Avenue<br />
-                Business District<br />
-                São Paulo - SP, Brasil
-              </address>
-            </div>
-            
-            <div className="flex flex-col items-start lg:items-end gap-4 relative">
-              <p className="text-brand-light/50 tracking-widest text-sm uppercase mb-2 font-medium">Follow us</p>
-              {['Linkedin', 'Instagram', 'Dribbble'].map((social) => (
-                <a key={social} href="#" className="text-xl md:text-2xl font-medium hover:text-brand-accent transition-colors duration-300 flex items-center gap-2">
-                  {social} <span className="text-sm opacity-50">↗</span>
-                </a>
-              ))}
-            </div>
-          </div>
+           <div className="w-full md:w-1/2 p-12 md:p-16 border-b md:border-b-0 border-black/10 flex flex-col justify-between min-h-[250px] group cursor-pointer hover:bg-neutral-50 transition-colors">
+              <div>
+                 <h3 className="text-xl font-medium tracking-tight text-[#0e1711] mb-4">Book a call</h3>
+                 <p className="text-[#0e1711]/50 text-xs font-medium tracking-wide">Let's discuss your needs and KPI's in detail. Speak soon!</p>
+              </div>
+              <div className="mt-8 flex items-center gap-2">
+                 <span className="text-sm font-semibold tracking-wide text-[#0e1711]">Book a call</span>
+                 <span className="w-5 h-5 bg-[#D9FF2E] flex items-center justify-center rounded-full transition-transform group-hover:translate-x-1">
+                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
+                 </span>
+              </div>
+           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-white/10 text-sm font-medium">
-          <div className="flex gap-8 uppercase tracking-widest text-xs opacity-70">
-            <a href="#" className="hover:text-brand-accent transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-brand-accent transition-colors">Terms of Service</a>
-          </div>
-          <p className="uppercase tracking-widest text-xs opacity-70">
-            © {new Date().getFullYear()} Vincere Society. Crafted for growth.
-          </p>
-        </div>
+      </div>
+
+      {/* Massive bottom image */}
+      <div 
+        ref={imageRef}
+        className="w-full h-[60vh] md:h-[75vh] bg-[#7F8A71] relative overflow-hidden"
+      >
+         {/* Placeholder for the large nature/texture image */}
+         <img 
+           src="https://images.unsplash.com/photo-1506744031586-db72a1f8c14c?w=1920&q=80" 
+           alt="Landscape texture" 
+           className="w-full h-full object-cover opacity-80 mix-blend-multiply"
+         />
+         
+         <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col md:flex-row justify-between items-center text-white/50 text-xs tracking-widest uppercase pb-6 z-10 font-medium">
+            <div className="flex gap-4">
+              <span>Instagram ↗</span>
+              <span>LinkedIn ↗</span>
+              <span>X ↗</span>
+            </div>
+            <div className="mt-4 md:mt-0">
+              VINCERE SOCIETY © {new Date().getFullYear()}
+            </div>
+         </div>
       </div>
     </footer>
   );
