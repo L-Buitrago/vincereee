@@ -45,7 +45,6 @@ const GreekHero = () => {
             className="text-[18vw] font-bold tracking-[-0.05em] leading-none uppercase flex items-center justify-center w-full mix-blend-difference"
             style={{ fontFamily: "'Aeonik Pro Bold', 'Plus Jakarta Sans', sans-serif" }}
           >
-            VINCERE
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
