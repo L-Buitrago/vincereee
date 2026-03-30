@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { HoverButton } from '@/components/ui/HoverButton';
+import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const navLinks = [
-  { label: 'Home', href: '#hero' },
-  { label: 'Work', href: '#projects' },
-  { label: 'Services', href: '#services' },
-  { label: 'About', href: '#vision' },
+  { label: 'Home', href: '/' },
+  { label: 'Work', href: '/work' },
+  { label: 'Services', href: '/services' },
+  { label: 'About', href: '/about' },
 ];
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,8 +26,7 @@ const Navigation = () => {
 
   const handleClick = (href: string) => {
     setIsOpen(false);
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: 'smooth' });
+    navigate(href);
   };
 
   return (
@@ -41,49 +43,97 @@ const Navigation = () => {
           </a>
         </div>
         
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 relative">
           <HoverButton 
-            className="hidden md:inline-flex bg-background text-foreground border-border hover:border-primary"
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="hidden md:inline-flex bg-background/80 backdrop-blur-md text-foreground border-transparent hover:border-transparent hover:bg-background/90"
+            onClick={() => {
+              setIsOpen(false);
+              document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+            }}
           >
             Start a project
           </HoverButton>
           
           <HoverButton 
             className={cn(
-              "border-border min-w-[100px]",
-              isOpen ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground border-border hover:border-primary"
+              "border-transparent min-w-[100px] bg-background/80 backdrop-blur-md hover:bg-background/90 text-foreground shadow-sm",
+              isOpen ? "bg-background/90" : ""
             )}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? 'Close' : 'Menu'}
           </HoverButton>
+
+          {/* EXACT DROPDOWN CARD FROM SCREENSHOT */}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="absolute top-[120%] right-0 w-[300px] bg-[#2a2c26]/90 backdrop-blur-xl border border-white/5 shadow-2xl rounded-2xl p-6 flex flex-col origin-top-right text-white"
+              >
+                {/* Main Links */}
+                <div className="flex flex-col gap-4 mb-8">
+                  {navLinks.map((link) => (
+                    <button
+                      key={link.label}
+                      onClick={() => handleClick(link.href)}
+                      className="text-2xl font-medium tracking-tight hover:translate-x-2 hover:text-primary transition-all duration-300 text-left"
+                    >
+                      {link.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Divider */}
+                <div className="w-full h-px bg-white/10 mb-4" />
+
+                {/* Social Links */}
+                <div className="flex gap-4 mb-4 text-xs font-medium text-white/80">
+                  <a href="#" className="hover:text-primary transition-colors flex items-center gap-1">
+                    Instagram <span>↗</span>
+                  </a>
+                  <a href="#" className="hover:text-primary transition-colors flex items-center gap-1">
+                    LinkedIn <span>↗</span>
+                  </a>
+                  <a href="#" className="hover:text-primary transition-colors flex items-center gap-1">
+                    X <span>↗</span>
+                  </a>
+                </div>
+
+                {/* Divider */}
+                <div className="w-full h-px bg-white/10 mb-6" />
+
+                {/* Yellow Contact Button */}
+                <button 
+                  onClick={() => {
+                    setIsOpen(false);
+                    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="w-full bg-[#F0FF3D] hover:bg-[#dbe03a] text-black font-semibold rounded-xl py-4 transition-colors duration-300 text-sm tracking-wide"
+                >
+                  Contact us
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </header>
 
-      <div
-        className={cn(
-          'fixed inset-0 z-[90] flex items-center justify-center bg-background text-foreground transition-all duration-700 ease-[cubic-bezier(0.76,0,0.24,1)]',
-          isOpen ? 'translate-y-0 opacity-100 pointer-events-auto' : '-translate-y-full opacity-0 pointer-events-none'
+      {/* Background Overlay (Optional if you want clicking outside to close) */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 z-[90] bg-black/20 backdrop-blur-sm pointer-events-auto"
+          />
         )}
-      >
-        <nav className="relative z-10 flex flex-col items-center gap-6">
-          {navLinks.map((link, i) => (
-            <div key={link.label} className="clip-text-container overflow-hidden">
-              <button
-                onClick={() => handleClick(link.href)}
-                className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter hover:text-primary transition-colors duration-300 block pb-2"
-                style={{
-                  transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
-                  transition: `transform 0.8s cubic-bezier(0.76,0,0.24,1) ${i * 0.1 + 0.3}s`,
-                }}
-              >
-                {link.label}
-              </button>
-            </div>
-          ))}
-        </nav>
-      </div>
+      </AnimatePresence>
     </>
   );
 };

@@ -1,22 +1,16 @@
-import HeroSection from '@/components/HeroSection';
 import ProjectsSection from '@/components/ProjectsSection';
-import VisionSection from '@/components/VisionSection';
-import ReviewsCarousel from '@/components/ReviewsCarousel';
 import FooterSection from '@/components/FooterSection';
 import PageTransition from '@/components/ui/PageTransition';
 
-const Index = () => {
+const Work = () => {
   return (
     <PageTransition>
-      <main>
-        <HeroSection />
+      <main className="pt-24">
         <ProjectsSection />
-        <VisionSection />
-        <ReviewsCarousel />
         <FooterSection />
       </main>
     </PageTransition>
   );
 };
 
-export default Index;
+export default Work;

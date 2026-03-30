@@ -1,11 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ReactLenis } from '@studio-freight/react-lenis';
-import Index from "./pages/Index.tsx";
-import NotFound from "./pages/NotFound.tsx";
+import { AnimatedRoutes } from "./AnimatedRoutes";
+import Navigation from "@/components/Navigation";
+import FloatingCTA from "@/components/FloatingCTA";
 
 const queryClient = new QueryClient();
 
@@ -16,11 +17,11 @@ const App = () => (
       <Sonner />
       <ReactLenis root options={{ lerp: 0.08, duration: 1.5, smoothWheel: true }}>
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="selection:bg-primary selection:text-primary-foreground text-foreground bg-background min-h-screen">
+            <Navigation />
+            <AnimatedRoutes />
+            <FloatingCTA />
+          </div>
         </BrowserRouter>
       </ReactLenis>
     </TooltipProvider>
