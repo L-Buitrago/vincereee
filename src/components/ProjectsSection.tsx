@@ -20,20 +20,20 @@ const ProjectsSection = () => {
   useEffect(() => {
     if (!containerRef.current) return;
     
-    // Animate brands list items sequentially
-    const items = containerRef.current.querySelectorAll('.brand-item');
+    // Fade in text elements
+    const elements = containerRef.current.querySelectorAll('.animate-on-scroll');
     gsap.fromTo(
-      items,
-      { y: 40, opacity: 0 },
+      elements,
+      { y: 50, opacity: 0 },
       {
         y: 0,
         opacity: 1,
-        duration: 0.8,
-        stagger: 0.1,
+        duration: 1,
+        stagger: 0.15,
         ease: 'power3.out',
         scrollTrigger: {
-          trigger: '.brands-container',
-          start: 'top 80%',
+          trigger: containerRef.current,
+          start: 'top 75%',
         },
       }
     );
@@ -44,73 +44,58 @@ const ProjectsSection = () => {
   }, []);
 
   return (
-    <section id="projects" ref={containerRef} className="bg-[#f0f2ef] pt-32 pb-40 px-6 md:px-12 lg:px-24">
+    <section id="team" ref={containerRef} className="bg-[#f0f2ef] pt-32 pb-48 px-6 md:px-12 lg:px-24">
       <div className="max-w-[1400px] mx-auto">
         
-        {/* Top Title area */}
-        <div className="flex flex-col md:flex-row justify-between items-start mb-16">
-          <h2 className="text-[12vw] md:text-[8rem] font-serif-display leading-none tracking-tighter text-[#0e1711]">
-            01
-          </h2>
-          <div className="md:w-1/2 md:pl-16 pt-4 md:pt-[2rem]">
-            <h3 className="text-4xl md:text-5xl lg:text-6xl font-sans tracking-tight leading-[1.05] text-[#0e1711]">
-              Your own<br />top-dogs<br />team
-            </h3>
-          </div>
+        {/* Section Header */}
+        <div className="text-center mb-40 animate-on-scroll">
+           <h2 className="text-5xl md:text-7xl font-sans tracking-tight leading-[1.05] text-[#0e1711]">
+             An epic team for<br />
+             <span className="v-underline">every vision</span>
+           </h2>
         </div>
 
-        {/* Feature Component / Image Card */}
-        <div className="flex flex-col md:flex-row gap-12 lg:gap-24 mb-32 items-start">
+        {/* Content Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12 lg:gap-x-24">
           
-          <div className="w-full md:w-[60%] lg:w-[65%] rounded-3xl overflow-hidden aspect-[4/3] relative">
-             {/* Red Background Silhouette Placeholder */}
-             <div className="absolute inset-0 bg-gradient-to-tr from-[#A00000] to-[#FF2222]"></div>
+          {/* Left: 01 and Red Card */}
+          <div className="md:col-span-7 flex flex-col gap-12">
+             <div className="animate-on-scroll">
+                <span className="text-[14vw] md:text-[10rem] lg:text-[12rem] font-serif-display leading-none tracking-tighter text-[#0e1711]/90">
+                  01
+                </span>
+             </div>
              
-             {/* Silhouettes mock - just styled divs for effect */}
-             <div className="absolute bottom-0 left-[10%] w-[30%] h-[70%] bg-black/90 rounded-t-[40%] clip-path-silhouette-1 blur-[1px]"></div>
-             <div className="absolute bottom-0 right-[20%] w-[40%] h-[90%] bg-black/90 rounded-t-[50%] clip-path-silhouette-2 blur-[1px]"></div>
-             
-             {/* Replace with actual video/image component later */}
-             <img 
-               src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=80" 
-               alt="Top dogs team"
-               className="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-50"
-             />
+             {/* Large Red Image Card */}
+             <div className="w-full aspect-[16/9] md:aspect-[4/3] rounded-[3rem] overflow-hidden relative shadow-2xl animate-on-scroll">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#FF3B30] to-[#8E0000]" />
+                <img 
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80" 
+                  alt="Team collaboration"
+                  className="w-full h-full object-cover mix-blend-multiply opacity-60"
+                />
+                
+                {/* Silhouette effect placeholder */}
+                <div className="absolute bottom-0 left-0 w-full h-[60%] bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+             </div>
           </div>
 
-          <div className="w-full md:w-[40%] lg:w-[35%] flex flex-col items-start pt-4">
-             <p className="text-[#0e1711]/70 font-medium text-lg lg:text-xl leading-relaxed tracking-tight mb-8">
-               <strong className="text-[#0e1711]">Custom talents.</strong> The perfect gang of high-profile creatives to exceed your business objectives. Full focus. Full grit.
-             </p>
-             <button className="bg-[#0e1711] text-white px-8 py-3 rounded-xl hover:bg-black transition-colors font-medium text-sm">
-               Our model
-             </button>
+          {/* Right: Text and Button */}
+          <div className="md:col-span-5 flex flex-col justify-start pt-8 md:pt-[15rem]">
+             <div className="max-w-[400px] animate-on-scroll">
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-sans font-medium tracking-tight leading-[1.1] text-[#0e1711] mb-12">
+                  Your own<br />top-dogs<br />team
+                </h3>
+                
+                <p className="text-lg md:text-xl text-[#0e1711]/70 font-medium leading-[1.5] mb-10">
+                  <strong className="text-[#0e1711]">Custom talents.</strong> The perfect gang of high-profile creatives to exceed your business objectives. Full focus. Full grit.
+                </p>
+                
+                <button className="bg-[#0e1711] text-white px-10 py-3.5 rounded-full hover:bg-black transition-all duration-300 font-bold text-xs uppercase tracking-widest shadow-lg">
+                  Our model
+                </button>
+             </div>
           </div>
-        </div>
-
-        {/* Brands List */}
-        <div className="brands-container bg-white p-12 md:p-24 rounded-3xl shadow-sm border border-black/5 flex flex-col md:flex-row min-h-[500px]">
-           <div className="w-full md:w-1/3 bg-[#0e1711] rounded-l-2xl hidden md:block" />
-           
-           <div className="flex-1 md:pl-24 flex flex-col gap-4">
-              {brands.map((brand, i) => (
-                <div key={i} className="brand-item flex items-center flex-wrap gap-4 py-1">
-                  <h4 className="text-4xl md:text-[3.5rem] lg:text-[4.5rem] text-[#0e1711] tracking-tighter font-bold whitespace-nowrap">
-                    {brand.name}
-                  </h4>
-                  <div className="flex gap-2">
-                    {brand.tags.map((tag, j) => (
-                      <span 
-                        key={j} 
-                        className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${tag.color} text-white font-bold text-xs md:text-sm flex items-center justify-center`}
-                      >
-                        {tag.lbl}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-           </div>
         </div>
 
       </div>
