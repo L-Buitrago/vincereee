@@ -1,0 +1,144 @@
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+
+const projects = [
+  {
+    id: "01",
+    title: "The Merchant Lab",
+    category: "E-commerce Solutions",
+    thumb: "https://vendredi-society.com/wp-content/uploads/2026/03/ps-day-thumbnail.webp",
+    video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
+    color: "#dfe6e5",
+  },
+  {
+    id: "02",
+    title: "Otio Home",
+    category: "Internet of Things",
+    thumb: "https://vendredi-society.com/wp-content/uploads/2023/12/otio_small.webp",
+    video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
+    color: "#f2f2f2",
+  },
+  {
+    id: "03",
+    title: "IKKS",
+    category: "Fashion Tech",
+    thumb: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200",
+    video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
+    color: "#f8f8f8",
+  },
+  {
+    id: "04",
+    title: "Radio France",
+    category: "Digital Media",
+    thumb: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=1200",
+    video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
+    color: "#dfe6e5",
+  },
+  {
+    id: "05",
+    title: "HackMarket",
+    category: "Sustainability",
+    thumb: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200",
+    video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
+    color: "#f2f2f2",
+  }
+];
+
+const ProjectGridHybrid = () => {
+  return (
+    <section className="py-32 bg-white px-4 md:px-12 lg:px-24" id="portfolio">
+      <div className="container mx-auto">
+        <div className="mb-16">
+          <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-2 block">Portfólio Selecionado</span>
+          <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-foreground">Trabalhos que <span className="text-primary italic">fazem história.</span></h2>
+        </div>
+
+        {/* Top 3 Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          {projects.slice(0, 3).map((project) => (
+            <ProjectGridCard key={project.id} project={project} />
+          ))}
+        </div>
+
+        {/* Bottom 2 Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {projects.slice(3, 5).map((project) => (
+            <ProjectGridCard key={project.id} project={project} isLarge />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ProjectGridCard = ({ project, isLarge = false }: { project: any, isLarge?: boolean }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (isHovered && videoRef.current) {
+      videoRef.current.play();
+    } else if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  }, [isHovered]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-700 bg-gray-100 ${isLarge ? "h-[400px] md:h-[600px]" : "h-[450px]"}`}
+    >
+      {/* Background Media */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <motion.img 
+          src={project.thumb} 
+          alt={project.title}
+          animate={{ scale: isHovered ? 1.05 : 1, opacity: isHovered ? 0.4 : 1 }}
+          transition={{ duration: 0.8 }}
+          className="w-full h-full object-cover"
+        />
+        <div className={`absolute inset-0 transition-opacity duration-700 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+          <video 
+            ref={videoRef}
+            muted 
+            loop 
+            playsInline 
+            className="w-full h-full object-cover"
+          >
+            <source src={project.video} type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      {/* Overlay Info */}
+      <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div>
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2 block text-white/60">
+            {project.category}
+          </span>
+          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tighter text-white">
+            {project.title}
+          </h3>
+        </div>
+        
+        <div className="mt-8 flex justify-between items-center">
+          <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white bg-white/10 backdrop-blur-md">
+            <ArrowUpRight className="w-5 h-5" />
+          </div>
+        </div>
+      </div>
+      
+      {/* Small Label for Desktop */}
+      <div className="absolute top-8 left-8 p-4 bg-white/90 backdrop-blur-md rounded-2xl border border-white/20 shadow-sm opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+          <p className="text-[9px] font-black uppercase tracking-widest text-foreground">{project.title}</p>
+      </div>
+    </motion.div>
+  );
+};
+
+export default ProjectGridHybrid;
