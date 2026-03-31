@@ -3,10 +3,15 @@ import ModernMenu from "@/components/v2/ModernMenu";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import SplashScreenManager, { SplashType } from "@/components/SplashScreenManager";
-import HeroImmersive from "@/components/v3/HeroImmersive";
-import BentoServices from "@/components/v3/BentoServices";
-import SaasDashboardReveal from "@/components/v3/SaasDashboardReveal";
-import FinalCTA from "@/components/v3/FinalCTA";
+import KojiHero from "@/components/v2/KojiHero";
+import BustExperience from "@/components/v2/BustExperience";
+import IntroText from "@/components/v2/IntroText";
+import MottoSection from "@/components/v2/MottoSection";
+import ProjectShowcase from "@/components/v2/ProjectShowcase";
+import OurModel from "@/components/v2/OurModel";
+import SuccessLogic from "@/components/v2/SuccessLogic";
+import WaysToWork from "@/components/v2/WaysToWork";
+import BigTimeReturns from "@/components/v2/BigTimeReturns";
 import { SmoothScroll } from "@/components/v2/SmoothScroll";
 import PageTransition from "@/components/v2/PageTransition";
 
@@ -51,29 +56,42 @@ const Index = () => {
       <div className={`transition-opacity duration-1000 ${showSplash ? "opacity-0" : "opacity-100"}`}>
         <SmoothScroll>
           <ModernMenu onNavigate={handleNavigate} />
-          
           <main className="relative">
-            {/* V3 HERO SECTION */}
+            {/* DOBRA 1: Hero */}
             <div id="home">
-              <HeroImmersive />
+              <KojiHero />
             </div>
 
-            {/* V3 BENTO SERVICES SECTION */}
+            {/* DOBRA 2: Intro Text + 3D Bust Experience */}
+            <IntroText />
+            <BustExperience />
+            
+            <div id="about">
+              <MottoSection />
+            </div>
+
+            {/* DOBRA 3: Projects (PS Essentials / See More Work) */}
             <div id="cases">
-              <BentoServices />
+              <ProjectShowcase />
             </div>
 
-            {/* V3 SAAS DASHBOARD REVEAL SECTION */}
-            <div id="plataforma">
-              <SaasDashboardReveal />
-            </div>
+            {/* DOBRA 4: Our Model (Replaces Feather) */}
+            <OurModel />
 
-            {/* V3 FINAL CTA SECTION */}
-            <div id="contato">
-              <FinalCTA />
+            {/* DOBRA 5: Big Time Returns (KPI + notificações) */}
+            <BigTimeReturns />
+
+
+            {/* DOBRA 6: Reviews (Auto-scroll + Drag) */}
+            <div id="reviews">
+              <SuccessLogic />
+            </div>
+            
+            {/* DOBRA 7: Ways to Work */}
+            <div id="servicos">
+              <WaysToWork />
             </div>
           </main>
-
           <Footer />
           <ChatWidget />
         </SmoothScroll>
