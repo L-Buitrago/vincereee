@@ -86,10 +86,10 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -20, scale: 0.98 }}
                   transition={{ duration: 0.5, ease: [0.77, 0, 0.18, 1] }}
-                  className="absolute top-[calc(100%+1rem)] left-0 w-[20rem] md:w-[22rem] bg-black/60 backdrop-blur-3xl rounded-[40px] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] z-[130] text-white border border-white/10"
+                  className="absolute top-[calc(100%+0.75rem)] left-0 w-72 md:w-80 bg-black/60 backdrop-blur-3xl rounded-[32px] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)] z-[130] text-white border border-white/10"
                 >
-                  <nav className="p-10">
-                    <ul className="space-y-4 mb-10">
+                  <nav className="p-8">
+                    <ul className="space-y-3 mb-8">
                       {menuLinks.map((link, i) => (
                         <motion.li 
                           key={link.label}
@@ -100,13 +100,13 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
                           <a 
                             href={link.href} 
                             onClick={(e) => handleLinkClick(e, link.href)}
-                            className="text-3xl font-medium tracking-tighter hover:opacity-100 opacity-60 transition-all flex items-center justify-between group py-1"
+                            className="text-2xl font-medium tracking-tighter hover:opacity-100 opacity-60 transition-all flex items-center justify-between group py-1"
                           >
                             <span className="relative inline-block">
                               {link.label}
                               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
                             </span>
-                            <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-3 transition-all duration-300 text-xl">
+                            <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-2 transition-all duration-300 text-lg">
                                →
                             </span>
                           </a>
@@ -114,16 +114,16 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
                       ))}
                     </ul>
 
-                    <div className="pt-8 border-t border-white/5 flex flex-col gap-8">
-                      <div className="flex gap-6">
-                         <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           Instagram <span className="text-[9px] opacity-40 group-hover:opacity-100">↗</span>
+                    <div className="pt-6 border-t border-white/5 flex flex-col gap-6">
+                      <div className="flex gap-4">
+                         <a href="#" className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                           Instagram <span className="text-[8px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
-                         <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                         <a href="#" className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
                            LinkedIn <span className="text-[9px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
-                         <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           X <span className="text-[9px] opacity-40 group-hover:opacity-100">↗</span>
+                         <a href="#" className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                           X <span className="text-[8px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
                       </div>
 
@@ -133,7 +133,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
                            const footer = document.getElementById('contact');
                            footer?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="w-full py-5 bg-[#60A5FA] text-secondary rounded-2xl font-bold text-[11px] uppercase tracking-[0.3em] hover:brightness-110 transition-all shadow-xl"
+                        className="w-full py-4 bg-[#60A5FA] text-secondary rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-xl"
                       >
                         Contact us
                       </button>
