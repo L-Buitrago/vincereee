@@ -115,15 +115,12 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
                     </ul>
 
                     <div className="pt-5 border-t border-white/5 flex flex-col gap-5">
-                      <div className="flex gap-4">
-                         <a href="#" className="text-[8px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           IG <span className="text-[7px] opacity-40 group-hover:opacity-100">↗</span>
+                      <div className="flex gap-6">
+                         <a href="https://instagram.com" target="_blank" className="text-[8px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                           Instagram <span className="text-[7px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
-                         <a href="#" className="text-[8px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           IN <span className="text-[7px] opacity-40 group-hover:opacity-100">↗</span>
-                         </a>
-                         <a href="#" className="text-[8px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           X <span className="text-[7px] opacity-40 group-hover:opacity-100">↗</span>
+                         <a href="mailto:hello@vincere.com" className="text-[8px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                           Email <span className="text-[7px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
                       </div>
 
