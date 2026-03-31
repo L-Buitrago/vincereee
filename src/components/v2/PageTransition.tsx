@@ -23,7 +23,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({ trigger, onComplete }) 
             exit={{ opacity: 0 }}
             className="text-white text-2xl font-serif italic tracking-tighter"
           >
-            Vincere Society
+            Vincere
           </motion.div>
         </motion.div>
       )}

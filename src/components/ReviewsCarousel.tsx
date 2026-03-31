@@ -4,7 +4,7 @@ import { SplitReveal } from '@/components/ui/SplitReveal';
 
 const reviews = [
   {
-    quote: "Vincere Society completely transformed our digital presence. 10/10.",
+    quote: "Vincere completely transformed our digital presence. 10/10.",
     name: "Emmanuelle Paolasini",
     title: "Lead Brand Designer @ PrestaShop",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop"

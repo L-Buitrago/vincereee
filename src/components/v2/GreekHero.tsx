@@ -81,7 +81,7 @@ const GreekHero = () => {
         style={{ y: useTransform(scrollYProgress, [0, 1], [0, -200]), opacity: useTransform(scrollYProgress, [0, 0.5], [0.05, 0]) }}
         className="absolute bottom-10 left-0 w-full text-center pointer-events-none z-10"
       >
-        <span className="text-[25vw] font-black text-foreground uppercase opacity-20">Society</span>
+        <span className="text-[25vw] font-black text-foreground uppercase opacity-20">Vincere</span>
       </motion.div>
     </section>
   );

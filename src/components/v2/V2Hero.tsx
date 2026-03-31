@@ -37,8 +37,7 @@ const V2Hero = () => {
         {/* The "Literal" Hero Heading */}
         <div className="overflow-hidden mb-8">
           <h1 className="reveal-text text-6xl md:text-[9vw] font-serif italic text-foreground leading-[0.9] tracking-tighter">
-            Vincere <br />
-            <span className="font-sans not-italic font-extrabold text-foreground ml-[2vw]">Society</span>
+            Vincere
           </h1>
         </div>
 

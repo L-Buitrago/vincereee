@@ -55,7 +55,7 @@ const FooterSection = () => {
                  <p className="text-[#0e1711]/50 text-xs font-medium tracking-wide">Tell us about your vision to get started.</p>
               </div>
               <div className="mt-8 flex items-center gap-2">
-                 <span className="text-sm font-semibold tracking-wide text-[#0e1711]">hello@vinceresociety.com</span>
+                 <span className="text-sm font-semibold tracking-wide text-[#0e1711]">hello@vincere.com</span>
                  <span className="w-5 h-5 bg-[#D9FF2E] flex items-center justify-center rounded-full transition-transform group-hover:translate-x-1">
                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path></svg>
                  </span>
@@ -97,7 +97,7 @@ const FooterSection = () => {
               <span>X ↗</span>
             </div>
             <div className="mt-4 md:mt-0">
-              VINCERE SOCIETY © {new Date().getFullYear()}
+              VINCERE © {new Date().getFullYear()}
             </div>
          </div>
       </div>

@@ -45,18 +45,18 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
       <header className="fixed top-0 left-0 w-full z-[120] px-6 py-8 flex justify-between items-center pointer-events-none">
         <div className="pointer-events-auto">
           <a href="#home" className="text-xl font-serif italic tracking-tighter text-foreground mix-blend-difference">
-            Vincere Society
+            Vincere
           </a>
         </div>
 
-        <div className="flex gap-4 pointer-events-auto items-center">
+        <div className="flex gap-3 pointer-events-auto items-center">
           {/* Menu Button + Dropdown Container */}
           <div className="relative">
             <button 
               onClick={() => setIsOpen(!isOpen)}
               onMouseEnter={() => setIsButtonHovered(true)}
               onMouseLeave={() => setIsButtonHovered(false)}
-              className={`px-6 py-3 backdrop-blur-xl rounded-full font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 transition-all duration-500 min-w-[120px] justify-center border ${
+              className={`px-8 py-3.5 backdrop-blur-xl rounded-full font-bold text-[10px] uppercase tracking-[0.2em] flex items-center gap-3 transition-all duration-500 min-w-[140px] justify-center border ${
                 isOpen 
                   ? "bg-white/10 text-foreground border-black/10 shadow-sm" 
                   : "bg-black/5 text-foreground border-black/5 hover:bg-black/10 shadow-sm"
@@ -79,34 +79,34 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
             </button>
 
             {/* Vendredi-Style Dropdown Box - Now correctly positioned under Menu button */}
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               {isOpen && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95, y: 10, originX: 0.5, originY: 0 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                  transition={{ duration: 0.4, ease: [0.77, 0, 0.18, 1] }}
-                  className="absolute top-full left-0 mt-4 w-64 bg-black/50 backdrop-blur-3xl rounded-[32px] overflow-hidden shadow-[0_24px_48px_-12px_rgba(0,0,0,0.5)] z-[130] text-white border border-white/10"
+                  initial={{ opacity: 0, y: -20, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                  transition={{ duration: 0.5, ease: [0.77, 0, 0.18, 1] }}
+                  className="absolute top-[calc(100%+1rem)] left-0 w-[20rem] md:w-[22rem] bg-black/60 backdrop-blur-3xl rounded-[40px] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] z-[130] text-white border border-white/10"
                 >
-                  <nav className="p-6">
-                    <ul className="space-y-2 mb-6">
+                  <nav className="p-10">
+                    <ul className="space-y-4 mb-10">
                       {menuLinks.map((link, i) => (
                         <motion.li 
                           key={link.label}
-                          initial={{ x: -10, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{ delay: i * 0.05 + 0.1, duration: 0.4 }}
+                          initial={{ y: 10, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          transition={{ delay: i * 0.04 + 0.1, duration: 0.5, ease: "easeOut" }}
                         >
                           <a 
                             href={link.href} 
                             onClick={(e) => handleLinkClick(e, link.href)}
-                            className="text-xl font-medium tracking-tight hover:opacity-100 opacity-50 transition-all flex items-center justify-between group py-1"
+                            className="text-3xl font-medium tracking-tighter hover:opacity-100 opacity-60 transition-all flex items-center justify-between group py-1"
                           >
                             <span className="relative inline-block">
                               {link.label}
                               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
                             </span>
-                            <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-2 transition-all duration-300 text-sm">
+                            <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-3 transition-all duration-300 text-xl">
                                →
                             </span>
                           </a>
@@ -114,26 +114,26 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
                       ))}
                     </ul>
 
-                    <div className="pt-6 border-t border-white/10 flex flex-col gap-6">
-                      <div className="flex gap-4">
-                         <a href="#" className="text-[9px] font-bold uppercase tracking-widest opacity-30 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           Instagram <span className="text-[8px]">↗</span>
+                    <div className="pt-8 border-t border-white/5 flex flex-col gap-8">
+                      <div className="flex gap-6">
+                         <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                           Instagram <span className="text-[9px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
-                         <a href="#" className="text-[9px] font-bold uppercase tracking-widest opacity-30 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           LinkedIn <span className="text-[8px]">↗</span>
+                         <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                           LinkedIn <span className="text-[9px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
-                         <a href="#" className="text-[9px] font-bold uppercase tracking-widest opacity-30 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           X <span className="text-[8px]">↗</span>
+                         <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                           X <span className="text-[9px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
                       </div>
 
                       <button 
                         onClick={() => {
                            setIsOpen(false);
-                           const footer = document.getElementById('footer');
+                           const footer = document.getElementById('contact');
                            footer?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="w-full py-4 bg-[#60A5FA] text-secondary rounded-2xl font-bold text-[10px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-lg"
+                        className="w-full py-5 bg-[#60A5FA] text-secondary rounded-2xl font-bold text-[11px] uppercase tracking-[0.3em] hover:brightness-110 transition-all shadow-xl"
                       >
                         Contact us
                       </button>
@@ -144,7 +144,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
             </AnimatePresence>
           </div>
           
-          <button className="px-6 py-3 bg-black/5 backdrop-blur-md text-foreground border border-black/5 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-black/10 transition-all shadow-lg">
+          <button className="px-8 py-3.5 bg-black/5 backdrop-blur-md text-foreground border border-black/5 rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-black/10 transition-all shadow-sm">
             Book a call
           </button>
         </div>

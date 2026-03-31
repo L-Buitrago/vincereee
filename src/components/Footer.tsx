@@ -35,7 +35,7 @@ const Footer = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-24">
           <div className="max-w-md text-left">
-            <h2 className="text-4xl font-serif italic mb-6 tracking-tighter">Vincere Society</h2>
+            <h2 className="text-4xl font-serif italic mb-6 tracking-tighter">Vincere</h2>
             <p className="text-white/60 text-lg leading-relaxed">
               Elevando marcas através do design estratégico, tecnologia de ponta e inteligência artificial. Onde o luxo encontra a performance.
             </p>
@@ -72,7 +72,7 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-white/5 gap-8">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-white/20">© 2024 Vincere Society. All rights reserved.</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-white/20">© 2024 Vincere. All rights reserved.</p>
           <div className="flex gap-8">
              <a href="#" className="text-[10px] font-bold uppercase tracking-widest text-white/20 hover:text-white/40 transition-colors">Privacy Policy</a>
              <a href="#" className="text-[10px] font-bold uppercase tracking-widest text-white/20 hover:text-white/40 transition-colors">Terms of Service</a>

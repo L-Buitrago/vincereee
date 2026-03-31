@@ -36,7 +36,7 @@ const TrueHero = () => {
 
            <div className="absolute bottom-24 left-12 right-12 flex justify-between items-end">
               <div className="text-left">
-                 <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-foreground/40 mb-2">[ Vincere Society ]</p>
+                 <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-foreground/40 mb-2">[ Vincere ]</p>
                  <div className="h-[1px] w-20 bg-foreground/20" />
               </div>
               <div className="text-right flex flex-col items-end gap-2">
