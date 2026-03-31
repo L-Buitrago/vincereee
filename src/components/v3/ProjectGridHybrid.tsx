@@ -19,7 +19,7 @@ const projects = [
     thumb: "https://vendredi-society.com/wp-content/uploads/2023/12/otio_small.webp",
     video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
     color: "#f2f2f2",
-    mockup: "/images/otio_mockup.png"
+    mockup: "https://images.unsplash.com/photo-1634084462412-b54873c0a56d?q=85&fm=jpg&crop=entropy&cs=srgb&w=2070&auto=format&fit=crop"
   },
   {
     id: "03",
