@@ -85,12 +85,15 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
     offset: ["start end", "end start"]
   });
 
-  // Enhanced Parallax effect for scrollable cards
+  // Dramatic Parallax effect for the entire card
   const yTranslate = useTransform(
     scrollYProgress, 
     [0, 1], 
-    isScrollable ? (index === 0 ? [100, -100] : [150, -150]) : [0, 0]
+    isScrollable ? (index === 0 ? [150, -150] : [250, -250]) : [0, 0]
   );
+
+  // Parallax for the image inside (the "window" effect)
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
 
   useEffect(() => {
     if (isHovered && videoRef.current) {
@@ -104,8 +107,8 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
     <motion.div
       ref={cardRef}
       style={{ y: yTranslate }}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -118,7 +121,8 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
         <motion.img 
           src={project.thumb} 
           alt={project.title}
-          animate={{ scale: isHovered ? 1.1 : 1, opacity: isHovered ? 0.4 : 1 }}
+          style={{ y: imageY, scale: 1.2 }}
+          animate={{ scale: isHovered ? 1.3 : 1.2, opacity: isHovered ? 0.4 : 1 }}
           transition={{ duration: 0.8 }}
           className="w-full h-full object-cover"
         />
