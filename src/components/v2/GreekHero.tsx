@@ -73,21 +73,6 @@ const GreekHero = () => {
             empresas que querem crescer com eficiência.
           </motion.p>
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.5 }}
-            className="flex items-center gap-4 mt-12"
-          >
-            <button className="px-8 py-4 bg-foreground text-background font-bold text-[0.9vw] rounded-lg hover:bg-foreground/90 transition-all flex items-center gap-2 group">
-              Solicitar Orçamento
-              <span className="group-hover:translate-x-1 transition-transform">→</span>
-            </button>
-            <button className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 transition-all font-bold text-[0.9vw] rounded-lg">
-              Conhecer Soluções
-            </button>
-          </motion.div>
         </div>
       </div>
       
