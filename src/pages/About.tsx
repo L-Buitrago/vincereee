@@ -39,7 +39,7 @@ const About = () => {
     id: i,
     delay: i * 0.05,
     angle: (i / 12) * Math.PI, // Distribute in 2 circles
-    radius: 350 + (i % 3) * 80,
+    radius: 400 + (i % 3) * 120, // Increased radius for better visibility
     imgId: 10 + i,
   }));
 
@@ -113,7 +113,7 @@ const About = () => {
                initial={{ opacity: 0, scale: 0.9 }}
                animate={{ opacity: 1, scale: 1 }}
                transition={{ duration: 1.5, delay: 1 }}
-               className="text-6xl md:text-[10vw] font-black tracking-tighter leading-none text-foreground"
+               className="text-5xl md:text-[6vw] font-black tracking-tighter leading-tight text-foreground"
              >
                Unlimited <br/> creatives<span className="text-primary italic">.</span>
              </motion.h1>
