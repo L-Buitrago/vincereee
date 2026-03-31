@@ -3,7 +3,7 @@ import ModernMenu from "@/components/v2/ModernMenu";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import SplashScreenManager, { SplashType } from "@/components/SplashScreenManager";
-import GreekHero from "@/components/v2/GreekHero";
+import KojiHero from "@/components/v2/KojiHero";
 import BustExperience from "@/components/v2/BustExperience";
 import IntroText from "@/components/v2/IntroText";
 import MottoSection from "@/components/v2/MottoSection";
@@ -59,7 +59,7 @@ const Index = () => {
           <main className="relative">
             {/* DOBRA 1: Hero */}
             <div id="home">
-              <GreekHero />
+              <KojiHero />
             </div>
 
             {/* DOBRA 2: Intro Text + 3D Bust Experience */}
