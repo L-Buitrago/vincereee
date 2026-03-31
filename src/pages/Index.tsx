@@ -73,9 +73,6 @@ const Index = () => {
             {/* 2. INTRO (RESTAURADO V2) */}
             <IntroText />
             
-            {/* 3. BUST (RESTAURADO V2) */}
-            <BustExperience />
-            
             {/* 4. MOTTO (RESTAURADO V2) */}
             <div id="about">
               <MottoSection />
