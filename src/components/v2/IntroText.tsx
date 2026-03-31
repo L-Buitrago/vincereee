@@ -43,19 +43,19 @@ const IntroText = () => {
   }, [scrollYProgress]); */
 
   const segments = [
-    { text: "Estar ", style: "italic font-serif" },
-    { text: "visível ", style: "italic font-serif" },
-    { text: "não é mais o suficiente. ", style: "font-sans font-extrabold" },
-    { text: "Tudo ", style: "italic font-serif" },
-    { text: "é ", style: "italic font-serif" },
-    { text: "sobre ", style: "italic font-serif" },
-    { text: "conquistar ", style: "italic font-serif" },
-    { text: "a atenção. ", style: "font-sans font-extrabold text-foreground/40" },
-    { text: "E ", style: "italic font-serif" },
-    { text: "então ", style: "italic font-serif" },
-    { text: "avançarmos ", style: "italic font-serif" },
-    { text: "juntos. ", style: "italic font-serif" },
-    { text: "Sincronizados.", style: "font-sans font-extrabold" },
+    { text: "NA ", style: "font-sans-black" },
+    { text: "VINCERE, ", style: "font-serif italic" },
+    { text: "NÃO APENAS CRIAMOS ", style: "font-sans-black opacity-40 text-sm md:text-[2vw]" },
+    { text: "IDENTIDADES. ", style: "font-serif italic" },
+    { text: "DESENVOLVEMOS ", style: "font-sans-black" },
+    { text: "ECOSSISTEMAS ", style: "font-serif italic" },
+    { text: "DIGITAIS ", style: "font-sans-black" },
+    { text: "MOVIDOS POR ", style: "font-sans-black opacity-40 text-sm md:text-[2vw]" },
+    { text: "INTELIGÊNCIA. ", style: "font-serif italic text-primary" },
+    { text: "PARA QUEM ", style: "font-sans-black opacity-40 text-sm md:text-[2vw]" },
+    { text: "NÃO ACEITA O ", style: "font-sans-black" },
+    { text: "COMUM. ", style: "font-serif italic uppercase" },
+    { text: "SINCRONIZADOS.", style: "font-sans-black" },
   ];
 
   // Process segments into words with characters, keeping a global index

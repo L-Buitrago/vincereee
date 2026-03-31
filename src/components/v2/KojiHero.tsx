@@ -7,33 +7,29 @@ const KojiHero = () => {
 
   useEffect(() => {
     const tl = gsap.timeline();
-    // Fade in the video first
-    tl.to(".koji-video", {
+    
+    // Sophisticated reveal of the navigation pill
+    tl.fromTo(".koji-pill", {
+      y: -20,
+      opacity: 0
+    }, {
+      y: 0,
       opacity: 1,
-      duration: 2.5,
-      ease: "power2.inOut"
+      duration: 1,
+      ease: "power4.out",
+      delay: 0.5
     })
-    // Then reveal the text lines
-    .fromTo(".koji-text-line", {
+    // Bold headline 'reveal-up' - pure typographic impact
+    .fromTo(".koji-headline-line", {
       y: 100,
       opacity: 0
     }, {
       y: 0,
       opacity: 1,
       duration: 1.2,
-      stagger: 0.15,
+      stagger: 0.1,
       ease: "power4.out"
-    }, "-=1.5")
-    // Finally reveal the subtitle/meta text
-    .fromTo(".koji-meta", {
-      opacity: 0,
-      y: 20
-    }, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: "power3.out"
-    }, "-=0.8");
+    }, "-=0.5");
   }, []);
 
   return (
@@ -41,67 +37,53 @@ const KojiHero = () => {
       ref={containerRef}
       className="relative w-full h-screen overflow-hidden bg-[#F8F9F5]"
     >
-      {/* 
-        Vídeo 3D Abstract/Chrome (Light Theme)
-        Substitua por um arquivo .mp4 local que represente aquele bloco de concreto/metal girando.
-      */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          className="koji-video w-full h-full object-cover scale-105"
-        >
-          {/* Usando o vídeo anterior como fallback para garantir que carregue algo para você ver a fluidez */}
-          <source src="https://download-video-ak.vimeocdn.com/v3-1/playback/9f8e32f7-a2bf-4b57-9a4b-0de21890145d/f65b5b00-3b53e910" type="video/mp4" />
-        </video>
-        {/* Grain Overlay para profundidade */}
-        <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
-        {/* Gradiente claro em baixo para garantir a leitura do texto */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F8F9F5]/90 via-[#F8F9F5]/30 to-transparent"></div>
+      {/* Texture Layer - Subtle grain for premium paper feel */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none bg-noise"></div>
+
+      {/* PILL NAVIGATION - Minimalist & Clean */}
+      <div className="absolute top-8 left-0 w-full flex justify-center z-[140] pointer-events-none">
+        <div className="koji-pill pointer-events-auto flex items-center gap-4 bg-black/[0.03] backdrop-blur-sm px-6 py-2.5 rounded-full border border-black/5">
+           <span className="text-[14px] font-bold tracking-tighter text-black lowercase">vincere</span>
+           <div className="h-3 w-[1px] bg-black/10" />
+           <div className="flex gap-6">
+             <button className="text-[10px] font-bold text-black/40 hover:text-black transition-colors uppercase tracking-[0.2em]">Projects</button>
+             <button className="text-[10px] font-bold text-black/40 hover:text-black transition-colors uppercase tracking-[0.2em]">About Us</button>
+             <button className="text-[10px] font-bold text-black/40 hover:text-black transition-colors uppercase tracking-[0.2em]">Contact</button>
+           </div>
+        </div>
       </div>
 
-      <div className="container relative z-10 w-full h-full mx-auto px-6 md:px-12 lg:px-16 flex flex-col justify-end pb-24">
-        
-        {/* Meta info superior (acima do titulo) -> no estilo tech brutalist */}
-        <div className="koji-meta mb-6 max-w-sm">
-          <p className="text-[#0e1711]/60 text-sm font-medium tracking-wide leading-relaxed">
-            Elevando marcas corporativas através de inteligência artificial profunda e design de alta performance.
-          </p>
-        </div>
-
-        {/* Headline Curto e Bold Alinhado à Esquerda */}
-        <div className="flex flex-col gap-2">
-          <div className="overflow-hidden">
-            <h1 className="koji-text-line text-5xl md:text-[7vw] lg:text-[8vw] font-sans font-black tracking-tighter text-[#0e1711] leading-[0.9] uppercase">
-              Software
-            </h1>
-          </div>
-          <div className="overflow-hidden">
-            <h1 className="koji-text-line text-5xl md:text-[7vw] lg:text-[8vw] font-sans font-black tracking-tighter text-[#0e1711] leading-[0.9] uppercase">
-              Driven By
-            </h1>
-          </div>
-          <div className="overflow-hidden flex items-baseline gap-4">
-             <h1 className="koji-text-line text-5xl md:text-[7vw] lg:text-[8vw] font-sans font-black tracking-tighter text-primary leading-[0.9] uppercase">
-               Intelligence.
+      {/* TYPOGRAPHIC HEADLINE - Center of the experience */}
+      <div className="container relative z-10 w-full h-full mx-auto px-6 md:px-12 lg:px-20 flex flex-col justify-center">
+        <div className="max-w-max space-y-0 text-center md:text-left">
+           <div className="overflow-hidden">
+             <h1 className="koji-headline-line text-6xl md:text-[8.5vw] font-sans font-black tracking-tighter text-black leading-[0.8] uppercase">
+                Software
              </h1>
-          </div>
+           </div>
+           <div className="overflow-hidden">
+             <h1 className="koji-headline-line text-6xl md:text-[8.5vw] font-sans font-black tracking-tighter text-black leading-[0.8] uppercase">
+                Driven By
+             </h1>
+           </div>
+           <div className="overflow-hidden flex flex-col md:flex-row items-center md:items-baseline gap-4 md:gap-8 justify-center md:justify-start">
+             <div className="hidden md:block w-4 h-4 md:w-8 md:h-8 bg-primary rounded-full koji-headline-line" />
+             <h1 className="koji-headline-line text-6xl md:text-[8.5vw] font-sans font-black tracking-tighter text-black leading-[0.8] uppercase">
+                Intelligence
+             </h1>
+           </div>
         </div>
-        
-        {/* Scroll indicator - canto inferior direito para balancear o layout */}
-        <div className="koji-meta absolute bottom-12 right-6 md:right-12 lg:right-16 flex items-center gap-4 hidden lg:flex">
-          <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#0e1711]/40">Scroll to explore</span>
-          <div className="w-16 h-[1px] bg-[#0e1711]/20 relative overflow-hidden">
-            <motion.div 
-              className="absolute inset-0 w-full h-full bg-[#0e1711]/60 origin-left"
-              animate={{ x: ["-100%", "100%"] }}
-              transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-            />
-          </div>
-        </div>
+      </div>
 
+      {/* Subtle Metadata for context */}
+      <div className="absolute bottom-12 left-12 flex flex-col gap-2 opacity-30 koji-headline-line">
+         <span className="text-[10px] font-black tracking-[0.3em] text-black">VINCERE STUDIO</span>
+         <span className="text-[10px] font-medium tracking-[0.3em] text-black">CRAFTING DIGITAL ELITES</span>
+      </div>
+
+      {/* Secondary Meta Info */}
+      <div className="absolute bottom-12 right-12 opacity-30 text-right koji-headline-line">
+         <span className="text-[10px] font-medium tracking-[0.3em] text-black italic">EST. 2024</span>
       </div>
     </section>
   );
