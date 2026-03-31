@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
@@ -47,34 +47,50 @@ const projects = [
 
 const ProjectGridHybrid = () => {
   return (
-    <section className="py-32 bg-white px-4 md:px-12 lg:px-24" id="portfolio">
+    <section className="py-24 bg-white px-4 md:px-12 lg:px-24" id="portfolio">
       <div className="container mx-auto">
         <div className="mb-16">
           <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-2 block">Portfólio Selecionado</span>
           <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-foreground">Trabalhos que <span className="text-primary italic">fazem história.</span></h2>
         </div>
 
-        {/* Top 3 Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          {projects.slice(0, 3).map((project) => (
-            <ProjectGridCard key={project.id} project={project} />
-          ))}
+        {/* Row 1: Merchant + Otio Home (2 column grid) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <ProjectGridCard project={projects[0]} />
+          <ProjectGridCard project={projects[1]} />
         </div>
 
-        {/* Bottom 2 Grid */}
+        {/* Row 2: PS Essentials (Full Width Large Card) */}
+        <div className="w-full mb-6">
+          <ProjectGridCard project={projects[2]} isExtraLarge />
+        </div>
+
+        {/* Row 3: IKKS + Radio France (2 column grid with parallax) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.slice(3, 5).map((project) => (
-            <ProjectGridCard key={project.id} project={project} isLarge />
-          ))}
+          <ProjectGridCard project={projects[3]} isScrollable index={0} />
+          <ProjectGridCard project={projects[4]} isScrollable index={1} />
         </div>
       </div>
     </section>
   );
 };
 
-const ProjectGridCard = ({ project, isLarge = false }: { project: any, isLarge?: boolean }) => {
+const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, index = 0 }: { project: any, isExtraLarge?: boolean, isScrollable?: boolean, index?: number }) => {
   const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Parallax effect for scrollable cards
+  const yTranslate = useTransform(
+    scrollYProgress, 
+    [0, 1], 
+    isScrollable ? (index === 0 ? [50, -50] : [100, -100]) : [0, 0]
+  );
 
   useEffect(() => {
     if (isHovered && videoRef.current) {
@@ -86,19 +102,23 @@ const ProjectGridCard = ({ project, isLarge = false }: { project: any, isLarge?:
 
   return (
     <motion.div
+      ref={cardRef}
+      style={{ y: yTranslate }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-700 bg-gray-100 ${isLarge ? "h-[400px] md:h-[600px]" : "h-[450px]"}`}
+      className={`group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-shadow duration-700 bg-gray-100 ${
+        isExtraLarge ? "h-[500px] md:h-[700px] w-full" : "h-[450px] md:h-[600px]"
+      }`}
     >
       {/* Background Media */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <motion.img 
           src={project.thumb} 
           alt={project.title}
-          animate={{ scale: isHovered ? 1.05 : 1, opacity: isHovered ? 0.4 : 1 }}
+          animate={{ scale: isHovered ? 1.1 : 1, opacity: isHovered ? 0.4 : 1 }}
           transition={{ duration: 0.8 }}
           className="w-full h-full object-cover"
         />
@@ -121,7 +141,7 @@ const ProjectGridCard = ({ project, isLarge = false }: { project: any, isLarge?:
           <span className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2 block text-white/60">
             {project.category}
           </span>
-          <h3 className="text-2xl md:text-4xl font-extrabold tracking-tighter text-white">
+          <h3 className="text-2xl md:text-5xl font-black tracking-tighter text-white">
             {project.title}
           </h3>
         </div>
@@ -133,9 +153,9 @@ const ProjectGridCard = ({ project, isLarge = false }: { project: any, isLarge?:
         </div>
       </div>
       
-      {/* Small Label for Desktop */}
-      <div className="absolute top-8 left-8 p-4 bg-white/90 backdrop-blur-md rounded-2xl border border-white/20 shadow-sm opacity-100 group-hover:opacity-0 transition-opacity duration-300">
-          <p className="text-[9px] font-black uppercase tracking-widest text-foreground">{project.title}</p>
+      {/* Name Label */}
+      <div className="absolute top-8 left-8 px-6 py-3 bg-white/90 backdrop-blur-md rounded-2xl border border-white/20 shadow-sm opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+          <p className="text-[10px] font-black uppercase tracking-widest text-foreground">{project.title}</p>
       </div>
     </motion.div>
   );

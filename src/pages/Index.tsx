@@ -87,7 +87,12 @@ const Index = () => {
               <MottoSection />
             </div>
 
-            {/* 5. BENTO TRÍADE (V3) */}
+            {/* 5. GALERIA DE PROJETOS (V3 HYBRID - NEW POSITION) */}
+            <div id="cases">
+              <ProjectGridHybrid />
+            </div>
+
+            {/* 6. BENTO TRÍADE (V3) */}
             <BentoServices />
 
             {/* 6. SAAS DASHBOARD (V3) */}
@@ -101,11 +106,6 @@ const Index = () => {
             {/* 8. REVIEWS (RESTAURADO V2) */}
             <div id="reviews">
               <SuccessLogic />
-            </div>
-
-            {/* 9. FOTOS 3+2 (V3 HYBRID) */}
-            <div id="cases">
-              <ProjectGridHybrid />
             </div>
 
             {/* 10. WAYS TO WORK (RESTAURADO V2) */}
