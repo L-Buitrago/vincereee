@@ -42,17 +42,18 @@ const GreekHero = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, ease: [0.83, 0, 0.17, 1], delay: 0.5 }}
-            className="text-[18vw] font-bold tracking-[-0.05em] leading-none uppercase flex items-center justify-center w-full mix-blend-difference"
+            className="text-[10vw] font-bold tracking-[-0.05em] leading-tight uppercase flex items-center justify-center w-full mix-blend-difference"
             style={{ fontFamily: "'Aeonik Pro Bold', 'Plus Jakarta Sans', sans-serif" }}
           >
+            Tecnologia que <br /> acelera resultados.
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2 }}
-            className="text-[0.8vw] font-bold uppercase tracking-[0.8em] text-foreground/40 mt-[-2vw]"
+            className="text-[1.2vw] font-medium uppercase tracking-[0.4em] text-foreground/60 mt-4 max-w-[60%] mx-auto"
           >
-            Digital Legacy & High-Tech Ethics
+            Desenvolvemos softwares inteligentes com IA para empresas que querem crescer com eficiência.
           </motion.p>
         </div>
       </div>
