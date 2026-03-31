@@ -65,8 +65,8 @@ const ProjectGridHybrid = () => {
           <ProjectGridCard project={projects[2]} isExtraLarge />
         </div>
 
-        {/* Row 3: IKKS + Radio France (2 column grid with parallax) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Row 3: IKKS + Radio France (Vertical stack with parallax) */}
+        <div className="flex flex-col gap-12 md:gap-24">
           <ProjectGridCard project={projects[3]} isScrollable index={0} />
           <ProjectGridCard project={projects[4]} isScrollable index={1} />
         </div>
@@ -85,11 +85,11 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
     offset: ["start end", "end start"]
   });
 
-  // Parallax effect for scrollable cards
+  // Enhanced Parallax effect for scrollable cards
   const yTranslate = useTransform(
     scrollYProgress, 
     [0, 1], 
-    isScrollable ? (index === 0 ? [50, -50] : [100, -100]) : [0, 0]
+    isScrollable ? (index === 0 ? [100, -100] : [150, -150]) : [0, 0]
   );
 
   useEffect(() => {
