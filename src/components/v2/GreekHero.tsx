@@ -42,16 +42,20 @@ const GreekHero = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, ease: [0.83, 0, 0.17, 1], delay: 0.5 }}
-            className="text-[10vw] font-bold tracking-[-0.05em] leading-tight uppercase flex items-center justify-center w-full mix-blend-difference"
+            className="text-[10vw] font-bold tracking-[-0.05em] leading-tight uppercase flex flex-col items-center justify-center w-full mix-blend-difference"
             style={{ fontFamily: "'Aeonik Pro Bold', 'Plus Jakarta Sans', sans-serif" }}
           >
-            Tecnologia que <br /> acelera resultados.
+            <span className="block">Tecnologia que</span>
+            <span className="flex items-center gap-[0.2em]">
+              <span>acelera</span>
+              <AnimatedWord word="resultados." />
+            </span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2 }}
-            className="text-[1.2vw] font-medium uppercase tracking-[0.4em] text-foreground/60 mt-4 max-w-[60%] mx-auto"
+            className="text-[1.2vw] font-medium uppercase tracking-[0.4em] text-foreground/60 mt-8 max-w-[60%] mx-auto"
           >
             Desenvolvemos softwares inteligentes com IA para empresas que querem crescer com eficiência.
           </motion.p>
@@ -66,6 +70,55 @@ const GreekHero = () => {
         <span className="text-[25vw] font-black text-foreground uppercase opacity-20">Society</span>
       </motion.div>
     </section>
+  );
+};
+
+const AnimatedWord = ({ word }: { word: string }) => {
+  return (
+    <motion.span
+      initial="initial"
+      whileHover="hovered"
+      className="relative block overflow-hidden whitespace-nowrap cursor-default"
+    >
+      <div className="flex">
+        {word.split("").map((l, i) => (
+          <motion.span
+            key={i}
+            variants={{
+              initial: { y: 0 },
+              hovered: { y: "-100%" },
+            }}
+            transition={{
+              duration: 0.4,
+              ease: [0.83, 0, 0.17, 1],
+              delay: i * 0.03,
+            }}
+            className="inline-block"
+          >
+            {l}
+          </motion.span>
+        ))}
+      </div>
+      <div className="absolute inset-0 flex">
+        {word.split("").map((l, i) => (
+          <motion.span
+            key={i}
+            variants={{
+              initial: { y: "100%" },
+              hovered: { y: 0 },
+            }}
+            transition={{
+              duration: 0.4,
+              ease: [0.83, 0, 0.17, 1],
+              delay: i * 0.03,
+            }}
+            className="inline-block text-primary"
+          >
+            {l}
+          </motion.span>
+        ))}
+      </div>
+    </motion.span>
   );
 };
 
