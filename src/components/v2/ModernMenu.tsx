@@ -106,6 +106,9 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
                               {link.label}
                               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
                             </span>
+                            <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-2 transition-all duration-300 text-sm">
+                               →
+                            </span>
                           </a>
                         </motion.li>
                       ))}
