@@ -39,12 +39,11 @@ const KojiHero = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden bg-[#0A0A0A]"
+      className="relative w-full h-screen overflow-hidden bg-[#F8F9F5]"
     >
       {/* 
-        Vídeo 3D Abstract/Chrome 
-        Usando um placeholder de alta qualidade (ondas abstratas) que dá o efeito 'manteiga'.
-        Substitua por um arquivo .mp4 local caso tenha a animação exata pronta.
+        Vídeo 3D Abstract/Chrome (Light Theme)
+        Substitua por um arquivo .mp4 local que represente aquele bloco de concreto/metal girando.
       */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <video 
@@ -54,20 +53,20 @@ const KojiHero = () => {
           playsInline 
           className="koji-video w-full h-full object-cover opacity-0 scale-105"
         >
-          {/* A high quality abstract fluid/chrome video */}
+          {/* A high quality abstract fluid/chrome video (light version ideal) */}
           <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-flowing-chrome-fluid-238-large.mp4" type="video/mp4" />
         </video>
         {/* Grain Overlay para profundidade */}
         <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
-        {/* Gradiente escuro em baixo para garantir a leitura do texto */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+        {/* Gradiente claro em baixo para garantir a leitura do texto */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#F8F9F5]/90 via-[#F8F9F5]/30 to-transparent"></div>
       </div>
 
       <div className="container relative z-10 w-full h-full mx-auto px-6 md:px-12 lg:px-16 flex flex-col justify-end pb-24">
         
         {/* Meta info superior (acima do titulo) -> no estilo tech brutalist */}
         <div className="koji-meta mb-6 max-w-sm">
-          <p className="text-white/60 text-sm font-medium tracking-wide leading-relaxed">
+          <p className="text-[#0e1711]/60 text-sm font-medium tracking-wide leading-relaxed">
             Elevando marcas corporativas através de inteligência artificial profunda e design de alta performance.
           </p>
         </div>
@@ -75,12 +74,12 @@ const KojiHero = () => {
         {/* Headline Curto e Bold Alinhado à Esquerda */}
         <div className="flex flex-col gap-2">
           <div className="overflow-hidden">
-            <h1 className="koji-text-line text-5xl md:text-[7vw] lg:text-[8vw] font-sans font-black tracking-tighter text-white leading-[0.9] uppercase">
+            <h1 className="koji-text-line text-5xl md:text-[7vw] lg:text-[8vw] font-sans font-black tracking-tighter text-[#0e1711] leading-[0.9] uppercase">
               Software
             </h1>
           </div>
           <div className="overflow-hidden">
-            <h1 className="koji-text-line text-5xl md:text-[7vw] lg:text-[8vw] font-sans font-black tracking-tighter text-white leading-[0.9] uppercase">
+            <h1 className="koji-text-line text-5xl md:text-[7vw] lg:text-[8vw] font-sans font-black tracking-tighter text-[#0e1711] leading-[0.9] uppercase">
               Driven By
             </h1>
           </div>
@@ -93,10 +92,10 @@ const KojiHero = () => {
         
         {/* Scroll indicator - canto inferior direito para balancear o layout */}
         <div className="koji-meta absolute bottom-12 right-6 md:right-12 lg:right-16 flex items-center gap-4 hidden lg:flex">
-          <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/40">Scroll to explore</span>
-          <div className="w-16 h-[1px] bg-white/20 relative overflow-hidden">
+          <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#0e1711]/40">Scroll to explore</span>
+          <div className="w-16 h-[1px] bg-[#0e1711]/20 relative overflow-hidden">
             <motion.div 
-              className="absolute inset-0 w-full h-full bg-white/60 origin-left"
+              className="absolute inset-0 w-full h-full bg-[#0e1711]/60 origin-left"
               animate={{ x: ["-100%", "100%"] }}
               transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
             />
