@@ -9,6 +9,7 @@ import SubscriptionGuard from "@/components/SubscriptionGuard";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SmoothScroller } from "@/components/SmoothScroller";
 import Index from "./pages/Index";
+import About from "./pages/About";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
@@ -44,6 +45,7 @@ const App = () => (
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
                 <Route path="/privacidade" element={<Privacy />} />
                 <Route path="/termos" element={<Terms />} />
                 <Route path="/devolucoes" element={<Returns />} />

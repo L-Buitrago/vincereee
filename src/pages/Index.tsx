@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ModernMenu from "@/components/v2/ModernMenu";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
@@ -23,6 +24,7 @@ import { SmoothScroll } from "@/components/v2/SmoothScroll";
 import PageTransition from "@/components/v2/PageTransition";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const splashType: SplashType = "minimal";
 
@@ -47,6 +49,13 @@ const Index = () => {
     }, 800);
   };
 
+  const handlePageNavigate = (href: string) => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      navigate(href);
+    }, 800);
+  };
+
   return (
     <div className="min-h-screen relative bg-background selection:bg-primary/30 text-foreground overflow-x-hidden">
       <div className="noise-overlay" />
@@ -62,7 +71,7 @@ const Index = () => {
       
       <div className={`transition-opacity duration-1000 ${showSplash ? "opacity-0" : "opacity-100"}`}>
         <SmoothScroll>
-          <ModernMenu onNavigate={handleNavigate} />
+          <ModernMenu onNavigate={handleNavigate} onPageNavigate={handlePageNavigate} />
           
           <main className="relative">
             {/* 1. HERO (V3) */}

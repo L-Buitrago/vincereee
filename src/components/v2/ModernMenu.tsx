@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Menu as MenuIcon, ArrowUpRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import ShuffleText from "./ShuffleText";
 
 interface ModernMenuProps {
   onNavigate?: (id: string) => void;
+  onPageNavigate?: (href: string) => void;
 }
 
-const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
+const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isButtonHovered, setIsButtonHovered] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -20,22 +23,33 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
   }, []);
 
   const menuLinks = [
-    { label: "Home", href: "#home" },
-    { label: "Work", href: "#cases" },
-    { label: "Services", href: "#servicos" },
-    { label: "About", href: "#about" },
+    { label: "Home", href: "/" },
+    { label: "Work", href: "/#cases" },
+    { label: "Services", href: "/#servicos" },
+    { label: "About", href: "/about" },
     { label: "Platform", href: "/plataforma/dashboard" },
   ];
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith("#")) {
+    if (href.startsWith("/#") || (href === "/" && window.location.pathname === "/")) {
+      // Local or hashtag navigation
+      const id = href === "/" ? "#home" : href.replace("/", "");
       e.preventDefault();
       setIsOpen(false);
       if (onNavigate) {
-        onNavigate(href);
+        onNavigate(id);
       } else {
-        const element = document.querySelector(href);
+        const element = document.querySelector(id);
         element?.scrollIntoView({ behavior: "smooth" });
+      }
+    } else if (!href.startsWith("http")) {
+      // Route navigation (e.g. /about or /)
+      e.preventDefault();
+      setIsOpen(false);
+      if (onPageNavigate) {
+        onPageNavigate(href);
+      } else {
+        navigate(href);
       }
     }
   };
