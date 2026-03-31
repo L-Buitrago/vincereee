@@ -37,28 +37,57 @@ const GreekHero = () => {
         </motion.div>
 
         {/* Central Logo Overlay */}
-        <div className="relative z-30 flex flex-col items-center justify-center text-center w-full px-4">
+        <div className="relative z-30 flex flex-col items-center justify-center text-center w-full px-4 max-w-6xl">
+          {/* Top Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mb-8 px-6 py-2 border border-foreground/10 rounded-full bg-background/50 backdrop-blur-sm"
+          >
+            <span className="text-[0.7vw] font-bold tracking-[0.3em] uppercase text-foreground/50">
+              SOLUÇÕES EM SOFTWARE & INTELIGÊNCIA ARTIFICIAL
+            </span>
+          </motion.div>
+
+          {/* Main Title */}
           <motion.h1 
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, ease: [0.83, 0, 0.17, 1], delay: 0.5 }}
-            className="text-[10vw] font-bold tracking-[-0.05em] leading-tight uppercase flex flex-col items-center justify-center w-full mix-blend-difference"
+            className="text-[5.5vw] font-bold tracking-[-0.03em] leading-[1.1] uppercase flex flex-col items-center justify-center w-full mix-blend-difference"
             style={{ fontFamily: "'Aeonik Pro Bold', 'Plus Jakarta Sans', sans-serif" }}
           >
-            <span className="block">Tecnologia que</span>
-            <span className="flex items-center gap-[0.2em]">
-              <span>acelera</span>
-              <AnimatedWord word="resultados." />
-            </span>
+            <span className="block">Tecnologia que acelera</span>
+            <AnimatedWord word="resultados." />
           </motion.h1>
+
+          {/* Subtitle */}
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2 }}
-            className="text-[1.2vw] font-medium uppercase tracking-[0.4em] text-foreground/60 mt-8 max-w-[60%] mx-auto"
+            className="text-[1.1vw] font-medium tracking-tight text-foreground/60 mt-8 max-w-[45vw] mx-auto leading-relaxed"
           >
-            Desenvolvemos softwares inteligentes com IA para empresas que querem crescer com eficiência.
+            Desenvolvemos softwares inteligentes e automações com IA para <br className="hidden md:block" />
+            empresas que querem crescer com eficiência.
           </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.5 }}
+            className="flex items-center gap-4 mt-12"
+          >
+            <button className="px-8 py-4 bg-foreground text-background font-bold text-[0.9vw] rounded-lg hover:bg-foreground/90 transition-all flex items-center gap-2 group">
+              Solicitar Orçamento
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </button>
+            <button className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 transition-all font-bold text-[0.9vw] rounded-lg">
+              Conhecer Soluções
+            </button>
+          </motion.div>
         </div>
       </div>
       
