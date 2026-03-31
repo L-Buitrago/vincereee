@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
@@ -10,6 +10,7 @@ const projects = [
     thumb: "https://vendredi-society.com/wp-content/uploads/2026/03/ps-day-thumbnail.webp",
     video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
     color: "#dfe6e5",
+    mockup: "/images/merchant_mockup.png"
   },
   {
     id: "02",
@@ -18,6 +19,7 @@ const projects = [
     thumb: "https://vendredi-society.com/wp-content/uploads/2023/12/otio_small.webp",
     video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
     color: "#f2f2f2",
+    mockup: "/images/otio_mockup.png"
   },
   {
     id: "03",
@@ -26,6 +28,7 @@ const projects = [
     thumb: "https://vendredi-society.com/wp-content/uploads/2023/12/PS_Essentials_Vertical_Small.webp",
     video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
     color: "#f8f8f8",
+    mockup: "/images/ps_mockup.png"
   },
   {
     id: "04",
@@ -139,8 +142,53 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
         </div>
       </div>
 
+      {/* Floating Mockups on Hover */}
+      <div className="absolute inset-0 pointer-events-none z-10 hidden md:block">
+        <AnimatePresence>
+          {isHovered && project.mockup && (
+            <>
+              {/* Primary Mockup (Center-Right) */}
+              <motion.div
+                initial={{ opacity: 0, x: 100, y: 50, scale: 0.8, rotate: 10 }}
+                animate={{ 
+                  opacity: 1, 
+                  x: 0, 
+                  y: 0, 
+                  scale: 1, 
+                  rotate: -5,
+                  transition: { type: "spring", damping: 20, stiffness: 100, delay: 0.1 }
+                }}
+                exit={{ opacity: 0, x: 100, scale: 0.8 }}
+                className="absolute top-1/4 right-[10%] w-3/4 aspect-video rounded-xl shadow-2xl overflow-hidden border border-white/20 bg-white"
+              >
+                <img src={project.mockup} alt="Mockup" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent" />
+              </motion.div>
+
+              {/* Secondary Mockup (Bottom-Left) */}
+              <motion.div
+                initial={{ opacity: 0, x: -100, y: 100, scale: 0.5, rotate: -20 }}
+                animate={{ 
+                  opacity: 1, 
+                  x: 0, 
+                  y: 0, 
+                  scale: 0.7, 
+                  rotate: 5,
+                  transition: { type: "spring", damping: 15, stiffness: 80, delay: 0.3 }
+                }}
+                exit={{ opacity: 0, y: 100, scale: 0.5 }}
+                className="absolute bottom-1/4 left-[5%] w-1/2 aspect-video rounded-xl shadow-2xl overflow-hidden border border-white/20 bg-white"
+              >
+                <img src={project.mockup} alt="Mockup 2" className="w-full h-full object-cover grayscale" />
+                <div className="absolute inset-0 bg-primary/10" />
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
+
       {/* Overlay Info */}
-      <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+      <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2 block text-white/60">
             {project.category}
@@ -158,7 +206,7 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
       </div>
       
       {/* Name Label */}
-      <div className="absolute top-8 left-8 px-6 py-3 bg-white/90 backdrop-blur-md rounded-2xl border border-white/20 shadow-sm opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+      <div className="absolute top-8 left-8 px-6 py-3 bg-white/90 backdrop-blur-md rounded-2xl border border-white/20 shadow-sm opacity-100 group-hover:opacity-0 transition-opacity duration-300 z-20">
           <p className="text-[10px] font-black uppercase tracking-widest text-foreground">{project.title}</p>
       </div>
     </motion.div>
