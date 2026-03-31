@@ -82,48 +82,45 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
             <AnimatePresence mode="wait">
               {isOpen && (
                 <motion.div
-                  initial={{ opacity: 0, y: -20, scale: 0.98 }}
+                  initial={{ opacity: 0, y: -15, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20, scale: 0.98 }}
-                  transition={{ duration: 0.5, ease: [0.77, 0, 0.18, 1] }}
-                  className="absolute top-[calc(100%+0.75rem)] left-0 w-72 md:w-80 bg-black/60 backdrop-blur-3xl rounded-[32px] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)] z-[130] text-white border border-white/10"
+                  exit={{ opacity: 0, y: -15, scale: 0.98 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute top-[calc(100%+0.5rem)] right-0 w-60 bg-black/70 backdrop-blur-3xl rounded-[24px] overflow-hidden shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] z-[130] text-white border border-white/10"
                 >
-                  <nav className="p-8">
-                    <ul className="space-y-3 mb-8">
+                  <nav className="p-6">
+                    <ul className="space-y-1 mb-8">
                       {menuLinks.map((link, i) => (
                         <motion.li 
                           key={link.label}
-                          initial={{ y: 10, opacity: 0 }}
+                          initial={{ y: 12, opacity: 0 }}
                           animate={{ y: 0, opacity: 1 }}
-                          transition={{ delay: i * 0.04 + 0.1, duration: 0.5, ease: "easeOut" }}
+                          transition={{ delay: i * 0.03 + 0.1, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                         >
                           <a 
                             href={link.href} 
                             onClick={(e) => handleLinkClick(e, link.href)}
-                            className="text-2xl font-medium tracking-tighter hover:opacity-100 opacity-60 transition-all flex items-center justify-between group py-1"
+                            className="text-lg font-medium tracking-tight hover:opacity-100 opacity-60 transition-all flex items-center justify-between group py-1.5"
                           >
                             <span className="relative inline-block">
                               {link.label}
                               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
-                            </span>
-                            <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-2 transition-all duration-300 text-lg">
-                               →
                             </span>
                           </a>
                         </motion.li>
                       ))}
                     </ul>
 
-                    <div className="pt-6 border-t border-white/5 flex flex-col gap-6">
+                    <div className="pt-5 border-t border-white/5 flex flex-col gap-5">
                       <div className="flex gap-4">
-                         <a href="#" className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           Instagram <span className="text-[8px] opacity-40 group-hover:opacity-100">↗</span>
+                         <a href="#" className="text-[8px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                           IG <span className="text-[7px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
-                         <a href="#" className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           LinkedIn <span className="text-[9px] opacity-40 group-hover:opacity-100">↗</span>
+                         <a href="#" className="text-[8px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                           IN <span className="text-[7px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
-                         <a href="#" className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
-                           X <span className="text-[8px] opacity-40 group-hover:opacity-100">↗</span>
+                         <a href="#" className="text-[8px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
+                           X <span className="text-[7px] opacity-40 group-hover:opacity-100">↗</span>
                          </a>
                       </div>
 
@@ -133,7 +130,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate }) => {
                            const footer = document.getElementById('contact');
                            footer?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="w-full py-4 bg-[#60A5FA] text-secondary rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-xl"
+                        className="w-full py-3.5 bg-[#60A5FA] text-secondary rounded-xl font-bold text-[9px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-xl"
                       >
                         Contact us
                       </button>
