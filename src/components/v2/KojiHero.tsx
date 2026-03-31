@@ -51,10 +51,10 @@ const KojiHero = () => {
           muted 
           loop 
           playsInline 
-          className="koji-video w-full h-full object-cover opacity-0 scale-105"
+          className="koji-video w-full h-full object-cover scale-105"
         >
-          {/* A high quality abstract fluid/chrome video (light version ideal) */}
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-flowing-chrome-fluid-238-large.mp4" type="video/mp4" />
+          {/* Usando o vídeo anterior como fallback para garantir que carregue algo para você ver a fluidez */}
+          <source src="https://download-video-ak.vimeocdn.com/v3-1/playback/9f8e32f7-a2bf-4b57-9a4b-0de21890145d/f65b5b00-3b53e910" type="video/mp4" />
         </video>
         {/* Grain Overlay para profundidade */}
         <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
