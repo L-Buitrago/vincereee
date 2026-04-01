@@ -200,10 +200,10 @@ const BentoServices = () => {
             </div>
 
             {/* Phone Mockup with WhatsApp Chat */}
-            <div className="absolute bottom-[-10px] md:bottom-2 left-4 md:left-12 z-20 -rotate-3 group-hover:rotate-0 transition-transform duration-700 scale-[1.05] md:scale-[1.12] origin-bottom-left">
+            <div className="absolute bottom-[-10px] md:bottom-2 left-4 md:left-12 z-20 -rotate-3 group-hover:rotate-0 transition-transform duration-700 scale-[1.2] md:scale-[1.45] origin-bottom-left">
               <WhatsAppMockup isActive={chatActive} />
               {/* Shadow/glow underneath */}
-              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-full h-12 bg-green-500/20 rounded-full blur-2xl" />
+              <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-12 bg-green-500/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             </div>
           </div>
 
