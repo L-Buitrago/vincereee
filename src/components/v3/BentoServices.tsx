@@ -179,29 +179,31 @@ const BentoServices = () => {
           className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
         >
           {/* Card 1: WhatsApp Recovery (Large Left) */}
-          <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[480px]">
+          <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[580px]">
             {/* Background Blob */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
+            <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
             
             <div className="relative z-10 flex justify-between items-start">
-              <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
-                <MessageCircle className="w-7 h-7 text-green-600" />
+              <div className="ml-auto flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
+                  <MessageCircle className="w-7 h-7 text-green-600" />
+                </div>
+                <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
               </div>
-              <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
             </div>
 
-            <div className="relative z-10 mt-auto pt-32">
-              <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight">Recuperação de Inadimplência via WhatsApp</h3>
-              <p className="text-muted-foreground text-lg max-w-md font-medium leading-relaxed">
-                Transforme carrinhos abandonados e mensalidades atrasadas em dinheiro limpo na sua conta. Disparos inteligentes com alta taxa de conversão.
+            <div className="relative z-10 mt-auto pt-24 md:ml-auto md:text-right md:max-w-[55%] flex flex-col items-end">
+              <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight">Recuperação via WhatsApp</h3>
+              <p className="text-muted-foreground text-lg md:ml-auto font-medium leading-relaxed">
+                Transforme carrinhos abandonados e mensalidades atrasadas em dinheiro limpo. Disparos com alta taxa de conversão.
               </p>
             </div>
 
             {/* Phone Mockup with WhatsApp Chat */}
-            <div className="absolute top-6 right-4 md:right-10 z-20 rotate-3 group-hover:rotate-1 transition-transform duration-700">
+            <div className="absolute bottom-[-10px] md:bottom-2 left-4 md:left-12 z-20 -rotate-3 group-hover:rotate-0 transition-transform duration-700 scale-[1.05] md:scale-[1.12] origin-bottom-left">
               <WhatsAppMockup isActive={chatActive} />
               {/* Shadow/glow underneath */}
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-green-500/10 rounded-full blur-xl" />
+              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-full h-12 bg-green-500/20 rounded-full blur-2xl" />
             </div>
           </div>
 

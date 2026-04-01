@@ -173,13 +173,13 @@ const SaasDashboardReveal = () => {
                     )}
                   </div>
                   <div className="p-4 rounded-2xl bg-destructive/5 border border-destructive/10 space-y-2">
-                    <span className="text-[10px] uppercase font-bold text-destructive tracking-wider">Inadimplentes</span>
+                    <span className="text-[10px] uppercase font-bold text-destructive tracking-wider">Taxa de Churn</span>
                     {isLoaded ? (
                       <>
-                        <div className="text-2xl font-black text-foreground">{inadimplentes}</div>
+                        <div className="text-2xl font-black text-foreground">{inadimplentes}%</div>
                         <div className="text-[10px] text-destructive font-bold flex items-center gap-1">
                           <AlertCircle className="w-3 h-3" />
-                          Ação necessária
+                          Atenção necessária
                         </div>
                       </>
                     ) : (
@@ -191,26 +191,69 @@ const SaasDashboardReveal = () => {
                   </div>
                 </div>
 
-                {/* Mini Chart */}
+                {/* Mini Line Chart */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-bold text-xs text-muted-foreground uppercase tracking-wider">Receita Semanal</h4>
+                    <h4 className="font-bold text-xs text-muted-foreground uppercase tracking-wider">Evolução de Receita</h4>
                     <Wifi className="w-3.5 h-3.5 text-primary live-indicator" />
                   </div>
-                  <div className="flex items-end gap-1.5 h-16">
-                    {barHeights.map((h, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ height: 0 }}
-                        animate={isLoaded ? { height: `${h}%` } : { height: 0 }}
-                        transition={{ 
-                          duration: 0.8, 
-                          delay: isLoaded ? 0.3 + i * 0.08 : 0,
-                          ease: [0.16, 1, 0.3, 1] 
-                        }}
-                        className={`flex-1 rounded-t-md ${i === barHeights.length - 1 ? "bg-primary" : "bg-primary/20"}`}
+                  <div className="relative h-20">
+                    <svg viewBox="0 0 280 70" className="w-full h-full" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="hsl(217 91% 60%)" stopOpacity="0.4" />
+                          <stop offset="100%" stopColor="hsl(217 91% 60%)" stopOpacity="0" />
+                        </linearGradient>
+                        <clipPath id="sweepClip">
+                          <motion.rect 
+                            x="0" y="0" width="280" height="70"
+                            initial={{ width: 0 }}
+                            animate={isLoaded ? { width: 280 } : {}}
+                            transition={{ duration: 1.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                          />
+                        </clipPath>
+                      </defs>
+                      
+                      {/* Grid lines inside SVG */}
+                      <g stroke="rgba(0,0,0,0.04)" strokeWidth="1">
+                        <line x1="0" y1="10" x2="280" y2="10" />
+                        <line x1="0" y1="35" x2="280" y2="35" />
+                        <line x1="0" y1="60" x2="280" y2="60" />
+                      </g>
+
+                      {/* Filled area with sweep clip-path */}
+                      <path
+                        d="M 0,60 C 20,60 15,52 35,52 C 55,52 50,55 70,55 C 90,55 85,40 105,40 C 125,40 120,35 140,35 C 160,35 155,28 175,28 C 195,28 190,18 210,18 C 230,18 225,22 245,22 C 265,22 260,8 280,8 L 280,70 L 0,70 Z"
+                        fill="url(#chartGrad)"
+                        clipPath="url(#sweepClip)"
                       />
-                    ))}
+                      {/* Smooth Line */}
+                      <motion.path
+                        d="M 0,60 C 20,60 15,52 35,52 C 55,52 50,55 70,55 C 90,55 85,40 105,40 C 125,40 120,35 140,35 C 160,35 155,28 175,28 C 195,28 190,18 210,18 C 230,18 225,22 245,22 C 265,22 260,8 280,8"
+                        fill="none"
+                        stroke="hsl(217 91% 60%)"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        initial={{ pathLength: 0 }}
+                        animate={isLoaded ? { pathLength: 1 } : {}}
+                        transition={{ duration: 1.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                      />
+                      {/* End dot */}
+                      <motion.circle
+                        cx="280" cy="8" r="4"
+                        fill="hsl(217 91% 60%)"
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={isLoaded ? { opacity: 1, scale: 1 } : {}}
+                        transition={{ delay: 1.9, type: "spring", stiffness: 400, damping: 10 }}
+                      />
+                      <motion.circle
+                        cx="280" cy="8" r="10"
+                        fill="hsl(217 91% 60% / 0.25)"
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={isLoaded ? { opacity: 1, scale: 1 } : {}}
+                        transition={{ delay: 1.9, type: "spring", stiffness: 200, damping: 20 }}
+                      />
+                    </svg>
                   </div>
                 </div>
 
