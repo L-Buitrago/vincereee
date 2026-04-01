@@ -79,12 +79,9 @@ const Index = () => {
               <HeroImmersive />
             </div>
 
-            {/* 2. INTRO (RESTAURADO V2) */}
-            <IntroText />
-            
-            {/* 4. MOTTO (RESTAURADO V2) */}
+            {/* 2. INTRO + MOTTO COMBINED */}
             <div id="about">
-              <MottoSection />
+              <IntroText />
             </div>
 
             {/* 5. GALERIA DE PROJETOS (V3 HYBRID - NEW POSITION) */}
