@@ -198,48 +198,95 @@ const SaasDashboardReveal = () => {
                   </div>
                 </div>
 
-                {/* Main Evolution Chart */}
-                <div className="space-y-4">
+                {/* Churn Evolution Chart */}
+                <div className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-bold text-xs text-muted-foreground uppercase tracking-wider">Evolução de Receita</h4>
+                    <h4 className="font-bold text-xs text-muted-foreground uppercase tracking-wider">Histórico de Retenção (Churn)</h4>
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-1">
                         <div className="w-2 h-2 rounded-full bg-primary" />
-                        <span className="text-[9px] font-bold text-muted-foreground uppercase">Real</span>
+                        <span className="text-[9px] font-bold text-muted-foreground uppercase">Sua Empresa</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <div className="w-2 h-2 rounded-full bg-primary/20" />
-                        <span className="text-[9px] font-bold text-muted-foreground uppercase">Meta</span>
+                        <span className="text-[9px] font-bold text-muted-foreground uppercase">Média do Mercado</span>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="relative h-24">
+                  <div className="relative h-32 w-full pt-4">
+                    {/* Y-Axis Labels */}
+                    <div className="absolute left-[-20px] top-4 bottom-8 flex flex-col justify-between text-[8px] font-bold text-muted-foreground/40">
+                      <span>5.0%</span>
+                      <span>2.5%</span>
+                      <span>0%</span>
+                    </div>
+
                     <svg viewBox="0 0 280 70" className="w-full h-full overflow-visible" preserveAspectRatio="none">
                       <defs>
                         <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="hsl(217 91% 60%)" stopOpacity="0.4" />
+                          <stop offset="0%" stopColor="hsl(217 91% 60%)" stopOpacity="0.2" />
                           <stop offset="100%" stopColor="hsl(217 91% 60%)" stopOpacity="0" />
                         </linearGradient>
                       </defs>
+
+                      {/* Grid Lines */}
+                      <line x1="0" y1="0" x2="280" y2="0" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
+                      <line x1="0" y1="35" x2="280" y2="35" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
+                      <line x1="0" y1="70" x2="280" y2="70" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
+
+                      {/* Market Average (Static dashed line) */}
                       <motion.path
-                        d="M 0,60 C 20,60 15,52 35,52 C 55,52 50,55 70,55 C 90,55 85,40 105,40 C 125,40 120,35 140,35 C 160,35 155,28 175,28 C 195,28 190,18 210,18 C 230,18 225,22 245,22 C 265,22 260,8 280,8"
+                        d="M 0,30 L 280,30"
+                        fill="none"
+                        stroke="currentColor"
+                        className="text-gray-200"
+                        strokeWidth="1.5"
+                        strokeDasharray="4 4"
+                      />
+
+                      {/* Your Company Path (Reduction trend) */}
+                      <motion.path
+                        d="M 0,10 C 40,15 80,45 120,40 C 160,35 200,55 240,58 C 260,60 280,62 280,62"
                         fill="none"
                         stroke="hsl(217 91% 60%)"
                         strokeWidth="3.5"
                         strokeLinecap="round"
                         initial={{ pathLength: 0 }}
                         animate={isLoaded ? { pathLength: 1 } : {}}
-                        transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 2.5, ease: [0.16, 1, 0.3, 1] }}
                       />
                       <motion.path
-                        d="M 0,60 C 20,60 15,52 35,52 C 55,52 50,55 70,55 C 90,55 85,40 105,40 C 125,40 120,35 140,35 C 160,35 155,28 175,28 C 195,28 190,18 210,18 C 230,18 225,22 245,22 C 265,22 260,8 280,8 L 280,70 L 0,70 Z"
+                        d="M 0,10 C 40,15 80,45 120,40 C 160,35 200,55 240,58 C 260,60 280,62 280,62 L 280,70 L 0,70 Z"
                         fill="url(#chartGrad)"
                         initial={{ opacity: 0 }}
                         animate={isLoaded ? { opacity: 1 } : {}}
-                        transition={{ duration: 1, delay: 1 }}
+                        transition={{ duration: 1, delay: 1.5 }}
                       />
+
+                      {/* Data Points Tooltip (Visual only) */}
+                      {isLoaded && (
+                        <motion.g
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 3, duration: 0.5 }}
+                        >
+                          <circle cx="120" cy="40" r="3" fill="hsl(217 91% 60%)" />
+                          <rect x="110" y="20" width="20" height="12" rx="4" fill="black" />
+                          <text x="120" y="29" textAnchor="middle" fontSize="6" fill="white" fontWeight="bold">3.2%</text>
+                        </motion.g>
+                      )}
                     </svg>
+
+                    {/* X-Axis Labels */}
+                    <div className="flex justify-between mt-4 px-2 text-[8px] font-bold text-muted-foreground/60 uppercase tracking-widest">
+                      <span>Jan</span>
+                      <span>Fev</span>
+                      <span>Mar</span>
+                      <span>Abr</span>
+                      <span>Mai</span>
+                      <span>Jun</span>
+                    </div>
                   </div>
                 </div>
 
