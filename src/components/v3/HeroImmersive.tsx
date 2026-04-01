@@ -97,17 +97,7 @@ const HeroImmersive = () => {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col sm:flex-row items-center gap-4 mt-12 w-full justify-center"
           >
-            <button className="group relative w-full sm:w-auto px-8 py-4 bg-foreground text-background rounded-full overflow-hidden hover:scale-105 transition-all duration-300 ease-out shadow-[0_0_40px_rgba(15,23,42,0.15)] hover:shadow-[0_0_60px_rgba(15,23,42,0.25)]">
-              <div className="absolute inset-0 w-full h-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out mix-blend-overlay"></div>
-              <span className="relative flex items-center gap-2 font-semibold text-base tracking-wide">
-                Agendar Reunião
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-            </button>
-            <button className="group w-full sm:w-auto px-8 py-4 bg-white border border-gray-200 text-foreground rounded-full hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 font-semibold shadow-sm">
-              Ver Plataforma
-              <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
-            </button>
+            {/* Buttons removed as requested */}
           </motion.div>
 
           {/* Value Props Micro-interactions */}
