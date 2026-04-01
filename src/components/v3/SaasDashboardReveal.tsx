@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { BarChart3, Users, Clock, CheckCircle2, AlertCircle, Search, Wifi } from "lucide-react";
+import { BarChart3, Users, Clock, CheckCircle2, AlertCircle, Search, Wifi, ArrowUpRight } from "lucide-react";
 
 // Animated counter hook
 const useCounter = (end: number, duration: number = 2000, inView: boolean = false) => {
@@ -144,49 +144,44 @@ const SaasDashboardReveal = () => {
               {/* Content */}
               <div className="p-8 space-y-8">
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 space-y-2 relative overflow-hidden shimmer-line">
-                    <span className="text-[10px] uppercase font-bold text-primary tracking-wider">Total Recebido</span>
+                    <span className="text-[10px] uppercase font-bold text-primary tracking-wider">Total Recebido (Meta Batida)</span>
                     {isLoaded ? (
                       <>
-                        <div className="text-2xl font-black text-foreground">
+                        <div className="text-3xl font-black text-foreground">
                           R$ {totalRecebido.toLocaleString("pt-BR")}
                         </div>
-                        <div className="flex items-center gap-1">
-                          <div className="text-[10px] text-green-500 font-bold">+{percentGrowth}.5% este mês</div>
+                        <div className="flex items-center justify-between mt-2">
+                          <div className="text-[10px] text-green-500 font-bold flex items-center gap-1">
+                            <ArrowUpRight className="w-3 h-3" />
+                            +{percentGrowth}.5% este mês
+                          </div>
+                          <div className="text-[10px] text-primary/60 font-medium">120% da meta mensal</div>
                         </div>
                         {/* Mini progress bar */}
-                        <div className="w-full h-1 bg-primary/10 rounded-full overflow-hidden mt-1">
+                        <div className="w-full h-1.5 bg-primary/10 rounded-full overflow-hidden mt-1">
                           <motion.div 
                             initial={{ width: 0 }}
-                            animate={{ width: "72%" }}
-                            transition={{ duration: 2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                            className="h-full bg-primary rounded-full"
-                          />
+                            animate={{ width: "100%" }}
+                            transition={{ duration: 2.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                            className="h-full bg-primary rounded-full relative overflow-hidden"
+                          >
+                            <motion.div 
+                               initial={{ x: "-100%" }}
+                               animate={{ x: "200%" }}
+                               transition={{ duration: 1.5, repeat: Infinity, delay: 3 }}
+                               className="absolute inset-0 bg-white/40 w-1/3 skew-x-12"
+                            />
+                          </motion.div>
                         </div>
                       </>
                     ) : (
-                      <>
-                        <div className="h-7 w-28 rounded-lg skeleton-pulse" />
-                        <div className="h-3 w-20 rounded skeleton-pulse" />
-                      </>
-                    )}
-                  </div>
-                  <div className="p-4 rounded-2xl bg-destructive/5 border border-destructive/10 space-y-2">
-                    <span className="text-[10px] uppercase font-bold text-destructive tracking-wider">Taxa de Churn</span>
-                    {isLoaded ? (
-                      <>
-                        <div className="text-2xl font-black text-foreground">{inadimplentes}%</div>
-                        <div className="text-[10px] text-destructive font-bold flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
-                          Atenção necessária
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="h-7 w-12 rounded-lg skeleton-pulse" />
-                        <div className="h-3 w-24 rounded skeleton-pulse" />
-                      </>
+                      <div className="space-y-3">
+                        <div className="h-8 w-32 rounded-lg skeleton-pulse" />
+                        <div className="h-3 w-48 rounded skeleton-pulse" />
+                        <div className="h-1.5 w-full rounded-full skeleton-pulse opacity-50" />
+                      </div>
                     )}
                   </div>
                 </div>
