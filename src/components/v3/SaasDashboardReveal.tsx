@@ -43,8 +43,8 @@ const SaasDashboardReveal = () => {
   const rotateX = useTransform(scrollYProgress, [0, 0.2], [8, 0]);
 
   // Counter values
-  const totalRecebido = useCounter(48290, 2500, isInView && isLoaded);
-  const churnRate = useCounter(2.4, 1800, isInView && isLoaded);
+  const totalRecebido = useCounter(10420, 2500, isInView && isLoaded);
+  const churnRate = useCounter(2.1, 1800, isInView && isLoaded);
   const percentGrowth = useCounter(12, 2000, isInView && isLoaded);
 
   // Simulate loading
@@ -273,7 +273,7 @@ const SaasDashboardReveal = () => {
                         >
                           <circle cx="120" cy="40" r="3" fill="hsl(217 91% 60%)" />
                           <rect x="110" y="20" width="20" height="12" rx="4" fill="black" />
-                          <text x="120" y="29" textAnchor="middle" fontSize="6" fill="white" fontWeight="bold">3.2%</text>
+                          <text x="120" y="29" textAnchor="middle" fontSize="6" fill="white" fontWeight="bold">2.1%</text>
                         </motion.g>
                       )}
                     </svg>
@@ -319,44 +319,6 @@ const SaasDashboardReveal = () => {
                     ))}
                   </div>
                 </div>
-              </div>
-            </motion.div>
-
-            {/* Decorative Floating Card: Taxa de Churn Evolution */}
-            <motion.div 
-              initial={{ x: 20, opacity: 0 }}
-              animate={isInView ? { x: 0, opacity: 1 } : {}}
-              transition={{ delay: 2, duration: 0.8 }}
-              className="absolute -bottom-10 -right-6 md:-right-12 z-20 w-44 bg-white border border-gray-100 rounded-3xl shadow-2xl p-5 space-y-3"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-[9px] font-black uppercase text-primary tracking-widest">Taxa de Churn</span>
-                <TrendingDown className="w-3.5 h-3.5 text-green-500" />
-              </div>
-              <div className="flex items-end gap-2">
-                <div className="text-2xl font-black text-foreground leading-none">2.4%</div>
-                <div className="text-[9px] font-bold text-green-500 pb-0.5">-0.8%</div>
-              </div>
-              <div className="h-8 w-full">
-                <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
-                  <motion.path
-                    d="M 0,35 Q 25,30 50,20 T 100,10"
-                    fill="none"
-                    stroke="hsl(217 91% 60%)"
-                    strokeWidth="3.5"
-                    strokeLinecap="round"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 2, delay: 2.2 }}
-                  />
-                  <motion.circle
-                    cx="100" cy="10" r="4"
-                    fill="hsl(217 91% 60%)"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 4 }}
-                  />
-                </svg>
               </div>
             </motion.div>
 
