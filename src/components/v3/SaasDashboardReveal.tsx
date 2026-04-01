@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { BarChart3, Users, Clock, CheckCircle2, AlertCircle, Search, Wifi, ArrowUpRight } from "lucide-react";
+import { BarChart3, Users, Clock, CheckCircle2, AlertCircle, Search, Wifi, ArrowUpRight, TrendingUp, TrendingDown } from "lucide-react";
 
 // Animated counter hook
 const useCounter = (end: number, duration: number = 2000, inView: boolean = false) => {
@@ -17,7 +17,7 @@ const useCounter = (end: number, duration: number = 2000, inView: boolean = fals
       const progress = Math.min(elapsed / duration, 1);
       // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * end));
+      setCount(Math.floor(eased * end * 10) / 10);
       if (progress >= 1) clearInterval(timer);
     }, 16);
     return () => clearInterval(timer);
@@ -44,7 +44,7 @@ const SaasDashboardReveal = () => {
 
   // Counter values
   const totalRecebido = useCounter(48290, 2500, isInView && isLoaded);
-  const inadimplentes = useCounter(14, 1800, isInView && isLoaded);
+  const churnRate = useCounter(2.4, 1800, isInView && isLoaded);
   const percentGrowth = useCounter(12, 2000, isInView && isLoaded);
 
   // Simulate loading
@@ -53,8 +53,6 @@ const SaasDashboardReveal = () => {
     const timer = setTimeout(() => setIsLoaded(true), 1200);
     return () => clearTimeout(timer);
   }, [isInView]);
-
-  const barHeights = [35, 55, 45, 70, 60, 85, 75, 92];
 
   return (
     <section ref={containerRef} className="py-32 bg-white relative overflow-hidden" id="plataforma">
@@ -78,7 +76,7 @@ const SaasDashboardReveal = () => {
             </h2>
             
             <p className="text-lg text-muted-foreground font-medium max-w-lg">
-              Nossa plataforma oferece um dashboard personalizado onde você visualiza as métricas reais do seu negócio. Saiba exatamente quem pagou, quem está inadimplente e como está sua saúde financeira em tempo real.
+              Nossa plataforma oferece um dashboard personalizado onde você visualiza as métricas reais do seu negócio. Saiba exatamente quem pagou, como está o seu <span className="text-primary">Churn</span> e a saúde financeira em tempo real.
             </p>
 
             <ul className="space-y-4">
@@ -104,16 +102,16 @@ const SaasDashboardReveal = () => {
             </ul>
           </motion.div>
 
+          {/* Right Side: Dashboard Reveal */}
           <motion.div 
             ref={dashboardRef}
             style={{ scale, opacity }}
             className="relative perspective-1000"
           >
-            {/* The "Dashboard Mockup" with glassmorphism */}
             <motion.div 
               style={{ rotateX }}
-              className="relative z-10 bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden preserve-3d glow-card transition-shadow duration-700"
-              whileHover={{ boxShadow: "0 0 0 1px rgba(59, 130, 246, 0.15), 0 32px 80px rgba(59, 130, 246, 0.12), 0 0 120px rgba(59, 130, 246, 0.06)" }}
+              className="relative z-10 bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden preserve-3d shadow-2xl transition-shadow duration-700"
+              whileHover={{ boxShadow: "0 0 0 1px rgba(59, 130, 246, 0.1), 0 32px 80px rgba(59, 130, 246, 0.08)" }}
             >
               {/* Header */}
               <div className="h-16 border-b border-gray-50 flex items-center justify-between px-6 bg-gray-50/50">
@@ -132,7 +130,6 @@ const SaasDashboardReveal = () => {
                   )}
                 </div>
                 <div className="flex items-center gap-3">
-                  {/* Live indicator */}
                   <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 border border-green-100">
                     <div className="w-1.5 h-1.5 rounded-full bg-green-500 live-indicator" />
                     <span className="text-[9px] font-bold text-green-600 uppercase tracking-wider">Live</span>
@@ -144,184 +141,183 @@ const SaasDashboardReveal = () => {
               {/* Content */}
               <div className="p-8 space-y-8">
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 gap-4">
-                  <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 space-y-2 relative overflow-hidden shimmer-line">
-                    <span className="text-[10px] uppercase font-bold text-primary tracking-wider">Total Recebido (Meta Batida)</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-3xl bg-primary/5 border border-primary/10 space-y-3 relative overflow-hidden">
+                    <span className="text-[10px] uppercase font-bold text-primary tracking-wider">Total Recebido</span>
                     {isLoaded ? (
                       <>
                         <div className="text-3xl font-black text-foreground">
-                          R$ {totalRecebido.toLocaleString("pt-BR")}
+                          R$ {Math.floor(totalRecebido).toLocaleString("pt-BR")}
                         </div>
-                        <div className="flex items-center justify-between mt-2">
-                          <div className="text-[10px] text-green-500 font-bold flex items-center gap-1">
-                            <ArrowUpRight className="w-3 h-3" />
-                            +{percentGrowth}.5% este mês
-                          </div>
-                          <div className="text-[10px] text-primary/60 font-medium">120% da meta mensal</div>
-                        </div>
-                        {/* Mini progress bar */}
-                        <div className="w-full h-1.5 bg-primary/10 rounded-full overflow-hidden mt-1">
-                          <motion.div 
-                            initial={{ width: 0 }}
-                            animate={{ width: "100%" }}
-                            transition={{ duration: 2.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                            className="h-full bg-primary rounded-full relative overflow-hidden"
-                          >
-                            <motion.div 
-                               initial={{ x: "-100%" }}
-                               animate={{ x: "200%" }}
-                               transition={{ duration: 1.5, repeat: Infinity, delay: 3 }}
-                               className="absolute inset-0 bg-white/40 w-1/3 skew-x-12"
-                            />
-                          </motion.div>
+                        <div className="flex items-center gap-1 text-[10px] text-green-500 font-bold">
+                          <ArrowUpRight className="w-3 h-3" />
+                          +{percentGrowth}% <span className="text-muted-foreground ml-1 font-medium">este mês</span>
                         </div>
                       </>
                     ) : (
-                      <div className="space-y-3">
-                        <div className="h-8 w-32 rounded-lg skeleton-pulse" />
-                        <div className="h-3 w-48 rounded skeleton-pulse" />
-                        <div className="h-1.5 w-full rounded-full skeleton-pulse opacity-50" />
+                      <div className="space-y-2">
+                        <div className="h-8 w-24 rounded-lg skeleton-pulse" />
+                        <div className="h-3 w-32 rounded-full skeleton-pulse opacity-50" />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-5 rounded-3xl bg-white border border-gray-100 space-y-3 relative overflow-hidden text-gradient-container">
+                    <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Taxa de Churn</span>
+                    {isLoaded ? (
+                      <div className="flex items-end justify-between">
+                        <div>
+                          <div className="text-3xl font-black text-foreground">{churnRate.toFixed(1)}%</div>
+                          <div className="flex items-center gap-1 text-[10px] text-green-500 font-bold mt-1">
+                            <TrendingDown className="w-3 h-3" />
+                            -0.4% <span className="text-muted-foreground ml-1 font-medium">redução</span>
+                          </div>
+                        </div>
+                        {/* Tiny Sparkline */}
+                        <div className="h-10 w-20">
+                          <svg viewBox="0 0 100 40" className="w-full h-full">
+                            <motion.path
+                              d="M 0,35 Q 10,32 20,38 T 40,25 T 60,30 T 80,15 T 100,5"
+                              fill="none"
+                              stroke="hsl(217 91% 60%)"
+                              strokeWidth="3"
+                              strokeLinecap="round"
+                              initial={{ pathLength: 0 }}
+                              animate={{ pathLength: 1 }}
+                              transition={{ duration: 1.5, delay: 0.5 }}
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <div className="h-8 w-12 rounded-lg skeleton-pulse" />
+                        <div className="h-3 w-16 rounded-full skeleton-pulse opacity-50" />
                       </div>
                     )}
                   </div>
                 </div>
 
-                {/* Mini Line Chart */}
-                <div className="space-y-3">
+                {/* Main Evolution Chart */}
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h4 className="font-bold text-xs text-muted-foreground uppercase tracking-wider">Evolução de Receita</h4>
-                    <Wifi className="w-3.5 h-3.5 text-primary live-indicator" />
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <span className="text-[9px] font-bold text-muted-foreground uppercase">Real</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 rounded-full bg-primary/20" />
+                        <span className="text-[9px] font-bold text-muted-foreground uppercase">Meta</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="relative h-20">
-                    <svg viewBox="0 0 280 70" className="w-full h-full" preserveAspectRatio="none">
+                  
+                  <div className="relative h-24">
+                    <svg viewBox="0 0 280 70" className="w-full h-full overflow-visible" preserveAspectRatio="none">
                       <defs>
                         <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="0%" stopColor="hsl(217 91% 60%)" stopOpacity="0.4" />
                           <stop offset="100%" stopColor="hsl(217 91% 60%)" stopOpacity="0" />
                         </linearGradient>
-                        <clipPath id="sweepClip">
-                          <motion.rect 
-                            x="0" y="0" width="280" height="70"
-                            initial={{ width: 0 }}
-                            animate={isLoaded ? { width: 280 } : {}}
-                            transition={{ duration: 1.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
-                          />
-                        </clipPath>
                       </defs>
-                      
-                      {/* Grid lines inside SVG */}
-                      <g stroke="rgba(0,0,0,0.04)" strokeWidth="1">
-                        <line x1="0" y1="10" x2="280" y2="10" />
-                        <line x1="0" y1="35" x2="280" y2="35" />
-                        <line x1="0" y1="60" x2="280" y2="60" />
-                      </g>
-
-                      {/* Filled area with sweep clip-path */}
-                      <path
-                        d="M 0,60 C 20,60 15,52 35,52 C 55,52 50,55 70,55 C 90,55 85,40 105,40 C 125,40 120,35 140,35 C 160,35 155,28 175,28 C 195,28 190,18 210,18 C 230,18 225,22 245,22 C 265,22 260,8 280,8 L 280,70 L 0,70 Z"
-                        fill="url(#chartGrad)"
-                        clipPath="url(#sweepClip)"
-                      />
-                      {/* Smooth Line */}
                       <motion.path
                         d="M 0,60 C 20,60 15,52 35,52 C 55,52 50,55 70,55 C 90,55 85,40 105,40 C 125,40 120,35 140,35 C 160,35 155,28 175,28 C 195,28 190,18 210,18 C 230,18 225,22 245,22 C 265,22 260,8 280,8"
                         fill="none"
                         stroke="hsl(217 91% 60%)"
-                        strokeWidth="3"
+                        strokeWidth="3.5"
                         strokeLinecap="round"
                         initial={{ pathLength: 0 }}
                         animate={isLoaded ? { pathLength: 1 } : {}}
-                        transition={{ duration: 1.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                        transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
                       />
-                      {/* End dot */}
-                      <motion.circle
-                        cx="280" cy="8" r="4"
-                        fill="hsl(217 91% 60%)"
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={isLoaded ? { opacity: 1, scale: 1 } : {}}
-                        transition={{ delay: 1.9, type: "spring", stiffness: 400, damping: 10 }}
-                      />
-                      <motion.circle
-                        cx="280" cy="8" r="10"
-                        fill="hsl(217 91% 60% / 0.25)"
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={isLoaded ? { opacity: 1, scale: 1 } : {}}
-                        transition={{ delay: 1.9, type: "spring", stiffness: 200, damping: 20 }}
+                      <motion.path
+                        d="M 0,60 C 20,60 15,52 35,52 C 55,52 50,55 70,55 C 90,55 85,40 105,40 C 125,40 120,35 140,35 C 160,35 155,28 175,28 C 195,28 190,18 210,18 C 230,18 225,22 245,22 C 265,22 260,8 280,8 L 280,70 L 0,70 Z"
+                        fill="url(#chartGrad)"
+                        initial={{ opacity: 0 }}
+                        animate={isLoaded ? { opacity: 1 } : {}}
+                        transition={{ duration: 1, delay: 1 }}
                       />
                     </svg>
                   </div>
                 </div>
 
-                {/* Table Simulation */}
+                {/* Users List */}
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-bold text-sm">Alunos Recentes</h4>
-                    <Search className="w-4 h-4 text-gray-300" />
-                  </div>
-                  <div className="space-y-3">
+                  <h4 className="font-bold text-xs text-muted-foreground uppercase tracking-wider">Recuperações Recentes</h4>
+                  <div className="space-y-2">
                     {[
-                      { name: "Carlos Eduardo", status: "Pago", color: "bg-green-500" },
-                      { name: "Mariana Silva", status: "Atrasado", color: "bg-destructive" },
-                      { name: "João Pedro", status: "Pago", color: "bg-green-500" }
+                      { name: "Carlos Eduardo", time: "Há 2m", value: "R$ 149,90", color: "bg-green-500" },
+                      { name: "Mariana Silva", time: "Há 15m", value: "R$ 497,00", color: "bg-green-500" }
                     ].map((user, i) => (
                       <motion.div 
                         key={i} 
                         initial={{ opacity: 0, x: 20 }}
                         animate={isLoaded ? { opacity: 1, x: 0 } : {}}
-                        transition={{ delay: isLoaded ? 0.8 + i * 0.15 : 0, duration: 0.5 }}
-                        className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100"
+                        transition={{ delay: 1.5 + i * 0.1 }}
+                        className="flex items-center justify-between p-3 rounded-2xl bg-gray-50 border border-gray-100"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/10" />
-                          <span className="text-xs font-bold">{user.name}</span>
+                          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[10px] font-bold text-primary shadow-sm">
+                            {user.name.charAt(0)}
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold">{user.name}</div>
+                            <div className="text-[9px] text-muted-foreground font-medium">{user.time} • WhatsApp</div>
+                          </div>
                         </div>
-                        <div className={`px-2 py-0.5 rounded-full text-[9px] font-black text-white ${user.color}`}>
-                          {user.status}
-                        </div>
+                        <div className="text-xs font-black text-green-600">{user.value}</div>
                       </motion.div>
                     ))}
                   </div>
                 </div>
               </div>
-
-              {/* Overlay shimmer on load */}
-              {!isLoaded && (
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
-                  animate={{ x: ["-100%", "200%"] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                />
-              )}
             </motion.div>
 
-            {/* Decorative Floating Elements */}
+            {/* Decorative Floating Card: Taxa de Churn Evolution */}
             <motion.div 
-              animate={{ y: [0, -15, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-6 -right-6 z-20 w-32 h-32 bg-white rounded-3xl shadow-2xl border border-gray-100 p-4 flex flex-col justify-center items-center text-center space-y-2 gradient-border gradient-border-animated"
+              initial={{ x: 20, opacity: 0 }}
+              animate={isInView ? { x: 0, opacity: 1 } : {}}
+              transition={{ delay: 2, duration: 0.8 }}
+              className="absolute -bottom-10 -right-6 md:-right-12 z-20 w-44 bg-white border border-gray-100 rounded-3xl shadow-2xl p-5 space-y-3"
             >
-              <AlertCircle className="w-8 h-8 text-destructive" />
-              <div className="text-[10px] font-black leading-tight">Alerta de Inadimplência</div>
-              {/* Pulse ring */}
-              <div className="absolute inset-0 rounded-3xl border-2 border-destructive/20 animate-ping pointer-events-none" style={{ animationDuration: "2s" }} />
-            </motion.div>
-
-            <motion.div 
-              animate={{ y: [0, 15, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute -bottom-10 -left-10 z-20 w-40 h-24 bg-foreground text-white rounded-3xl shadow-2xl p-4 flex flex-col justify-center space-y-1 pulse-glow"
-            >
-              <div className="text-[10px] text-gray-400 font-bold uppercase">Meta Batida</div>
-              <div className="text-xl font-black">94.2%</div>
-              <div className="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden">
-                <motion.div 
-                  initial={{ width: 0 }}
-                  animate={isInView ? { width: "94%" } : {}}
-                  transition={{ duration: 2, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="h-full bg-gradient-to-r from-primary to-blue-400 rounded-full" 
-                />
+              <div className="flex items-center justify-between">
+                <span className="text-[9px] font-black uppercase text-primary tracking-widest">Taxa de Churn</span>
+                <TrendingDown className="w-3.5 h-3.5 text-green-500" />
+              </div>
+              <div className="flex items-end gap-2">
+                <div className="text-2xl font-black text-foreground leading-none">2.4%</div>
+                <div className="text-[9px] font-bold text-green-500 pb-0.5">-0.8%</div>
+              </div>
+              <div className="h-8 w-full">
+                <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
+                  <motion.path
+                    d="M 0,35 Q 25,30 50,20 T 100,10"
+                    fill="none"
+                    stroke="hsl(217 91% 60%)"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 2, delay: 2.2 }}
+                  />
+                  <motion.circle
+                    cx="100" cy="10" r="4"
+                    fill="hsl(217 91% 60%)"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 4 }}
+                  />
+                </svg>
               </div>
             </motion.div>
+
+            <motion.div 
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-10 -left-6 md:-left-12 z-0 w-40 h-40 bg-primary/5 rounded-full blur-3xl"
+            />
           </motion.div>
 
         </div>
