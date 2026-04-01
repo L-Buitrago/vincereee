@@ -122,12 +122,182 @@
   }
 
   @keyframes shimmer {
-    from {
-      background-position: -200% 0;
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+
+  /* ── GLOW UTILITIES ── */
+  .glow-text-reveal {
+    text-shadow: 
+      0 0 30px hsl(217 91% 60% / 0.6),
+      0 0 60px hsl(217 91% 60% / 0.3),
+      0 0 100px hsl(217 91% 60% / 0.1);
+  }
+
+  .glow-card {
+    box-shadow: 
+      0 0 0 1px rgba(59, 130, 246, 0.1),
+      0 8px 40px rgba(59, 130, 246, 0.08),
+      0 0 80px rgba(59, 130, 246, 0.04);
+  }
+
+  .glow-card-hover:hover {
+    box-shadow: 
+      0 0 0 1px rgba(59, 130, 246, 0.2),
+      0 12px 50px rgba(59, 130, 246, 0.15),
+      0 0 100px rgba(59, 130, 246, 0.08);
+  }
+
+  /* ── GRADIENT BORDER ── */
+  .gradient-border {
+    position: relative;
+  }
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(
+      var(--gradient-angle, 135deg),
+      hsl(217 91% 60% / 0.6),
+      hsl(280 80% 60% / 0.3),
+      hsl(217 91% 60% / 0.1),
+      hsl(217 91% 60% / 0.6)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* ── ANIMATED GRADIENT BORDER ── */
+  @property --gradient-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  .gradient-border-animated::before {
+    animation: gradient-rotate 4s linear infinite;
+  }
+
+  @keyframes gradient-rotate {
+    to { --gradient-angle: 360deg; }
+  }
+
+  /* ── SHIMMER LINE ── */
+  .shimmer-line {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(59, 130, 246, 0.15),
+      transparent
+    );
+    animation: shimmer-sweep 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer-sweep {
+    0% { left: -50%; }
+    100% { left: 150%; }
+  }
+
+  /* ── DASHBOARD LOADING ── */
+  .skeleton-pulse {
+    background: linear-gradient(
+      90deg,
+      hsl(210 20% 92%) 25%,
+      hsl(210 20% 96%) 50%,
+      hsl(210 20% 92%) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+  }
+
+  @keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* ── PULSING GLOW ── */
+  @keyframes pulse-glow {
+    0%, 100% { 
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
     }
-    to {
-      background-position: 200% 0;
+    50% { 
+      box-shadow: 0 0 40px rgba(59, 130, 246, 0.4), 0 0 80px rgba(59, 130, 246, 0.15);
     }
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  /* ── LIVE INDICATOR ── */
+  @keyframes live-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .live-indicator {
+    animation: live-blink 1.5s ease-in-out infinite;
+  }
+
+  /* ── PROGRESS RING ── */
+  .progress-ring-circle {
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+
+  /* ── GLASSMORPHISM ── */
+  .glass-dark {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-light {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(24px) saturate(1.8);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* ── FADE MASK (for carousels) ── */
+  .fade-mask-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+  }
+
+  /* ── MAGNETIC CARD 3D ── */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
   }
 }
 
