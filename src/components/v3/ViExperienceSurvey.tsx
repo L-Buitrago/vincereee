@@ -201,29 +201,29 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full text-center space-y-8"
+        className="w-full text-center space-y-10"
       >
-        <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-primary/30">
-          <Check className="w-8 h-8 text-primary" />
+        <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-primary/20 shadow-sm">
+          <Check className="w-10 h-10 text-primary" />
         </div>
-        <h2 className="text-3xl font-bold text-white">Seu plano ideal está pronto!</h2>
+        <h2 className="text-4xl md:text-5xl font-black text-[#0f172a] tracking-tight">Seu plano ideal está pronto!</h2>
         
-        <div className="bg-white/5 border border-white/10 p-8 rounded-[2rem] shadow-2xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-5">
-            <Bot className="w-24 h-24 text-primary" />
+        <div className="bg-gray-50 border border-gray-200 p-10 md:p-14 rounded-[3.5rem] shadow-xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-700">
+            <Bot className="w-48 h-48 text-primary" />
           </div>
           
-          <p className="text-xs uppercase tracking-widest text-primary font-bold mb-2">Investimento Estimado</p>
-          <div className="flex justify-center items-baseline gap-2 mb-6">
-            <span className="text-xl font-medium text-gray-500">R$</span>
-            <span className="text-5xl font-black text-white">{total.toLocaleString('pt-BR')}</span>
-            {isPlatform && <span className="text-lg text-gray-500">/mês</span>}
+          <p className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary font-black mb-4">Investimento Estimado</p>
+          <div className="flex justify-center items-baseline gap-3 mb-10">
+            <span className="text-2xl font-bold text-gray-400">R$</span>
+            <span className="text-7xl md:text-8xl font-black text-[#0f172a] tracking-tighter">{total.toLocaleString('pt-BR')}</span>
+            {isPlatform && <span className="text-xl font-bold text-gray-400">/mês</span>}
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg" className="w-full h-14 font-black text-sm uppercase tracking-widest gap-2" asChild>
+          <div className="flex flex-col sm:flex-row gap-6 max-w-md mx-auto">
+            <Button size="lg" className="w-full h-16 bg-primary hover:bg-primary/90 text-white font-black text-sm uppercase tracking-widest gap-3 rounded-2xl shadow-[0_20px_50px_rgba(59,130,246,0.3)] transition-all hover:scale-105" asChild>
               <a href={`https://wa.me/5511999999999?text=Olá VI! Fiz meu orçamento e quero começar meu projeto de R$ ${total}!`} target="_blank" rel="noopener noreferrer">
-                Falar com Especialista <ArrowRight className="w-4 h-4" />
+                Falar com Especialista <ArrowRight className="w-5 h-5" />
               </a>
             </Button>
           </div>
@@ -235,16 +235,16 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
             setHistory([0]);
             setCurrentStep(0);
           }}
-          className="text-xs text-gray-500 hover:text-primary transition-colors flex items-center gap-2 mx-auto uppercase tracking-widest font-bold"
+          className="text-[11px] text-gray-400 hover:text-primary transition-colors flex items-center gap-2 mx-auto uppercase tracking-[0.2em] font-black"
         >
-          <ArrowLeft className="w-4 h-4" /> Recomeçar
+          <ArrowLeft className="w-4 h-4" /> Recomeçar Pesquisa
         </button>
       </motion.div>
     );
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto min-h-[400px] flex flex-col justify-center">
+    <div className="w-full max-w-4xl mx-auto min-h-[450px] flex flex-col justify-center">
       <AnimatePresence mode="wait">
         {currentStep === -1 || currentStep === -2 ? (
           renderResult()
@@ -254,123 +254,145 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="space-y-10"
+            className="space-y-12"
           >
             {/* Header / Question */}
-            <div className="space-y-4 text-center mb-8">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
+            <div className="space-y-6 text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20">
                  <Bot className="w-4 h-4 text-primary" />
-                 <span className="text-[10px] font-bold text-primary uppercase tracking-widest">VI Assistente</span>
+                 <span className="text-[11px] font-black text-primary uppercase tracking-[0.2em]">VI Assistente</span>
               </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">
+              <h3 className="text-3xl md:text-5xl font-black text-[#0f172a] leading-[1.1] tracking-tight">
                 {steps[currentStep].question}
               </h3>
             </div>
 
             {/* Options */}
-            <div className={`grid gap-4 ${steps[currentStep].options.length > 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+            <div className={`grid gap-6 ${steps[currentStep].options.length > 2 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2'}`}>
               {steps[currentStep].id === "lead_capture" ? (
-                <div className="space-y-4 w-full">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input 
-                      type="text"
-                      placeholder="Nome Completo"
-                      className="w-full bg-white/5 border border-white/10 p-4 rounded-2xl focus:border-primary/50 outline-none text-white text-sm"
-                      value={leadForm.name}
-                      onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
-                    />
-                    <input 
-                      type="email"
-                      placeholder="E-mail Corporativo"
-                      className="w-full bg-white/5 border border-white/10 p-4 rounded-2xl focus:border-primary/50 outline-none text-white text-sm"
-                      value={leadForm.email}
-                      onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
-                    />
-                    <input 
-                      type="text"
-                      placeholder="WhatsApp"
-                      className="w-full bg-white/5 border border-white/10 p-4 rounded-2xl focus:border-primary/50 outline-none text-white text-sm"
-                      value={leadForm.phone}
-                      onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
-                    />
-                    <input 
-                      type="text"
-                      placeholder="Empresa"
-                      className="w-full bg-white/5 border border-white/10 p-4 rounded-2xl focus:border-primary/50 outline-none text-white text-sm"
-                      value={leadForm.company}
-                      onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
-                    />
+                <div className="space-y-6 w-full max-w-2xl mx-auto col-span-full">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-black uppercase text-gray-400 ml-1 tracking-widest">Nome Completo</label>
+                      <input 
+                        type="text"
+                        placeholder="Ex: João Silva"
+                        className="w-full bg-gray-50 border border-gray-200 p-5 rounded-2xl focus:border-primary/50 outline-none text-[#0f172a] text-sm transition-all focus:bg-white focus:shadow-xl"
+                        value={leadForm.name}
+                        onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-black uppercase text-gray-400 ml-1 tracking-widest">E-mail Corporativo</label>
+                      <input 
+                        type="email"
+                        placeholder="Ex: joao@vincere.co"
+                        className="w-full bg-gray-50 border border-gray-200 p-5 rounded-2xl focus:border-primary/50 outline-none text-[#0f172a] text-sm transition-all focus:bg-white focus:shadow-xl"
+                        value={leadForm.email}
+                        onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-black uppercase text-gray-400 ml-1 tracking-widest">WhatsApp</label>
+                      <input 
+                        type="text"
+                        placeholder="Ex: (11) 99999-9999"
+                        className="w-full bg-gray-50 border border-gray-200 p-5 rounded-2xl focus:border-primary/50 outline-none text-[#0f172a] text-sm transition-all focus:bg-white focus:shadow-xl"
+                        value={leadForm.phone}
+                        onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-black uppercase text-gray-400 ml-1 tracking-widest">Empresa</label>
+                      <input 
+                        type="text"
+                        placeholder="Nome da sua empresa"
+                        className="w-full bg-gray-50 border border-gray-200 p-5 rounded-2xl focus:border-primary/50 outline-none text-[#0f172a] text-sm transition-all focus:bg-white focus:shadow-xl"
+                        value={leadForm.company}
+                        onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
+                      />
+                    </div>
                   </div>
                   <Button 
                     size="lg" 
-                    className="w-full h-14 font-black uppercase tracking-widest mt-4" 
+                    className="w-full h-16 font-black uppercase tracking-widest mt-6 bg-primary hover:bg-primary/90 text-white rounded-2xl shadow-[0_20px_50px_rgba(59,130,246,0.3)] transition-all" 
                     disabled={isSubmitting}
                     onClick={async () => {
                        if (!leadForm.name || !leadForm.email || !leadForm.phone) {
-                         toast({ title: "Preencha todos os campos", variant: "destructive" });
+                         toast({ title: "Preencha todos os campos obrigatórios.", variant: "destructive" });
                          return;
                        }
                        setIsSubmitting(true);
                        try {
-                         // Simplify: Just transition to result for now
-                         const surveyData = `Interesse: ${selections["interest"]}\nDesc: ${customProjectDescription}`;
+                         const surveyDetails = Object.entries(selections).map(([stepId, value]) => `${stepId}: ${value}`).join("\n");
+                         const needsData = `Histórico da VI:\n${surveyDetails}\n\nDescrição Extra: ${customProjectDescription}`;
+                         
                          await supabase.from("vi_leads").insert({
                            name: leadForm.name,
                            email: leadForm.email,
                            phone: leadForm.phone,
                            company: leadForm.company,
-                           needs: surveyData
+                           needs: needsData
                          });
-                         setCurrentStep(-1);
+
+                         // Final animation delay
+                         setIsViTyping(true);
+                         setTimeout(() => {
+                           setCurrentStep(-1);
+                           setIsViTyping(false);
+                         }, 1000);
                        } catch (e) {
-                         toast({ title: "Erro ao salvar", variant: "destructive" });
+                         toast({ title: "Erro ao processar seus dados. Tente novamente.", variant: "destructive" });
                        } finally {
                          setIsSubmitting(false);
                        }
                     }}
                   >
-                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Ver Proposta Final"}
+                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin p-0.5" /> : "Finalizar e Ver Orçamento"}
                   </Button>
                 </div>
               ) : steps[currentStep].id === "custom_survey_extras" ? (
-                <div className="space-y-4 w-full">
-                  <Textarea 
-                    placeholder="Descreva seu projeto aqui..."
-                    className="min-h-[120px] bg-white/5 border-white/10 rounded-2xl focus:border-primary/50 text-white text-sm p-4 w-full"
-                    value={customProjectDescription}
-                    onChange={(e) => setCustomProjectDescription(e.target.value)}
-                  />
+                <div className="space-y-6 w-full max-w-2xl mx-auto col-span-full">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase text-gray-400 ml-1 tracking-widest">Informações Adicionais</label>
+                    <Textarea 
+                      placeholder="Conte-nos um pouco mais sobre o seu projeto (objetivos, referências, prazos...)"
+                      className="min-h-[180px] bg-gray-50 border border-gray-200 rounded-3xl focus:border-primary/50 text-[#0f172a] text-sm p-6 w-full outline-none transition-all focus:bg-white focus:shadow-xl resize-none"
+                      value={customProjectDescription}
+                      onChange={(e) => setCustomProjectDescription(e.target.value)}
+                    />
+                  </div>
                   <Button 
                     size="lg" 
-                    className="w-full h-14 font-black uppercase tracking-widest" 
+                    className="w-full h-16 bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest rounded-2xl shadow-[0_20px_50px_rgba(59,130,246,0.3)]" 
                     onClick={() => {
                         const leadIdx = steps.findIndex(s => s.id === "lead_capture");
                         setCurrentStep(leadIdx);
                     }}
                   >
-                    Próximo Passo
+                    Próximo Passo <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </div>
               ) : (
                 steps[currentStep].options.map((option, i) => (
                   <motion.button
                     key={option.value}
-                    whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.08)" }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ scale: 1.03, backgroundColor: "#ffffff", boxShadow: "0 25px 60px -15px rgba(0,0,0,0.1)" }}
+                    whileTap={{ scale: 0.97 }}
                     onClick={() => handleOptionSelect(option)}
-                    className="flex flex-col items-center p-6 bg-white/5 border border-white/10 rounded-3xl transition-all text-center group relative overflow-hidden"
+                    className="flex flex-col items-center p-8 bg-gray-50 border border-gray-200 rounded-[2.5rem] transition-all text-center group relative overflow-hidden h-full"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     {option.icon && (
-                      <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                        <option.icon className="w-6 h-6 text-primary" />
+                      <div className="w-16 h-16 rounded-3xl bg-white border border-gray-100 shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                        <option.icon className="w-8 h-8 text-primary" />
                       </div>
                     )}
-                    <div className="font-bold text-lg text-white mb-1 group-hover:text-primary transition-colors">
+                    <div className="font-black text-xl text-[#0f172a] mb-2 group-hover:text-primary transition-colors">
                       {option.label}
                     </div>
                     {option.description && (
-                      <div className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">
+                      <div className="text-[11px] text-gray-500 font-bold uppercase tracking-wider leading-relaxed px-2">
                         {option.description}
                       </div>
                     )}
@@ -383,9 +405,9 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
             {history.length > 1 && (
               <button 
                 onClick={goBack}
-                className="mt-8 text-[10px] text-gray-600 hover:text-white transition-colors flex items-center gap-2 mx-auto uppercase tracking-widest font-black"
+                className="mt-12 text-[11px] text-gray-400 hover:text-primary transition-colors flex items-center gap-2 mx-auto uppercase tracking-[0.2em] font-black"
               >
-                <ArrowLeft className="w-3 h-3" /> Voltar
+                <ArrowLeft className="w-3.5 h-3.5" /> Voltar Anterior
               </button>
             )}
           </motion.div>
