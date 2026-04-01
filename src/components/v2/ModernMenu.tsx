@@ -157,8 +157,11 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
           
           <button 
             onClick={() => {
-              const element = document.getElementById('plataforma');
-              if (element) element.scrollIntoView({ behavior: 'smooth' });
+              if (onPageNavigate) {
+                onPageNavigate("/plataforma/dashboard");
+              } else {
+                navigate("/plataforma/dashboard");
+              }
             }}
             className="px-8 py-3.5 bg-black/5 backdrop-blur-md text-foreground border border-black/5 rounded-full font-bold text-[10px] uppercase tracking-[0.2em] transition-all hover:bg-primary hover:text-white hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:border-primary active:scale-95"
           >
