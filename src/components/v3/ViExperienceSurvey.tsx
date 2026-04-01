@@ -53,6 +53,8 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selections, setSelections] = useState<Record<string, string>>({});
   const [history, setHistory] = useState<number[]>([0]);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [loadingText, setLoadingText] = useState("Conectando com a VI...");
   const [isViTyping, setIsViTyping] = useState(false);
   const [customProjectDescription, setCustomProjectDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,6 +64,24 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
     phone: "",
     company: ""
   });
+
+  useEffect(() => {
+    const sequence = [
+      { text: "Iniciando Core da VI...", delay: 600 },
+      { text: "Conectando com a VI...", delay: 1200 },
+      { text: "Preparando ambiente lógico...", delay: 1900 },
+      { text: "Tudo pronto.", delay: 2400 },
+    ];
+
+    sequence.forEach((step, index) => {
+      setTimeout(() => {
+        setLoadingText(step.text);
+        if (index === sequence.length - 1) {
+          setTimeout(() => setIsInitializing(false), 600);
+        }
+      }, step.delay);
+    });
+  }, []);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const steps: Step[] = [
@@ -246,7 +266,40 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
   return (
     <div className="w-full max-w-4xl mx-auto min-h-[450px] flex flex-col justify-center">
       <AnimatePresence mode="wait">
-        {currentStep === -1 || currentStep === -2 ? (
+        {isInitializing ? (
+          <motion.div
+            key="initializing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex flex-col items-center justify-center space-y-8"
+          >
+            <div className="relative">
+              <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center animate-pulse">
+                <Bot className="w-12 h-12 text-primary" />
+              </div>
+              <div className="absolute inset-0 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+            </div>
+            <div className="flex flex-col items-center space-y-2">
+              <motion.p
+                key={loadingText}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-primary font-black uppercase tracking-[0.3em] text-xs"
+              >
+                {loadingText}
+              </motion.p>
+              <div className="w-48 h-1 bg-gray-100 rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 2.5, ease: "easeInOut" }}
+                  className="h-full bg-primary"
+                />
+              </div>
+            </div>
+          </motion.div>
+        ) : currentStep === -1 || currentStep === -2 ? (
           renderResult()
         ) : (
           <motion.div 

@@ -7,14 +7,14 @@ const FinalCTA = () => {
   const [showSurvey, setShowSurvey] = useState(false);
 
   return (
-    <section id="falar-conosco" className="relative py-32 bg-white overflow-hidden text-[#0f172a]">
+    <section id="falar-conosco" className="relative py-60 min-h-[90vh] flex items-center bg-white overflow-hidden text-[#0f172a]">
       {/* Soft Light Blue Background Elements (Azul BB) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-[20%] -right-[10%] w-[60%] h-[60%] bg-sky-100/50 rounded-full blur-[120px]" />
-        <div className="absolute -bottom-[20%] -left-[10%] w-[50%] h-[50%] bg-sky-50/50 rounded-full blur-[100px]" />
+        <div className="absolute -top-[10%] -right-[5%] w-[70%] h-[70%] bg-sky-100/40 rounded-full blur-[140px]" />
+        <div className="absolute -bottom-[10%] -left-[5%] w-[60%] h-[60%] bg-sky-50/40 rounded-full blur-[120px]" />
       </div>
       
-      <div className="container px-4 md:px-6 mx-auto relative z-10">
+      <div className="container px-4 md:px-6 mx-auto relative z-10 w-full">
         <AnimatePresence mode="wait">
           {!showSurvey ? (
             <motion.div 
