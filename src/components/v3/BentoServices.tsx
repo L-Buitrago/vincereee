@@ -192,7 +192,7 @@ const BentoServices = () => {
               </div>
             </div>
 
-            <div className="relative z-10 mt-auto pt-24 md:ml-auto md:text-right md:max-w-[50%] flex flex-col items-end">
+            <div className="relative z-10 my-auto md:ml-auto md:text-right md:max-w-[50%] flex flex-col items-end">
               <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight">Recuperação via WhatsApp</h3>
               <p className="text-muted-foreground text-lg md:ml-auto font-medium leading-relaxed">
                 Transforme carrinhos abandonados e mensalidades atrasadas em dinheiro limpo. Disparos com alta taxa de conversão.
@@ -200,7 +200,7 @@ const BentoServices = () => {
             </div>
 
             {/* Phone Mockup with WhatsApp Chat */}
-            <div className="absolute bottom-[-10px] md:bottom-2 left-2 md:left-6 z-20 -rotate-3 group-hover:rotate-0 transition-transform duration-700 scale-[1.15] md:scale-[1.35] origin-bottom-left">
+            <div className="absolute bottom-[-10px] md:bottom-2 left-2 md:left-6 z-20 rotate-0 group-hover:-rotate-6 transition-transform duration-700 scale-[1.15] md:scale-[1.35] origin-bottom-left">
               <WhatsAppMockup isActive={chatActive} />
               {/* Shadow/glow underneath */}
               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-full h-12 bg-green-500/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
