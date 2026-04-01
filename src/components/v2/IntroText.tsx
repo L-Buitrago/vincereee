@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 
 // Word component that appears at a random time
 const Word = ({ word, delay, style }: { word: string; delay: number; style: string }) => {
@@ -19,85 +19,88 @@ const Word = ({ word, delay, style }: { word: string; delay: number; style: stri
   );
 };
 
+const segments = [
+  { text: "Criamos", style: "font-bold" },
+  { text: "ecossistemas", style: "font-serif italic text-primary" },
+  { text: "digitais", style: "font-bold" },
+  { text: "movidos", style: "font-bold opacity-50" },
+  { text: "por", style: "font-bold opacity-50" },
+  { text: "inteligência.", style: "font-serif italic" },
+];
+
+// Generate fresh random delays
+const generateDelays = () => {
+  const indices = segments.map((_, i) => i);
+  const shuffled = [...indices];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  const delays: number[] = new Array(segments.length);
+  shuffled.forEach((originalIndex, order) => {
+    delays[originalIndex] = order * 0.18 + 0.1;
+  });
+  return delays;
+};
+
 const IntroText = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const isInView = useInView(containerRef, { once: false, margin: "-100px" });
+  const [animKey, setAnimKey] = useState(0);
+  const [delays, setDelays] = useState(generateDelays);
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  const wasInView = useRef(false);
 
   useEffect(() => {
-    if (isInView) setShouldAnimate(true);
-  }, [isInView]);
-
-  const segments = [
-    { text: "Criamos", style: "font-bold" },
-    { text: "ecossistemas", style: "font-serif italic text-primary" },
-    { text: "digitais", style: "font-bold" },
-    { text: "movidos", style: "font-bold opacity-50" },
-    { text: "por", style: "font-bold opacity-50" },
-    { text: "inteligência.", style: "font-serif italic" },
-  ];
-
-  // Generate random order for appearance
-  const randomDelays = useMemo(() => {
-    const indices = segments.map((_, i) => i);
-    // Fisher-Yates shuffle
-    const shuffled = [...indices];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    if (isInView && !wasInView.current) {
+      // Entered viewport — re-shuffle and trigger animation
+      setDelays(generateDelays());
+      setAnimKey(prev => prev + 1);
+      setShouldAnimate(true);
     }
-    // Map shuffled position to delay
-    const delays: number[] = new Array(segments.length);
-    shuffled.forEach((originalIndex, order) => {
-      delays[originalIndex] = order * 0.18 + 0.1;
-    });
-    return delays;
-  }, []);
+    if (!isInView && wasInView.current) {
+      // Left viewport — reset so it replays next time
+      setShouldAnimate(false);
+    }
+    wasInView.current = isInView;
+  }, [isInView]);
 
   return (
     <section ref={containerRef} className="relative z-10 py-24 md:py-32 bg-background px-4 md:px-24">
       <div className="container mx-auto">
-        {/* Top Tag */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={shouldAnimate ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-16"
-        >
-          <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-foreground/30">
-            [ Digital Design Studio ]
-          </span>
-        </motion.div>
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left: Random word reveal */}
           <div className="lg:col-span-5">
-            <h2 className="text-3xl md:text-[3.2vw] leading-[1.15] tracking-tight text-foreground">
+            <h2 className="text-3xl md:text-[3.2vw] leading-[1.15] tracking-tight text-foreground min-h-[4em]">
               {shouldAnimate && segments.map((seg, i) => (
                 <Word
-                  key={i}
+                  key={`${animKey}-${i}`}
                   word={seg.text}
-                  delay={randomDelays[i]}
+                  delay={delays[i]}
                   style={seg.style}
                 />
               ))}
             </h2>
 
             {/* Subtle animated line under text */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={shouldAnimate ? { scaleX: 1 } : {}}
-              transition={{ duration: 1.2, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
-              className="h-[1px] bg-gradient-to-r from-primary/40 via-primary/20 to-transparent mt-8 origin-left max-w-xs"
-            />
+            {shouldAnimate && (
+              <motion.div
+                key={`line-${animKey}`}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 1.2, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
+                className="h-[1px] bg-gradient-to-r from-primary/40 via-primary/20 to-transparent mt-8 origin-left max-w-xs"
+              />
+            )}
           </div>
 
           {/* Right: Nossa Essência + Image */}
           <div className="lg:col-span-4 lg:col-start-7 flex flex-col gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={shouldAnimate ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.3 }}
               className="flex flex-col gap-6"
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/5 border border-secondary/10 w-fit">
@@ -122,8 +125,9 @@ const IntroText = () => {
             {/* Image */}
             <motion.div
               initial={{ y: 40, opacity: 0 }}
-              animate={shouldAnimate ? { y: 0, opacity: 1 } : {}}
-              transition={{ duration: 1, delay: 0.9 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: false, margin: "-50px" }}
+              transition={{ duration: 1, delay: 0.5 }}
               className="relative w-full aspect-[4/3] rounded-[32px] overflow-hidden bg-secondary flex items-center justify-center p-6 group shadow-2xl"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
