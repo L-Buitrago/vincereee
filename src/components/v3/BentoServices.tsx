@@ -1,9 +1,129 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, BarChart, Code2, LineChart, MessageCircle, Phone, Plus, TrendingUp, Users } from "lucide-react";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { ArrowUpRight, BarChart, Code2, MessageCircle, TrendingUp, Plus, Check, CheckCheck } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+
+// WhatsApp Phone Mockup with animated chat
+const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
+  const [step, setStep] = useState(0);
+
+  const messages = [
+    { from: "bot", text: "Olá Maria! 👋 Aqui é da Academia Pulse.", delay: 0.3, time: "14:02" },
+    { from: "bot", text: "Notamos que sua mensalidade de R$ 149,90 venceu há 3 dias. Podemos gerar um novo boleto sem juros pra você? 😊", delay: 1.0, time: "14:02" },
+    { from: "user", text: "Oi! Sim, por favor! Pode mandar 🙏", delay: 2.2, time: "14:03" },
+    { from: "bot", text: "Pronto! Aqui está seu link de pagamento atualizado sem juros:", delay: 3.2, time: "14:03" },
+    { from: "bot", text: "🔗 pay.vincere.com/pulse/maria-s", delay: 3.8, time: "14:03", isLink: true },
+    { from: "user", text: "Pago! ✅", delay: 5.0, time: "14:05" },
+    { from: "bot", text: "Confirmado! Pagamento recebido. Obrigado Maria! 💚", delay: 5.8, time: "14:05" },
+  ];
+
+  useEffect(() => {
+    if (!isActive) {
+      setStep(0);
+      return;
+    }
+    // Reveal messages one by one
+    const timers: NodeJS.Timeout[] = [];
+    messages.forEach((msg, i) => {
+      const timer = setTimeout(() => setStep(i + 1), msg.delay * 1000);
+      timers.push(timer);
+    });
+    return () => timers.forEach(clearTimeout);
+  }, [isActive]);
+
+  return (
+    <div className="w-[220px] md:w-[240px] rounded-[28px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col"
+      style={{ height: 380 }}
+    >
+      {/* Phone Status Bar */}
+      <div className="flex items-center justify-between px-4 pt-2 pb-1 text-white/60">
+        <span className="text-[9px] font-semibold">14:02</span>
+        <div className="flex items-center gap-1">
+          <div className="w-3 h-1.5 border border-white/40 rounded-sm relative">
+            <div className="absolute inset-0.5 bg-green-400 rounded-[1px]" style={{ width: "70%" }} />
+          </div>
+        </div>
+      </div>
+
+      {/* WhatsApp Header */}
+      <div className="flex items-center gap-2.5 px-3 py-2 bg-[#1f2c34] border-b border-white/5">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0">
+          V
+        </div>
+        <div className="min-w-0">
+          <div className="text-white text-[11px] font-semibold truncate">Vincere • Cobrança</div>
+          <div className="text-green-400 text-[9px]">online</div>
+        </div>
+      </div>
+
+      {/* Chat Messages */}
+      <div className="flex-1 overflow-hidden px-2.5 py-3 space-y-1.5 bg-[#0b141a] relative"
+        style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}
+      >
+        {messages.map((msg, i) => {
+          if (i >= step) return null;
+          const isUser = msg.from === "user";
+          return (
+            <motion.div
+              key={`${i}`}
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className={`flex ${isUser ? "justify-end" : "justify-start"}`}
+            >
+              <div className={`max-w-[85%] rounded-lg px-2.5 py-1.5 relative ${
+                isUser 
+                  ? "bg-[#005c4b] text-white" 
+                  : "bg-[#1f2c34] text-white/90"
+              }`}>
+                <p className={`text-[10px] leading-[1.4] ${(msg as any).isLink ? "text-blue-400 underline" : ""}`}>
+                  {msg.text}
+                </p>
+                <div className="flex items-center justify-end gap-0.5 mt-0.5">
+                  <span className="text-[7px] text-white/30">{msg.time}</span>
+                  {isUser && <CheckCheck className="w-2.5 h-2.5 text-blue-400" />}
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+
+        {/* Typing indicator */}
+        {step > 0 && step < messages.length && messages[step]?.from === "bot" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex justify-start"
+          >
+            <div className="bg-[#1f2c34] rounded-lg px-3 py-2 flex gap-1">
+              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0 }} className="w-1.5 h-1.5 rounded-full bg-white/40" />
+              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0.2 }} className="w-1.5 h-1.5 rounded-full bg-white/40" />
+              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0.4 }} className="w-1.5 h-1.5 rounded-full bg-white/40" />
+            </div>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Input Bar */}
+      <div className="flex items-center gap-2 px-2.5 py-2 bg-[#1f2c34] border-t border-white/5">
+        <div className="flex-1 bg-[#2a3942] rounded-full px-3 py-1.5">
+          <span className="text-[9px] text-white/30">Mensagem</span>
+        </div>
+        <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center shrink-0">
+          <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const BentoServices = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const card1Ref = useRef<HTMLDivElement>(null);
+  const isCard1InView = useInView(card1Ref, { once: false, margin: "-80px" });
+  const [chatActive, setChatActive] = useState(false);
+  const wasInView = useRef(false);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -12,6 +132,17 @@ const BentoServices = () => {
 
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.95, 1]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
+
+  // Re-trigger chat animation on viewport enter/leave
+  useEffect(() => {
+    if (isCard1InView && !wasInView.current) {
+      setChatActive(true);
+    }
+    if (!isCard1InView && wasInView.current) {
+      setChatActive(false);
+    }
+    wasInView.current = isCard1InView;
+  }, [isCard1InView]);
 
   return (
     <section 
@@ -48,7 +179,7 @@ const BentoServices = () => {
           className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
         >
           {/* Card 1: WhatsApp Recovery (Large Left) */}
-          <div className="md:col-span-7 group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[480px]">
+          <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[480px]">
             {/* Background Blob */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
             
@@ -66,20 +197,11 @@ const BentoServices = () => {
               </p>
             </div>
 
-            {/* Floating Mockup */}
-            <div className="absolute top-8 right-[-10%] md:right-8 w-64 rounded-2xl bg-white border border-gray-100 shadow-xl p-4 rotate-6 group-hover:rotate-3 transition-transform duration-500">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                  <Phone className="w-4 h-4 text-green-600" />
-                </div>
-                <div>
-                  <div className="text-xs font-semibold">Mensalidade Atrasada</div>
-                  <div className="text-[10px] text-gray-400">Há 5 minutos</div>
-                </div>
-              </div>
-              <div className="bg-gray-50 rounded-lg p-3 text-xs text-gray-600 font-medium">
-                "Olá! Seu boleto da escola venceu ontem. Podemos regerar para hoje sem juros?"
-              </div>
+            {/* Phone Mockup with WhatsApp Chat */}
+            <div className="absolute top-6 right-4 md:right-10 z-20 rotate-3 group-hover:rotate-1 transition-transform duration-700">
+              <WhatsAppMockup isActive={chatActive} />
+              {/* Shadow/glow underneath */}
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-green-500/10 rounded-full blur-xl" />
             </div>
           </div>
 
