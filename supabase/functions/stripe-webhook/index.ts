@@ -132,8 +132,9 @@ serve(async (req) => {
     }
 
     return new Response(JSON.stringify({ received: true }), { status: 200 })
-  } catch (err) {
-    console.error(`Webhook Error: ${err.message}`)
-    return new Response(`Webhook Error: ${err.message}`, { status: 400 })
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error(`Webhook Error: ${message}`)
+    return new Response(`Webhook Error: ${message}`, { status: 400 })
   }
 })
