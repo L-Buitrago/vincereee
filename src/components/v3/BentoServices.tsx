@@ -30,29 +30,29 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   }, [isActive]);
 
   return (
-    <div className="w-[320px] md:w-[380px] rounded-[38px] bg-[#111b21] border-[4px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col"
-      style={{ height: 520 }}
+    <div className="rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col"
+      style={{ width: 330, height: 540 }}
     >
-      <div className="flex items-center justify-between px-6 pt-3 pb-2 text-white/60">
-        <span className="text-[12px] font-semibold">14:02</span>
+      <div className="flex items-center justify-between px-4 pt-2 pb-1.5 text-white/60">
+        <span className="text-[10px] font-semibold">14:02</span>
         <div className="flex items-center gap-1">
-          <div className="w-3 h-1.5 border border-white/40 rounded-sm relative">
+          <div className="w-2.5 h-1.5 border border-white/40 rounded-sm relative">
             <div className="absolute inset-0.5 bg-green-400 rounded-[1px]" style={{ width: "70%" }} />
           </div>
         </div>
       </div>
 
-      <div className="flex items-center gap-3 px-4 py-3 bg-[#1f2c34] border-b border-white/5">
-        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-[14px] font-bold shrink-0">
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-[#1f2c34] border-b border-white/5">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-[12px] font-bold shrink-0">
           V
         </div>
         <div className="min-w-0">
-          <div className="text-white text-[15px] font-semibold truncate">Vincere • Cobrança</div>
-          <div className="text-green-400 text-[12px]">online</div>
+          <div className="text-white text-[13px] font-semibold truncate">Vincere • Cobrança</div>
+          <div className="text-green-400 text-[11px]">online</div>
         </div>
       </div>
 
-      <div className="flex-1 overflow-hidden px-2.5 py-3 space-y-1.5 bg-[#0b141a] relative"
+      <div className="flex-1 overflow-hidden px-2.5 py-2.5 space-y-1.5 bg-[#0b141a] relative"
         style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}
       >
         {messages.map((msg, i) => {
@@ -61,22 +61,22 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
           return (
             <motion.div
               key={`${i}`}
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              initial={{ opacity: 0, y: 8, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className={`flex ${isUser ? "justify-end" : "justify-start"}`}
             >
-              <div className={`max-w-[85%] rounded-xl px-4 py-2.5 relative ${
+              <div className={`max-w-[85%] rounded-lg px-3 py-2 relative ${
                 isUser 
                   ? "bg-[#005c4b] text-white" 
                   : "bg-[#1f2c34] text-white/90"
               }`}>
-                <p className={`text-[14px] leading-[1.4] ${(msg as any).isLink ? "text-blue-400 underline" : ""}`}>
+                <p className={`text-[12px] leading-[1.4] ${(msg as any).isLink ? "text-blue-400 underline" : ""}`}>
                   {msg.text}
                 </p>
-                <div className="flex items-center justify-end gap-1 mt-1">
-                  <span className="text-[10px] text-white/30">{msg.time}</span>
-                  {isUser && <CheckCheck className="w-3.5 h-3.5 text-blue-400" />}
+                <div className="flex items-center justify-end gap-1 mt-0.5">
+                  <span className="text-[9px] text-white/30">{msg.time}</span>
+                  {isUser && <CheckCheck className="w-3 h-3 text-blue-400" />}
                 </div>
               </div>
             </motion.div>
@@ -89,21 +89,21 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
             animate={{ opacity: 1 }}
             className="flex justify-start"
           >
-            <div className="bg-[#1f2c34] rounded-lg px-3 py-2 flex gap-1">
-              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0 }} className="w-1.5 h-1.5 rounded-full bg-white/40" />
-              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0.2 }} className="w-1.5 h-1.5 rounded-full bg-white/40" />
-              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0.4 }} className="w-1.5 h-1.5 rounded-full bg-white/40" />
+            <div className="bg-[#1f2c34] rounded-lg px-2.5 py-1.5 flex gap-1">
+              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0 }} className="w-1 h-1 rounded-full bg-white/40" />
+              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0.2 }} className="w-1 h-1 rounded-full bg-white/40" />
+              <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0.4 }} className="w-1 h-1 rounded-full bg-white/40" />
             </div>
           </motion.div>
         )}
       </div>
 
-      <div className="flex items-center gap-3 px-4 py-3 bg-[#1f2c34] border-t border-white/5">
-        <div className="flex-1 bg-[#2a3942] rounded-full px-4 py-2.5">
-          <span className="text-[13px] text-white/30">Mensagem</span>
+      <div className="flex items-center gap-2.5 px-4 py-2.5 bg-[#1f2c34] border-t border-white/5">
+        <div className="flex-1 bg-[#2a3942] rounded-full px-3.5 py-2">
+          <span className="text-[11px] text-white/30">Mensagem</span>
         </div>
-        <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center shrink-0">
-          <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+        <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center shrink-0">
+          <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
           </svg>
         </div>
@@ -116,7 +116,7 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
 const Premium3DVisual = ({ isInView }: { isInView: boolean }) => {
   const layers = [
     { label: "Design", color: "bg-white", border: "border-gray-200", icon: "✦", iconColor: "text-primary", delay: 0, z: 0 },
-    { label: "Backend", color: "bg-primary/5", border: "border-primary/20", icon: "</>", iconColor: "text-primary", delay: 0.15, z: 20 },
+    { label: "Backend", color: "bg-primary/5", border: "border-primary/20", icon: "</>" , iconColor: "text-primary", delay: 0.15, z: 20 },
     { label: "Performance", color: "bg-green-50", border: "border-green-200", icon: "⚡", iconColor: "text-green-500", delay: 0.3, z: 40 },
   ];
 
@@ -309,7 +309,7 @@ const BentoServices = () => {
           className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
         >
           {/* Card 1: WhatsApp Recovery (Large Left) */}
-          <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[650px]">
+          <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[720px]">
             <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
             
             {/* Top row: icon + arrow */}
@@ -320,8 +320,8 @@ const BentoServices = () => {
               <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
             </div>
 
-            {/* Text — now near the top */}
-            <div className="relative z-10 md:ml-auto md:text-right md:max-w-[48%] flex flex-col items-end">
+            {/* Text — positioned top-right, always visible */}
+            <div className="relative z-30 md:ml-auto md:text-right md:max-w-[46%] flex flex-col items-end">
               <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight leading-tight">
                 Recuperação via{" "}
                 <span className="text-green-500">WhatsApp</span>
@@ -331,23 +331,23 @@ const BentoServices = () => {
               </p>
             </div>
 
-            {/* Phone mockup — Massive and anchored bottom-left */}
+            {/* Phone mockup — properly sized, anchored bottom-left, NOT covering text */}
             <motion.div 
-              initial={{ scale: 0.8, opacity: 0, x: -50 }}
+              initial={{ scale: 0.8, opacity: 0, y: 30 }}
               animate={isCard1InView ? { 
                 opacity: 1, 
-                x: 0,
-                y: [0, -10, 0] 
+                scale: 1,
+                y: [0, -8, 0] 
               } : {}}
               transition={{ 
                 y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                x: { duration: 0.8, type: "spring", stiffness: 100 },
+                scale: { duration: 0.8, type: "spring", stiffness: 100 },
                 opacity: { duration: 0.6 }
               } as any}
-              className="absolute bottom-[-20px] left-[-20px] md:bottom-[-40px] md:left-[-10px] z-20 transition-all duration-700 scale-[1.0] md:scale-[1.65] origin-bottom-left"
+              className="absolute bottom-14 left-[4%] md:bottom-12 md:left-[6%] z-20"
             >
               <WhatsAppMockup isActive={chatActive} />
-              <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-full h-24 bg-green-600/20 rounded-full blur-[50px] opacity-40 group-hover:opacity-100 transition-opacity duration-700" />
+              <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/20 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
             </motion.div>
           </div>
 
