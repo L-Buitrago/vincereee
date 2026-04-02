@@ -29,7 +29,7 @@ const useCounter = (end: number, duration: number = 2000, inView: boolean = fals
 const SaasDashboardReveal = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const dashboardRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(dashboardRef, { once: true, margin: "-100px" });
+  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -40,10 +40,10 @@ const SaasDashboardReveal = () => {
   const scale = useTransform(scrollYProgress, [0, 0.2], [0.85, 1]);
   const rotateX = useTransform(scrollYProgress, [0, 0.2], [8, 0]);
 
-  // Static counter values for demonstration
-  const totalRecebido = 5420;
-  const novosLeads = 42;
-  const percentGrowth = 12;
+  // Animated counter values
+  const totalRecebido = useCounter(5420, 2000, isInView);
+  const novosLeads = useCounter(42, 1500, isInView);
+  const percentGrowth = useCounter(12, 1800, isInView);
 
   return (
     <section ref={containerRef} className="py-32 bg-white relative overflow-hidden" id="plataforma">
@@ -149,24 +149,107 @@ const SaasDashboardReveal = () => {
                   </div>
                 </div>
 
+                {/* Simulated Chart: Upward Trend */}
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-bold text-xs text-muted-foreground uppercase tracking-wider">Evolução Mensal</h4>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 rounded-full bg-primary" />
+                        <span className="text-[9px] font-bold text-muted-foreground uppercase">Receita Real</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="relative h-32 w-full pt-4">
+                    {/* Y-Axis Labels */}
+                    <div className="absolute left-[-20px] top-4 bottom-8 flex flex-col justify-between text-[8px] font-bold text-muted-foreground/40">
+                      <span>R$ 10k</span>
+                      <span>R$ 5k</span>
+                      <span>R$ 0</span>
+                    </div>
+
+                    <svg viewBox="0 0 280 70" className="w-full h-full overflow-visible" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="upwardChartGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="hsl(217 91% 60%)" stopOpacity="0.25" />
+                          <stop offset="100%" stopColor="hsl(217 91% 60%)" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+
+                      {/* Grid Lines */}
+                      <line x1="0" y1="0" x2="280" y2="0" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
+                      <line x1="0" y1="35" x2="280" y2="35" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
+                      <line x1="0" y1="70" x2="280" y2="70" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
+
+                      {/* Upward Trend Line */}
+                      <motion.path
+                        d="M 0,65 C 40,55 80,45 120,48 C 160,35 200,25 240,15 C 260,10 280,5 280,5"
+                        fill="none"
+                        stroke="hsl(217 91% 60%)"
+                        strokeWidth="3.5"
+                        strokeLinecap="round"
+                        initial={{ pathLength: 0 }}
+                        animate={isInView ? { pathLength: 1 } : {}}
+                        transition={{ duration: 2, ease: "easeOut" }}
+                      />
+                      {/* Upward Trend Area */}
+                      <motion.path
+                        d="M 0,65 C 40,55 80,45 120,48 C 160,35 200,25 240,15 C 260,10 280,5 280,5 L 280,70 L 0,70 Z"
+                        fill="url(#upwardChartGrad)"
+                        initial={{ opacity: 0 }}
+                        animate={isInView ? { opacity: 1 } : {}}
+                        transition={{ duration: 1.5, delay: 1 }}
+                      />
+
+                      {/* Data Point Tooltip (Visual) */}
+                      {isInView && (
+                        <motion.g
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 2, duration: 0.5 }}
+                        >
+                          <circle cx="280" cy="5" r="4" fill="hsl(217 91% 60%)" className="drop-shadow-sm" />
+                          <circle cx="280" cy="5" r="12" fill="hsl(217 91% 60%)" opacity="0.15">
+                            <animate attributeName="r" values="8;16;8" dur="2s" repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.15;0;0.15" dur="2s" repeatCount="indefinite" />
+                          </circle>
+                          <rect x="250" y="-15" width="30" height="14" rx="4" fill="black" />
+                          <text x="265" y="-5" textAnchor="middle" fontSize="7" fill="white" fontWeight="bold">+12%</text>
+                        </motion.g>
+                      )}
+                    </svg>
+
+                    {/* X-Axis Labels */}
+                    <div className="flex justify-between mt-4 px-2 text-[8px] font-bold text-muted-foreground/60 uppercase tracking-widest">
+                      <span>Jan</span>
+                      <span>Fev</span>
+                      <span>Mar</span>
+                      <span>Abr</span>
+                      <span>Mai</span>
+                      <span>Hoje</span>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Users List */}
-                <div className="space-y-4">
+                <div className="space-y-4 pt-2 border-t border-gray-50">
                   <h4 className="font-bold text-xs text-muted-foreground uppercase tracking-wider">Gestão de Leads</h4>
                   <div className="space-y-3">
                     {[
-                      { name: "Mariana Silva", status: "Concluída", time: "Há 12m", color: "text-green-600", bg: "bg-green-100/50", border: "border-green-100", value: "Plano Premium" },
+                      { name: "Mariana Silva", status: "Concluída",   time: "Há 12m", color: "text-green-600", bg: "bg-green-100/50", border: "border-green-100", value: "Plano Premium" },
                       { name: "Carlos Eduardo", status: "Em Negociação", time: "Há 45m", color: "text-amber-600", bg: "bg-amber-100/50", border: "border-amber-100", value: "Proposta Enviada" },
-                      { name: "Ana Clara", status: "Novo Lead", time: "Há 2h", color: "text-primary", bg: "bg-primary/10", border: "border-primary/20", value: "Aguardando Contato" },
+                      { name: "Ana Clara",     status: "Novo Lead",   time: "Há 2h",  color: "text-primary",   bg: "bg-primary/10",   border: "border-primary/20",  value: "Aguardando Contato" },
                     ].map((user, i) => (
                       <motion.div 
                         key={i} 
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={isInView ? { opacity: 1, x: 0 } : {}}
-                        transition={{ delay: 0.5 + i * 0.15 }}
+                        initial={{ opacity: 0, x: -20, scale: 0.95 }}
+                        animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+                        transition={{ delay: 1.5 + i * 0.25, type: "spring", stiffness: 100 }}
                         className="flex items-center justify-between p-4 rounded-2xl bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
                       >
                         <div className="flex items-center gap-4">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold ${user.bg} ${user.color}`}>
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold ${user.bg} ${user.color} ring-1 ring-inset ${user.border}`}>
                             {user.name.charAt(0)}
                           </div>
                           <div>
