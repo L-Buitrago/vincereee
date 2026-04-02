@@ -16,28 +16,28 @@ const DeliveryDiagnostic = () => {
       title: "Diagnóstico",
       desc: "Entendemos sua empresa, processos e desafios para identificar as melhores oportunidades.",
       icon: Search,
-      badge: "bg-purple-600"
+      badge: "bg-blue-600"
     },
     {
       id: "02",
       title: "Planejamento",
       desc: "Desenhamos a solução ideal com escopo, tecnologias e cronograma definidos.",
       icon: Map,
-      badge: "bg-purple-600"
+      badge: "bg-blue-600"
     },
     {
       id: "03",
       title: "Desenvolvimento",
       desc: "Construímos sua solução com as melhores práticas e tecnologias modernas.",
       icon: Code2,
-      badge: "bg-purple-600"
+      badge: "bg-blue-600"
     },
     {
       id: "04",
       title: "Implementação e Suporte",
       desc: "Entregamos, treinamos e acompanhamos para garantir resultados contínuos.",
       icon: Headphones,
-      badge: "bg-purple-600"
+      badge: "bg-blue-600"
     }
   ];
 
@@ -46,29 +46,34 @@ const DeliveryDiagnostic = () => {
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top 80%",
+        end: "bottom 40%",
+        scrub: 1, // Torna o efeito 100% amarrado ao scroll da página
       }
     });
 
     tl.fromTo(".diag-title", 
       { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }
+      { y: 0, opacity: 1, duration: 0.5, ease: "none" }
     );
 
+    // Linha azul preenchendo da esquerda pra direita
     tl.fromTo(".diag-line",
       { scaleX: 0, transformOrigin: "left center" },
-      { scaleX: 1, duration: 1.5, ease: "power1.inOut" }
+      { scaleX: 1, duration: 4, ease: "none" }
     );
 
+    // Os quadrados sobem e aparecem
     tl.fromTo(".diag-box",
-      { y: 40, opacity: 0, filter: "blur(5px)" },
-      { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, stagger: 0.25, ease: "back.out(1.2)" },
-      "-=1.2"
+      { y: 60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.5, stagger: 1, ease: "power1.out" },
+      "-=3.5" // inicia enquanto a linha ainda está sendo desenhada
     );
 
+    // As bolinhas azuis com números aparecem
     tl.fromTo(".diag-badge",
-      { scale: 0, rotate: -45 },
-      { scale: 1, rotate: 0, duration: 0.5, stagger: 0.25, ease: "back.out(2)" },
-      "-=1"
+      { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.5, stagger: 1, ease: "back.out(2)" },
+      "-=3.5"
     );
 
   }, { scope: containerRef });
@@ -80,27 +85,27 @@ const DeliveryDiagnostic = () => {
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Do entendimento inicial à implantação final, desenhamos cada etapa orientando para o sucesso do seu negócio.</p>
       </div>
       
-      <div className="relative flex flex-col md:flex-row justify-between items-start">
+      <div className="relative flex flex-col md:flex-row justify-between items-start pt-4">
         {/* Connecting Line (desktop) */}
-        <div className="absolute top-[3rem] left-[12%] right-[12%] h-[2px] bg-gray-200 hidden md:block">
-          <div className="diag-line w-full h-full bg-gradient-to-r from-purple-500 via-primary to-blue-500 origin-left" />
+        <div className="absolute top-[3.5rem] left-[12%] right-[12%] h-[2px] bg-gray-200 hidden md:block rounded-full">
+          <div className="diag-line w-full h-full bg-blue-600 origin-left rounded-full" />
         </div>
 
         {/* Connecting Line (mobile) */}
-        <div className="absolute top-0 bottom-0 left-[2.25rem] w-[2px] bg-gray-200 md:hidden">
-          <div className="diag-line w-full h-full bg-gradient-to-b from-purple-500 via-primary to-blue-500 origin-top" />
+        <div className="absolute top-0 bottom-0 left-[2.25rem] w-[2px] bg-gray-200 md:hidden rounded-full">
+          <div className="diag-line w-full h-full bg-blue-600 origin-top rounded-full" />
         </div>
 
         {steps.map((step, index) => (
           <div key={step.id} className="diag-box flex md:flex-col flex-row items-center md:items-center text-left md:text-center relative z-10 w-full md:flex-1 gap-6 md:gap-0 mb-12 md:mb-0 group">
              {/* Icon Box */}
             <div className="relative mb-6 md:mb-8 shrink-0">
-              <div className="w-16 h-16 md:w-24 md:h-24 rounded-2xl md:rounded-[1.5rem] bg-[#0b141a] border border-white/5 flex items-center justify-center shadow-2xl group-hover:-translate-y-2 transition-transform duration-500 relative z-10">
-                <step.icon className="w-8 h-8 md:w-10 md:h-10 text-white group-hover:text-purple-400 transition-colors duration-500" />
+              <div className="w-16 h-16 md:w-28 md:h-28 rounded-2xl md:rounded-[1.8rem] bg-white border border-gray-200 flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.06)] group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_rgba(37,99,235,0.15)] transition-all duration-500 relative z-10">
+                <step.icon className="w-8 h-8 md:w-12 md:h-12 text-blue-600/80 group-hover:text-blue-600 transition-colors duration-500" />
               </div>
               
               {/* Badge */}
-              <div className={`diag-badge absolute -top-2 -right-2 md:-top-3 md:-right-3 w-7 h-7 md:w-9 md:h-9 rounded-full ${step.badge} shadow-[0_0_15px_rgba(147,51,234,0.4)] flex items-center justify-center text-white font-black text-[10px] md:text-sm z-20`}>
+              <div className={`diag-badge absolute -top-2 -right-2 md:-top-4 md:-right-4 w-7 h-7 md:w-10 md:h-10 rounded-full ${step.badge} shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-[10px] md:text-sm z-20`}>
                 {step.id}
               </div>
             </div>
