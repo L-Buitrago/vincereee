@@ -116,7 +116,7 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
 const Premium3DVisual = ({ isInView }: { isInView: boolean }) => {
   const layers = [
     { label: "Design", color: "bg-white", border: "border-gray-200", icon: "✦", iconColor: "text-primary", delay: 0, z: 0 },
-    { label: "Frontend", color: "bg-primary/5", border: "border-primary/20", icon: "</>", iconColor: "text-primary", delay: 0.15, z: 20 },
+    { label: "Backend", color: "bg-primary/5", border: "border-primary/20", icon: "</>", iconColor: "text-primary", delay: 0.15, z: 20 },
     { label: "Performance", color: "bg-green-50", border: "border-green-200", icon: "⚡", iconColor: "text-green-500", delay: 0.3, z: 40 },
   ];
 
@@ -309,7 +309,7 @@ const BentoServices = () => {
           className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
         >
           {/* Card 1: WhatsApp Recovery (Large Left) */}
-          <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[500px]">
+          <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[650px]">
             <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
             
             {/* Top row: icon + arrow */}
@@ -331,11 +331,24 @@ const BentoServices = () => {
               </p>
             </div>
 
-            {/* Phone mockup — bigger but moved left to avoid overlap */}
-            <div className="absolute bottom-[-40px] md:bottom-[-30px] left-[-10px] md:left-0 z-20 transition-transform duration-700 scale-[1.2] md:scale-[1.4] origin-bottom-left">
+            {/* Phone mockup — Large, floating, and fully visible on the left */}
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0, x: -50 }}
+              animate={isCard1InView ? { 
+                opacity: 1, 
+                x: 0,
+                y: [0, -15, 0] 
+              } : {}}
+              transition={{ 
+                y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                x: { duration: 0.8, type: "spring", stiffness: 100 },
+                opacity: { duration: 0.6 }
+              } as any}
+              className="absolute top-[45%] md:top-[50%] -translate-y-1/2 left-[10px] md:left-[80px] z-20 transition-all duration-700 scale-[1.3] md:scale-[1.75] origin-center"
+            >
               <WhatsAppMockup isActive={chatActive} />
-              <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-full h-12 bg-green-500/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            </div>
+              <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/20 rounded-full blur-[40px] opacity-40 group-hover:opacity-100 transition-opacity duration-700" />
+            </motion.div>
           </div>
 
           <div className="md:col-span-5 flex flex-col gap-6">
@@ -379,7 +392,7 @@ const BentoServices = () => {
                   transition={{ duration: 0.5, delay: 0.55 }}
                   className="text-muted-foreground text-base font-medium"
                 >
-                  Landing pages, sites e e-commerces ultra rápidos (como este).
+                  Landing pages, sites e e-commerces ultra rápidos.
                 </motion.p>
               </div>
             </div>
