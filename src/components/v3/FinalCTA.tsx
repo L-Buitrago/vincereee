@@ -54,6 +54,8 @@ const FinalCTA = () => {
               >
                 Nossa IA analisará suas necessidades em tempo real para criar uma <br className="hidden md:block" /> proposta totalmente personalizada para o seu negócio. Sinta-se único.
               </motion.p>
+
+
               
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
