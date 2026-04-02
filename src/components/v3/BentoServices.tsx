@@ -1,143 +1,331 @@
-import { motion, useScroll, useTransform, useInView, animate } from "framer-motion";
-import { ArrowUpRight, BarChart, Code2, MessageCircle, TrendingUp, Plus, Check, CheckCheck, Search, Map, Headphones } from "lucide-react";
+import { motion, useInView, animate } from "framer-motion";
+import { ArrowUpRight, Code2, MessageCircle, TrendingUp, Plus, CheckCheck } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { useScroll, useTransform } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
-// Delivery Diagnostic Component with GSAP Scroll Animations
+
+// ─── Animações SVG únicas por step ───────────────────────────────────────────
+
+/** STEP 1: Lupa varrendo — diagnóstico */
+const LupaAnim = ({ progress }: { progress: number }) => {
+  const angle = progress * 60 - 30;
+  const cx = 22 + progress * 20;
+  const cy = 30 + Math.sin(progress * Math.PI * 2.5) * 12;
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-full h-full">
+      {/* Grade de scan */}
+      {[20, 30, 40, 50, 60].map((y) => (
+        <line key={y} x1="8" y1={y} x2="72" y2={y} stroke="#dbeafe" strokeWidth="0.8" />
+      ))}
+      {/* Linha de scan animada */}
+      <line
+        x1="8" y1={cy} x2="72" y2={cy}
+        stroke="#3b82f6" strokeWidth="1"
+        strokeOpacity={0.5}
+      />
+      {/* Corpo da lupa rotacionando */}
+      <g transform={`rotate(${angle}, 35, 38)`}>
+        <circle cx="32" cy="35" r="15" stroke="#1d4ed8" strokeWidth="2.8" />
+        <line x1="43" y1="46" x2="57" y2="60" stroke="#1d4ed8" strokeWidth="3.5" strokeLinecap="round" />
+        {/* Reflexo interno */}
+        <path d="M24 28 Q28 24 34 24" stroke="#93c5fd" strokeWidth="1.5" strokeLinecap="round" />
+      </g>
+      {/* Ponto de foco */}
+      <circle cx={cx} cy={cy} r={3 * (1 - progress * 0.5)} fill="#2563eb" fillOpacity={0.7} />
+      {/* Mira cruzada */}
+      <line x1={cx - 6} y1={cy} x2={cx + 6} y2={cy} stroke="#2563eb" strokeWidth="1.2" strokeOpacity={progress * 0.9} />
+      <line x1={cx} y1={cy - 6} x2={cx} y2={cy + 6} stroke="#2563eb" strokeWidth="1.2" strokeOpacity={progress * 0.9} />
+    </svg>
+  );
+};
+
+/** STEP 2: Mapa com caminho traçado até X — planejamento */
+const MapaAnim = ({ progress }: { progress: number }) => {
+  const drawn = progress;
+  const showX = progress > 0.78;
+  const dotX = 15 + drawn * 50;
+  const dotY = 60 - drawn * 40 + Math.sin(drawn * Math.PI * 3) * 10;
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-full h-full">
+      {/* Grid */}
+      {[18, 32, 46, 60].map((y) => (
+        <line key={`h${y}`} x1="8" y1={y} x2="72" y2={y} stroke="#dbeafe" strokeWidth="0.8" />
+      ))}
+      {[18, 32, 46, 60].map((x) => (
+        <line key={`v${x}`} x1={x} y1="8" x2={x} y2="72" stroke="#dbeafe" strokeWidth="0.8" />
+      ))}
+      {/* Caminho sendo desenhado */}
+      <path
+        d="M15 62 C22 44 30 56 38 40 C46 24 54 36 65 18"
+        stroke="#2563eb"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeDasharray="110"
+        strokeDashoffset={110 * (1 - drawn)}
+      />
+      {/* Ponto A */}
+      <circle cx="15" cy="62" r="4" fill="#2563eb" />
+      <text x="7" y="74" fontSize="7" fill="#1d4ed8" fontWeight="bold">A</text>
+      {/* Destino X */}
+      {showX && (
+        <g>
+          <circle cx="65" cy="18" r="6.5" fill="#2563eb" fillOpacity={(progress - 0.78) / 0.22} />
+          <line x1="62" y1="15" x2="68" y2="21" stroke="white" strokeWidth="2" strokeLinecap="round" />
+          <line x1="68" y1="15" x2="62" y2="21" stroke="white" strokeWidth="2" strokeLinecap="round" />
+        </g>
+      )}
+      {/* Ponto andando no caminho */}
+      {progress > 0.05 && (
+        <circle cx={dotX} cy={dotY} r="3.5" fill="#60a5fa" />
+      )}
+    </svg>
+  );
+};
+
+/** STEP 3: Terminal digitando código — desenvolvimento */
+const CodigoAnim = ({ progress }: { progress: number }) => {
+  const lines = [
+    { text: "const vincere = {", color: "#60a5fa" },
+    { text: "  stack: 'modern',", color: "#94a3b8" },
+    { text: "  speed: 'ultra',", color: "#94a3b8" },
+    { text: "  quality: 100,", color: "#86efac" },
+    { text: "}", color: "#60a5fa" },
+  ];
+  const totalChars = lines.reduce((s, l) => s + l.text.length, 0);
+  const visible = Math.floor(progress * totalChars);
+  let filled = 0;
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-full h-full">
+      <rect x="4" y="6" width="72" height="68" rx="6" fill="#0f172a" />
+      <rect x="4" y="6" width="72" height="14" rx="6" fill="#1e293b" />
+      <rect x="4" y="14" width="72" height="6" fill="#1e293b" />
+      <circle cx="13" cy="13" r="2.5" fill="#ef4444" />
+      <circle cx="21" cy="13" r="2.5" fill="#f59e0b" />
+      <circle cx="29" cy="13" r="2.5" fill="#22c55e" />
+      {lines.map((line, li) => {
+        const start = filled;
+        filled += line.text.length;
+        const chars = Math.max(0, Math.min(line.text.length, visible - start));
+        return (
+          <text key={li} x="10" y={30 + li * 11} fontSize="7.5" fontFamily="monospace" fill={line.color}>
+            {line.text.slice(0, chars)}
+          </text>
+        );
+      })}
+      {/* Cursor */}
+      {progress < 1 && (
+        <rect x={10 + (visible % 23) * 4.5} y={30 + Math.floor(visible / 23) * 11 - 8}
+          width="2" height="9" fill="#60a5fa" fillOpacity={0.9} />
+      )}
+    </svg>
+  );
+};
+
+/** STEP 4: Mãos se unindo + pulso de suporte */
+const SuporteAnim = ({ progress }: { progress: number }) => {
+  const gap = (1 - progress) * 22;
+  const heartOpacity = progress > 0.82 ? (progress - 0.82) / 0.18 : 0;
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-full h-full">
+      {/* Ondas (pulso) */}
+      {[12, 18, 24, 30].map((r, i) => (
+        <circle
+          key={i} cx="40" cy="44" r={r}
+          stroke="#2563eb" strokeWidth="1"
+          strokeOpacity={progress > i * 0.2 ? (0.6 - i * 0.12) * progress : 0}
+          strokeDasharray="5 3"
+        />
+      ))}
+      {/* Mão esquerda */}
+      <g transform={`translate(${-gap}, 0)`}>
+        <path d="M24 52 C20 50 18 44 20 36 C21 31 25 30 28 33 L31 46 L33 52"
+          stroke="#1d4ed8" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        <path d="M28 33 L29 27 C29 25 33 25 33 27 L33 38"
+          stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round" fill="none" />
+        <path d="M33 27 L33 24 C33 22 37 22 37 24 L37 36"
+          stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round" fill="none" />
+      </g>
+      {/* Mão direita (espelhada) */}
+      <g transform="translate(80,0) scale(-1,1)">
+        <g transform={`translate(${-gap}, 0)`}>
+          <path d="M24 52 C20 50 18 44 20 36 C21 31 25 30 28 33 L31 46 L33 52"
+            stroke="#1d4ed8" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          <path d="M28 33 L29 27 C29 25 33 25 33 27 L33 38"
+            stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round" fill="none" />
+          <path d="M33 27 L33 24 C33 22 37 22 37 24 L37 36"
+            stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round" fill="none" />
+        </g>
+      </g>
+      {/* Coração quando as mãos se juntam */}
+      <text x="33" y="48" fontSize="14" fill="#3b82f6" fillOpacity={heartOpacity}>❤</text>
+    </svg>
+  );
+};
+
+// ─── Step Card individual ─────────────────────────────────────────────────────
+const StepCard = ({
+  id, title, desc, progress, isActive, children
+}: {
+  id: string; title: string; desc: string;
+  progress: number; isActive: boolean; children: React.ReactNode;
+}) => (
+  <div className={`
+    relative flex flex-col items-center text-center rounded-[1.8rem] p-6 md:p-8
+    border transition-all duration-700
+    ${isActive
+      ? "bg-white border-blue-200 shadow-[0_20px_60px_rgba(37,99,235,0.14)] scale-[1.02]"
+      : "bg-white/60 border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.04)] scale-[0.97] opacity-50"
+    }
+  `}>
+    {/* Badge */}
+    <div className="absolute -top-4 -right-3 w-9 h-9 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-sm z-20">
+      {id}
+    </div>
+
+    {/* Icon box animado */}
+    <div className="w-20 h-20 md:w-24 md:h-24 mb-5 rounded-[1.4rem] bg-gradient-to-br from-blue-50 via-white to-blue-50 border border-blue-100 flex items-center justify-center shadow-inner p-3">
+      {children}
+    </div>
+
+    <h4 className="text-base md:text-lg font-bold text-foreground mb-2">{title}</h4>
+    <p className="text-muted-foreground text-[12px] md:text-sm font-medium leading-relaxed max-w-[200px]">
+      {desc}
+    </p>
+
+    {/* Barra ativa */}
+    {isActive && (
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-blue-600 transition-all duration-500" />
+    )}
+  </div>
+);
+
+// ─── DeliveryDiagnostic (Scroll Pinned + SVG animados) ───────────────────────
 const DeliveryDiagnostic = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [activeStep, setActiveStep] = useState(-1);
+  const [progresses, setProgresses] = useState([0, 0, 0, 0]);
+  const [lineProgress, setLineProgress] = useState(0);
 
   const steps = [
     {
-      id: "01",
-      title: "Diagnóstico",
+      id: "01", title: "Diagnóstico",
       desc: "Entendemos sua empresa, processos e desafios para identificar as melhores oportunidades.",
-      icon: Search,
-      badge: "bg-blue-600"
     },
     {
-      id: "02",
-      title: "Planejamento",
+      id: "02", title: "Planejamento",
       desc: "Desenhamos a solução ideal com escopo, tecnologias e cronograma definidos.",
-      icon: Map,
-      badge: "bg-blue-600"
     },
     {
-      id: "03",
-      title: "Desenvolvimento",
+      id: "03", title: "Desenvolvimento",
       desc: "Construímos sua solução com as melhores práticas e tecnologias modernas.",
-      icon: Code2,
-      badge: "bg-blue-600"
     },
     {
-      id: "04",
-      title: "Implementação e Suporte",
+      id: "04", title: "Implementação e Suporte",
       desc: "Entregamos, treinamos e acompanhamos para garantir resultados contínuos.",
-      icon: Headphones,
-      badge: "bg-blue-600"
-    }
+    },
   ];
 
   useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 85%",
-        toggleActions: "restart none none none", // Reinicia a animação toda vez que entrar no viewport vindo de cima
-      }
+    // Pinar a seção enquanto rola — cada step ocupa 500px de scroll
+    ScrollTrigger.create({
+      trigger: wrapperRef.current,
+      start: "top top",
+      end: `+=${steps.length * 550}`,
+      pin: true,
+      pinSpacing: true,
+      scrub: 0.8,
+      onUpdate: (self) => {
+        const p = self.progress;
+        const active = Math.min(Math.floor(p * steps.length), steps.length - 1);
+        setActiveStep(active);
+        setLineProgress(Math.min(p * (steps.length / (steps.length - 1)), 1));
+        setProgresses(
+          steps.map((_, i) => {
+            const start = i / steps.length;
+            const end = (i + 1) / steps.length;
+            return Math.max(0, Math.min(1, (p - start) / (end - start)));
+          })
+        );
+      },
     });
+  }, { scope: wrapperRef });
 
-    tl.fromTo(".diag-title", 
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }
-    );
-
-    // Linha azul preenchendo suavemente
-    tl.fromTo(".diag-line",
-      { scaleX: 0, transformOrigin: "left center" },
-      { scaleX: 1, duration: 1.2, ease: "power1.inOut" },
-      "-=0.4"
-    );
-
-    // Os quadrados aparecendo um por um lentamente (estilo build-up)
-    tl.fromTo(".diag-box",
-      { y: 40, opacity: 0, scale: 0.9 },
-      { 
-        y: 0, 
-        opacity: 1, 
-        scale: 1, 
-        duration: 0.8, 
-        stagger: 0.3, // Intervalo entre cada caixa
-        ease: "back.out(1.4)" 
-      },
-      "-=0.8"
-    );
-
-    // As bolinhas azuis surgindo com um toque de elasticidade
-    tl.fromTo(".diag-badge",
-      { scale: 0, opacity: 0 },
-      { 
-        scale: 1, 
-        opacity: 1, 
-        duration: 0.5, 
-        stagger: 0.3, 
-        ease: "back.out(2)" 
-      },
-      "-=1.1" // Sincronizado com as caixas
-    );
-
-  }, { scope: containerRef });
+  const icons = [
+    <LupaAnim key="lupa" progress={progresses[0]} />,
+    <MapaAnim key="mapa" progress={progresses[1]} />,
+    <CodigoAnim key="codigo" progress={progresses[2]} />,
+    <SuporteAnim key="suporte" progress={progresses[3]} />,
+  ];
 
   return (
-    <div ref={containerRef} className="w-full mx-auto mb-32 relative pt-2 pb-16 px-4 md:px-0 z-20">
-      <div className="diag-title text-center mb-24 space-y-4">
-        <h3 className="text-3xl md:text-5xl font-black text-foreground tracking-tight">O nosso processo de <span className="text-primary">entrega</span></h3>
-        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Do entendimento inicial à implantação final, desenhamos cada etapa orientando para o sucesso do seu negócio.</p>
+    <div
+      ref={wrapperRef}
+      className="w-full min-h-screen flex flex-col items-center justify-center py-16 px-4 md:px-8 relative overflow-hidden bg-[#FAFAFA]"
+      id="diagnostico"
+    >
+      {/* Header */}
+      <div className="text-center mb-14 space-y-3 max-w-3xl">
+        <div className="flex items-center justify-center gap-2 text-blue-600 uppercase tracking-widest text-sm font-semibold">
+          <Plus className="w-4 h-4" />
+          Diagnóstico de Entrega
+          <Plus className="w-4 h-4" />
+        </div>
+        <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight">
+          O nosso processo de <span className="text-primary">entrega</span>
+        </h3>
+        <p className="text-muted-foreground text-base md:text-lg">
+          Role para explorar cada etapa — do diagnóstico à implementação.
+        </p>
       </div>
-      
-      <div className="relative flex flex-col md:flex-row justify-between items-start pt-4">
-        {/* Connecting Line (desktop) */}
-        <div className="absolute top-[3.5rem] left-[12%] right-[12%] h-[2px] bg-gray-200 hidden md:block rounded-full">
-          <div className="diag-line w-full h-full bg-blue-600 origin-left rounded-full" />
+
+      {/* Cards */}
+      <div className="relative w-full max-w-5xl">
+        {/* Linha azul conectando (desktop) */}
+        <div className="absolute top-[2.6rem] left-[12%] right-[12%] h-[2px] bg-gray-200 hidden md:block rounded-full overflow-hidden">
+          <div
+            className="h-full bg-blue-600 rounded-full origin-left"
+            style={{ transform: `scaleX(${lineProgress})`, transition: "none" }}
+          />
         </div>
 
-        {/* Connecting Line (mobile) */}
-        <div className="absolute top-0 bottom-0 left-[2.25rem] w-[2px] bg-gray-200 md:hidden rounded-full">
-          <div className="diag-line w-full h-full bg-blue-600 origin-top rounded-full" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-4">
+          {steps.map((step, i) => (
+            <StepCard
+              key={step.id}
+              {...step}
+              progress={progresses[i]}
+              isActive={activeStep >= i}
+            >
+              {icons[i]}
+            </StepCard>
+          ))}
         </div>
+      </div>
 
-        {steps.map((step, index) => (
-          <div key={step.id} className="diag-box flex md:flex-col flex-row items-center md:items-center text-left md:text-center relative z-10 w-full md:flex-1 gap-6 md:gap-0 mb-12 md:mb-0 group">
-             {/* Icon Box */}
-            <div className="relative mb-6 md:mb-8 shrink-0">
-              <div className="w-16 h-16 md:w-28 md:h-28 rounded-2xl md:rounded-[1.8rem] bg-white border border-gray-200 flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.06)] group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_rgba(37,99,235,0.15)] transition-all duration-500 relative z-10">
-                <step.icon className="w-8 h-8 md:w-12 md:h-12 text-blue-600/80 group-hover:text-blue-600 transition-colors duration-500" />
-              </div>
-              
-              {/* Badge */}
-              <div className={`diag-badge absolute -top-2 -right-2 md:-top-4 md:-right-4 w-7 h-7 md:w-10 md:h-10 rounded-full ${step.badge} shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-[10px] md:text-sm z-20`}>
-                {step.id}
-              </div>
-            </div>
-
-            {/* Text */}
-            <div className="flex-1 md:px-4">
-              <h4 className="text-lg md:text-xl font-bold text-foreground mb-1 md:mb-3">{step.title}</h4>
-              <p className="text-muted-foreground text-[13px] md:text-sm font-medium leading-relaxed md:max-w-[240px] md:mx-auto">
-                {step.desc}
-              </p>
-            </div>
-          </div>
-        ))}
+      {/* Scroll hint */}
+      <div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-blue-500 transition-opacity duration-500"
+        style={{ opacity: activeStep < 3 ? 1 : 0 }}
+      >
+        <span className="text-[10px] font-semibold uppercase tracking-widest">
+          {activeStep < 0 ? "Role para explorar" : `Etapa ${activeStep + 1} de ${steps.length}`}
+        </span>
+        <svg width="14" height="22" viewBox="0 0 14 22" fill="none">
+          <rect x="1" y="1" width="12" height="20" rx="6" stroke="currentColor" strokeWidth="1.5" />
+          <rect x="5.5" y="5" width="3" height="5" rx="1.5" fill="currentColor">
+            <animate attributeName="y" values="5;10;5" dur="1.5s" repeatCount="indefinite" />
+          </rect>
+        </svg>
       </div>
     </div>
   );
 };
 
-// WhatsApp Phone Mockup with animated chat
+// ─── WhatsApp Phone Mockup ────────────────────────────────────────────────────
 const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   const [step, setStep] = useState(0);
 
@@ -152,10 +340,7 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   ];
 
   useEffect(() => {
-    if (!isActive) {
-      setStep(0);
-      return;
-    }
+    if (!isActive) { setStep(0); return; }
     const timers: NodeJS.Timeout[] = [];
     messages.forEach((msg, i) => {
       const timer = setTimeout(() => setStep(i + 1), msg.delay * 1000);
@@ -178,9 +363,7 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
       </div>
 
       <div className="flex items-center gap-3 px-4 py-2.5 bg-[#1f2c34] border-b border-white/5">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-[12px] font-bold shrink-0">
-          V
-        </div>
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-[12px] font-bold shrink-0">V</div>
         <div className="min-w-0">
           <div className="text-white text-[13px] font-semibold truncate">Vincere • Cobrança</div>
           <div className="text-green-400 text-[11px]">online</div>
@@ -201,14 +384,8 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className={`flex ${isUser ? "justify-end" : "justify-start"}`}
             >
-              <div className={`max-w-[85%] rounded-lg px-3 py-2 relative ${
-                isUser 
-                  ? "bg-[#005c4b] text-white" 
-                  : "bg-[#1f2c34] text-white/90"
-              }`}>
-                <p className={`text-[12px] leading-[1.4] ${(msg as any).isLink ? "text-blue-400 underline" : ""}`}>
-                  {msg.text}
-                </p>
+              <div className={`max-w-[85%] rounded-lg px-3 py-2 relative ${isUser ? "bg-[#005c4b] text-white" : "bg-[#1f2c34] text-white/90"}`}>
+                <p className={`text-[12px] leading-[1.4] ${(msg as any).isLink ? "text-blue-400 underline" : ""}`}>{msg.text}</p>
                 <div className="flex items-center justify-end gap-1 mt-0.5">
                   <span className="text-[9px] text-white/30">{msg.time}</span>
                   {isUser && <CheckCheck className="w-3 h-3 text-blue-400" />}
@@ -219,11 +396,7 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
         })}
 
         {step > 0 && step < messages.length && messages[step]?.from === "bot" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex justify-start"
-          >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
             <div className="bg-[#1f2c34] rounded-lg px-2.5 py-1.5 flex gap-1">
               <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0 }} className="w-1 h-1 rounded-full bg-white/40" />
               <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: 0.2 }} className="w-1 h-1 rounded-full bg-white/40" />
@@ -247,14 +420,13 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   );
 };
 
-// 3D floating layers visual for Desenvolvimento Premium card
+// ─── 3D floating layers ───────────────────────────────────────────────────────
 const Premium3DVisual = ({ isInView }: { isInView: boolean }) => {
   const layers = [
     { label: "Design", color: "bg-white", border: "border-gray-200", icon: "✦", iconColor: "text-primary", delay: 0, z: 0 },
-    { label: "Backend", color: "bg-primary/5", border: "border-primary/20", icon: "</>" , iconColor: "text-primary", delay: 0.15, z: 20 },
+    { label: "Backend", color: "bg-primary/5", border: "border-primary/20", icon: "</>", iconColor: "text-primary", delay: 0.15, z: 20 },
     { label: "Performance", color: "bg-green-50", border: "border-green-200", icon: "⚡", iconColor: "text-green-500", delay: 0.3, z: 40 },
   ];
-
   return (
     <div className="relative h-28 flex items-center justify-center" style={{ perspective: 600 }}>
       <motion.div
@@ -270,12 +442,7 @@ const Premium3DVisual = ({ isInView }: { isInView: boolean }) => {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: l.delay }}
             className={`absolute w-[85%] rounded-xl border ${l.color} ${l.border} px-3 py-2 flex items-center gap-2.5 shadow-md`}
-            style={{
-              top: i * 26,
-              left: i * 10,
-              transform: `translateZ(${l.z}px)`,
-              zIndex: i,
-            }}
+            style={{ top: i * 26, left: i * 10, transform: `translateZ(${l.z}px)`, zIndex: i }}
           >
             <span className={`text-sm font-bold ${l.iconColor}`}>{l.icon}</span>
             <span className="text-[11px] font-semibold text-foreground/80">{l.label}</span>
@@ -297,23 +464,19 @@ const Premium3DVisual = ({ isInView }: { isInView: boolean }) => {
   );
 };
 
-// Results showcase for the third card
+// ─── Results Showcase ─────────────────────────────────────────────────────────
 const ResultsShowcase = ({ isInView }: { isInView: boolean }) => {
   const results = [
     { value: 50, suffix: "+", label: "Projetos entregues", color: "text-blue-400", up: true },
     { value: 30, suffix: "+", label: "Clientes ativos", color: "text-green-400", up: true },
     { value: 96, suffix: "%", label: "Satisfação garantida", color: "text-primary", up: true },
   ];
-
   const [vals, setVals] = useState(results.map(() => 0));
-
   useEffect(() => {
     if (!isInView) return;
     const controls = results.map((r, i) =>
       animate(0, r.value, {
-        duration: 2,
-        delay: i * 0.2,
-        ease: "easeOut",
+        duration: 2, delay: i * 0.2, ease: "easeOut",
         onUpdate: v => setVals(prev => { const c = [...prev]; c[i] = Math.round(v * 10) / 10; return c; }),
       })
     );
@@ -330,9 +493,7 @@ const ResultsShowcase = ({ isInView }: { isInView: boolean }) => {
           transition={{ duration: 0.45, delay: i * 0.12 }}
           className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2.5"
         >
-          <span className={`text-xl font-black tabular-nums ${r.color}`}>
-            {vals[i]}{r.suffix}
-          </span>
+          <span className={`text-xl font-black tabular-nums ${r.color}`}>{vals[i]}{r.suffix}</span>
           <span className="text-[10px] text-gray-400 font-medium leading-tight">{r.label}</span>
           <motion.span
             initial={{ opacity: 0, scale: 0 }}
@@ -346,37 +507,23 @@ const ResultsShowcase = ({ isInView }: { isInView: boolean }) => {
   );
 };
 
-// Animated title with word-by-word reveal
+// ─── Animated Title ───────────────────────────────────────────────────────────
 const AnimatedTitle = () => {
   const ref = useRef<HTMLHeadingElement>(null);
   const isInView = useInView(ref, { once: false, margin: "-80px" });
-
   const words = [
-    { text: "A", em: false },
-    { text: "solução", em: false },
-    { text: "perfeita", em: true },
-    { text: "para", em: false },
-    { text: "o", em: false },
-    { text: "seu", em: false },
-    { text: "negócio", em: true },
-    { text: "com", em: false },
+    { text: "A", em: false }, { text: "solução", em: false }, { text: "perfeita", em: true },
+    { text: "para", em: false }, { text: "o", em: false }, { text: "seu", em: false },
+    { text: "negócio", em: true }, { text: "com", em: false },
   ];
-
   return (
-    <h2
-      ref={ref}
-      className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground max-w-4xl"
-    >
+    <h2 ref={ref} className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground max-w-4xl">
       {words.map((w, i) => (
         <motion.span
           key={i}
           initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
           animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 24, filter: "blur(6px)" }}
-          transition={{
-            duration: 0.55,
-            delay: i * 0.09,
-            ease: [0.16, 1, 0.3, 1],
-          }}
+          transition={{ duration: 0.55, delay: i * 0.09, ease: [0.16, 1, 0.3, 1] }}
           className={`inline-block mr-[0.25em] ${w.em ? "text-primary" : ""}`}
         >
           {w.text}
@@ -386,6 +533,7 @@ const AnimatedTitle = () => {
   );
 };
 
+// ─── BentoServices (main) ─────────────────────────────────────────────────────
 const BentoServices = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const card1Ref = useRef<HTMLDivElement>(null);
@@ -398,192 +546,159 @@ const BentoServices = () => {
 
   const [chatActive, setChatActive] = useState(false);
   const wasInView = useRef(false);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
 
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.95, 1]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
 
   useEffect(() => {
-    if (isCard1InView && !wasInView.current) {
-      setChatActive(true);
-    }
-    if (!isCard1InView && wasInView.current) {
-      setChatActive(false);
-    }
+    if (isCard1InView && !wasInView.current) setChatActive(true);
+    if (!isCard1InView && wasInView.current) setChatActive(false);
     wasInView.current = isCard1InView;
   }, [isCard1InView]);
 
   return (
-    <section 
-      ref={containerRef}
-      className="py-32 w-full bg-[#FAFAFA] relative overflow-hidden" 
-      id="solucoes"
-    >
-      <div className="container px-4 md:px-6 mx-auto relative z-10">
-        
-        <DeliveryDiagnostic />
+    <>
+      {/* ── Seção de diagnóstico (scroll pinned) ── */}
+      <DeliveryDiagnostic />
 
-        <div className="flex flex-col items-center justify-center text-center mt-8 mb-16 md:mb-24 space-y-4">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex items-center gap-2 text-primary uppercase tracking-widest text-sm font-semibold"
-          >
-            <Plus className="w-4 h-4" />
-            Nossas Soluções
-            <Plus className="w-4 h-4" />
-          </motion.div>
-          <AnimatedTitle />
-        </div>
-
-        <motion.div 
-          style={{ scale, opacity }}
-          className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
-        >
-          {/* Card 1: WhatsApp Recovery (Large Left) */}
-          <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[720px]">
-            <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
-            
-            {/* Top row: icon + arrow */}
-            <div className="relative z-10 flex justify-between items-start mb-6">
-              <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
-                <MessageCircle className="w-7 h-7 text-green-600" />
-              </div>
-              <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
-            </div>
-
-            {/* Text — positioned top-right, always visible */}
-            <div className="relative z-30 md:ml-auto md:text-right md:max-w-[46%] flex flex-col items-end">
-              <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight leading-tight">
-                Recuperação via{" "}
-                <span className="text-green-500">WhatsApp</span>
-              </h3>
-              <p className="text-muted-foreground text-sm md:text-base md:ml-auto font-medium leading-relaxed">
-                Transforme carrinhos abandonados e mensalidades atrasadas em dinheiro limpo. Disparos com alta taxa de conversão.
-              </p>
-            </div>
-
-            {/* Phone mockup — properly sized, anchored bottom-left, NOT covering text */}
-            <motion.div 
-              initial={{ scale: 0.8, opacity: 0, y: 30 }}
-              animate={isCard1InView ? { 
-                opacity: 1, 
-                scale: 1,
-                y: [0, -8, 0] 
-              } : {}}
-              transition={{ 
-                y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                scale: { duration: 0.8, type: "spring", stiffness: 100 },
-                opacity: { duration: 0.6 }
-              } as any}
-              className="absolute bottom-14 left-[4%] md:bottom-12 md:left-[6%] z-20"
+      {/* ── Seção de soluções ── */}
+      <section
+        ref={containerRef}
+        className="py-32 w-full bg-[#FAFAFA] relative overflow-hidden"
+        id="solucoes"
+      >
+        <div className="container px-4 md:px-6 mx-auto relative z-10">
+          <div className="flex flex-col items-center justify-center text-center mb-16 md:mb-24 space-y-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-2 text-primary uppercase tracking-widest text-sm font-semibold"
             >
-              <WhatsAppMockup isActive={chatActive} />
-              <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/20 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
+              <Plus className="w-4 h-4" />
+              Nossas Soluções
+              <Plus className="w-4 h-4" />
             </motion.div>
+            <AnimatedTitle />
           </div>
 
-          <div className="md:col-span-5 flex flex-col gap-6">
-            {/* Card 2: Desenvolvimento Premium */}
-            <div ref={card2Ref} className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex-1 min-h-[250px]">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] group-hover:bg-primary/20 transition-colors duration-500" />
-              
-              <div className="relative z-10 flex justify-between items-start">
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={isCard2InView ? { scale: 1, opacity: 1 } : {}}
-                  transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
-                  className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10"
-                >
-                  <Code2 className="w-6 h-6 text-primary" />
-                </motion.div>
+          <motion.div
+            style={{ scale, opacity }}
+            className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
+          >
+            {/* Card 1: WhatsApp */}
+            <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[720px]">
+              <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
+              <div className="relative z-10 flex justify-between items-start mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
+                  <MessageCircle className="w-7 h-7 text-green-600" />
+                </div>
+                <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
               </div>
-
-              {/* 3D floating layers visual */}
+              <div className="relative z-30 md:ml-auto md:text-right md:max-w-[46%] flex flex-col items-end">
+                <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight leading-tight">
+                  Recuperação via <span className="text-green-500">WhatsApp</span>
+                </h3>
+                <p className="text-muted-foreground text-sm md:text-base md:ml-auto font-medium leading-relaxed">
+                  Transforme carrinhos abandonados e mensalidades atrasadas em dinheiro limpo.
+                </p>
+              </div>
               <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={isCard2InView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.25 }}
-                className="relative z-10 mt-4"
+                initial={{ scale: 0.8, opacity: 0, y: 30 }}
+                animate={isCard1InView ? { opacity: 1, scale: 1, y: [0, -8, 0] } : {}}
+                transition={{
+                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                  scale: { duration: 0.8, type: "spring", stiffness: 100 },
+                  opacity: { duration: 0.6 }
+                } as any}
+                className="absolute bottom-14 left-[4%] md:bottom-12 md:left-[6%] z-20"
               >
-                <Premium3DVisual isInView={isCard2InView} />
+                <WhatsAppMockup isActive={chatActive} />
+                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/20 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
               </motion.div>
+            </div>
 
-              <div className="relative z-10 mt-auto pt-6">
-                <motion.h3
-                  initial={{ opacity: 0, y: 10 }}
+            <div className="md:col-span-5 flex flex-col gap-6">
+              {/* Card 2: Desenvolvimento Premium */}
+              <div ref={card2Ref} className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex-1 min-h-[250px]">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] group-hover:bg-primary/20 transition-colors duration-500" />
+                <div className="relative z-10 flex justify-between items-start">
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={isCard2InView ? { scale: 1, opacity: 1 } : {}}
+                    transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
+                    className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10"
+                  >
+                    <Code2 className="w-6 h-6 text-primary" />
+                  </motion.div>
+                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
                   animate={isCard2InView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="text-2xl font-bold text-foreground mb-2 tracking-tight"
+                  transition={{ duration: 0.5, delay: 0.25 }}
+                  className="relative z-10 mt-4"
                 >
-                  Desenvolvimento Premium
-                </motion.h3>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={isCard2InView ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 0.55 }}
-                  className="text-muted-foreground text-base font-medium"
-                >
-                  Landing pages, sites e e-commerces ultra rápidos.
-                </motion.p>
-              </div>
-            </div>
-
-            {/* Card 3: Resultados Comprovados */}
-            <div ref={card3Ref} className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-foreground text-white border border-gray-800 p-8 shadow-2xl hover:shadow-[0_20px_60px_rgba(15,23,42,0.4)] transition-all duration-500 flex-1 min-h-[250px]">
-              <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] group-hover:bg-blue-500/30 transition-colors duration-500" />
-              
-              <div className="relative z-10 flex justify-between items-start">
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={isCard3InView ? { scale: 1, opacity: 1 } : {}}
-                  transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
-                  className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 backdrop-blur-md"
-                >
-                  <TrendingUp className="w-6 h-6 text-white" />
+                  <Premium3DVisual isInView={isCard2InView} />
                 </motion.div>
-                <ArrowUpRight className="w-6 h-6 text-gray-500 group-hover:text-primary transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
+                <div className="relative z-10 mt-auto pt-6">
+                  <motion.h3
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={isCard2InView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    className="text-2xl font-bold text-foreground mb-2 tracking-tight"
+                  >Desenvolvimento Premium</motion.h3>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={isCard2InView ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.5, delay: 0.55 }}
+                    className="text-muted-foreground text-base font-medium"
+                  >Landing pages, sites e e-commerces ultra rápidos.</motion.p>
+                </div>
               </div>
 
-              {/* Results showcase */}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={isCard3InView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="relative z-10"
-              >
-                <ResultsShowcase isInView={isCard3InView} />
-              </motion.div>
-
-              <div className="relative z-10 mt-auto pt-4">
-                <motion.h3
-                  initial={{ opacity: 0, y: 10 }}
+              {/* Card 3: Resultados */}
+              <div ref={card3Ref} className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-foreground text-white border border-gray-800 p-8 shadow-2xl hover:shadow-[0_20px_60px_rgba(15,23,42,0.4)] transition-all duration-500 flex-1 min-h-[250px]">
+                <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] group-hover:bg-blue-500/30 transition-colors duration-500" />
+                <div className="relative z-10 flex justify-between items-start">
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={isCard3InView ? { scale: 1, opacity: 1 } : {}}
+                    transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
+                    className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 backdrop-blur-md"
+                  >
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </motion.div>
+                  <ArrowUpRight className="w-6 h-6 text-gray-500 group-hover:text-primary transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
+                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
                   animate={isCard3InView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.45 }}
-                  className="text-2xl font-bold text-white mb-2 tracking-tight"
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="relative z-10"
                 >
-                  Resultados Reais
-                </motion.h3>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={isCard3InView ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 0.6 }}
-                  className="text-gray-400 text-base font-medium"
-                >
-                  Números que comprovam o impacto da Vincere nos nossos clientes.
-                </motion.p>
+                  <ResultsShowcase isInView={isCard3InView} />
+                </motion.div>
+                <div className="relative z-10 mt-auto pt-4">
+                  <motion.h3
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={isCard3InView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.45 }}
+                    className="text-2xl font-bold text-white mb-2 tracking-tight"
+                  >Resultados Reais</motion.h3>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={isCard3InView ? { opacity: 1 } : {}}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                    className="text-gray-400 text-base font-medium"
+                  >Números que comprovam o impacto da Vincere nos nossos clientes.</motion.p>
+                </div>
               </div>
             </div>
-          </div>
-
-        </motion.div>
-      </div>
-    </section>
+          </motion.div>
+        </div>
+      </section>
+    </>
   );
 };
 
