@@ -29,22 +29,6 @@ const projects = [
     video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
     color: "#f8f8f8",
     mockup: "/images/ps_mockup.png"
-  },
-  {
-    id: "04",
-    title: "IKKS",
-    category: "Fashion Tech",
-    thumb: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200",
-    video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
-    color: "#dfe6e5",
-  },
-  {
-    id: "05",
-    title: "Radio France",
-    category: "Digital Media",
-    thumb: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=1200",
-    video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
-    color: "#f2f2f2",
   }
 ];
 
@@ -64,14 +48,8 @@ const ProjectGridHybrid = () => {
         </div>
 
         {/* Row 2: PS Essentials (Full Width Large Card) */}
-        <div className="w-full mb-6">
+        <div className="w-full">
           <ProjectGridCard project={projects[2]} isExtraLarge />
-        </div>
-
-        {/* Row 3: IKKS + Radio France (Vertical stack with parallax) */}
-        <div className="flex flex-col gap-12 md:gap-24">
-          <ProjectGridCard project={projects[3]} isScrollable index={0} />
-          <ProjectGridCard project={projects[4]} isScrollable index={1} />
         </div>
       </div>
     </section>

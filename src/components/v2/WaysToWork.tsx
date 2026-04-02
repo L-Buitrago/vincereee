@@ -513,6 +513,57 @@ const MiniDashboardAnimation = () => {
 };
 
 
+// ─── Shared Helper: Rolling Text Component (Same as Hero "vendas") ────────────
+const RollingText = ({ text, delay = 0, className = "" }: { text: string; delay?: number; className?: string }) => {
+  return (
+    <motion.span 
+      initial="initial"
+      whileHover="hover"
+      whileInView="reveal"
+      viewport={{ once: true }}
+      className={`relative inline-flex cursor-default overflow-hidden ${className}`}
+    >
+      <span className="relative flex whitespace-nowrap">
+        {text.split("").map((char, i) => (
+          <span key={i} className="relative inline-block">
+            <motion.span
+              variants={{
+                initial: { y: 0, opacity: 1 },
+                hover: { y: "-110%", opacity: 0 },
+                reveal: { y: 0, opacity: 1 }
+              }}
+              initial={{ y: "100%", opacity: 0 }}
+              transition={{ 
+                duration: 0.5, 
+                delay: delay + i * 0.03, 
+                ease: [0.33, 1, 0.68, 1] 
+              }}
+              className="inline-block text-gradient relative z-10"
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+            <motion.span
+              variants={{
+                initial: { y: "110%", opacity: 0 },
+                hover: { y: 0, opacity: 1 }
+              }}
+              transition={{ 
+                duration: 0.5, 
+                delay: i * 0.03, 
+                ease: [0.33, 1, 0.68, 1] 
+              }}
+              className="absolute top-0 left-0 text-gradient-alt"
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+          </span>
+        ))}
+      </span>
+    </motion.span>
+  );
+};
+
+
 // ═════════════════════════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═════════════════════════════════════════════════════════════════════════════════
@@ -528,18 +579,42 @@ const WaysToWork = () => {
       </div>
 
       <div className="container mx-auto px-4 md:px-24 relative">
-        {/* Big Serif Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease: [0.77, 0, 0.18, 1] }}
-          className="mb-20 text-center"
-        >
-          <h2 className="text-6xl md:text-[10vw] font-serif italic text-foreground/90 tracking-tighter leading-[0.9]">
-            POR QUE <br /> A VINCERE<br /> É DIFERENTE
-          </h2>
-        </motion.div>
+        {/* Large Static Title */}
+        <div className="mb-20 text-center">
+          <div className="flex flex-col items-center">
+            <motion.span 
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 0.4, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="block italic font-serif text-2xl md:text-[2vw] lowercase mb-6 font-light tracking-normal"
+            >
+              por que
+            </motion.span>
+            
+            <h2 className="font-extrabold tracking-tight leading-[0.9] text-foreground font-sans uppercase">
+              <motion.span 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="block text-5xl md:text-7xl lg:text-8xl mb-2"
+              >
+                a Vincere é
+              </motion.span>
+              
+              <motion.span 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="block text-6xl md:text-8xl lg:text-[10vw] text-gradient-alt bg-clip-text"
+              >
+                Diferente
+              </motion.span>
+            </h2>
+          </div>
+        </div>
 
         {/* ── Top Row: 3 Cards ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6 perspective-1000">
