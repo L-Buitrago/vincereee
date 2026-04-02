@@ -1,27 +1,24 @@
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, animate } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { BarChart3, Users, Clock, CheckCircle2, AlertCircle, Search, Wifi, ArrowUpRight, TrendingUp, TrendingDown } from "lucide-react";
 
-// Animated counter hook
+// Animated counter hook using Framer Motion's animate function
 const useCounter = (end: number, duration: number = 2000, inView: boolean = false) => {
   const [count, setCount] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    if (!inView || hasStarted) return;
-    setHasStarted(true);
+    if (!inView) return;
     
-    const startTime = Date.now();
-    const timer = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * end * 10) / 10);
-      if (progress >= 1) clearInterval(timer);
-    }, 16);
-    return () => clearInterval(timer);
-  }, [inView, end, duration, hasStarted]);
+    const controls = animate(0, end, {
+      duration: duration / 1000,
+      ease: [0.33, 1, 0.68, 1], // Custom ease-out
+      onUpdate(value) {
+        setCount(value);
+      }
+    });
+    
+    return () => controls.stop();
+  }, [inView, end, duration]);
 
   return count;
 };
@@ -41,9 +38,9 @@ const SaasDashboardReveal = () => {
   const rotateX = useTransform(scrollYProgress, [0, 0.2], [8, 0]);
 
   // Animated counter values
-  const totalRecebido = useCounter(5420, 2000, isInView);
-  const novosLeads = useCounter(42, 1500, isInView);
-  const percentGrowth = useCounter(12, 1800, isInView);
+  const totalRecebido = useCounter(5234, 2000, isInView);
+  const novosLeads = useCounter(41, 1500, isInView);
+  const percentGrowth = useCounter(14, 1800, isInView);
 
   return (
     <section ref={containerRef} className="py-32 bg-white relative overflow-hidden" id="plataforma">
@@ -131,7 +128,7 @@ const SaasDashboardReveal = () => {
                     </div>
                     <div className="flex items-center gap-1 text-[10px] text-green-500 font-bold">
                       <ArrowUpRight className="w-3 h-3" />
-                      +{percentGrowth}% <span className="text-muted-foreground ml-1 font-medium">vs. ontem</span>
+                      +{Math.floor(percentGrowth)}% <span className="text-muted-foreground ml-1 font-medium">vs. ontem</span>
                     </div>
                   </div>
 
@@ -161,7 +158,7 @@ const SaasDashboardReveal = () => {
                     </div>
                   </div>
                   
-                  <div className="relative h-32 w-full pt-4">
+                  <div className="relative h-48 w-full pt-4">
                     {/* Y-Axis Labels */}
                     <div className="absolute left-[-20px] top-4 bottom-8 flex flex-col justify-between text-[8px] font-bold text-muted-foreground/40">
                       <span>R$ 10k</span>
@@ -169,37 +166,44 @@ const SaasDashboardReveal = () => {
                       <span>R$ 0</span>
                     </div>
 
-                    <svg viewBox="0 0 280 70" className="w-full h-full overflow-visible" preserveAspectRatio="none">
+                    <svg viewBox="0 0 280 100" className="w-full h-full overflow-visible" preserveAspectRatio="none">
                       <defs>
                         <linearGradient id="upwardChartGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="hsl(217 91% 60%)" stopOpacity="0.25" />
+                          <stop offset="0%" stopColor="hsl(217 91% 60%)" stopOpacity="0.4" />
                           <stop offset="100%" stopColor="hsl(217 91% 60%)" stopOpacity="0" />
                         </linearGradient>
+                        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feGaussianBlur stdDeviation="2.5" result="blur" />
+                          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
                       </defs>
 
                       {/* Grid Lines */}
                       <line x1="0" y1="0" x2="280" y2="0" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
-                      <line x1="0" y1="35" x2="280" y2="35" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
-                      <line x1="0" y1="70" x2="280" y2="70" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
+                      <line x1="0" y1="50" x2="280" y2="50" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
+                      <line x1="0" y1="100" x2="280" y2="100" stroke="currentColor" strokeWidth="0.5" className="text-gray-100" />
 
                       {/* Upward Trend Line */}
                       <motion.path
-                        d="M 0,65 C 40,55 80,45 120,48 C 160,35 200,25 240,15 C 260,10 280,5 280,5"
+                        d="M 0,90 C 20,95 40,85 60,88 C 90,75 120,80 150,60 C 180,45 220,15 280,5"
                         fill="none"
                         stroke="hsl(217 91% 60%)"
-                        strokeWidth="3.5"
+                        strokeWidth="5"
                         strokeLinecap="round"
-                        initial={{ pathLength: 0 }}
-                        animate={isInView ? { pathLength: 1 } : {}}
-                        transition={{ duration: 2, ease: "easeOut" }}
+                        strokeLinejoin="round"
+                        filter="url(#glow)"
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        animate={isInView ? { pathLength: 1, opacity: 1 } : {}}
+                        transition={{ duration: 2.8, ease: "easeInOut" }}
                       />
                       {/* Upward Trend Area */}
                       <motion.path
-                        d="M 0,65 C 40,55 80,45 120,48 C 160,35 200,25 240,15 C 260,10 280,5 280,5 L 280,70 L 0,70 Z"
+                        d="M 0,90 C 20,95 40,85 60,88 C 90,75 120,80 150,60 C 180,45 220,15 280,5 L 280,100 L 0,100 Z"
                         fill="url(#upwardChartGrad)"
-                        initial={{ opacity: 0 }}
-                        animate={isInView ? { opacity: 1 } : {}}
-                        transition={{ duration: 1.5, delay: 1 }}
+                        initial={{ opacity: 0, scaleY: 0 }}
+                        animate={isInView ? { opacity: 1, scaleY: 1 } : {}}
+                        style={{ originY: 1 }}
+                        transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
                       />
 
                       {/* Data Point Tooltip (Visual) */}
@@ -207,15 +211,15 @@ const SaasDashboardReveal = () => {
                         <motion.g
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 2, duration: 0.5 }}
+                          transition={{ delay: 2.5, duration: 0.6, type: "spring", stiffness: 200 }}
                         >
-                          <circle cx="280" cy="5" r="4" fill="hsl(217 91% 60%)" className="drop-shadow-sm" />
-                          <circle cx="280" cy="5" r="12" fill="hsl(217 91% 60%)" opacity="0.15">
-                            <animate attributeName="r" values="8;16;8" dur="2s" repeatCount="indefinite" />
-                            <animate attributeName="opacity" values="0.15;0;0.15" dur="2s" repeatCount="indefinite" />
+                          <circle cx="280" cy="5" r="6" fill="hsl(217 91% 60%)" className="drop-shadow-md" />
+                          <circle cx="280" cy="5" r="16" fill="hsl(217 91% 60%)" opacity="0.25">
+                            <animate attributeName="r" values="10;20;10" dur="2s" repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.25;0;0.25" dur="2s" repeatCount="indefinite" />
                           </circle>
-                          <rect x="250" y="-15" width="30" height="14" rx="4" fill="black" />
-                          <text x="265" y="-5" textAnchor="middle" fontSize="7" fill="white" fontWeight="bold">+12%</text>
+                          <rect x="240" y="-25" width="40" height="18" rx="6" fill="black" />
+                          <text x="260" y="-13" textAnchor="middle" fontSize="9" fill="white" fontWeight="900">+{Math.floor(percentGrowth)}%</text>
                         </motion.g>
                       )}
                     </svg>
