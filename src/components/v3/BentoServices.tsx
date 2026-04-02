@@ -46,34 +46,47 @@ const DeliveryDiagnostic = () => {
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top 80%",
-        end: "bottom 40%",
-        scrub: 1, // Torna o efeito 100% amarrado ao scroll da página
+        toggleActions: "play none none reverse", // Joga a animação quando entra, reverte se subir demais
       }
     });
 
     tl.fromTo(".diag-title", 
       { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5, ease: "none" }
+      { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }
     );
 
-    // Linha azul preenchendo da esquerda pra direita
+    // Linha azul preenchendo suavemente
     tl.fromTo(".diag-line",
       { scaleX: 0, transformOrigin: "left center" },
-      { scaleX: 1, duration: 4, ease: "none" }
+      { scaleX: 1, duration: 1.2, ease: "power1.inOut" },
+      "-=0.4"
     );
 
-    // Os quadrados sobem e aparecem
+    // Os quadrados aparecendo um por um lentamente (estilo build-up)
     tl.fromTo(".diag-box",
-      { y: 60, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.5, stagger: 1, ease: "power1.out" },
-      "-=3.5" // inicia enquanto a linha ainda está sendo desenhada
+      { y: 40, opacity: 0, scale: 0.9 },
+      { 
+        y: 0, 
+        opacity: 1, 
+        scale: 1, 
+        duration: 0.8, 
+        stagger: 0.3, // Intervalo entre cada caixa
+        ease: "back.out(1.4)" 
+      },
+      "-=0.8"
     );
 
-    // As bolinhas azuis com números aparecem
+    // As bolinhas azuis surgindo com um toque de elasticidade
     tl.fromTo(".diag-badge",
       { scale: 0, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.5, stagger: 1, ease: "back.out(2)" },
-      "-=3.5"
+      { 
+        scale: 1, 
+        opacity: 1, 
+        duration: 0.5, 
+        stagger: 0.3, 
+        ease: "back.out(2)" 
+      },
+      "-=1.1" // Sincronizado com as caixas
     );
 
   }, { scope: containerRef });
