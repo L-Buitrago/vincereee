@@ -99,74 +99,140 @@ const CodigoAnim = ({ progress }: { progress: number }) => {
   const visible = Math.floor(progress * totalChars);
   let filled = 0;
   return (
-    <svg viewBox="0 0 80 80" fill="none" className="w-full h-full">
+    <svg viewBox="0 0 80 80" fill="none" className="w-full h-full" style={{ overflow: "hidden" }}>
+      {/* Clip path to keep everything inside */}
+      <defs>
+        <clipPath id="terminal-clip">
+          <rect x="4" y="6" width="72" height="68" rx="6" />
+        </clipPath>
+      </defs>
       <rect x="4" y="6" width="72" height="68" rx="6" fill="#0f172a" />
       <rect x="4" y="6" width="72" height="14" rx="6" fill="#1e293b" />
       <rect x="4" y="14" width="72" height="6" fill="#1e293b" />
       <circle cx="13" cy="13" r="2.5" fill="#ef4444" />
       <circle cx="21" cy="13" r="2.5" fill="#f59e0b" />
       <circle cx="29" cy="13" r="2.5" fill="#22c55e" />
-      {lines.map((line, li) => {
-        const start = filled;
-        filled += line.text.length;
-        const chars = Math.max(0, Math.min(line.text.length, visible - start));
+      {/* All code text clipped inside terminal */}
+      <g clipPath="url(#terminal-clip)">
+        {lines.map((line, li) => {
+          const start = filled;
+          filled += line.text.length;
+          const chars = Math.max(0, Math.min(line.text.length, visible - start));
+          return (
+            <text key={li} x="9" y={29 + li * 10} fontSize="7" fontFamily="monospace" fill={line.color}>
+              {line.text.slice(0, chars)}
+            </text>
+          );
+        })}
+        {/* Cursor */}
+        {progress < 1 && (
+          <rect
+            x={9 + (visible % 20) * 4.2}
+            y={22 + Math.min(Math.floor(visible / 20), 4) * 10}
+            width="2" height="7" fill="#60a5fa" fillOpacity={0.9}
+          />
+        )}
+      </g>
+    </svg>
+  );
+};
+
+/** STEP 4: Agente de suporte — silhueta fiel ao ícone de referência */
+const SuporteAnim = ({ progress }: { progress: number }) => {
+  // Fase 1 (0 → 0.45): corpo + cabeça surgem (fade-in + sobe)
+  // Fase 2 (0.38 → 0.72): headset + mic aparecem
+  // Fase 3 (0.65 → 1.0): ondas de sinal pulsam do microfone
+  const bodyP   = Math.min(1, progress / 0.45);
+  const slideY  = (1 - bodyP) * 14;
+  const headsetP = progress > 0.38 ? Math.min(1, (progress - 0.38) / 0.34) : 0;
+  const waveP    = progress > 0.65 ? Math.min(1, (progress - 0.65) / 0.35) : 0;
+
+  return (
+    <svg viewBox="0 0 100 100" fill="none" className="w-full h-full">
+
+      {/* ── Ondas de sinal — surgem do microfone ── */}
+      {waveP > 0 && [0, 1, 2].map((i) => {
+        const show = waveP > i * 0.28;
+        if (!show) return null;
+        const r = 5 + i * 6;
+        const op = ((waveP - i * 0.28) / 0.72) * 0.85;
         return (
-          <text key={li} x="10" y={30 + li * 11} fontSize="7.5" fontFamily="monospace" fill={line.color}>
-            {line.text.slice(0, chars)}
-          </text>
+          <path
+            key={i}
+            d={`M ${77 + r * 0.5} ${56 - r * 0.5} A ${r} ${r} 0 0 1 ${77 + r * 0.5} ${56 + r * 0.5}`}
+            stroke="#2563eb" strokeWidth="2" strokeLinecap="round"
+            strokeOpacity={op} fill="none"
+          />
         );
       })}
-      {/* Cursor */}
-      {progress < 1 && (
-        <rect x={10 + (visible % 23) * 4.5} y={30 + Math.floor(visible / 23) * 11 - 8}
-          width="2" height="9" fill="#60a5fa" fillOpacity={0.9} />
-      )}
+
+      {/* ── Corpo (ombros + pescoço) ── */}
+      <g opacity={bodyP} transform={`translate(0, ${slideY})`}>
+
+        {/* Ombros — arco largo estilo referência */}
+        <path
+          d="M 8 96 C 8 76 18 67 30 63 Q 50 57 70 63 C 82 67 92 76 92 96"
+          fill="#dbeafe" stroke="#1d4ed8" strokeWidth="3" strokeLinejoin="round"
+        />
+
+        {/* Pescoço / colarinho */}
+        <path
+          d="M 42 55 C 42 60 44 64 50 65 C 56 64 58 60 58 55"
+          fill="#dbeafe" stroke="#1d4ed8" strokeWidth="2.5" strokeLinecap="round"
+        />
+
+        {/* Cabeça — oval levemente alongada */}
+        <ellipse
+          cx="50" cy="36" rx="20" ry="19"
+          fill="#dbeafe" stroke="#1d4ed8" strokeWidth="3"
+        />
+
+        {/* Linha de cabelo / topo da cabeça (leve diferenciação) */}
+        <path
+          d="M 30 30 C 30 14 70 14 70 30"
+          fill="#bfdbfe" stroke="#1d4ed8" strokeWidth="2"
+        />
+      </g>
+
+      {/* ── Headset ── */}
+      <g opacity={headsetP} transform={`translate(0, ${slideY})`}>
+
+        {/* Arco superior do headset */}
+        <path
+          d="M 26 36 C 26 10 74 10 74 36"
+          stroke="#1d4ed8" strokeWidth="3" strokeLinecap="round" fill="none"
+        />
+
+        {/* Concha esquerda (ear cup) */}
+        <rect x="18" y="31" width="11" height="16" rx="5.5"
+          fill="#2563eb" stroke="#1d4ed8" strokeWidth="2"
+        />
+
+        {/* Concha direita (ear cup) */}
+        <rect x="71" y="31" width="11" height="16" rx="5.5"
+          fill="#2563eb" stroke="#1d4ed8" strokeWidth="2"
+        />
+
+        {/* Braço do microfone — curva suave saindo da concha direita */}
+        <path
+          d="M 75 46 Q 79 54 76 60"
+          stroke="#1d4ed8" strokeWidth="2.5" strokeLinecap="round" fill="none"
+        />
+
+        {/* Cápsula do microfone */}
+        <ellipse cx="75" cy="63" rx="5" ry="4"
+          fill="#2563eb" stroke="#1d4ed8" strokeWidth="2"
+        />
+      </g>
+
     </svg>
   );
 };
 
-/** STEP 4: Mãos se unindo + pulso de suporte */
-const SuporteAnim = ({ progress }: { progress: number }) => {
-  const gap = (1 - progress) * 22;
-  const heartOpacity = progress > 0.82 ? (progress - 0.82) / 0.18 : 0;
-  return (
-    <svg viewBox="0 0 80 80" fill="none" className="w-full h-full">
-      {/* Ondas (pulso) */}
-      {[12, 18, 24, 30].map((r, i) => (
-        <circle
-          key={i} cx="40" cy="44" r={r}
-          stroke="#2563eb" strokeWidth="1"
-          strokeOpacity={progress > i * 0.2 ? (0.6 - i * 0.12) * progress : 0}
-          strokeDasharray="5 3"
-        />
-      ))}
-      {/* Mão esquerda */}
-      <g transform={`translate(${-gap}, 0)`}>
-        <path d="M24 52 C20 50 18 44 20 36 C21 31 25 30 28 33 L31 46 L33 52"
-          stroke="#1d4ed8" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-        <path d="M28 33 L29 27 C29 25 33 25 33 27 L33 38"
-          stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round" fill="none" />
-        <path d="M33 27 L33 24 C33 22 37 22 37 24 L37 36"
-          stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round" fill="none" />
-      </g>
-      {/* Mão direita (espelhada) */}
-      <g transform="translate(80,0) scale(-1,1)">
-        <g transform={`translate(${-gap}, 0)`}>
-          <path d="M24 52 C20 50 18 44 20 36 C21 31 25 30 28 33 L31 46 L33 52"
-            stroke="#1d4ed8" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-          <path d="M28 33 L29 27 C29 25 33 25 33 27 L33 38"
-            stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round" fill="none" />
-          <path d="M33 27 L33 24 C33 22 37 22 37 24 L37 36"
-            stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round" fill="none" />
-        </g>
-      </g>
-      {/* Coração quando as mãos se juntam */}
-      <text x="33" y="48" fontSize="14" fill="#3b82f6" fillOpacity={heartOpacity}>❤</text>
-    </svg>
-  );
-};
+
 
 // ─── Step Card individual ─────────────────────────────────────────────────────
+
 const StepCard = ({
   id, title, desc, progress, isActive, children
 }: {
@@ -174,31 +240,31 @@ const StepCard = ({
   progress: number; isActive: boolean; children: React.ReactNode;
 }) => (
   <div className={`
-    relative flex flex-col items-center text-center rounded-[1.8rem] p-6 md:p-8
+    relative flex flex-col items-center text-center rounded-[2rem] p-6 md:p-10
     border transition-all duration-700
     ${isActive
-      ? "bg-white border-blue-200 shadow-[0_20px_60px_rgba(37,99,235,0.14)] scale-[1.02]"
-      : "bg-white/60 border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.04)] scale-[0.97] opacity-50"
+      ? "bg-white border-blue-200 shadow-[0_20px_60px_rgba(37,99,235,0.16)] scale-[1.03]"
+      : "bg-white/60 border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.04)] scale-[0.96] opacity-40"
     }
   `}>
     {/* Badge */}
-    <div className="absolute -top-4 -right-3 w-9 h-9 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-sm z-20">
+    <div className="absolute -top-4 -right-3 w-10 h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.5)] flex items-center justify-center text-white font-black text-sm z-20">
       {id}
     </div>
 
     {/* Icon box animado */}
-    <div className="w-20 h-20 md:w-24 md:h-24 mb-5 rounded-[1.4rem] bg-gradient-to-br from-blue-50 via-white to-blue-50 border border-blue-100 flex items-center justify-center shadow-inner p-3">
+    <div className="w-32 h-32 md:w-40 md:h-40 mb-6 rounded-[1.8rem] bg-gradient-to-br from-blue-50 via-white to-blue-50 border border-blue-100 flex items-center justify-center shadow-inner p-3 overflow-hidden">
       {children}
     </div>
 
-    <h4 className="text-base md:text-lg font-bold text-foreground mb-2">{title}</h4>
-    <p className="text-muted-foreground text-[12px] md:text-sm font-medium leading-relaxed max-w-[200px]">
+    <h4 className="text-base md:text-xl font-bold text-foreground mb-2">{title}</h4>
+    <p className="text-muted-foreground text-[12px] md:text-sm font-medium leading-relaxed max-w-[210px]">
       {desc}
     </p>
 
     {/* Barra ativa */}
     {isActive && (
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-blue-600 transition-all duration-500" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full bg-blue-600 transition-all duration-500" />
     )}
   </div>
 );
