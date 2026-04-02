@@ -126,10 +126,7 @@ const SaasDashboardReveal = () => {
                     <div className="text-3xl font-black text-foreground">
                       R$ {Math.floor(totalRecebido).toLocaleString("pt-BR")}
                     </div>
-                    <div className="flex items-center gap-1 text-[10px] text-green-500 font-bold">
-                      <ArrowUpRight className="w-3 h-3" />
-                      +{Math.floor(percentGrowth)}% <span className="text-muted-foreground ml-1 font-medium">vs. ontem</span>
-                    </div>
+
                   </div>
 
                   <div className="p-5 rounded-3xl bg-white border border-gray-100 space-y-3 relative overflow-hidden text-gradient-container">
@@ -188,10 +185,9 @@ const SaasDashboardReveal = () => {
                         d="M 0,90 C 20,95 40,85 60,88 C 90,75 120,80 150,60 C 180,45 220,15 280,5"
                         fill="none"
                         stroke="hsl(217 91% 60%)"
-                        strokeWidth="5"
+                        strokeWidth="1.8"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        filter="url(#glow)"
                         initial={{ pathLength: 0, opacity: 0 }}
                         animate={isInView ? { pathLength: 1, opacity: 1 } : {}}
                         transition={{ duration: 2.8, ease: "easeInOut" }}
@@ -206,20 +202,18 @@ const SaasDashboardReveal = () => {
                         transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
                       />
 
-                      {/* Data Point Tooltip (Visual) */}
+                      {/* Data Point (Visual only, no tooltip) */}
                       {isInView && (
                         <motion.g
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 2.5, duration: 0.6, type: "spring", stiffness: 200 }}
                         >
-                          <circle cx="280" cy="5" r="6" fill="hsl(217 91% 60%)" className="drop-shadow-md" />
-                          <circle cx="280" cy="5" r="16" fill="hsl(217 91% 60%)" opacity="0.25">
-                            <animate attributeName="r" values="10;20;10" dur="2s" repeatCount="indefinite" />
+                          <circle cx="280" cy="5" r="3.5" fill="hsl(217 91% 60%)" className="drop-shadow-md" />
+                          <circle cx="280" cy="5" r="10" fill="hsl(217 91% 60%)" opacity="0.25">
+                            <animate attributeName="r" values="6;12;6" dur="2s" repeatCount="indefinite" />
                             <animate attributeName="opacity" values="0.25;0;0.25" dur="2s" repeatCount="indefinite" />
                           </circle>
-                          <rect x="240" y="-25" width="40" height="18" rx="6" fill="black" />
-                          <text x="260" y="-13" textAnchor="middle" fontSize="9" fill="white" fontWeight="900">+{Math.floor(percentGrowth)}%</text>
                         </motion.g>
                       )}
                     </svg>

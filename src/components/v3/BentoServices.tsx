@@ -165,9 +165,9 @@ const Premium3DVisual = ({ isInView }: { isInView: boolean }) => {
 // Results showcase for the third card
 const ResultsShowcase = ({ isInView }: { isInView: boolean }) => {
   const results = [
-    { value: 47, suffix: "%", label: "Conversão média", color: "text-blue-400", up: true },
-    { value: 3.2, suffix: "x", label: "Retorno sobre investimento", color: "text-green-400", up: true },
-    { value: 340, suffix: "%", label: "Aumento em leads qualificados", color: "text-primary", up: true },
+    { value: 50, suffix: "+", label: "Projetos entregues", color: "text-blue-400", up: true },
+    { value: 30, suffix: "+", label: "Clientes ativos", color: "text-green-400", up: true },
+    { value: 96, suffix: "%", label: "Satisfação garantida", color: "text-primary", up: true },
   ];
 
   const [vals, setVals] = useState(results.map(() => 0));
@@ -218,12 +218,13 @@ const AnimatedTitle = () => {
 
   const words = [
     { text: "A", em: false },
-    { text: "tríade", em: false },
+    { text: "solução", em: false },
     { text: "perfeita", em: true },
     { text: "para", em: false },
     { text: "o", em: false },
     { text: "seu", em: false },
-    { text: "negócio.", em: true },
+    { text: "negócio", em: true },
+    { text: "com", em: false },
   ];
 
   return (
@@ -320,18 +321,18 @@ const BentoServices = () => {
             </div>
 
             {/* Text — now near the top */}
-            <div className="relative z-10 md:ml-auto md:text-right md:max-w-[52%] flex flex-col items-end">
+            <div className="relative z-10 md:ml-auto md:text-right md:max-w-[48%] flex flex-col items-end">
               <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight leading-tight">
                 Recuperação via{" "}
                 <span className="text-green-500">WhatsApp</span>
               </h3>
-              <p className="text-muted-foreground text-base md:ml-auto font-medium leading-relaxed">
+              <p className="text-muted-foreground text-sm md:text-base md:ml-auto font-medium leading-relaxed">
                 Transforme carrinhos abandonados e mensalidades atrasadas em dinheiro limpo. Disparos com alta taxa de conversão.
               </p>
             </div>
 
-            {/* Phone mockup — bigger and more centred-left */}
-            <div className="absolute bottom-0 left-8 md:left-12 z-20 transition-transform duration-700 scale-[1.25] md:scale-[1.5] origin-bottom-left">
+            {/* Phone mockup — bigger but moved left to avoid overlap */}
+            <div className="absolute bottom-[-40px] md:bottom-[-30px] left-[-10px] md:left-0 z-20 transition-transform duration-700 scale-[1.2] md:scale-[1.4] origin-bottom-left">
               <WhatsAppMockup isActive={chatActive} />
               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-full h-12 bg-green-500/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             </div>
