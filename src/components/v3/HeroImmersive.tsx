@@ -84,10 +84,10 @@ const HeroImmersive = () => {
               <motion.span 
                 initial="initial"
                 whileHover="hover"
-                className="relative inline-flex cursor-default overflow-hidden"
+                className="relative inline-flex cursor-default"
               >
                 {"vendas.".split("").map((char, i) => (
-                  <span key={i} className="relative inline-block overflow-hidden h-[1.10em] pt-[0.05em]">
+                  <span key={i} className="relative inline-block overflow-hidden h-[1.25em] -mt-[0.1em] pt-[0.1em] px-[0.03em]">
                     <motion.span
                       variants={{
                         initial: { y: 0 },
@@ -112,7 +112,7 @@ const HeroImmersive = () => {
                         delay: i * 0.03, 
                         ease: [0.33, 1, 0.68, 1] 
                       }}
-                      className="absolute top-[0.05em] left-0 text-gradient-alt"
+                      className="absolute top-[0.1em] left-[0.03em] text-gradient-alt"
                     >
                       {char === " " ? "\u00A0" : char}
                     </motion.span>
