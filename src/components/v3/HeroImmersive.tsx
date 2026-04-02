@@ -80,10 +80,45 @@ const HeroImmersive = () => {
           >
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] text-foreground">
               Acelere a sua <br className="hidden md:block" />
-              <span className="relative inline-block text-gradient pb-2">
-                máquina de vendas.
-                <div className="absolute bottom-0 left-0 w-full h-[0.15em] bg-primary/20 -z-10 -rotate-1 origin-left"></div>
-              </span>
+              máquina de{" "}
+              <motion.span 
+                initial="initial"
+                whileHover="hover"
+                className="relative inline-flex cursor-default overflow-hidden"
+              >
+                {"vendas.".split("").map((char, i) => (
+                  <span key={i} className="relative inline-block overflow-hidden h-[1.10em] pt-[0.05em]">
+                    <motion.span
+                      variants={{
+                        initial: { y: 0 },
+                        hover: { y: "-105%" }
+                      }}
+                      transition={{ 
+                        duration: 0.4, 
+                        delay: i * 0.03, 
+                        ease: [0.33, 1, 0.68, 1] 
+                      }}
+                      className="inline-block text-gradient relative z-10"
+                    >
+                      {char === " " ? "\u00A0" : char}
+                    </motion.span>
+                    <motion.span
+                      variants={{
+                        initial: { y: "100%" },
+                        hover: { y: 0 }
+                      }}
+                      transition={{ 
+                        duration: 0.4, 
+                        delay: i * 0.03, 
+                        ease: [0.33, 1, 0.68, 1] 
+                      }}
+                      className="absolute top-[0.05em] left-0 text-gradient-alt"
+                    >
+                      {char === " " ? "\u00A0" : char}
+                    </motion.span>
+                  </span>
+                ))}
+              </motion.span>
             </h1>
             
             <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl mx-auto font-medium tracking-tight mt-6">
@@ -101,12 +136,7 @@ const HeroImmersive = () => {
           </motion.div>
 
           {/* Value Props Micro-interactions */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20 md:mt-32 w-full max-w-4xl"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20 md:mt-32 w-full max-w-4xl">
             {[
               {
                 icon: BarChart3,
@@ -124,13 +154,46 @@ const HeroImmersive = () => {
                 desc: "+60% de conversão via Wpp"
               }
             ].map((prop, i) => (
-              <div key={i} className="flex flex-col items-center justify-center p-6 rounded-2xl bg-white/50 border border-gray-100 backdrop-blur-sm shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-transform duration-300">
-                <prop.icon className="w-8 h-8 text-primary mb-3 stroke-[1.5]" />
-                <h3 className="font-bold text-foreground">{prop.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{prop.desc}</p>
-              </div>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                whileHover={{ 
+                  y: -12,
+                  scale: 1.02,
+                  boxShadow: "0 25px 50px -12px rgba(37, 99, 235, 0.15)"
+                }}
+                animate={{
+                  y: [0, -6, 0],
+                }}
+                transition={{
+                  // Entrance transition
+                  duration: 0.8,
+                  delay: 0.4 + i * 0.1,
+                  ease: [0.16, 1, 0.3, 1],
+                  // Continuous floating animation
+                  y: {
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: i * 0.6
+                  },
+                  // Interaction transitions
+                  scale: { duration: 0.25 },
+                  boxShadow: { duration: 0.25 }
+                } as any}
+                className="flex flex-col items-center justify-center p-6 rounded-2xl bg-white/60 border border-gray-100 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] cursor-pointer group relative"
+              >
+                <div className="w-14 h-14 rounded-full bg-primary/5 flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors duration-300">
+                  <prop.icon className="w-7 h-7 text-primary stroke-[1.5]" />
+                </div>
+                <h3 className="font-bold text-foreground text-lg">{prop.title}</h3>
+                <p className="text-sm text-muted-foreground mt-2 font-medium leading-relaxed">{prop.desc}</p>
+                <div className="absolute inset-0 rounded-2xl border-2 border-primary/0 group-hover:border-primary/10 transition-colors duration-300 pointer-events-none" />
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
 
         </div>
       </div>
