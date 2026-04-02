@@ -258,7 +258,7 @@ const SaasDashboardReveal = () => {
                           </div>
                           <div>
                             <div className="text-sm font-bold text-foreground">{user.name}</div>
-                            <div className="text-[10px] text-muted-foreground font-medium mt-0.5">{user.time} • Origem: Instagram</div>
+                            <div className="text-[10px] text-muted-foreground font-medium mt-0.5">{user.time}</div>
                           </div>
                         </div>
                         <div className="flex flex-col items-end gap-1.5">
