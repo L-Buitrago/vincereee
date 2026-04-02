@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, animate } from "framer-motion";
 import { ArrowUpRight, BarChart, Code2, MessageCircle, TrendingUp, Plus, Check, CheckCheck } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 
@@ -21,7 +21,6 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
       setStep(0);
       return;
     }
-    // Reveal messages one by one
     const timers: NodeJS.Timeout[] = [];
     messages.forEach((msg, i) => {
       const timer = setTimeout(() => setStep(i + 1), msg.delay * 1000);
@@ -34,7 +33,6 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
     <div className="w-[220px] md:w-[240px] rounded-[28px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col"
       style={{ height: 380 }}
     >
-      {/* Phone Status Bar */}
       <div className="flex items-center justify-between px-4 pt-2 pb-1 text-white/60">
         <span className="text-[9px] font-semibold">14:02</span>
         <div className="flex items-center gap-1">
@@ -44,7 +42,6 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
         </div>
       </div>
 
-      {/* WhatsApp Header */}
       <div className="flex items-center gap-2.5 px-3 py-2 bg-[#1f2c34] border-b border-white/5">
         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0">
           V
@@ -55,7 +52,6 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
         </div>
       </div>
 
-      {/* Chat Messages */}
       <div className="flex-1 overflow-hidden px-2.5 py-3 space-y-1.5 bg-[#0b141a] relative"
         style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }}
       >
@@ -87,7 +83,6 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
           );
         })}
 
-        {/* Typing indicator */}
         {step > 0 && step < messages.length && messages[step]?.from === "bot" && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -103,7 +98,6 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
         )}
       </div>
 
-      {/* Input Bar */}
       <div className="flex items-center gap-2 px-2.5 py-2 bg-[#1f2c34] border-t border-white/5">
         <div className="flex-1 bg-[#2a3942] rounded-full px-3 py-1.5">
           <span className="text-[9px] text-white/30">Mensagem</span>
@@ -118,10 +112,186 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   );
 };
 
+// Animated typing code effect for Desenvolvimento Premium card
+const CodeTyper = ({ isInView }: { isInView: boolean }) => {
+  const lines = [
+    { text: "const site = new Vincere({", color: "text-blue-400" },
+    { text: "  stack: 'React + Vite',", color: "text-green-400" },
+    { text: "  speed: '< 1s load',", color: "text-yellow-400" },
+    { text: "  seo: 'perfect score',", color: "text-green-400" },
+    { text: "  design: 'premium ✨',", color: "text-pink-400" },
+    { text: "});", color: "text-blue-400" },
+    { text: "// → site.deploy() 🚀", color: "text-gray-500" },
+  ];
+
+  const [visibleLines, setVisibleLines] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  useEffect(() => {
+    if (!isInView || hasStarted) return;
+    setHasStarted(true);
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setVisibleLines(i);
+      if (i >= lines.length) clearInterval(interval);
+    }, 320);
+    return () => clearInterval(interval);
+  }, [isInView, hasStarted]);
+
+  return (
+    <div className="font-mono text-[10px] leading-relaxed bg-gray-950/80 rounded-xl p-3 border border-white/5 overflow-hidden">
+      {lines.map((line, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, x: -8 }}
+          animate={i < visibleLines ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.25 }}
+          className={`${line.color} whitespace-nowrap`}
+        >
+          {line.text}
+          {i === visibleLines - 1 && (
+            <motion.span
+              animate={{ opacity: [1, 0] }}
+              transition={{ duration: 0.5, repeat: Infinity }}
+              className="inline-block w-[2px] h-[10px] bg-blue-400 ml-0.5 align-middle"
+            />
+          )}
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+// Animated mini bar chart for Métricas card
+const MiniChart = ({ isInView }: { isInView: boolean }) => {
+  const metrics = [
+    { label: "Jan", value: 42, color: "bg-blue-500/40" },
+    { label: "Fev", value: 61, color: "bg-blue-500/50" },
+    { label: "Mar", value: 55, color: "bg-blue-500/60" },
+    { label: "Abr", value: 78, color: "bg-blue-500/70" },
+    { label: "Mai", value: 89, color: "bg-blue-500/90" },
+    { label: "Jun", value: 100, color: "bg-blue-400" },
+  ];
+
+  const [heights, setHeights] = useState(metrics.map(() => 0));
+
+  useEffect(() => {
+    if (!isInView) return;
+    const timers = metrics.map((m, i) =>
+      setTimeout(() => {
+        setHeights(prev => {
+          const copy = [...prev];
+          copy[i] = m.value;
+          return copy;
+        });
+      }, i * 150 + 300)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [isInView]);
+
+  // KPI counters
+  const [alunos, setAlunos] = useState(0);
+  const [churn, setChurn] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const c1 = animate(0, 1243, {
+      duration: 2,
+      ease: "easeOut",
+      onUpdate: v => setAlunos(Math.floor(v)),
+    });
+    const c2 = animate(0, 2.4, {
+      duration: 2,
+      ease: "easeOut",
+      onUpdate: v => setChurn(Math.round(v * 10) / 10),
+    });
+    return () => { c1.stop(); c2.stop(); };
+  }, [isInView]);
+
+  return (
+    <div className="space-y-3 mt-2">
+      {/* KPI row */}
+      <div className="flex gap-3">
+        <div className="flex-1 bg-white/5 rounded-xl p-2.5 border border-white/10">
+          <div className="text-[9px] text-gray-500 uppercase tracking-wider mb-1">Alunos Ativos</div>
+          <div className="text-lg font-black text-white tabular-nums">{alunos.toLocaleString("pt-BR")}</div>
+          <div className="text-[9px] text-green-400 font-semibold mt-0.5">↑ +8% este mês</div>
+        </div>
+        <div className="flex-1 bg-white/5 rounded-xl p-2.5 border border-white/10">
+          <div className="text-[9px] text-gray-500 uppercase tracking-wider mb-1">Taxa de Churn</div>
+          <div className="text-lg font-black text-white tabular-nums">{churn}%</div>
+          <div className="text-[9px] text-blue-400 font-semibold mt-0.5">↓ Sob controle</div>
+        </div>
+      </div>
+
+      {/* Bar chart */}
+      <div className="flex items-end gap-1.5 h-14 px-1">
+        {metrics.map((m, i) => (
+          <div key={i} className="flex-1 flex flex-col items-center gap-1">
+            <div className="w-full relative flex items-end" style={{ height: 44 }}>
+              <motion.div
+                className={`w-full rounded-t-md ${m.color} transition-all duration-700`}
+                style={{ height: `${heights[i]}%` }}
+              />
+            </div>
+            <span className="text-[7px] text-gray-600">{m.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Animated title with word-by-word reveal
+const AnimatedTitle = () => {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const isInView = useInView(ref, { once: false, margin: "-80px" });
+
+  const words = [
+    { text: "A", em: false },
+    { text: "tríade", em: false },
+    { text: "perfeita", em: true },
+    { text: "para", em: false },
+    { text: "o", em: false },
+    { text: "seu", em: false },
+    { text: "negócio.", em: true },
+  ];
+
+  return (
+    <h2
+      ref={ref}
+      className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground max-w-4xl"
+    >
+      {words.map((w, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
+          animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 24, filter: "blur(6px)" }}
+          transition={{
+            duration: 0.55,
+            delay: i * 0.09,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+          className={`inline-block mr-[0.25em] ${w.em ? "text-primary" : ""}`}
+        >
+          {w.text}
+        </motion.span>
+      ))}
+    </h2>
+  );
+};
+
 const BentoServices = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const card1Ref = useRef<HTMLDivElement>(null);
+  const card2Ref = useRef<HTMLDivElement>(null);
+  const card3Ref = useRef<HTMLDivElement>(null);
+
   const isCard1InView = useInView(card1Ref, { once: false, margin: "-80px" });
+  const isCard2InView = useInView(card2Ref, { once: true, margin: "-60px" });
+  const isCard3InView = useInView(card3Ref, { once: true, margin: "-60px" });
+
   const [chatActive, setChatActive] = useState(false);
   const wasInView = useRef(false);
   
@@ -133,7 +303,6 @@ const BentoServices = () => {
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.95, 1]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
 
-  // Re-trigger chat animation on viewport enter/leave
   useEffect(() => {
     if (isCard1InView && !wasInView.current) {
       setChatActive(true);
@@ -163,24 +332,15 @@ const BentoServices = () => {
             Nossas Soluções
             <Plus className="w-4 h-4" />
           </motion.div>
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground max-w-4xl"
-          >
-            A tríade perfeita <br className="hidden md:block"/> para o seu negócio.
-          </motion.h2>
+          <AnimatedTitle />
         </div>
 
         <motion.div 
           style={{ scale, opacity }}
           className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
         >
-          {/* Card 1: WhatsApp Recovery (Large Left) */}
+          {/* Card 1: WhatsApp Recovery (Large Left) — unchanged */}
           <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[580px]">
-            {/* Background Blob */}
             <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
             
             <div className="relative z-10 flex justify-between items-start">
@@ -199,49 +359,101 @@ const BentoServices = () => {
               </p>
             </div>
 
-            {/* Phone Mockup with WhatsApp Chat */}
             <div className="absolute bottom-[-10px] md:bottom-2 left-2 md:left-6 z-20 rotate-0 transition-transform duration-700 scale-[1.15] md:scale-[1.35] origin-bottom-left">
               <WhatsAppMockup isActive={chatActive} />
-              {/* Shadow/glow underneath */}
               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-full h-12 bg-green-500/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             </div>
           </div>
 
           <div className="md:col-span-5 flex flex-col gap-6">
-            {/* Card 2: Web Agency (Top Right) */}
-            <div className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex-1 min-h-[250px]">
+            {/* Card 2: Desenvolvimento Premium */}
+            <div ref={card2Ref} className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex-1 min-h-[250px]">
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] group-hover:bg-primary/20 transition-colors duration-500" />
               
               <div className="relative z-10 flex justify-between items-start">
-                <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10">
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={isCard2InView ? { scale: 1, opacity: 1 } : {}}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
+                  className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10"
+                >
                   <Code2 className="w-6 h-6 text-primary" />
-                </div>
+                </motion.div>
               </div>
 
-              <div className="relative z-10 mt-auto pt-12">
-                <h3 className="text-2xl font-bold text-foreground mb-2 tracking-tight">Desenvolvimento Premium</h3>
-                <p className="text-muted-foreground text-base font-medium">
+              {/* Animated code block */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={isCard2InView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.25 }}
+                className="relative z-10 mt-4"
+              >
+                <CodeTyper isInView={isCard2InView} />
+              </motion.div>
+
+              <div className="relative z-10 mt-auto pt-6">
+                <motion.h3
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={isCard2InView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="text-2xl font-bold text-foreground mb-2 tracking-tight"
+                >
+                  Desenvolvimento Premium
+                </motion.h3>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={isCard2InView ? { opacity: 1 } : {}}
+                  transition={{ duration: 0.5, delay: 0.55 }}
+                  className="text-muted-foreground text-base font-medium"
+                >
                   Landing pages, sites e e-commerces ultra rápidos (como este).
-                </p>
+                </motion.p>
               </div>
             </div>
 
-            {/* Card 3: Dashboard SaaS (Bottom Right) */}
-            <div className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-foreground text-white border border-gray-800 p-8 shadow-2xl hover:shadow-[0_20px_60px_rgba(15,23,42,0.4)] transition-all duration-500 flex-1 min-h-[250px]">
+            {/* Card 3: Métricas & Dashboard */}
+            <div ref={card3Ref} className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-foreground text-white border border-gray-800 p-8 shadow-2xl hover:shadow-[0_20px_60px_rgba(15,23,42,0.4)] transition-all duration-500 flex-1 min-h-[250px]">
               <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] group-hover:bg-blue-500/30 transition-colors duration-500" />
               
               <div className="relative z-10 flex justify-between items-start">
-                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 backdrop-blur-md">
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={isCard3InView ? { scale: 1, opacity: 1 } : {}}
+                  transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
+                  className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 backdrop-blur-md"
+                >
                   <BarChart className="w-6 h-6 text-white" />
-                </div>
+                </motion.div>
                 <TrendingUp className="w-6 h-6 text-gray-500 group-hover:text-primary transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
               </div>
 
-              <div className="relative z-10 mt-auto pt-12">
-                <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">Métricas & Dashboard</h3>
-                <p className="text-gray-400 text-base font-medium">
+              {/* Animated mini chart */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={isCard3InView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="relative z-10"
+              >
+                <MiniChart isInView={isCard3InView} />
+              </motion.div>
+
+              <div className="relative z-10 mt-auto pt-4">
+                <motion.h3
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={isCard3InView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.45 }}
+                  className="text-2xl font-bold text-white mb-2 tracking-tight"
+                >
+                  Métricas & Dashboard
+                </motion.h3>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={isCard3InView ? { opacity: 1 } : {}}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                  className="text-gray-400 text-base font-medium"
+                >
                   Controle total de alunos ou pacientes em uma plataforma exclusiva.
-                </p>
+                </motion.p>
               </div>
             </div>
           </div>

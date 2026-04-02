@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
+import NeuralNetwork from "./NeuralNetwork";
 
 // Word component that appears at a random time
 const Word = ({ word, delay, style }: { word: string; delay: number; style: string }) => {
@@ -122,22 +123,28 @@ const IntroText = () => {
               </p>
             </motion.div>
 
-            {/* Image */}
+            {/* Neural Network Animation */}
             <motion.div
               initial={{ y: 40, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: false, margin: "-50px" }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="relative w-full aspect-[4/3] rounded-[32px] overflow-hidden bg-secondary flex items-center justify-center p-6 group shadow-2xl"
+              className="relative w-full aspect-[4/3] rounded-[32px] overflow-hidden bg-[#0d1117] border border-primary/10 shadow-2xl group"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-              <img
-                src="https://vendredi-society.com/wp-content/uploads/2024/02/Hero-1.jpg"
-                alt="3D Abstract Interaction"
-                className="w-full h-full object-contain mix-blend-screen scale-125 group-hover:scale-150 transition-transform duration-[3s]"
+              {/* Subtle corner glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 pointer-events-none z-10" />
+              {/* Scanline overlay for techy feel */}
+              <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-10"
+                style={{ backgroundImage: "repeating-linear-gradient(0deg, #fff 0px, #fff 1px, transparent 1px, transparent 3px)" }}
               />
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-24 h-24 rounded-full bg-primary/10 blur-3xl" />
+              {/* Network canvas */}
+              <div className="absolute inset-0">
+                <NeuralNetwork />
+              </div>
+              {/* Label */}
+              <div className="absolute bottom-4 left-4 z-20 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                <span className="text-[9px] font-bold uppercase tracking-widest text-primary/60">Ecossistema Ativo</span>
               </div>
             </motion.div>
           </div>
