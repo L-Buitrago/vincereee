@@ -112,133 +112,101 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   );
 };
 
-// Animated typing code effect for Desenvolvimento Premium card
-const CodeTyper = ({ isInView }: { isInView: boolean }) => {
-  const lines = [
-    { text: "const site = new Vincere({", color: "text-blue-400" },
-    { text: "  stack: 'React + Vite',", color: "text-green-400" },
-    { text: "  speed: '< 1s load',", color: "text-yellow-400" },
-    { text: "  seo: 'perfect score',", color: "text-green-400" },
-    { text: "  design: 'premium ✨',", color: "text-pink-400" },
-    { text: "});", color: "text-blue-400" },
-    { text: "// → site.deploy() 🚀", color: "text-gray-500" },
+// 3D floating layers visual for Desenvolvimento Premium card
+const Premium3DVisual = ({ isInView }: { isInView: boolean }) => {
+  const layers = [
+    { label: "Design", color: "bg-white", border: "border-gray-200", icon: "✦", iconColor: "text-primary", delay: 0, z: 0 },
+    { label: "Frontend", color: "bg-primary/5", border: "border-primary/20", icon: "</>", iconColor: "text-primary", delay: 0.15, z: 20 },
+    { label: "Performance", color: "bg-green-50", border: "border-green-200", icon: "⚡", iconColor: "text-green-500", delay: 0.3, z: 40 },
   ];
 
-  const [visibleLines, setVisibleLines] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
-
-  useEffect(() => {
-    if (!isInView || hasStarted) return;
-    setHasStarted(true);
-    let i = 0;
-    const interval = setInterval(() => {
-      i++;
-      setVisibleLines(i);
-      if (i >= lines.length) clearInterval(interval);
-    }, 320);
-    return () => clearInterval(interval);
-  }, [isInView, hasStarted]);
-
   return (
-    <div className="font-mono text-[10px] leading-relaxed bg-gray-950/80 rounded-xl p-3 border border-white/5 overflow-hidden">
-      {lines.map((line, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, x: -8 }}
-          animate={i < visibleLines ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.25 }}
-          className={`${line.color} whitespace-nowrap`}
-        >
-          {line.text}
-          {i === visibleLines - 1 && (
-            <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 0.5, repeat: Infinity }}
-              className="inline-block w-[2px] h-[10px] bg-blue-400 ml-0.5 align-middle"
-            />
-          )}
-        </motion.div>
-      ))}
+    <div className="relative h-28 flex items-center justify-center" style={{ perspective: 600 }}>
+      <motion.div
+        animate={isInView ? { rotateY: [0, 6, -6, 0], rotateX: [0, 4, -4, 0] } : {}}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        style={{ transformStyle: "preserve-3d" }}
+        className="relative w-full"
+      >
+        {layers.map((l, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: l.delay }}
+            className={`absolute w-[85%] rounded-xl border ${l.color} ${l.border} px-3 py-2 flex items-center gap-2.5 shadow-md`}
+            style={{
+              top: i * 26,
+              left: i * 10,
+              transform: `translateZ(${l.z}px)`,
+              zIndex: i,
+            }}
+          >
+            <span className={`text-sm font-bold ${l.iconColor}`}>{l.icon}</span>
+            <span className="text-[11px] font-semibold text-foreground/80">{l.label}</span>
+            <motion.div
+              animate={{ scaleX: [0, 1] }}
+              transition={{ duration: 0.8, delay: l.delay + 0.3 }}
+              className="ml-auto h-1 w-10 rounded-full bg-gray-200 overflow-hidden origin-left"
+            >
+              <motion.div
+                animate={{ x: ["-100%", "0%"] }}
+                transition={{ duration: 0.8, delay: l.delay + 0.3 }}
+                className={`h-full w-full ${l.iconColor.replace("text", "bg").replace("/500", "/400")} rounded-full`}
+              />
+            </motion.div>
+          </motion.div>
+        ))}
+      </motion.div>
     </div>
   );
 };
 
-// Animated mini bar chart for Métricas card
-const MiniChart = ({ isInView }: { isInView: boolean }) => {
-  const metrics = [
-    { label: "Jan", value: 42, color: "bg-blue-500/40" },
-    { label: "Fev", value: 61, color: "bg-blue-500/50" },
-    { label: "Mar", value: 55, color: "bg-blue-500/60" },
-    { label: "Abr", value: 78, color: "bg-blue-500/70" },
-    { label: "Mai", value: 89, color: "bg-blue-500/90" },
-    { label: "Jun", value: 100, color: "bg-blue-400" },
+// Results showcase for the third card
+const ResultsShowcase = ({ isInView }: { isInView: boolean }) => {
+  const results = [
+    { value: 47, suffix: "%", label: "Conversão média", color: "text-blue-400", up: true },
+    { value: 3.2, suffix: "x", label: "Retorno sobre investimento", color: "text-green-400", up: true },
+    { value: 340, suffix: "%", label: "Aumento em leads qualificados", color: "text-primary", up: true },
   ];
 
-  const [heights, setHeights] = useState(metrics.map(() => 0));
+  const [vals, setVals] = useState(results.map(() => 0));
 
   useEffect(() => {
     if (!isInView) return;
-    const timers = metrics.map((m, i) =>
-      setTimeout(() => {
-        setHeights(prev => {
-          const copy = [...prev];
-          copy[i] = m.value;
-          return copy;
-        });
-      }, i * 150 + 300)
+    const controls = results.map((r, i) =>
+      animate(0, r.value, {
+        duration: 2,
+        delay: i * 0.2,
+        ease: "easeOut",
+        onUpdate: v => setVals(prev => { const c = [...prev]; c[i] = Math.round(v * 10) / 10; return c; }),
+      })
     );
-    return () => timers.forEach(clearTimeout);
-  }, [isInView]);
-
-  // KPI counters
-  const [alunos, setAlunos] = useState(0);
-  const [churn, setChurn] = useState(0);
-
-  useEffect(() => {
-    if (!isInView) return;
-    const c1 = animate(0, 1243, {
-      duration: 2,
-      ease: "easeOut",
-      onUpdate: v => setAlunos(Math.floor(v)),
-    });
-    const c2 = animate(0, 2.4, {
-      duration: 2,
-      ease: "easeOut",
-      onUpdate: v => setChurn(Math.round(v * 10) / 10),
-    });
-    return () => { c1.stop(); c2.stop(); };
+    return () => controls.forEach(c => c.stop());
   }, [isInView]);
 
   return (
-    <div className="space-y-3 mt-2">
-      {/* KPI row */}
-      <div className="flex gap-3">
-        <div className="flex-1 bg-white/5 rounded-xl p-2.5 border border-white/10">
-          <div className="text-[9px] text-gray-500 uppercase tracking-wider mb-1">Alunos Ativos</div>
-          <div className="text-lg font-black text-white tabular-nums">{alunos.toLocaleString("pt-BR")}</div>
-          <div className="text-[9px] text-green-400 font-semibold mt-0.5">↑ +8% este mês</div>
-        </div>
-        <div className="flex-1 bg-white/5 rounded-xl p-2.5 border border-white/10">
-          <div className="text-[9px] text-gray-500 uppercase tracking-wider mb-1">Taxa de Churn</div>
-          <div className="text-lg font-black text-white tabular-nums">{churn}%</div>
-          <div className="text-[9px] text-blue-400 font-semibold mt-0.5">↓ Sob controle</div>
-        </div>
-      </div>
-
-      {/* Bar chart */}
-      <div className="flex items-end gap-1.5 h-14 px-1">
-        {metrics.map((m, i) => (
-          <div key={i} className="flex-1 flex flex-col items-center gap-1">
-            <div className="w-full relative flex items-end" style={{ height: 44 }}>
-              <motion.div
-                className={`w-full rounded-t-md ${m.color} transition-all duration-700`}
-                style={{ height: `${heights[i]}%` }}
-              />
-            </div>
-            <span className="text-[7px] text-gray-600">{m.label}</span>
-          </div>
-        ))}
-      </div>
+    <div className="space-y-2 mt-2">
+      {results.map((r, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, x: -12 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.45, delay: i * 0.12 }}
+          className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2.5"
+        >
+          <span className={`text-xl font-black tabular-nums ${r.color}`}>
+            {vals[i]}{r.suffix}
+          </span>
+          <span className="text-[10px] text-gray-400 font-medium leading-tight">{r.label}</span>
+          <motion.span
+            initial={{ opacity: 0, scale: 0 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ delay: i * 0.12 + 0.4 }}
+            className="ml-auto text-green-400 text-xs"
+          >↑</motion.span>
+        </motion.div>
+      ))}
     </div>
   );
 };
@@ -339,27 +307,31 @@ const BentoServices = () => {
           style={{ scale, opacity }}
           className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
         >
-          {/* Card 1: WhatsApp Recovery (Large Left) — unchanged */}
-          <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[580px]">
+          {/* Card 1: WhatsApp Recovery (Large Left) */}
+          <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[500px]">
             <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
             
-            <div className="relative z-10 flex justify-between items-start">
-              <div className="ml-auto flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
-                  <MessageCircle className="w-7 h-7 text-green-600" />
-                </div>
-                <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
+            {/* Top row: icon + arrow */}
+            <div className="relative z-10 flex justify-between items-start mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
+                <MessageCircle className="w-7 h-7 text-green-600" />
               </div>
+              <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
             </div>
 
-            <div className="relative z-10 my-auto md:ml-auto md:text-right md:max-w-[50%] flex flex-col items-end">
-              <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight">Recuperação via WhatsApp</h3>
-              <p className="text-muted-foreground text-lg md:ml-auto font-medium leading-relaxed">
+            {/* Text — now near the top */}
+            <div className="relative z-10 md:ml-auto md:text-right md:max-w-[52%] flex flex-col items-end">
+              <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight leading-tight">
+                Recuperação via{" "}
+                <span className="text-green-500">WhatsApp</span>
+              </h3>
+              <p className="text-muted-foreground text-base md:ml-auto font-medium leading-relaxed">
                 Transforme carrinhos abandonados e mensalidades atrasadas em dinheiro limpo. Disparos com alta taxa de conversão.
               </p>
             </div>
 
-            <div className="absolute bottom-[-10px] md:bottom-2 left-2 md:left-6 z-20 rotate-0 transition-transform duration-700 scale-[1.15] md:scale-[1.35] origin-bottom-left">
+            {/* Phone mockup — bigger and more centred-left */}
+            <div className="absolute bottom-0 left-8 md:left-12 z-20 transition-transform duration-700 scale-[1.25] md:scale-[1.5] origin-bottom-left">
               <WhatsAppMockup isActive={chatActive} />
               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-full h-12 bg-green-500/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             </div>
@@ -381,14 +353,14 @@ const BentoServices = () => {
                 </motion.div>
               </div>
 
-              {/* Animated code block */}
+              {/* 3D floating layers visual */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={isCard2InView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.25 }}
                 className="relative z-10 mt-4"
               >
-                <CodeTyper isInView={isCard2InView} />
+                <Premium3DVisual isInView={isCard2InView} />
               </motion.div>
 
               <div className="relative z-10 mt-auto pt-6">
@@ -411,7 +383,7 @@ const BentoServices = () => {
               </div>
             </div>
 
-            {/* Card 3: Métricas & Dashboard */}
+            {/* Card 3: Resultados Comprovados */}
             <div ref={card3Ref} className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-foreground text-white border border-gray-800 p-8 shadow-2xl hover:shadow-[0_20px_60px_rgba(15,23,42,0.4)] transition-all duration-500 flex-1 min-h-[250px]">
               <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] group-hover:bg-blue-500/30 transition-colors duration-500" />
               
@@ -422,19 +394,19 @@ const BentoServices = () => {
                   transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
                   className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 backdrop-blur-md"
                 >
-                  <BarChart className="w-6 h-6 text-white" />
+                  <TrendingUp className="w-6 h-6 text-white" />
                 </motion.div>
-                <TrendingUp className="w-6 h-6 text-gray-500 group-hover:text-primary transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
+                <ArrowUpRight className="w-6 h-6 text-gray-500 group-hover:text-primary transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
               </div>
 
-              {/* Animated mini chart */}
+              {/* Results showcase */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={isCard3InView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="relative z-10"
               >
-                <MiniChart isInView={isCard3InView} />
+                <ResultsShowcase isInView={isCard3InView} />
               </motion.div>
 
               <div className="relative z-10 mt-auto pt-4">
@@ -444,7 +416,7 @@ const BentoServices = () => {
                   transition={{ duration: 0.5, delay: 0.45 }}
                   className="text-2xl font-bold text-white mb-2 tracking-tight"
                 >
-                  Métricas & Dashboard
+                  Resultados Reais
                 </motion.h3>
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -452,7 +424,7 @@ const BentoServices = () => {
                   transition={{ duration: 0.5, delay: 0.6 }}
                   className="text-gray-400 text-base font-medium"
                 >
-                  Controle total de alunos ou pacientes em uma plataforma exclusiva.
+                  Números que comprovam o impacto da Vincere nos nossos clientes.
                 </motion.p>
               </div>
             </div>
