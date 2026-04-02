@@ -45,8 +45,8 @@ const DeliveryDiagnostic = () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top 80%",
-        toggleActions: "play none none reverse", // Joga a animação quando entra, reverte se subir demais
+        start: "top 85%",
+        toggleActions: "restart none none none", // Reinicia a animação toda vez que entrar no viewport vindo de cima
       }
     });
 
