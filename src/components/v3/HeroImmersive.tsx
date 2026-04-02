@@ -87,7 +87,7 @@ const HeroImmersive = () => {
             </h1>
             
             <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl mx-auto font-medium tracking-tight mt-6">
-              Recuperação inteligente via WhatsApp, agência de alta conversão e dashboard de métricas consolidado. <strong className="text-foreground">Tudo em um só lugar.</strong>
+              Dashboard de métricas consolidado, criação de sites de alta conversão e recuperação inteligente via WhatsApp. <strong className="text-foreground">Tudo em um só lugar.</strong>
             </p>
           </motion.div>
 
@@ -109,19 +109,19 @@ const HeroImmersive = () => {
           >
             {[
               {
-                icon: MessageSquareWarning,
-                title: "Recuperação",
-                desc: "+60% de conversão via Wpp"
-              },
-              {
                 icon: BarChart3,
                 title: "Dashboards",
                 desc: "Controle de alunos & pacientes"
               },
               {
                 icon: ArrowUpRight,
-                title: "E-commerce",
-                desc: "Lojas focadas em lucro"
+                title: "Criação de sites",
+                desc: "Criamos sites, landing pages e lojas para seu negócio"
+              },
+              {
+                icon: MessageSquareWarning,
+                title: "Recuperação",
+                desc: "+60% de conversão via Wpp"
               }
             ].map((prop, i) => (
               <div key={i} className="flex flex-col items-center justify-center p-6 rounded-2xl bg-white/50 border border-gray-100 backdrop-blur-sm shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:-translate-y-1 transition-transform duration-300">
