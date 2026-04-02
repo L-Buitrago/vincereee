@@ -1,6 +1,123 @@
 import { motion, useScroll, useTransform, useInView, animate } from "framer-motion";
-import { ArrowUpRight, BarChart, Code2, MessageCircle, TrendingUp, Plus, Check, CheckCheck } from "lucide-react";
+import { ArrowUpRight, BarChart, Code2, MessageCircle, TrendingUp, Plus, Check, CheckCheck, Search, Map, Headphones } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
+// Delivery Diagnostic Component with GSAP Scroll Animations
+const DeliveryDiagnostic = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const steps = [
+    {
+      id: "01",
+      title: "Diagnóstico",
+      desc: "Entendemos sua empresa, processos e desafios para identificar as melhores oportunidades.",
+      icon: Search,
+      badge: "bg-purple-600"
+    },
+    {
+      id: "02",
+      title: "Planejamento",
+      desc: "Desenhamos a solução ideal com escopo, tecnologias e cronograma definidos.",
+      icon: Map,
+      badge: "bg-purple-600"
+    },
+    {
+      id: "03",
+      title: "Desenvolvimento",
+      desc: "Construímos sua solução com as melhores práticas e tecnologias modernas.",
+      icon: Code2,
+      badge: "bg-purple-600"
+    },
+    {
+      id: "04",
+      title: "Implementação e Suporte",
+      desc: "Entregamos, treinamos e acompanhamos para garantir resultados contínuos.",
+      icon: Headphones,
+      badge: "bg-purple-600"
+    }
+  ];
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 80%",
+      }
+    });
+
+    tl.fromTo(".diag-title", 
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }
+    );
+
+    tl.fromTo(".diag-line",
+      { scaleX: 0, transformOrigin: "left center" },
+      { scaleX: 1, duration: 1.5, ease: "power1.inOut" }
+    );
+
+    tl.fromTo(".diag-box",
+      { y: 40, opacity: 0, filter: "blur(5px)" },
+      { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, stagger: 0.25, ease: "back.out(1.2)" },
+      "-=1.2"
+    );
+
+    tl.fromTo(".diag-badge",
+      { scale: 0, rotate: -45 },
+      { scale: 1, rotate: 0, duration: 0.5, stagger: 0.25, ease: "back.out(2)" },
+      "-=1"
+    );
+
+  }, { scope: containerRef });
+
+  return (
+    <div ref={containerRef} className="w-full mx-auto mb-32 relative pt-2 pb-16 px-4 md:px-0 z-20">
+      <div className="diag-title text-center mb-24 space-y-4">
+        <h3 className="text-3xl md:text-5xl font-black text-foreground tracking-tight">O nosso processo de <span className="text-primary">entrega</span></h3>
+        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Do entendimento inicial à implantação final, desenhamos cada etapa orientando para o sucesso do seu negócio.</p>
+      </div>
+      
+      <div className="relative flex flex-col md:flex-row justify-between items-start">
+        {/* Connecting Line (desktop) */}
+        <div className="absolute top-[3rem] left-[12%] right-[12%] h-[2px] bg-gray-200 hidden md:block">
+          <div className="diag-line w-full h-full bg-gradient-to-r from-purple-500 via-primary to-blue-500 origin-left" />
+        </div>
+
+        {/* Connecting Line (mobile) */}
+        <div className="absolute top-0 bottom-0 left-[2.25rem] w-[2px] bg-gray-200 md:hidden">
+          <div className="diag-line w-full h-full bg-gradient-to-b from-purple-500 via-primary to-blue-500 origin-top" />
+        </div>
+
+        {steps.map((step, index) => (
+          <div key={step.id} className="diag-box flex md:flex-col flex-row items-center md:items-center text-left md:text-center relative z-10 w-full md:flex-1 gap-6 md:gap-0 mb-12 md:mb-0 group">
+             {/* Icon Box */}
+            <div className="relative mb-6 md:mb-8 shrink-0">
+              <div className="w-16 h-16 md:w-24 md:h-24 rounded-2xl md:rounded-[1.5rem] bg-[#0b141a] border border-white/5 flex items-center justify-center shadow-2xl group-hover:-translate-y-2 transition-transform duration-500 relative z-10">
+                <step.icon className="w-8 h-8 md:w-10 md:h-10 text-white group-hover:text-purple-400 transition-colors duration-500" />
+              </div>
+              
+              {/* Badge */}
+              <div className={`diag-badge absolute -top-2 -right-2 md:-top-3 md:-right-3 w-7 h-7 md:w-9 md:h-9 rounded-full ${step.badge} shadow-[0_0_15px_rgba(147,51,234,0.4)] flex items-center justify-center text-white font-black text-[10px] md:text-sm z-20`}>
+                {step.id}
+              </div>
+            </div>
+
+            {/* Text */}
+            <div className="flex-1 md:px-4">
+              <h4 className="text-lg md:text-xl font-bold text-foreground mb-1 md:mb-3">{step.title}</h4>
+              <p className="text-muted-foreground text-[13px] md:text-sm font-medium leading-relaxed md:max-w-[240px] md:mx-auto">
+                {step.desc}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 // WhatsApp Phone Mockup with animated chat
 const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
@@ -290,7 +407,9 @@ const BentoServices = () => {
     >
       <div className="container px-4 md:px-6 mx-auto relative z-10">
         
-        <div className="flex flex-col items-center justify-center text-center mb-16 md:mb-24 space-y-4">
+        <DeliveryDiagnostic />
+
+        <div className="flex flex-col items-center justify-center text-center mt-8 mb-16 md:mb-24 space-y-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
