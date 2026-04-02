@@ -78,46 +78,48 @@ const HeroImmersive = () => {
             ref={textRef}
             className="space-y-6"
           >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] text-foreground">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.05] text-foreground font-sans">
               Acelere a sua <br className="hidden md:block" />
               máquina de{" "}
               <motion.span 
                 initial="initial"
                 whileHover="hover"
-                className="relative inline-flex cursor-default"
+                className="relative inline-flex cursor-default overflow-hidden pt-[0.1em] pb-[0.1em]"
               >
-                {"vendas.".split("").map((char, i) => (
-                  <span key={i} className="relative inline-block overflow-hidden h-[1.25em] -mt-[0.1em] pt-[0.1em] px-[0.03em]">
-                    <motion.span
-                      variants={{
-                        initial: { y: 0 },
-                        hover: { y: "-105%" }
-                      }}
-                      transition={{ 
-                        duration: 0.4, 
-                        delay: i * 0.03, 
-                        ease: [0.33, 1, 0.68, 1] 
-                      }}
-                      className="inline-block text-gradient relative z-10"
-                    >
-                      {char === " " ? "\u00A0" : char}
-                    </motion.span>
-                    <motion.span
-                      variants={{
-                        initial: { y: "100%" },
-                        hover: { y: 0 }
-                      }}
-                      transition={{ 
-                        duration: 0.4, 
-                        delay: i * 0.03, 
-                        ease: [0.33, 1, 0.68, 1] 
-                      }}
-                      className="absolute top-[0.1em] left-[0.03em] text-gradient-alt"
-                    >
-                      {char === " " ? "\u00A0" : char}
-                    </motion.span>
-                  </span>
-                ))}
+                <span className="relative flex whitespace-nowrap">
+                  {"vendas.".split("").map((char, i) => (
+                    <span key={i} className="relative inline-block">
+                      <motion.span
+                        variants={{
+                          initial: { y: 0, opacity: 1 },
+                          hover: { y: "-110%", opacity: 0 }
+                        }}
+                        transition={{ 
+                          duration: 0.5, 
+                          delay: i * 0.03, 
+                          ease: [0.33, 1, 0.68, 1] 
+                        }}
+                        className="inline-block text-gradient relative z-10"
+                      >
+                        {char === " " ? "\u00A0" : char}
+                      </motion.span>
+                      <motion.span
+                        variants={{
+                          initial: { y: "110%", opacity: 0 },
+                          hover: { y: 0, opacity: 1 }
+                        }}
+                        transition={{ 
+                          duration: 0.5, 
+                          delay: i * 0.03, 
+                          ease: [0.33, 1, 0.68, 1] 
+                        }}
+                        className="absolute top-0 left-0 text-gradient-alt"
+                      >
+                        {char === " " ? "\u00A0" : char}
+                      </motion.span>
+                    </span>
+                  ))}
+                </span>
               </motion.span>
             </h1>
             
