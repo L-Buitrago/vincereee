@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { 
   FileText, Wallet, Truck, Clock, Search, Bell, Folder, 
   MoreHorizontal, ArrowUpRight, CheckCircle2, TrendingUp,
-  Calendar as CalendarIcon, PieChart as PieChartIcon, ChevronRight
+  Calendar as CalendarIcon, PieChart as PieChartIcon, ChevronLeft, ArrowLeft
 } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -106,17 +106,47 @@ const DemoDashboard = () => {
   const [activePeriod, setActivePeriod] = useState("TODOS");
   const [date, setDate] = useState<Date | undefined>(new Date());
 
-  useEffect(() => {
-    // Force scroll to top on mount with a slight delay if needed
-    window.scrollTo(0, 0);
+  const topRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    // Disable browser's automatic scroll restoration
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    const forceTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      topRef.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
+    };
+
+    // Immediate jump
+    forceTop();
+
+    // Aggressive re-jumps to fight any smooth scrolling libraries (Lenis/SmoothScroller)
+    const frames = [0, 50, 100, 200, 500, 1000];
+    const timers = frames.map(ms => setTimeout(forceTop, ms));
+
+    return () => {
+      timers.forEach(clearTimeout);
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'auto';
+      }
+    };
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8FAFC] text-[#1e293b] font-sans selection:bg-sky-500/10 overflow-x-hidden">
+    <div ref={topRef} className="flex flex-col min-h-screen bg-[#F8FAFC] text-[#1e293b] font-sans selection:bg-sky-500/10 overflow-x-hidden">
       
       {/* Full Width Top Header */}
-      <header className="flex items-center justify-between p-6 px-10 bg-white/80 sticky top-0 z-30 backdrop-blur-xl border-b border-slate-200 w-full shadow-sm">
-        <div className="flex flex-col">
+      <header className="flex items-center justify-between p-6 px-10 bg-white/95 sticky top-0 z-50 backdrop-blur-2xl border-b border-slate-200 w-full shadow-md transition-all">
+        <div className="flex items-center gap-8">
+          <Link to="/" className="flex items-center gap-3 px-7 py-3.5 rounded-2xl bg-slate-900 text-white hover:bg-slate-800 transition-all font-bold text-sm shadow-2xl shadow-slate-900/40 group scale-100 hover:scale-105 active:scale-95">
+            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1.5 transition-transform duration-300" />
+            Voltar ao site principal
+          </Link>
+          <div className="h-10 w-[1.5px] bg-slate-200" />
           <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-slate-900">
             Analytics Demo <span className="text-sky-500">.</span>
           </h1>
