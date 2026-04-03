@@ -228,7 +228,7 @@ export default function PlatformAdmin() {
             <Crown className="w-5 h-5 text-sky-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">Painel Admin</h1>
+            <h1 className="text-2xl font-bold text-foreground">Painel Admin</h1>
             <p className="text-sm text-[#888]">Visão geral de todas as empresas na plataforma Vincere.</p>
           </div>
         </div>
@@ -244,7 +244,7 @@ export default function PlatformAdmin() {
           <motion.div
             key={met.label}
             initial="hidden" animate="visible" variants={fadeUp} custom={i}
-            className="p-5 rounded-2xl bg-[#111] border border-white/5"
+            className="p-5 rounded-2xl bg-card border border-border"
           >
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs text-[#888] font-medium">{met.label}</span>
@@ -252,7 +252,7 @@ export default function PlatformAdmin() {
                 <met.icon className={`w-4 h-4 ${met.textCls}`} />
               </div>
             </div>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-bold text-foreground">
               {typeof met.value === "number" ? met.value.toLocaleString("pt-BR") : met.value}
             </p>
             <p className="text-[10px] text-[#666] mt-1">dados em tempo real</p>
@@ -262,11 +262,11 @@ export default function PlatformAdmin() {
 
       <motion.div
         initial="hidden" animate="visible" variants={fadeUp} custom={4}
-        className="p-5 rounded-2xl bg-[#0A0A0A] border border-white/5 mb-8"
+        className="p-5 rounded-2xl bg-card border border-border mb-8 shadow-sm"
       >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-sm font-semibold text-white">📥 {totalLeads} Leads capturados</p>
+            <p className="text-sm font-semibold text-foreground">📥 {totalLeads} Leads capturados</p>
             <p className="text-xs text-[#888] mt-1">Leads coletados pela Vi e formulários de todas as empresas</p>
           </div>
         </div>
@@ -285,7 +285,7 @@ export default function PlatformAdmin() {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {viLeads.map((l) => (
-                  <tr key={l.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={l.id} className="hover:bg-muted/30 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex flex-col">
                         <span className="text-white font-bold text-sm tracking-tight">{l.name}</span>
@@ -309,7 +309,7 @@ export default function PlatformAdmin() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-9 w-9 text-red-400/50 hover:text-red-400 hover:bg-red-400/10 transition-all rounded-xl border border-white/5 hover:border-red-400/20"
+                          className="h-9 w-9 text-red-500/50 hover:text-red-500 hover:bg-red-500/10 transition-all rounded-xl border border-border hover:border-red-500/20"
                           onClick={() => handleDeleteLead(l.id)}
                           title="Excluir Lead"
                         >
@@ -327,14 +327,14 @@ export default function PlatformAdmin() {
 
       <motion.div
         initial="hidden" animate="visible" variants={fadeUp} custom={5}
-        className="mb-8 rounded-2xl bg-[#0A0A0A] border border-white/5 overflow-hidden shadow-2xl"
+        className="mb-8 rounded-2xl bg-card border border-border overflow-hidden shadow-2xl"
       >
         <div className="p-5 border-b border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
               <Folder className="w-4 h-4 text-emerald-500" />
             </div>
-            <h3 className="text-base font-bold text-white tracking-tight uppercase">Projetos Ativos (Global)</h3>
+            <h3 className="text-base font-bold text-foreground tracking-tight uppercase">Projetos Ativos (Global)</h3>
           </div>
           <Button variant="link" className="text-[10px] font-bold text-[#888] hover:text-white tracking-widest">
             GERENCIAR
@@ -430,7 +430,7 @@ export default function PlatformAdmin() {
 
       <motion.div
         initial="hidden" animate="visible" variants={fadeUp} custom={6}
-        className="rounded-2xl bg-[#111] border border-white/5 overflow-hidden"
+        className="rounded-2xl bg-card border border-border overflow-hidden shadow-sm"
       >
         <div className="p-5 border-b border-white/5">
           <h3 className="text-base font-semibold text-white">Organizações Assinantes</h3>

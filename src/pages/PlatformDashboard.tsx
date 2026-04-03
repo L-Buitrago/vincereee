@@ -249,7 +249,7 @@ export default function PlatformDashboard() {
   const recentProjects = useMemo(() => projects.slice(0, 3), [projects]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
+    <div className="flex flex-col min-h-screen bg-background text-foreground transition-colors duration-500">
       {showSuccess && (
         <div className="bg-emerald-500/20 py-2 px-4 text-center border-b border-emerald-500/30">
           <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest">Assinatura Ativada com Sucesso!</p>
@@ -329,13 +329,13 @@ export default function PlatformDashboard() {
                       <div className="w-4 h-4 rounded-full border-2 border-sky-500 flex items-center justify-center">
                         <div className="w-1.5 h-1.5 rounded-full bg-sky-500" />
                       </div>
-                      <span className="text-xs font-bold text-white">Este Ano</span>
+                      <span className="text-xs font-bold text-muted-foreground group-hover:text-foreground">Este Ano</span>
                     </div>
                     <div className="flex items-center gap-2">
                        <div className="w-4 h-4 rounded-full border-2 border-slate-700 flex items-center justify-center">
                         <div className="w-1.5 h-1.5 rounded-full bg-slate-700" />
                       </div>
-                      <span className="text-xs font-bold text-white">Ano Anterior</span>
+                      <span className="text-xs font-bold text-muted-foreground group-hover:text-foreground">Ano Anterior</span>
                     </div>
                   </div>
                 </div>
@@ -382,12 +382,12 @@ export default function PlatformDashboard() {
                        </PieChart>
                      </ResponsiveContainer>
                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                       <span className="text-4xl font-extrabold text-white">100%</span>
-                       <span className="text-[10px] text-white/30 font-bold uppercase tracking-widest mt-1">Total</span>
+                        <span className="text-4xl font-extrabold text-foreground">100%</span>
+                        <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">Total</span>
                      </div>
                    </div>
                  ) : (
-                   <div className="flex flex-col items-center justify-center h-56 text-white/10">
+                   <div className="flex flex-col items-center justify-center h-56 text-muted-foreground">
                      <PieChartIcon className="w-12 h-12 mb-2 opacity-20" />
                      <span className="text-sm font-medium">Sem transações</span>
                    </div>
@@ -431,7 +431,7 @@ export default function PlatformDashboard() {
                   <table className="w-full text-left">
                     <thead>
                         <tr className="border-b border-white/5">
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-white/30">Serviço</th>
+                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground">Serviço</th>
                           <th className="px-6 py-5 text-[10px] font-bold uppercase text-white/30">Status</th>
                           <th className="px-6 py-5 text-[10px] font-bold uppercase text-white/30 text-right">Ações</th>
                         </tr>

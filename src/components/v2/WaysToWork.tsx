@@ -320,7 +320,7 @@ const CreditCardAnimation = () => {
         {/* Card holder */}
         <div className="absolute bottom-4 left-5">
           <span className="text-[8px] text-white/30 uppercase tracking-widest block">Titular</span>
-          <span className="text-[10px] text-white/60 font-bold tracking-wider">VINCERE TECH</span>
+          <span className="text-[10px] text-white/60 font-bold tracking-wider">Vincere.</span>
         </div>
         
         {/* Brand logo */}

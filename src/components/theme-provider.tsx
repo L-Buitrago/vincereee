@@ -37,17 +37,28 @@ export function ThemeProvider({
     const root = window.document.documentElement;
     const isPlatform = location.pathname.startsWith('/plataforma');
 
-    // Strict isolation: Homepage is ALWAYS light (Branquíssimo), Platform is ALWAYS dark (Beautiful Black)
+    // SCRICT ISOLATION LOGIC
+    // 1. Landing Page / Main Site: ALWAYS Light (Branquíssimo)
     if (!isPlatform) {
       root.classList.remove("dark");
       root.classList.add("light");
       return;
     }
 
-    // Platform is always dark
-    root.classList.remove("light");
-    root.classList.add("dark");
-  }, [location.pathname]);
+    // 2. Platform: Obeys the stateful theme selected by user
+    // This allows the user to have Light or Dark theme ONLY inside the platform
+    const effectiveTheme = theme === "system" 
+      ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+      : theme;
+
+    if (effectiveTheme === "dark") {
+      root.classList.add("dark");
+      root.classList.remove("light");
+    } else {
+      root.classList.add("light");
+      root.classList.remove("dark");
+    }
+  }, [location.pathname, theme]);
 
   const value = {
     theme,
