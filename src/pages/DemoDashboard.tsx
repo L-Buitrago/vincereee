@@ -107,6 +107,7 @@ const DemoDashboard = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   useEffect(() => {
+    // Force scroll to top on mount with a slight delay if needed
     window.scrollTo(0, 0);
   }, []);
 
@@ -192,9 +193,9 @@ const DemoDashboard = () => {
 
         {/* Giant KPI Cards Grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
-            <StatCard title="Vendas Totais" value="1.450" icon={FileText} bgColor="bg-[#0f172a]" />
+            <StatCard title="Vendas Totais" value="1.450" icon={FileText} bgColor="bg-[#10B981]" />
             <StatCard title="Receita Estimada" value="R$ 152.840" icon={Wallet} bgColor="bg-sky-500" />
-            <StatCard title="Projetos Ativos" value="12" icon={Truck} bgColor="bg-[#0f172a]" />
+            <StatCard title="Projetos Ativos" value="12" icon={Truck} bgColor="bg-[#F59E0B]" />
             <StatCard title="Taxa de Churn" value="2.4%" icon={Clock} bgColor="bg-rose-500" />
         </section>
 
@@ -383,19 +384,10 @@ const DemoDashboard = () => {
            </div>
         </section>
 
-        {/* Final Wide CTA */}
-        <div className="flex flex-col items-center gap-10 py-10 pb-20">
-           <Link to="/auth" className="w-full max-w-2xl group relative overflow-hidden rounded-[2.5rem] h-28 flex items-center justify-center bg-sky-500 shadow-2xl shadow-sky-500/40 hover:scale-[1.02] transition-all">
-              <motion.button 
-                className="w-full h-full text-white font-black text-2xl lg:text-3xl flex items-center justify-center gap-6 z-10 tracking-tighter"
-              >
-                 COMECE SUA JORNADA VINCERE AGORA
-                 <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center"><ArrowUpRight className="w-8 h-8" /></div>
-              </motion.button>
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:animate-shimmer" />
-           </Link>
-           <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.8em]">Demonstração Oficial Vincere Platform</p>
-        </div>
+        {/* Final Wide CTA Removed per request */}
+         <div className="flex flex-col items-center gap-2 py-10 pb-20">
+            <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.8em]">Demonstração Oficial Vincere Platform</p>
+         </div>
       </main>
     </div>
   );

@@ -32,6 +32,8 @@ import PlatformMessages from "./pages/PlatformMessages";
 import DemoDashboard from "./pages/DemoDashboard";
 import ViExperience from "./pages/ViExperience";
 import DemoServices from "./pages/DemoServices";
+import ScrollToTop from "./components/ScrollToTop";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -42,6 +44,7 @@ const App = () => (
           <Sonner />
           <SmoothScroller>
             <BrowserRouter>
+              <ScrollToTop />
               <ThemeProvider defaultTheme="light" storageKey="vincere-theme">
               <Routes>
                 <Route path="/" element={<Index />} />
