@@ -25,12 +25,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Helper to get mock user with persistence
+  const getMockUser = () => {
+    const stored = localStorage.getItem('vincere_mock_user');
+    const metadata = stored ? JSON.parse(stored) : { full_name: 'Admin Developer' };
+    
+    return {
+      id: 'dev-admin-user',
+      email: 'assasinghost910@gmail.com',
+      user_metadata: metadata,
+      aud: 'authenticated',
+      app_metadata: {},
+      created_at: new Date().toISOString(),
+    } as User;
+  };
+
   // Helper to update user locally (useful for dev/mock)
   const updateUserMetadata = (metadata: any) => {
     if (user) {
+      const newMetadata = { ...user.user_metadata, ...metadata };
+      if (window.location.hostname === 'localhost' && user.id === 'dev-admin-user') {
+        localStorage.setItem('vincere_mock_user', JSON.stringify(newMetadata));
+      }
       setUser({
         ...user,
-        user_metadata: { ...user.user_metadata, ...metadata }
+        user_metadata: newMetadata
       });
     }
   };
@@ -39,16 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         if (!session && window.location.hostname === 'localhost') {
-          // Keep mock user on localhost if no real session
-          const mockUser: User = {
-            id: 'dev-admin-user',
-            email: 'assasinghost910@gmail.com',
-            user_metadata: { full_name: 'Admin Developer' },
-            aud: 'authenticated',
-            app_metadata: {},
-            created_at: new Date().toISOString(),
-          };
-          setUser(mockUser);
+          setUser(getMockUser());
           setLoading(false);
         } else {
           setSession(session);
@@ -60,15 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session && window.location.hostname === 'localhost') {
-        const mockUser: User = {
-          id: 'dev-admin-user',
-          email: 'assasinghost910@gmail.com',
-          user_metadata: { full_name: 'Admin Developer' },
-          aud: 'authenticated',
-          app_metadata: {},
-          created_at: new Date().toISOString(),
-        };
-        setUser(mockUser);
+        setUser(getMockUser());
         setLoading(false);
       } else {
         setSession(session);
