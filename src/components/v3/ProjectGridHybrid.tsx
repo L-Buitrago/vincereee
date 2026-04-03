@@ -58,10 +58,7 @@ const ProjectGridHybrid = () => {
           <ProjectGridCard project={projects[1]} />
         </div>
 
-        {/* Row 2: PS Essentials (Full Width Large Card) */}
-        <div className="w-full">
-          <ProjectGridCard project={projects[2]} isExtraLarge />
-        </div>
+        {/* Espaço reservado para novas instruções */}
       </div>
     </section>
   );
