@@ -124,7 +124,7 @@ const PricingSection = () => {
   return (
     <section id="pacotes" className="py-24 md:py-32 bg-secondary/30 relative overflow-hidden">
       {/* Purple glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-purple-500/10 rounded-full blur-[200px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-sky-500/10 rounded-full blur-[200px] pointer-events-none" />
       <div className="container mx-auto px-4 md:px-8">
         <div className="text-center mb-10">
           <p className="text-sm font-medium text-primary tracking-wider uppercase mb-3">Nossos Planos</p>

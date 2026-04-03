@@ -11,7 +11,7 @@ import { formatCurrency, type Client } from "@/data/platformMockData";
 import { toast } from "@/hooks/use-toast";
 
 const statusConfig: Record<string, { label: string; cls: string; pulse?: boolean }> = {
-  "Cliente Ativo": { label: "Ativo", cls: "text-violet-400 bg-violet-500/10" },
+  "Cliente Ativo": { label: "Ativo", cls: "text-sky-400 bg-sky-500/10" },
   "Lead": { label: "Lead", cls: "text-platform-orange bg-platform-orange/10 animate-pulse", pulse: true },
   "Negociação": { label: "Negociação", cls: "text-blue-400 bg-blue-400/10 animate-pulse", pulse: true },
   "Cancelado": { label: "Cancelado", cls: "text-[#888] bg-white/5" },
@@ -220,9 +220,9 @@ export default function PlatformClients() {
     const isSite = lowerNeeds.includes('site') || lowerNeeds.includes('landing') || lowerNeeds.includes('loja') || lowerNeeds.includes('portfólio') || lowerNeeds.includes('ecommerce');
     
     // Choose theme colors
-    const themeClass = isDashboard ? 'text-green-400' : (isSite ? 'text-purple-400' : 'text-platform-orange');
-    const themeBorder = isDashboard ? 'border-green-500/20' : (isSite ? 'border-purple-500/20' : 'border-platform-orange/20');
-    const borderLeftClass = isDashboard ? 'border-l-green-500/50' : (isSite ? 'border-l-purple-500/50' : 'border-l-platform-orange/50');
+    const themeClass = isDashboard ? 'text-green-400' : (isSite ? 'text-sky-400' : 'text-platform-orange');
+    const themeBorder = isDashboard ? 'border-green-500/20' : (isSite ? 'border-sky-500/20' : 'border-platform-orange/20');
+    const borderLeftClass = isDashboard ? 'border-l-green-500/50' : (isSite ? 'border-l-sky-500/50' : 'border-l-platform-orange/50');
     
     // Improved parsing for Project Description
     let projectDescriptionLines: string[] = [];
@@ -322,7 +322,7 @@ export default function PlatformClients() {
             </div>
           </label>
           <Button
-            className="bg-platform-purple hover:bg-platform-purple/90 text-white font-semibold gap-2"
+            className="bg-sky-500 hover:bg-sky-600 text-white font-semibold gap-2"
             onClick={() => setShowAddModal(true)}
           >
             <Plus className="w-4 h-4" /> Novo Cliente
@@ -364,7 +364,7 @@ export default function PlatformClients() {
                 <Input type="date" value={newDueDate} onChange={e => setNewDueDate(e.target.value)} className="bg-white/5 border-white/10 text-white" />
               </div>
               <Button
-                className="w-full bg-platform-purple hover:bg-platform-purple/90 text-white font-semibold"
+                className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold"
                 onClick={addClient}
                 disabled={isAdding}
               >
@@ -391,7 +391,7 @@ export default function PlatformClients() {
               key={s}
               onClick={() => { setStatusFilter(s); setPage(1); }}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${
-                statusFilter === s ? "bg-purple-500/10 text-violet-400" : "text-[#888] hover:text-white hover:bg-white/5"
+                statusFilter === s ? "bg-sky-500/10 text-sky-400" : "text-[#888] hover:text-white hover:bg-white/5"
               }`}
             >
               {s === "todos" ? "Todos" : s}
@@ -512,7 +512,7 @@ export default function PlatformClients() {
                 key={i}
                 onClick={() => setPage(i + 1)}
                 className={`w-8 h-8 rounded-lg text-xs font-medium transition-all ${
-                  page === i + 1 ? "bg-purple-500/10 text-violet-400" : "text-[#888] hover:bg-white/5"
+                  page === i + 1 ? "bg-sky-500/10 text-sky-400" : "text-[#888] hover:bg-white/5"
                 }`}
               >
                 {i + 1}
@@ -546,7 +546,7 @@ export default function PlatformClients() {
 
             <div className="space-y-4">
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-14 h-14 rounded-full bg-purple-500/10 flex items-center justify-center text-violet-400 text-lg font-bold">
+                <div className="w-14 h-14 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-lg font-bold">
                   {selected.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
@@ -566,7 +566,7 @@ export default function PlatformClients() {
                 </div>
                 <div className="p-3 rounded-xl bg-white/5">
                   <p className="text-[10px] text-[#888] uppercase mb-1">Status</p>
-                  <p className="text-sm text-violet-400 font-medium">{selected.status}</p>
+                  <p className="text-sm text-sky-400 font-medium">{selected.status}</p>
                 </div>
                 <div className="p-3 rounded-xl bg-white/5">
                   <p className="text-[10px] text-[#888] uppercase mb-1">Desde</p>
@@ -576,15 +576,15 @@ export default function PlatformClients() {
 
               {/* Added lead needs information */}
               {(selected as any).needs && (
-                <div className="p-4 rounded-xl bg-platform-orange/5 border border-platform-orange/10">
-                  <p className="text-[10px] text-platform-orange uppercase font-bold mb-3 tracking-widest">Necessidades Identificadas (Vi)</p>
+                <div className="p-4 rounded-xl bg-sky-500/5 border border-sky-500/10">
+                  <p className="text-[10px] text-sky-400 uppercase font-bold mb-3 tracking-widest">Necessidades Identificadas (Vi)</p>
                   <NeedsFormatter needsStr={(selected as any).needs} />
                 </div>
               )}
 
               <div className="pt-4 flex gap-2">
                 <Button
-                  className="flex-1 bg-platform-purple hover:bg-platform-purple/90 text-white gap-2"
+                  className="flex-1 bg-sky-500 hover:bg-sky-600 text-white gap-2"
                   onClick={() => {
                     window.open(`https://wa.me/55${selected.phone?.replace(/\D/g, '')}`, '_blank');
                   }}

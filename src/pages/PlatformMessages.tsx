@@ -474,7 +474,7 @@ export default function PlatformMessages() {
               size="icon"
               variant="ghost"
               onClick={() => setShowNewChat(!showNewChat)}
-              className="text-violet-400 hover:text-white hover:bg-white/5 h-8 w-8"
+              className="text-sky-400 hover:text-white hover:bg-white/5 h-8 w-8"
             >
               <Plus className="w-5 h-5" />
             </Button>
@@ -488,7 +488,7 @@ export default function PlatformMessages() {
               }}
               className={`flex-1 flex items-center justify-center py-1.5 text-xs font-medium rounded-md transition-all ${
                 activeTab === 'direct' 
-                  ? "bg-purple-600/20 text-purple-400 border border-purple-500/30" 
+                  ? "bg-sky-600/20 text-sky-400 border border-sky-500/30" 
                   : "text-[#888] hover:text-white"
               }`}
             >
@@ -501,7 +501,7 @@ export default function PlatformMessages() {
               }}
               className={`flex-1 flex items-center justify-center py-1.5 text-xs font-medium rounded-md transition-all ${
                 activeTab === 'support' 
-                  ? "bg-violet-600/20 text-violet-400 border border-violet-500/30" 
+                  ? "bg-sky-600/20 text-sky-400 border border-sky-500/30" 
                   : "text-[#888] hover:text-white"
               }`}
             >
@@ -519,7 +519,7 @@ export default function PlatformMessages() {
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
                 placeholder="Buscar usuário..."
-                className="pl-9 bg-white/5 border-transparent focus-visible:ring-1 focus-visible:ring-purple-500 text-white text-sm"
+                className="pl-9 bg-white/5 border-transparent focus-visible:ring-1 focus-visible:ring-sky-500 text-white text-sm"
                 autoFocus
               />
             </div>
@@ -531,7 +531,7 @@ export default function PlatformMessages() {
                     onClick={() => startConversation(profile.user_id, profile.full_name || "Usuário")}
                     className="w-full flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/5 transition-colors text-left"
                   >
-                    <div className="w-8 h-8 rounded-full bg-violet-500/20 flex items-center justify-center text-violet-400 shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 shrink-0">
                       <User className="w-4 h-4" />
                     </div>
                     <span className="text-sm text-white truncate">{profile.full_name || "Usuário"}</span>
@@ -570,13 +570,13 @@ export default function PlatformMessages() {
                 }}
                 className={`w-full text-left p-4 border-b border-white/5 transition-colors ${
                   activeConversation?.id === conv.id 
-                    ? (activeTab === 'support' ? "bg-violet-500/10" : "bg-purple-500/10") 
+                    ? (activeTab === 'support' ? "bg-sky-500/10" : "bg-sky-500/10") 
                     : "hover:bg-white/5"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                    activeTab === 'support' ? "bg-violet-500/20 text-violet-400" : "bg-violet-500/20 text-violet-400"
+                    activeTab === 'support' ? "bg-sky-500/20 text-sky-400" : "bg-sky-500/20 text-sky-400"
                   }`}>
                     <User className="w-5 h-5" />
                   </div>
@@ -648,15 +648,15 @@ export default function PlatformMessages() {
                   <ChevronLeft className="w-8 h-8" />
                 </Button>
               )}
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-violet-500/20 flex items-center justify-center text-violet-400">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400">
                 <User className="w-5 h-5" />
               </div>
               <div>
                 <h2 className="text-white font-medium">
                   {activeConversation.other_user_name || "Usuário"}
                 </h2>
-                <p className="text-xs text-violet-400 flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse"></span>
+                <p className="text-xs text-sky-400 flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
                   Online
                 </p>
               </div>
@@ -685,7 +685,7 @@ export default function PlatformMessages() {
                       <div
                         className={`p-3 rounded-2xl text-sm ${
                           isMe
-                            ? "bg-purple-600 text-white rounded-tr-sm"
+                            ? "bg-sky-600 text-white rounded-tr-sm"
                             : "bg-[#1a1a1a] text-white border border-white/10 rounded-tl-sm"
                         }`}
                       >
@@ -697,7 +697,7 @@ export default function PlatformMessages() {
                         </span>
                         {isMe && (
                           msg.read ? (
-                            <CheckCheck className="w-3 h-3 text-violet-400" />
+                            <CheckCheck className="w-3 h-3 text-sky-400" />
                           ) : (
                             <Check className="w-3 h-3 text-[#666]" />
                           )
@@ -718,12 +718,12 @@ export default function PlatformMessages() {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Digite sua mensagem..."
-                className="flex-1 bg-white/5 border-transparent focus-visible:ring-1 focus-visible:ring-purple-500 text-white"
+                className="flex-1 bg-white/5 border-transparent focus-visible:ring-1 focus-visible:ring-sky-500 text-white"
               />
               <Button
                 type="submit"
                 disabled={!newMessage.trim()}
-                className="bg-purple-600 hover:bg-purple-600/90 text-white px-4 shrink-0 transition-all"
+                className="bg-sky-600 hover:bg-sky-600/90 text-white px-4 shrink-0 transition-all"
               >
                 <Send className="w-4 h-4 mr-2" />
                 Enviar

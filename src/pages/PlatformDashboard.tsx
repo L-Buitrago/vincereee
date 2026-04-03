@@ -273,14 +273,14 @@ export default function PlatformDashboard() {
       {/* Header Area */}
       <header className="flex items-center justify-between p-6 px-8 bg-transparent sticky top-0 z-30 backdrop-blur-sm border-b border-white/5">
         <div className="flex flex-col">
-          <h1 className="text-2xl font-bold tracking-tight font-display text-white">Dashboard <span className="text-violet-500">.</span></h1>
+          <h1 className="text-2xl font-bold tracking-tight font-display text-white">Dashboard <span className="text-sky-500">.</span></h1>
         </div>
 
         <div className="flex items-center gap-6">
           <div className="relative hidden md:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888]" />
             <Input
-              className="bg-white/5 border-white/5 pl-10 w-64 text-sm rounded-xl focus-visible:ring-violet-500 text-white"
+              className="bg-white/5 border-white/5 pl-10 w-64 text-sm rounded-xl focus-visible:ring-sky-500 text-white"
               placeholder="Pesquisar..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -294,13 +294,13 @@ export default function PlatformDashboard() {
                 <div className="flex flex-col items-end">
                    <span className="text-sm font-bold text-white leading-none">{fullName}</span>
                    <span className="text-[10px] text-white/30 mt-0.5">{user?.email}</span>
-                   <Badge variant="outline" className="mt-1 h-5 text-[9px] uppercase tracking-widest font-bold border-violet-500/30 bg-violet-500/5 text-violet-400">
+                   <Badge variant="outline" className="mt-1 h-5 text-[9px] uppercase tracking-widest font-bold border-sky-500/30 bg-sky-500/5 text-sky-400">
                      {planName}
                    </Badge>
                 </div>
                 <Avatar className="w-10 h-10 rounded-xl border border-white/10 shadow-xl">
                   {userAvatar && <AvatarImage src={userAvatar} className="object-cover" />}
-                  <AvatarFallback className="bg-violet-500/20 text-violet-400 font-bold text-xs">{initials}</AvatarFallback>
+                  <AvatarFallback className="bg-sky-500/20 text-sky-400 font-bold text-xs">{initials}</AvatarFallback>
                 </Avatar>
              </div>
           </div>
@@ -317,7 +317,7 @@ export default function PlatformDashboard() {
               initial="hidden" animate="visible" variants={fadeUp} custom={i}
               onClick={() => setActivePeriod(p)}
               className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${
-                activePeriod === p ? "bg-violet-500 text-white" : "text-white/30 hover:text-white/60 hover:bg-white/5"
+                activePeriod === p ? "bg-sky-500 text-white" : "text-white/30 hover:text-white/60 hover:bg-white/5"
               }`}
             >
               {p}
@@ -329,7 +329,7 @@ export default function PlatformDashboard() {
           <Popover>
             <PopoverTrigger asChild>
               <button className="px-3 py-1.5 rounded-lg text-white/40 hover:text-white transition-colors flex items-center gap-2">
-                <CalendarIcon className="w-3.5 h-3.5 text-violet-500" />
+                <CalendarIcon className="w-3.5 h-3.5 text-sky-500" />
                 <span className="text-[10px] font-bold uppercase tracking-wider">Calendário</span>
               </button>
             </PopoverTrigger>
@@ -370,8 +370,8 @@ export default function PlatformDashboard() {
                   <h3 className="text-xl font-bold text-white">Faturamento Mensal</h3>
                   <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 rounded-full border-2 border-violet-500 flex items-center justify-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-violet-500" />
+                      <div className="w-4 h-4 rounded-full border-2 border-sky-500 flex items-center justify-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-sky-500" />
                       </div>
                       <span className="text-xs font-bold text-white">Este Ano</span>
                     </div>
@@ -390,15 +390,15 @@ export default function PlatformDashboard() {
                     <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                       <defs>
                         <linearGradient id="colorThisYear" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#7C3AED" stopOpacity={0.2}/>
-                          <stop offset="95%" stopColor="#7C3AED" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.2}/>
+                          <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff08" />
                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#666", fontSize: 11, fontWeight: "bold" }} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fill: "#666", fontSize: 10, fontWeight: "bold" }} tickFormatter={(v) => `R$${v/1000}k`} />
                       <Tooltip content={<CustomTooltip />} cursor={false} />
-                      <Area type="monotone" dataKey="thisYear" stroke="#7C3AED" strokeWidth={4} fillOpacity={1} fill="url(#colorThisYear)" activeDot={false} />
+                      <Area type="monotone" dataKey="thisYear" stroke="#0ea5e9" strokeWidth={4} fillOpacity={1} fill="url(#colorThisYear)" activeDot={false} />
                       <Area type="monotone" dataKey="lastYear" stroke="#4B4E6D" strokeWidth={4} fill="none" activeDot={false} />
                     </AreaChart>
                  </ResponsiveContainer>
@@ -460,12 +460,12 @@ export default function PlatformDashboard() {
            <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={12} className="space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold flex items-center gap-2 text-white">
-                  <Users className="w-5 h-5 text-platform-orange" />
+                  <Users className="w-5 h-5 text-sky-500" />
                   Leads & Orçamentos
                 </h3>
                 <button 
                   onClick={() => navigate('/plataforma/clientes')}
-                  className="text-[10px] font-bold uppercase tracking-widest text-violet-400"
+                  className="text-[10px] font-bold uppercase tracking-widest text-sky-400"
                 >
                   Ver Tudo
                 </button>
@@ -538,11 +538,11 @@ export default function PlatformDashboard() {
                             </td>
                             <td className="px-6 py-4">
                               <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                                <motion.div initial={{ width: 0 }} animate={{ width: p.status === 'CONCLUÍDO' ? '100%' : '45%' }} className={`h-full rounded-full ${p.status === 'CONCLUÍDO' ? 'bg-[#10B981]' : 'bg-violet-500'}`} />
+                                <motion.div initial={{ width: 0 }} animate={{ width: p.status === 'CONCLUÍDO' ? '100%' : '45%' }} className={`h-full rounded-full ${p.status === 'CONCLUÍDO' ? 'bg-[#10B981]' : 'bg-sky-500'}`} />
                               </div>
                             </td>
                             <td className="px-6 py-4">
-                               <Badge className={`${p.status === 'CONCLUÍDO' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-violet-500/10 text-violet-500'} border-none rounded-lg px-2.5 py-0.5 font-bold text-[9px] uppercase`}>{p.status}</Badge>
+                               <Badge className={`${p.status === 'CONCLUÍDO' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-sky-500/10 text-sky-500'} border-none rounded-lg px-2.5 py-0.5 font-bold text-[9px] uppercase`}>{p.status}</Badge>
                             </td>
                           </tr>
                         ))}

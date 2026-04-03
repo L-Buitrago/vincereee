@@ -58,7 +58,7 @@ const revenueData = [
 ];
 
 const paymentMethodsData = [
-  { name: "Cartão de Crédito", value: 65, color: "#7C3AED" },
+  { name: "Cartão de Crédito", value: 65, color: "#0ea5e9" }, // sky-500
   { name: "Pix", value: 25, color: "#10B981" },
   { name: "Boleto", value: 7, color: "#F59E0B" },
   { name: "Outros", value: 3, color: "#31335A" },
@@ -81,11 +81,11 @@ const mockProjects = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-premium-purple px-4 py-2 rounded-2xl shadow-xl border border-white/20 relative">
+      <div className="bg-sky-500 px-4 py-2 rounded-2xl shadow-xl border border-white/20 relative">
         <p className="text-white font-bold text-sm whitespace-nowrap">
           R$ {payload[0].value.toLocaleString()} <span className="text-white/70 font-normal">mensal</span>
         </p>
-        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-premium-purple rotate-45 border-r border-b border-white/20" />
+        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-sky-500 rotate-45 border-r border-b border-white/20" />
       </div>
     );
   }
@@ -131,8 +131,8 @@ const DemoDashboard = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#0A0A0A] text-white">
       {/* Alert Banner for Demo */}
-      <div className="bg-premium-purple/20 border-b border-premium-purple/30 py-2 px-4 text-center">
-        <p className="text-[10px] sm:text-xs font-bold text-premium-purple uppercase tracking-widest">
+      <div className="bg-sky-500/20 border-b border-sky-500/30 py-2 px-4 text-center">
+        <p className="text-[10px] sm:text-xs font-bold text-sky-400 uppercase tracking-widest">
           Modo Visualização: Esta é uma demonstração com dados fictícios
         </p>
       </div>
@@ -147,7 +147,7 @@ const DemoDashboard = () => {
           <div className="relative hidden md:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888]" />
             <Input
-              className="bg-white/5 border-white/5 pl-10 w-64 text-sm rounded-xl focus-visible:ring-premium-purple text-white"
+              className="bg-white/5 border-white/5 pl-10 w-64 text-sm rounded-xl focus-visible:ring-sky-500 text-white"
               placeholder="Pesquisar..."
               disabled
             />
@@ -163,12 +163,12 @@ const DemoDashboard = () => {
                 <div className="flex flex-col items-end">
                    <span className="text-sm font-bold text-white leading-none">Vitor Vincere</span>
                    <span className="text-[10px] text-premium-text-muted mt-0.5">vitor@vincere.tech</span>
-                   <Badge variant="outline" className="mt-1 h-5 text-[9px] uppercase tracking-widest font-bold border-violet-500/30 bg-violet-500/5 text-violet-400">
+                   <Badge variant="outline" className="mt-1 h-5 text-[9px] uppercase tracking-widest font-bold border-sky-500/30 bg-sky-500/5 text-sky-400">
                      Plano Pro
                    </Badge>
                 </div>
                 <Avatar className="w-10 h-10 rounded-xl border border-white/10 shadow-xl">
-                  <AvatarFallback className="bg-violet-500/20 text-violet-400 font-bold text-xs">
+                  <AvatarFallback className="bg-sky-500/20 text-sky-400 font-bold text-xs">
                     VV
                   </AvatarFallback>
                 </Avatar>
@@ -187,7 +187,7 @@ const DemoDashboard = () => {
               initial="hidden" animate="visible" variants={fadeUp} custom={i}
               onClick={() => setActivePeriod(p)}
               className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${
-                activePeriod === p ? "bg-violet-500 text-white" : "text-white/30 hover:text-white/60 hover:bg-white/5"
+                activePeriod === p ? "bg-sky-500 text-white" : "text-white/30 hover:text-white/60 hover:bg-white/5"
               }`}
             >
               {p}
@@ -199,7 +199,7 @@ const DemoDashboard = () => {
           <Popover>
             <PopoverTrigger asChild>
               <button className="px-3 py-1.5 rounded-lg text-white/40 hover:text-white transition-colors flex items-center gap-2">
-                <CalendarIcon className="w-3.5 h-3.5 text-violet-500" />
+                <CalendarIcon className="w-3.5 h-3.5 text-sky-500" />
                 <span className="text-[10px] font-bold uppercase tracking-wider">Calendário</span>
               </button>
             </PopoverTrigger>
@@ -252,8 +252,8 @@ const DemoDashboard = () => {
                   <h3 className="text-xl font-bold text-white">Faturamento Mensal</h3>
                   <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 rounded-full border-2 border-premium-purple flex items-center justify-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-premium-purple" />
+                      <div className="w-4 h-4 rounded-full border-2 border-sky-500 flex items-center justify-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-sky-500" />
                       </div>
                       <span className="text-xs font-bold text-white">Este Ano</span>
                     </div>
@@ -274,8 +274,8 @@ const DemoDashboard = () => {
                     <AreaChart data={revenueData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                       <defs>
                         <linearGradient id="colorThisYear" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#682EC7" stopOpacity={0.2}/>
-                          <stop offset="95%" stopColor="#682EC7" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.2}/>
+                          <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff08" />
@@ -299,7 +299,7 @@ const DemoDashboard = () => {
                       <Area 
                         type="monotone" 
                         dataKey="thisYear" 
-                        stroke="#682EC7" 
+                        stroke="#0ea5e9" 
                         strokeWidth={4}
                         fillOpacity={1} 
                         fill="url(#colorThisYear)" 
@@ -385,10 +385,10 @@ const DemoDashboard = () => {
            <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-premium-purple" />
+                  <FileText className="w-5 h-5 text-sky-500" />
                   Orçamentos Recentes
                 </h3>
-                <button className="text-[10px] font-bold uppercase tracking-widest text-premium-purple flex items-center gap-1 hover:opacity-80 transition-opacity">
+                <button className="text-[10px] font-bold uppercase tracking-widest text-sky-500 flex items-center gap-1 hover:opacity-80 transition-opacity">
                   Ver Tudo
                 </button>
               </div>
@@ -467,7 +467,7 @@ const DemoDashboard = () => {
                                       initial={{ width: 0 }}
                                       animate={{ width: p.status === 'completed' ? '100%' : '45%' }}
                                       transition={{ duration: 1, ease: "easeInOut" }}
-                                      className={`h-full rounded-full ${p.status === 'completed' ? 'bg-premium-green' : 'bg-premium-purple'}`} 
+                                      className={`h-full rounded-full ${p.status === 'completed' ? 'bg-premium-green' : 'bg-sky-500'}`} 
                                     />
                                  </div>
                               </div>
@@ -491,7 +491,7 @@ const DemoDashboard = () => {
         {/* Action Bar for Demo */}
         <section className="flex items-center justify-center pt-8 border-t border-white/5">
           <Link to="/auth">
-            <Button size="lg" className="bg-premium-purple hover:bg-premium-purple/90 h-14 px-12 font-bold rounded-2xl text-lg shadow-2xl shadow-premium-purple/20 transition-all duration-300 hover:scale-105 gap-3">
+            <Button size="lg" className="bg-sky-500 hover:bg-sky-600 h-14 px-12 font-bold rounded-2xl text-lg shadow-2xl shadow-sky-500/20 transition-all duration-300 hover:scale-105 gap-3">
               Gostou? Comece sua Jornada Vincere Agora 
               <ArrowUpRight className="w-5 h-5" />
             </Button>

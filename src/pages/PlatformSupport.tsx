@@ -14,7 +14,7 @@ export default function PlatformSupport() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-6 rounded-2xl bg-[#111] border border-white/5 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
+            <div className="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400">
               <Users className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-semibold text-white">Clientes Ativos</h3>
@@ -25,7 +25,7 @@ export default function PlatformSupport() {
           </div>
 
           <div className="p-6 rounded-2xl bg-[#111] border border-white/5 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
+            <div className="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400">
               <DollarSign className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-semibold text-white">Receita Total</h3>
@@ -58,7 +58,7 @@ export default function PlatformSupport() {
           </div>
         </div>
 
-        <div className="p-8 rounded-2xl bg-gradient-to-br from-violet-600/20 to-transparent border border-violet-500/20 text-center space-y-6">
+        <div className="p-8 rounded-2xl bg-gradient-to-br from-sky-600/20 to-transparent border border-sky-500/20 text-center space-y-6">
           <div className="space-y-2">
             <h3 className="text-xl font-bold text-white">Ainda tem dúvidas?</h3>
             <p className="text-[#888] text-sm max-w-md mx-auto">
@@ -97,7 +97,7 @@ export default function PlatformSupport() {
               onClick={() => navigate('/plataforma/mensagens?startChat=Luis&category=support&tab=support')}
               className="flex items-center gap-3 bg-[#111] hover:bg-white/5 border border-white/10 p-4 rounded-xl transition-all hover:scale-105 w-full sm:w-48 group"
              >
-                <div className="w-12 h-12 rounded-full bg-violet-500/20 flex items-center justify-center text-violet-400 font-bold text-lg group-hover:bg-violet-500/30 transition-colors">
+                <div className="w-12 h-12 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 font-bold text-lg group-hover:bg-sky-500/30 transition-colors">
                   L
                 </div>
                 <div className="text-left">

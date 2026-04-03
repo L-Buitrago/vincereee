@@ -6,7 +6,7 @@ import { Sparkles } from "lucide-react";
 // === Badge (enhanced with vibrant gradients) ===
 export const Badge = ({ children }: { children: React.ReactNode }) => (
   <span
-    className="inline-flex items-center px-4 py-2 rounded-full border border-purple-300/70 bg-gradient-to-r from-purple-200 to-pink-200 text-sm font-bold text-purple-900 shadow-lg backdrop-blur-sm dark:border-purple-400/60 dark:from-purple-800/80 dark:to-pink-800/80 dark:text-purple-100 dark:shadow-purple-500/30 transition-all duration-300"
+    className="inline-flex items-center px-4 py-2 rounded-full border border-sky-300/70 bg-gradient-to-r from-sky-200 to-blue-200 text-sm font-bold text-sky-950 shadow-lg backdrop-blur-sm dark:border-sky-400/60 dark:from-sky-800/80 dark:to-blue-800/80 dark:text-sky-100 dark:shadow-sky-500/30 transition-all duration-300"
   >
     {children}
   </span>

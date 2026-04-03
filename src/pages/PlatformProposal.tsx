@@ -83,7 +83,7 @@ export default function PlatformProposal() {
           <div className="flex items-center gap-2.5">
             <div>
               <p className="text-sm font-semibold text-white">Vincere Assist</p>
-              <p className="text-[10px] text-violet-400">Online</p>
+              <p className="text-[10px] text-sky-400">Online</p>
             </div>
           </div>
         </div>
@@ -100,14 +100,14 @@ export default function PlatformProposal() {
               className={`flex gap-3 ${msg.role === "user" ? "justify-end" : ""}`}
             >
               {msg.role === "assistant" && (
-                <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center shrink-0 mt-1">
-                  <Bot className="w-4 h-4 text-violet-400" />
+                <div className="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center shrink-0 mt-1">
+                  <Bot className="w-4 h-4 text-sky-400" />
                 </div>
               )}
               <div
                 className={`max-w-[80%] p-4 rounded-2xl text-sm leading-relaxed ${
                   msg.role === "user"
-                    ? "bg-platform-purple text-white rounded-br-md"
+                    ? "bg-sky-500 text-white rounded-br-md"
                     : "bg-[#111] border border-white/5 text-[#ddd] rounded-bl-md"
                 }`}
               >
@@ -128,8 +128,8 @@ export default function PlatformProposal() {
           ))}
           {loading && (
             <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center shrink-0">
-                <Bot className="w-4 h-4 text-violet-400" />
+              <div className="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center shrink-0">
+                <Bot className="w-4 h-4 text-sky-400" />
               </div>
               <div className="p-4 rounded-2xl rounded-bl-md bg-[#111] border border-white/5">
                 <Loader2 className="w-4 h-4 animate-spin text-[#888]" />
@@ -147,7 +147,7 @@ export default function PlatformProposal() {
             <button
               key={plan}
               onClick={() => goToWhatsApp(plan)}
-              className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-[#ccc] hover:bg-purple-500/10 hover:border-purple-500/30 hover:text-violet-400 transition-all"
+              className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-[#ccc] hover:bg-sky-500/10 hover:border-sky-500/30 hover:text-sky-400 transition-all"
             >
               Fechar plano {plan} →
             </button>
@@ -164,13 +164,13 @@ export default function PlatformProposal() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && send()}
               placeholder="Digite sua mensagem..."
-              className="flex-1 bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#666] focus:outline-none focus:border-purple-500/30 transition-colors"
+              className="flex-1 bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-[#666] focus:outline-none focus:border-sky-500/30 transition-colors"
               disabled={loading}
             />
             <Button
               onClick={send}
               disabled={loading || !input.trim()}
-              className="bg-platform-purple hover:bg-platform-purple/90 text-white h-[46px] w-[46px] p-0 rounded-xl"
+              className="bg-sky-500 hover:bg-sky-600 text-white h-[46px] w-[46px] p-0 rounded-xl"
             >
               <Send className="w-4 h-4" />
             </Button>

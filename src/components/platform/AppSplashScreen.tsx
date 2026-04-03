@@ -45,7 +45,7 @@ export default function AppSplashScreen() {
               repeat: Infinity, 
               repeatType: "reverse" 
             }}
-            className="absolute w-[500px] h-[500px] bg-violet-600/30 rounded-full blur-[120px]"
+            className="absolute w-[500px] h-[500px] bg-sky-600/30 rounded-full blur-[120px]"
           />
 
           <div className="relative">
@@ -66,7 +66,7 @@ export default function AppSplashScreen() {
                 viewBox="0 0 48 48" 
                 fill="none" 
                 xmlns="http://www.w3.org/2000/svg"
-                className="drop-shadow-[0_0_30px_rgba(124,58,237,0.3)]"
+                className="drop-shadow-[0_0_30px_rgba(14,165,233,0.3)]"
               >
                 <defs>
                   <linearGradient id="splash-silver-main" x1="12" y1="8" x2="36" y2="40" gradientUnits="userSpaceOnUse">
@@ -109,7 +109,7 @@ export default function AppSplashScreen() {
                 duration: 1.8, 
                 ease: "easeInOut" 
               }}
-              className="h-full bg-gradient-to-r from-violet-600 to-violet-400"
+              className="h-full bg-gradient-to-r from-sky-600 to-sky-400"
             />
           </div>
           

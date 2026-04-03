@@ -44,9 +44,9 @@ export default function PWAInstallPrompt() {
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] w-[92%] max-w-md animate-in slide-in-from-bottom-4 duration-500">
-      <div className="relative bg-[#111] border border-violet-500/30 rounded-2xl p-4 shadow-2xl shadow-violet-500/10 flex items-center gap-4">
+      <div className="relative bg-[#111] border border-sky-500/30 rounded-2xl p-4 shadow-2xl shadow-sky-500/10 flex items-center gap-4">
         {/* App Icon */}
-        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-violet-600 to-violet-800 flex items-center justify-center shrink-0 shadow-lg">
+        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-sky-600 to-sky-800 flex items-center justify-center shrink-0 shadow-lg">
           <span className="text-white font-bold text-2xl">V</span>
         </div>
 
@@ -61,7 +61,7 @@ export default function PWAInstallPrompt() {
         {/* Actions */}
         <button
           onClick={handleInstall}
-          className="bg-violet-600 hover:bg-violet-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 shrink-0 transition-all hover:scale-105 active:scale-95"
+          className="bg-sky-600 hover:bg-sky-500 text-white px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 shrink-0 transition-all hover:scale-105 active:scale-95"
         >
           <Download className="w-3.5 h-3.5" />
           Instalar

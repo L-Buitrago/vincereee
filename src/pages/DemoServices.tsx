@@ -24,7 +24,7 @@ const LandingPagesDemo = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       {[
         { title: "Landing Page", desc: "Focada em conversão com CTA estratégico e prova social", icon: Globe, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", image: "/landing_page_mockup.png" },
-        { title: "Site Institucional", desc: "Presença profissional com animações e design moderno", icon: Layout, color: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-500/20", image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&q=80&w=800" },
+        { title: "Site Institucional", desc: "Presença profissional com animações e design moderno", icon: Layout, color: "text-sky-400", bg: "bg-sky-500/10", border: "border-sky-500/20", image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&q=80&w=800" },
         { title: "Loja Virtual", desc: "E-commerce completo com catálogo, carrinho e checkout seguro", icon: ShoppingBag, color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", image: "/ecommerce_mockup.png" },
         { title: "Portfolio Digital", desc: "Showcase interativo dos seus trabalhos e cases de sucesso", icon: Star, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", image: "/portfolio_mockup.png" },
       ].map((item, i) => (
@@ -77,12 +77,12 @@ const EcommerceDemo = () => (
         <span className="text-white font-bold">Loja Demo — Vincere Store</span>
         <div className="flex items-center gap-2">
           <span className="text-xs text-[#888]">3 itens no carrinho</span>
-          <ShoppingCart className="w-5 h-5 text-violet-400" />
+          <ShoppingCart className="w-5 h-5 text-sky-400" />
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 divide-x divide-white/5">
         {[
-          { name: "Curso Premium", price: "R$ 297,00", tag: "Mais Vendido", color: "text-violet-400" },
+          { name: "Curso Premium", price: "R$ 297,00", tag: "Mais Vendido", color: "text-sky-400" },
           { name: "Mentoria VIP", price: "R$ 997,00", tag: "Exclusivo", color: "text-amber-400" },
           { name: "Plano Anual", price: "R$ 1.497,00", tag: "Melhor Valor", color: "text-emerald-400" },
         ].map((product) => (
@@ -93,7 +93,7 @@ const EcommerceDemo = () => (
             <span className={`text-[10px] font-bold uppercase tracking-wider ${product.color}`}>{product.tag}</span>
             <h4 className="text-white font-bold mt-1">{product.name}</h4>
             <p className="text-2xl font-bold text-white mt-2">{product.price}</p>
-            <Button size="sm" className="mt-4 bg-violet-600 hover:bg-violet-700 text-white w-full">
+            <Button size="sm" className="mt-4 bg-sky-600 hover:bg-sky-700 text-white w-full">
               <ShoppingCart className="w-4 h-4 mr-2" /> Adicionar
             </Button>
           </div>
@@ -169,7 +169,7 @@ const WhatsAppDemo = () => (
             <p className="text-[10px] text-[#888]">Taxa de Recuperação</p>
           </div>
           <div>
-            <p className="text-lg font-bold text-violet-400">2min</p>
+            <p className="text-lg font-bold text-sky-400">2min</p>
             <p className="text-[10px] text-[#888]">Tempo de Resposta</p>
           </div>
           <div>
@@ -193,7 +193,7 @@ const SoftwaresDemo = () => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {[
         { title: "Aplicativos Web", desc: "SaaS, dashboards, painéis administrativos e sistemas completos com React, Node.js e cloud.", icon: Globe, features: ["React/Next.js", "APIs REST", "Cloud Deploy", "Real-time"], color: "text-blue-400", border: "border-blue-500/20", bg: "bg-blue-500/5" },
-        { title: "Apps Mobile", desc: "Aplicativos nativos e híbridos para iOS e Android com UX premium e performance.", icon: Smartphone, features: ["React Native", "iOS & Android", "Push Notif.", "Offline"], color: "text-violet-400", border: "border-violet-500/20", bg: "bg-violet-500/5" },
+        { title: "Apps Mobile", desc: "Aplicativos nativos e híbridos para iOS e Android com UX premium e performance.", icon: Smartphone, features: ["React Native", "iOS & Android", "Push Notif.", "Offline"], color: "text-sky-400", border: "border-sky-500/20", bg: "bg-sky-500/5" },
         { title: "ERPs & CRMs", desc: "Sistemas de gestão empresarial customizados para otimizar seus processos internos.", icon: Database, features: ["Multi-tenant", "Relatórios", "Integrações", "Seguro"], color: "text-emerald-400", border: "border-emerald-500/20", bg: "bg-emerald-500/5" },
       ].map((item, i) => (
         <motion.div key={item.title} initial="hidden" animate="visible" variants={fadeUp} custom={i}
@@ -231,7 +231,7 @@ const AutomacaoDemo = () => (
         <div className="space-y-4">
           {[
             { step: 1, title: "Gatilho", desc: "Cliente abandona o carrinho", icon: ShoppingCart, color: "text-red-400", bg: "bg-red-500/10" },
-            { step: 2, title: "Processamento IA", desc: "IA analisa o perfil e cria mensagem personalizada", icon: Bot, color: "text-violet-400", bg: "bg-violet-500/10" },
+            { step: 2, title: "Processamento IA", desc: "IA analisa o perfil e cria mensagem personalizada", icon: Bot, color: "text-sky-400", bg: "bg-sky-500/10" },
             { step: 3, title: "Ação Automática", desc: "Envia mensagem no WhatsApp + e-mail + notificação", icon: Send, color: "text-blue-400", bg: "bg-blue-500/10" },
             { step: 4, title: "Acompanhamento", desc: "Monitora resposta e ajusta abordagem automaticamente", icon: BarChart3, color: "text-amber-400", bg: "bg-amber-500/10" },
             { step: 5, title: "Conversão", desc: "Cliente finaliza a compra com desconto exclusivo", icon: Check, color: "text-emerald-400", bg: "bg-emerald-500/10" },
@@ -265,7 +265,7 @@ const AutomacaoDemo = () => (
       {[
         { label: "Tempo Economizado", value: "85%", color: "text-emerald-400" },
         { label: "Redução de Erros", value: "95%", color: "text-blue-400" },
-        { label: "ROI Médio", value: "340%", color: "text-violet-400" },
+        { label: "ROI Médio", value: "340%", color: "text-sky-400" },
         { label: "Clientes Satisfeitos", value: "100+", color: "text-amber-400" },
       ].map((s, i) => (
         <motion.div key={s.label} initial="hidden" animate="visible" variants={fadeUp} custom={i}
@@ -298,7 +298,7 @@ export default function DemoServices() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-white mb-4">Demonstração não encontrada</h1>
           <Link to="/">
-            <Button className="bg-violet-600 hover:bg-violet-700">Voltar ao site</Button>
+            <Button className="bg-sky-600 hover:bg-sky-700">Voltar ao site</Button>
           </Link>
         </div>
       </div>
@@ -308,8 +308,8 @@ export default function DemoServices() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Demo banner */}
-      <div className="bg-violet-600/20 border-b border-violet-500/30 py-2 px-4 text-center">
-        <p className="text-[10px] sm:text-xs font-bold text-violet-400 uppercase tracking-widest">
+      <div className="bg-sky-600/20 border-b border-sky-500/30 py-2 px-4 text-center">
+        <p className="text-[10px] sm:text-xs font-bold text-sky-400 uppercase tracking-widest">
           Modo Visualização: Esta é uma demonstração do serviço
         </p>
       </div>
@@ -329,7 +329,7 @@ export default function DemoServices() {
               </Button>
             </Link>
             <Link to="/#cta">
-              <Button size="sm" className="bg-violet-600 hover:bg-violet-700 text-white text-xs gap-1.5">
+              <Button size="sm" className="bg-sky-600 hover:bg-sky-700 text-white text-xs gap-1.5">
                 Começar agora
                 <ArrowRight className="w-3.5 h-3.5" />
               </Button>
@@ -348,7 +348,7 @@ export default function DemoServices() {
           <p className="text-[#888] mb-8">Entre em contato e transforme sua ideia em realidade.</p>
           <div className="flex items-center justify-center gap-4">
             <Link to="/#cta">
-              <Button size="lg" className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-8 gap-2">
+              <Button size="lg" className="bg-sky-600 hover:bg-sky-700 text-white font-semibold px-8 gap-2">
                 Começar agora <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>

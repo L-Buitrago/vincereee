@@ -117,7 +117,7 @@ export default function PlatformSettings() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm whitespace-nowrap transition-all ${
                   activeTab === tab.id
-                    ? "bg-purple-500/10 text-violet-400"
+                    ? "bg-sky-500/10 text-sky-400"
                     : "text-[#888] hover:text-white hover:bg-white/5"
                 }`}
               >
@@ -137,7 +137,7 @@ export default function PlatformSettings() {
                     <input 
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full bg-[#0A0A0A] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500/30" 
+                      className="w-full bg-[#0A0A0A] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500/30" 
                     />
                   </div>
                   <div>
@@ -150,7 +150,7 @@ export default function PlatformSettings() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="(11) 99999-9999" 
-                      className="w-full bg-[#0A0A0A] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500/30" 
+                      className="w-full bg-[#0A0A0A] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500/30" 
                     />
                   </div>
                   <div>
@@ -159,14 +159,14 @@ export default function PlatformSettings() {
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                       placeholder="Nome da empresa" 
-                      className="w-full bg-[#0A0A0A] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500/30" 
+                      className="w-full bg-[#0A0A0A] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500/30" 
                     />
                   </div>
                 </div>
                 <Button 
                   onClick={handleSaveProfile} 
                   disabled={loading}
-                  className="bg-platform-purple hover:bg-platform-purple/90 text-white font-semibold gap-2"
+                  className="bg-sky-500 hover:bg-sky-600 text-white font-semibold gap-2"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Salvar alterações
@@ -182,7 +182,7 @@ export default function PlatformSettings() {
                     <span className="text-sm text-[#ccc]">{item}</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" defaultChecked className="sr-only peer" />
-                      <div className="w-9 h-5 bg-[#333] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-platform-purple" />
+                      <div className="w-9 h-5 bg-[#333] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-sky-500" />
                     </label>
                   </div>
                 ))}
@@ -199,13 +199,13 @@ export default function PlatformSettings() {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="••••••••" 
-                    className="w-full bg-[#0A0A0A] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500/30" 
+                    className="w-full bg-[#0A0A0A] border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500/30" 
                   />
                 </div>
                 <Button 
                   onClick={handleUpdatePassword} 
                   disabled={loading}
-                  className="bg-platform-purple hover:bg-platform-purple/90 text-white font-semibold gap-2"
+                  className="bg-sky-500 hover:bg-sky-600 text-white font-semibold gap-2"
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Atualizar senha

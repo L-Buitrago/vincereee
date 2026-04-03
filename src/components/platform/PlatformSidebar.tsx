@@ -78,16 +78,16 @@ export default function PlatformSidebar() {
             onClick={() => setMobileOpen(false)}
             className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm transition-all duration-300 group relative ${
               isActive(item.path)
-                ? "bg-premium-purple/20 text-white shadow-[0_0_20px_rgba(104,46,199,0.15)]"
+                ? "bg-sky-500/20 text-white shadow-[0_0_20px_rgba(14,165,233,0.15)]"
                 : "text-premium-text-muted hover:text-white hover:bg-white/5"
             }`}
           >
-            <item.icon className={`w-[20px] h-[20px] shrink-0 ${isActive(item.path) ? "text-premium-purple" : ""}`} />
+            <item.icon className={`w-[20px] h-[20px] shrink-0 ${isActive(item.path) ? "text-sky-500" : ""}`} />
             {!collapsed && <span className="font-medium">{item.label}</span>}
             {!collapsed && isActive(item.path) && (
               <motion.div 
                 layoutId="active-pill"
-                className="absolute left-0 w-1 h-6 bg-premium-purple rounded-r-full"
+                className="absolute left-0 w-1 h-6 bg-sky-500 rounded-r-full"
               />
             )}
           </Link>

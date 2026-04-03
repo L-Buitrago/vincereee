@@ -93,8 +93,8 @@ const kpis = [
     prefix: "",
     desc: "Retorno sobre investimento médio",
     ringProgress: 78,
-    ringColor: "hsl(280, 80%, 60%)",
-    gradient: "from-purple-500/20 to-violet-500/5",
+    ringColor: "hsl(199, 89%, 48%)",
+    gradient: "from-sky-500/20 to-sky-500/5",
   },
 ];
 
@@ -120,7 +120,7 @@ const BigTimeReturns = () => {
           style={{ background: "radial-gradient(circle, hsl(217 91% 60% / 0.06) 0%, transparent 60%)" }}
         />
         <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-gradient-radial rounded-full blur-3xl opacity-20"
-          style={{ background: "radial-gradient(circle, hsl(280 80% 60% / 0.05) 0%, transparent 60%)" }}
+          style={{ background: "radial-gradient(circle, hsl(199 89% 48% / 0.05) 0%, transparent 60%)" }}
         />
       </div>
 
@@ -232,7 +232,7 @@ const BigTimeReturns = () => {
             {/* Bottom */}
             <div className="flex items-center justify-between relative z-10 pt-2">
               <div className="flex -space-x-2">
-                {["from-green-400 to-green-700", "from-blue-400 to-blue-700", "from-purple-400 to-purple-700"].map((g, i) => (
+                {["from-green-400 to-green-700", "from-blue-400 to-blue-700", "from-sky-400 to-sky-700"].map((g, i) => (
                   <motion.div
                     key={i}
                     initial={{ scale: 0 }}

@@ -143,9 +143,9 @@ export default function PlatformAdmin() {
     const isSite = lowerNeeds.includes('site') || lowerNeeds.includes('landing') || lowerNeeds.includes('loja') || lowerNeeds.includes('portfólio') || lowerNeeds.includes('ecommerce');
     
     // Choose theme colors
-    const themeClass = isDashboard ? 'text-green-400' : (isSite ? 'text-purple-400' : 'text-platform-orange');
-    const themeBorder = isDashboard ? 'border-green-500/20' : (isSite ? 'border-purple-500/20' : 'border-platform-orange/20');
-    const borderLeftClass = isDashboard ? 'border-l-green-500/50' : (isSite ? 'border-l-purple-500/50' : 'border-l-platform-orange/50');
+    const themeClass = isDashboard ? 'text-green-400' : (isSite ? 'text-sky-400' : 'text-platform-orange');
+    const themeBorder = isDashboard ? 'border-green-500/20' : (isSite ? 'border-sky-500/20' : 'border-platform-orange/20');
+    const borderLeftClass = isDashboard ? 'border-l-green-500/50' : (isSite ? 'border-l-sky-500/50' : 'border-l-platform-orange/50');
     
     // Improved parsing for Project Description
     let projectDescriptionLines: string[] = [];
@@ -224,8 +224,8 @@ export default function PlatformAdmin() {
     <div className="p-4 sm:p-6 lg:p-8 max-w-[1400px]">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
-            <Crown className="w-5 h-5 text-purple-400" />
+          <div className="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center">
+            <Crown className="w-5 h-5 text-sky-400" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-white">Painel Admin</h1>
@@ -236,10 +236,10 @@ export default function PlatformAdmin() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Organizações", value: orgs.length, icon: Building2, bgCls: "bg-purple-500/10", textCls: "text-purple-400" },
-          { label: "Total de Clientes", value: totalClients, icon: Users, bgCls: "bg-violet-500/10", textCls: "text-violet-400" },
+          { label: "Organizações", value: orgs.length, icon: Building2, bgCls: "bg-sky-500/10", textCls: "text-sky-400" },
+          { label: "Total de Clientes", value: totalClients, icon: Users, bgCls: "bg-sky-500/10", textCls: "text-sky-400" },
           { label: "Clientes Ativos", value: totalActive, icon: TrendingUp, bgCls: "bg-blue-400/10", textCls: "text-blue-400" },
-          { label: "Receita Global", value: formatCurrency(totalRevenue), icon: DollarSign, bgCls: "bg-violet-500/10", textCls: "text-violet-400" },
+          { label: "Receita Global", value: formatCurrency(totalRevenue), icon: DollarSign, bgCls: "bg-sky-500/10", textCls: "text-sky-400" },
         ].map((met, i) => (
           <motion.div
             key={met.label}
@@ -289,7 +289,7 @@ export default function PlatformAdmin() {
                     <td className="px-6 py-4">
                       <div className="flex flex-col">
                         <span className="text-white font-bold text-sm tracking-tight">{l.name}</span>
-                        {l.company && <span className="text-[10px] text-violet-400 font-medium uppercase tracking-wider">{l.company}</span>}
+                        {l.company && <span className="text-[10px] text-sky-400 font-medium uppercase tracking-wider">{l.company}</span>}
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -385,15 +385,15 @@ export default function PlatformAdmin() {
                     progress = proj.status === 'EM ANDAMENTO' ? 45 : 15;
                   }
 
-                  const colorClass = isDone ? "bg-emerald-500" : "bg-violet-500";
-                  const badgeClass = isDone ? "bg-emerald-500/10 text-emerald-500" : "bg-violet-500/10 text-violet-400";
+                  const colorClass = isDone ? "bg-emerald-500" : "bg-sky-500";
+                  const badgeClass = isDone ? "bg-emerald-500/10 text-emerald-500" : "bg-sky-500/10 text-sky-400";
                   
                   return (
                     <tr key={proj.id} className="hover:bg-white/[0.02] transition-colors group">
                       <td className="px-6 py-5">
                         <div className="flex flex-col">
                           <span className="text-white font-bold text-sm tracking-tight">{proj.title}</span>
-                          <span className="text-[10px] text-violet-400 font-medium uppercase tracking-wider mt-0.5">
+                          <span className="text-[10px] text-sky-400 font-medium uppercase tracking-wider mt-0.5">
                             {proj.orgName}
                           </span>
                         </div>
@@ -468,15 +468,15 @@ export default function PlatformAdmin() {
                   >
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                          <Building2 className="w-4 h-4 text-purple-400" />
+                        <div className="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center">
+                          <Building2 className="w-4 h-4 text-sky-400" />
                         </div>
                         <span className="text-white font-medium">{org.name}</span>
                       </div>
                     </td>
                     <td className="px-5 py-3.5 text-[#888]">{org.owner_email}</td>
                     <td className="px-5 py-3.5">
-                      <span className="px-2 py-0.5 rounded-full text-xs font-medium text-violet-400 bg-violet-500/10 capitalize">
+                      <span className="px-2 py-0.5 rounded-full text-xs font-medium text-sky-400 bg-sky-500/10 capitalize">
                         {org.plan}
                       </span>
                     </td>
@@ -485,7 +485,7 @@ export default function PlatformAdmin() {
                     <td className="px-5 py-3.5">
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                         org.status === 'active'
-                          ? 'text-violet-400 bg-violet-500/10'
+                          ? 'text-sky-400 bg-sky-500/10'
                           : 'text-[#888] bg-white/5'
                       }`}>
                         {org.status === 'active' ? 'Ativa' : org.status}

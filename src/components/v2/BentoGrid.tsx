@@ -24,7 +24,7 @@ const BentoCard = ({ children, className = "", delay = 0 }: BentoCardProps) => (
     <div className="relative z-10">{children}</div>
     
     {/* Hover Accent Glow */}
-    <div className="absolute -inset-[100%] bg-gradient-to-r from-purple-500/0 via-purple-500/5 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -translate-x-[100%] group-hover:translate-x-[100%] pointer-events-none" />
+    <div className="absolute -inset-[100%] bg-gradient-to-r from-sky-500/0 via-sky-500/5 to-sky-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -translate-x-[100%] group-hover:translate-x-[100%] pointer-events-none" />
   </motion.div>
 );
 
@@ -33,7 +33,7 @@ const BentoGrid = () => {
     <section id="servicos" className="py-32 container mx-auto px-4 bg-black">
       {/* Section Header */}
       <div className="mb-20 space-y-4">
-        <h3 className="text-sm font-mono text-purple-500 uppercase tracking-[0.4em]">Soluções</h3>
+        <h3 className="text-sm font-mono text-sky-500 uppercase tracking-[0.4em]">Soluções</h3>
         <h2 className="text-5xl md:text-7xl font-serif italic text-white">Nosso <span className="font-sans not-italic font-bold tracking-tighter">Manifesto</span></h2>
       </div>
 
@@ -54,7 +54,7 @@ const BentoGrid = () => {
         {/* Card 2: Small Square */}
         <BentoCard className="md:col-span-4 h-[290px] flex flex-col justify-end gap-4">
           <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center">
-            <div className="w-2 h-2 rounded-full bg-purple-500 animate-ping" />
+            <div className="w-2 h-2 rounded-full bg-sky-500 animate-ping" />
           </div>
           <h4 className="text-xl font-bold text-white">Full Performance</h4>
           <p className="text-white/40 text-sm">Otimização máxima para carregamento instantâneo em qualquer conexão.</p>
@@ -62,7 +62,7 @@ const BentoGrid = () => {
 
         {/* Card 3: Small Square */}
         <BentoCard className="md:col-span-4 h-[290px] flex flex-col justify-end gap-4" delay={0.1}>
-          <div className="bg-purple-600/20 w-10 h-10 rounded-lg flex items-center justify-center text-purple-400">
+          <div className="bg-sky-600/20 w-10 h-10 rounded-lg flex items-center justify-center text-sky-400">
              <Sparkles className="w-5 h-5" />
           </div>
           <h4 className="text-xl font-bold text-white">UX/UI de Luxo</h4>

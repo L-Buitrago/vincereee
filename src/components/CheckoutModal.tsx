@@ -59,8 +59,8 @@ export function CheckoutModal({ isOpen, onClose, planName, priceAmount }: Checko
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/5">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center">
-              <CreditCard className="w-5 h-5 text-violet-400" />
+            <div className="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center">
+              <CreditCard className="w-5 h-5 text-sky-400" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-white">Finalizar Assinatura</h2>
@@ -85,7 +85,7 @@ export function CheckoutModal({ isOpen, onClose, planName, priceAmount }: Checko
                 placeholder="000.000.000-00"
                 value={cpfCnpj}
                 onChange={(e) => setCpfCnpj(e.target.value)}
-                className="bg-white/5 border-white/5 text-white h-12 focus-visible:ring-violet-500"
+                className="bg-white/5 border-white/5 text-white h-12 focus-visible:ring-sky-500"
               />
               <p className="text-[10px] text-[#666]">O Asaas exige este dado para gerar cobranças via Pix e Cartão.</p>
             </div>
@@ -94,7 +94,7 @@ export function CheckoutModal({ isOpen, onClose, planName, priceAmount }: Checko
           <Button 
             onClick={handleAsaasCheckout} 
             disabled={loading}
-            className="w-full h-12 bg-violet-600 hover:bg-violet-700 text-white font-bold gap-2 text-base shadow-lg shadow-violet-600/20"
+            className="w-full h-12 bg-sky-600 hover:bg-sky-700 text-white font-bold gap-2 text-base shadow-lg shadow-sky-600/20"
           >
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />

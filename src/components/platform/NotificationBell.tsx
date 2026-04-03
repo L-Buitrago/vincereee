@@ -155,7 +155,7 @@ export default function NotificationBell() {
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-platform-purple ring-2 ring-[#0a0a0a] animate-pulse"></span>
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-sky-500 ring-2 ring-[#0a0a0a] animate-pulse"></span>
         )}
       </motion.button>
 
@@ -199,11 +199,11 @@ export default function NotificationBell() {
                         if (!notif.read) markAsRead(notif.id);
                       }}
                       className={`p-4 transition-colors cursor-pointer hover:bg-white/[0.02] ${
-                        !notif.read ? 'bg-purple-500/5' : ''
+                        !notif.read ? 'bg-sky-500/5' : ''
                       }`}
                     >
                       <div className="flex gap-3 relative group/item">
-                        <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${!notif.read ? 'bg-platform-purple' : 'bg-transparent'}`} />
+                        <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${!notif.read ? 'bg-sky-500' : 'bg-transparent'}`} />
                         <div className="flex-1 pr-6">
                           <p className={`text-sm ${!notif.read ? 'text-white font-medium' : 'text-[#888]'}`}>
                             {notif.title}

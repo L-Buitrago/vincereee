@@ -25,7 +25,7 @@ type Customer = {
 };
 
 const statusColors: Record<string, string> = {
-  "Cliente Ativo": "text-violet-400 bg-violet-500/10",
+  "Cliente Ativo": "text-sky-400 bg-sky-500/10",
   "Lead": "text-platform-orange bg-platform-orange/10",
   "Negociação": "text-blue-400 bg-blue-400/10",
   "Cancelado": "text-[#888] bg-white/5",

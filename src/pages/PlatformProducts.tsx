@@ -18,9 +18,9 @@ const fadeUp = {
 const planDetails: Record<string, { icon: any; color: string; bgClass: string; textClass: string; features: string[] }> = {
   starter: {
     icon: Package,
-    color: "violet",
-    bgClass: "bg-violet-500/10",
-    textClass: "text-violet-400",
+    color: "sky",
+    bgClass: "bg-sky-500/10",
+    textClass: "text-sky-400",
     features: ["Até 100 clientes", "CRM Básico", "1 usuário", "Suporte por email"],
   },
   pro: {
@@ -32,9 +32,9 @@ const planDetails: Record<string, { icon: any; color: string; bgClass: string; t
   },
   enterprise: {
     icon: Sparkles,
-    color: "purple",
-    bgClass: "bg-purple-500/10",
-    textClass: "text-purple-400",
+    color: "sky",
+    bgClass: "bg-sky-500/10",
+    textClass: "text-sky-400",
     features: ["Tudo do Pro", "Usuários ilimitados", "API dedicada", "White-label", "Suporte 24/7"],
   },
 };
@@ -95,7 +95,7 @@ export default function PlatformProducts() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="p-4 rounded-xl bg-white/5">
-            <Users className="w-5 h-5 text-violet-400 mb-2" />
+            <Users className="w-5 h-5 text-sky-400 mb-2" />
             <p className="text-2xl font-bold text-white">{stats?.totalCustomers || 0}</p>
             <p className="text-xs text-[#888]">Total de Clientes</p>
           </div>
@@ -110,7 +110,7 @@ export default function PlatformProducts() {
             <p className="text-xs text-[#888]">Clientes Ativos</p>
           </div>
           <div className="p-4 rounded-xl bg-white/5">
-            <DollarSign className="w-5 h-5 text-violet-400 mb-2" />
+            <DollarSign className="w-5 h-5 text-sky-400 mb-2" />
             <p className="text-2xl font-bold text-white">{formatCurrency(stats?.totalRevenue || 0)}</p>
             <p className="text-xs text-[#888]">Receita Total</p>
           </div>
@@ -130,14 +130,14 @@ export default function PlatformProducts() {
       {currentPlan !== 'enterprise' && (
         <motion.div
           initial="hidden" animate="visible" variants={fadeUp} custom={1}
-          className="p-6 rounded-2xl bg-gradient-to-br from-purple-500/5 to-transparent border border-purple-500/10"
+          className="p-6 rounded-2xl bg-gradient-to-br from-sky-500/5 to-transparent border border-sky-500/10"
         >
           <h3 className="text-lg font-bold text-white mb-2">🚀 Quer mais recursos?</h3>
           <p className="text-sm text-[#888] mb-4">
             Faça upgrade do seu plano para desbloquear funcionalidades avançadas e suporte prioritário.
           </p>
           <a href="/plataforma/pagamentos">
-            <button className="px-6 py-2.5 rounded-xl bg-platform-purple hover:bg-platform-purple/90 text-white font-semibold text-sm transition-colors">
+            <button className="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold text-sm transition-colors">
               Ver planos disponíveis
             </button>
           </a>
