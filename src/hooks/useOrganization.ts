@@ -23,25 +23,41 @@ export function useOrganization() {
 
   const { data: membership, isLoading } = useQuery({
     queryKey: ['org-membership', user?.id],
-    enabled: !!user && !isAdmin,
+    enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
+      // 1. Check direct membership
+      const { data: directMem, error: memError } = await supabase
         .from('org_members' as any)
         .select('org_id, role, organizations(*)')
         .eq('user_id', user!.id)
         .maybeSingle();
 
-      if (error) {
-        console.error("Org membership error:", error);
-        return null;
+      if (!memError && directMem) return directMem;
+
+      // 2. If no membership but user is admin/owner, try fetching org by owner_email
+      if (user?.email) {
+        const { data: ownedOrg, error: orgError } = await supabase
+          .from('organizations' as any)
+          .select('*')
+          .eq('owner_email', user.email)
+          .maybeSingle();
+
+        if (!orgError && ownedOrg) {
+          return {
+            org_id: ownedOrg.id,
+            role: 'owner',
+            organizations: ownedOrg
+          } as any;
+        }
       }
-      return data as any;
+
+      return null;
     }
   });
 
-  const orgId: string | null = membership?.org_id || null;
-  const orgRole: string = membership?.role || 'member';
-  const org: Organization | null = membership?.organizations || null;
+  const orgId: string | null = (membership as any)?.org_id || null;
+  const orgRole: string = (membership as any)?.role || (isAdmin ? 'owner' : 'member');
+  const org: Organization | null = (membership as any)?.organizations || null;
 
   return {
     orgId,

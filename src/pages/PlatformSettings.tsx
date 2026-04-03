@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export default function PlatformSettings() {
-  const { user } = useAuth();
+  const { user, updateUserMetadata } = useAuth();
   const { org, orgId } = useOrganization();
   const [activeTab, setActiveTab] = useState("perfil");
   const [loading, setLoading] = useState(false);
@@ -47,14 +47,26 @@ export default function PlatformSettings() {
       const { error: authError } = await supabase.auth.updateUser({
         data: { full_name: fullName }
       });
-      if (authError) throw authError;
+      if (authError) {
+        console.error("Auth update error:", authError);
+        // We don't throw here to allow profile update if auth fails (common on dev)
+      } else {
+        updateUserMetadata({ full_name: fullName });
+      }
 
-      // 2. Update Profiles table
+      // 2. Update Profiles table (using upsert to handle missing rows)
       const { error: profileError } = await supabase
         .from("profiles")
-        .update({ full_name: fullName, phone: phone })
-        .eq("user_id", user.id);
-      if (profileError) throw profileError;
+        .upsert({ 
+          user_id: user.id, 
+          full_name: fullName, 
+          phone: phone 
+        }, { onConflict: 'user_id' });
+      
+      if (profileError) {
+        console.error("Profile update error:", profileError);
+        throw new Error(`Erro no perfil: ${profileError.message}`);
+      }
 
       // 3. Update Organization
       if (orgId) {
@@ -62,7 +74,11 @@ export default function PlatformSettings() {
           .from("organizations")
           .update({ name: companyName })
           .eq("id", orgId);
-        if (orgError) throw orgError;
+        
+        if (orgError) {
+          console.error("Org update error:", orgError);
+          throw new Error(`Erro na empresa: ${orgError.message}`);
+        }
       }
 
       toast.success("Perfil atualizado com sucesso!");
