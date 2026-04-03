@@ -193,21 +193,34 @@ export default function PlatformClients() {
       
       console.log("Delete results:", { primary: r1, vi: r2, customers: r3 });
 
+      // ALERTA DE DIAGNÓSTICO PARA O USUÁRIO
+      const summary = `
+        Resultado da Exclusão:
+        - Tabela Principal: ${r1.error ? 'ERRO: ' + r1.error.message : 'OK (Status: ' + r1.status + ')'}
+        - Tabela VI Leads: ${r2.error ? 'ERRO: ' + r2.error.message : 'OK'}
+        - Tabela Clientes: ${r3.error ? 'ERRO: ' + r3.error.message : 'OK'}
+      `;
+      window.alert(summary);
+
       if (r1.error) throw r1.error;
 
+      // Se nada foi deletado (count null ou 0 dependendo da config), pode ser RLS
       toast({ title: "✅ Registro removido", description: `${client.name} foi removido com sucesso.` });
       
-      // FORCE UI UPDATE: Remove all related queries from cache to force fresh fetch
+      // FORCE UI UPDATE
       queryClient.removeQueries({ queryKey: ['customers'] });
       queryClient.removeQueries({ queryKey: ['dashboard-customers'] });
       
-      // Refetch now
       await refetch();
       
       if (selected?.id === client.id) setSelected(null);
     } catch (error: any) {
       console.error("ERRO CRÍTICO NA EXCLUSÃO:", error);
-      toast({ title: "Erro na exclusão", description: error.message, variant: "destructive" });
+      toast({ 
+        title: "Erro na exclusão", 
+        description: "Verifique se você aplicou as novas políticas de SQL no Supabase.", 
+        variant: "destructive" 
+      });
     }
   };
 
