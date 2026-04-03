@@ -61,7 +61,7 @@ export default function PlatformSidebar() {
   const userInitials = userName.substring(0, 2).toUpperCase();
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full bg-[#06071A]">
+    <div className="flex flex-col h-full bg-black">
       {/* Logo */}
       <div className="p-6 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
@@ -164,7 +164,7 @@ export default function PlatformSidebar() {
             animate={{ x: 0 }}
             exit={{ x: -280 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-[#0A0A0A] border-r border-white/5"
+            className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-black border-r border-white/5"
           >
             <SidebarContent />
           </motion.aside>
@@ -173,7 +173,7 @@ export default function PlatformSidebar() {
 
       {/* Desktop Sidebar */}
       <aside
-        className={`hidden lg:flex flex-col sticky top-0 h-screen border-r border-white/5 bg-[#0A0A0A] transition-all duration-300 ${
+        className={`hidden lg:flex flex-col sticky top-0 h-screen border-r border-white/5 bg-black transition-all duration-300 ${
           collapsed ? "w-[68px]" : "w-[240px]"
         }`}
       >
