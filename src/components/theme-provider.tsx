@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 type Theme = "dark" | "light" | "system";
 
@@ -30,8 +31,17 @@ export function ThemeProvider({
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   );
 
+  const location = useLocation();
+
   useEffect(() => {
     const root = window.document.documentElement;
+    const isPlatform = location.pathname.startsWith('/plataforma');
+
+    if (!isPlatform) {
+      root.classList.remove("light");
+      root.classList.add("dark");
+      return;
+    }
 
     root.classList.remove("light", "dark");
 
@@ -46,7 +56,7 @@ export function ThemeProvider({
     }
 
     root.classList.add(theme);
-  }, [theme]);
+  }, [theme, location.pathname]);
 
   const value = {
     theme,
