@@ -104,62 +104,7 @@ export default function PlatformClients() {
     e.target.value = '';
   };
 
-  const deleteClient = async (client: Customer) => {
-    console.log("Delete triggered for:", client.id, (client as any).originTable);
-    const confirmed = window.confirm(`Tem certeza que quer remover "${client.name}"?`);
-    if (!confirmed) return;
-
-    const table = (client as any).originTable || 'customers';
-    
-    try {
-      toast({ title: "Removendo...", description: "Aguarde um momento." });
-      
-      const { error } = await supabase
-        .from(table as any)
-        .delete()
-        .eq('id', client.id);
-
-      if (error) {
-        console.error("Supabase delete error:", error);
-        throw error;
-      }
-
-      if (table === 'customers' && client.email) {
-        await supabase
-          .from('vi_leads' as any)
-          .delete()
-          .eq('email', client.email);
-      }
-
-      toast({ title: "✅ Registro removido", description: `${client.name} foi removido.` });
-      
-      queryClient.invalidateQueries({ queryKey: ['customers'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard-customers'] });
-      queryClient.invalidateQueries({ queryKey: ['admin-vi-leads'] });
-      
-      if (selected?.id === client.id) setSelected(null);
-    } catch (error: any) {
-      console.error("Erro ao remover:", error);
-      toast({ title: "Erro ao remover", description: error.message, variant: "destructive" });
-    }
-  };
-
-  const updateStatus = async (client: Customer, newStatus: string) => {
-    const { error } = await supabase
-      .from('customers' as any)
-      .update({ status: newStatus })
-      .eq('id', client.id);
-
-    if (error) {
-      toast({ title: "Erro ao atualizar", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "✅ Status atualizado", description: `${client.name} agora é "${newStatus}"` });
-      queryClient.invalidateQueries({ queryKey: ['customers'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard-customers'] });
-    }
-  };
-
-  const { data: clients = [], isLoading } = useQuery({
+  const { data: clients = [], isLoading, refetch } = useQuery({
     queryKey: ['customers', orgId, isAdmin],
     queryFn: async () => {
       let query = supabase
@@ -207,6 +152,64 @@ export default function PlatformClients() {
       return customersData;
     }
   });
+
+  const updateStatus = async (client: Customer, newStatus: string) => {
+    const { error } = await supabase
+      .from('customers' as any)
+      .update({ status: newStatus })
+      .eq('id', client.id);
+
+    if (error) {
+      toast({ title: "Erro ao atualizar", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "✅ Status atualizado", description: `${client.name} agora é "${newStatus}"` });
+      queryClient.invalidateQueries({ queryKey: ['customers'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard-customers'] });
+    }
+  };
+
+  const deleteClient = async (client: Customer) => {
+    console.log("URGENT: Deleting client", client.name, "(Email:", client.email, ")");
+    const confirmed = window.confirm(`Deseja realmente REMOVER PERMANENTEMENTE "${client.name}"?`);
+    if (!confirmed) return;
+
+    try {
+      toast({ title: "Removendo...", description: "Limpando registros em todas as bases." });
+      
+      const primaryTable = (client as any).originTable || 'customers';
+      const email = client.email;
+      const id = client.id;
+
+      // DELETE 1: By ID in the primary table
+      const p1 = supabase.from(primaryTable as any).delete().eq('id', id);
+      
+      // DELETE 2: By Email in vi_leads
+      const p2 = email ? supabase.from('vi_leads' as any).delete().eq('email', email) : Promise.resolve({ error: null });
+      
+      // DELETE 3: By Email in customers
+      const p3 = email ? supabase.from('customers' as any).delete().eq('email', email) : Promise.resolve({ error: null });
+      
+      const [r1, r2, r3] = await Promise.all([p1, p2, p3]);
+      
+      console.log("Delete results:", { primary: r1, vi: r2, customers: r3 });
+
+      if (r1.error) throw r1.error;
+
+      toast({ title: "✅ Registro removido", description: `${client.name} foi removido com sucesso.` });
+      
+      // FORCE UI UPDATE: Remove all related queries from cache to force fresh fetch
+      queryClient.removeQueries({ queryKey: ['customers'] });
+      queryClient.removeQueries({ queryKey: ['dashboard-customers'] });
+      
+      // Refetch now
+      await refetch();
+      
+      if (selected?.id === client.id) setSelected(null);
+    } catch (error: any) {
+      console.error("ERRO CRÍTICO NA EXCLUSÃO:", error);
+      toast({ title: "Erro na exclusão", description: error.message, variant: "destructive" });
+    }
+  };
 
   const NeedsFormatter = ({ needsStr }: { needsStr: string }) => {
     if (!needsStr) return <span className="text-muted-foreground/40">Nenhum detalhe informado.</span>;
