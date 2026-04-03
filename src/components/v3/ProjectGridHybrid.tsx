@@ -8,6 +8,12 @@ const projects = [
     title: "The Merchant Lab",
     category: "E-commerce Solutions",
     thumb: "https://vendredi-society.com/wp-content/uploads/2026/03/ps-day-thumbnail.webp",
+    slides: [
+      "/images/ecommerce_tenis_br.png",
+      "/images/luxury_watch_br.png",
+      "/images/tech_gadgets_br.png",
+      "/images/furniture_br.png"
+    ],
     video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
     color: "#dfe6e5",
     mockup: "/images/merchant_mockup.png"
@@ -58,6 +64,7 @@ const ProjectGridHybrid = () => {
 
 const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, index = 0 }: { project: any, isExtraLarge?: boolean, isScrollable?: boolean, index?: number }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -65,6 +72,17 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
     target: cardRef,
     offset: ["start end", "end start"]
   });
+
+  // Carousel Logic
+  useEffect(() => {
+    if (!project.slides) return;
+    
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % project.slides.length);
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [project.slides]);
 
   // Dramatic Parallax effect for the entire card
   const yTranslate = useTransform(
@@ -77,12 +95,12 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
   const imageY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
 
   useEffect(() => {
-    if (isHovered && videoRef.current) {
+    if (isHovered && videoRef.current && !project.slides) {
       videoRef.current.play();
     } else if (videoRef.current) {
       videoRef.current.pause();
     }
-  }, [isHovered]);
+  }, [isHovered, project.slides]);
 
   return (
     <motion.div
@@ -99,73 +117,45 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
     >
       {/* Background Media */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <motion.img 
-          src={project.thumb} 
-          alt={project.title}
-          style={{ y: imageY, scale: 1.2 }}
-          animate={{ scale: isHovered ? 1.3 : 1.2, opacity: isHovered ? 0.4 : 1 }}
-          transition={{ duration: 0.8 }}
-          className="w-full h-full object-cover"
-        />
-        <div className={`absolute inset-0 transition-opacity duration-700 ${isHovered ? "opacity-100" : "opacity-0"}`}>
-          <video 
-            ref={videoRef}
-            muted 
-            loop 
-            playsInline 
-            className="w-full h-full object-cover"
-          >
-            <source src={project.video} type="video/mp4" />
-          </video>
-        </div>
-      </div>
-
-      {/* Floating Mockups on Hover */}
-      <div className="absolute inset-0 pointer-events-none z-10 hidden md:block">
         <AnimatePresence>
-          {isHovered && project.mockup && (
-            <>
-              {/* Primary Mockup (Center-Right) */}
-              <motion.div
-                initial={{ opacity: 0, x: 100, y: 50, scale: 0.8, rotate: 10 }}
-                animate={{ 
-                  opacity: 1, 
-                  x: 0, 
-                  y: 0, 
-                  scale: 1, 
-                  rotate: -5,
-                  transition: { type: "spring", damping: 20, stiffness: 100, delay: 0.1 }
-                }}
-                exit={{ opacity: 0, x: 100, scale: 0.8 }}
-                className="absolute top-1/4 right-[10%] w-3/4 aspect-video rounded-xl shadow-2xl overflow-hidden border border-white/20 bg-white"
-              >
-                <img src={project.mockup} alt="Mockup" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent" />
-              </motion.div>
-
-              {/* Secondary Mockup (Bottom-Left) */}
-              <motion.div
-                initial={{ opacity: 0, x: -100, y: 100, scale: 0.5, rotate: -20 }}
-                animate={{ 
-                  opacity: 1, 
-                  x: 0, 
-                  y: 0, 
-                  scale: 0.7, 
-                  rotate: 5,
-                  transition: { type: "spring", damping: 15, stiffness: 80, delay: 0.3 }
-                }}
-                exit={{ opacity: 0, y: 100, scale: 0.5 }}
-                className="absolute bottom-1/4 left-[5%] w-1/2 aspect-video rounded-xl shadow-2xl overflow-hidden border border-white/20 bg-white"
-              >
-                <img src={project.mockup} alt="Mockup 2" className="w-full h-full object-cover grayscale" />
-                <div className="absolute inset-0 bg-primary/10" />
-              </motion.div>
-            </>
+          {project.slides ? (
+            <motion.img
+              key={currentSlide}
+              src={project.slides[currentSlide]}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.05 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <motion.img 
+              src={project.thumb} 
+              alt={project.title}
+              style={{ y: imageY, scale: 1.2 }}
+              animate={{ scale: isHovered ? 1.3 : 1.2, opacity: isHovered ? (project.video ? 0.4 : 1) : 1 }}
+              transition={{ duration: 0.8 }}
+              className="w-full h-full object-cover"
+            />
           )}
         </AnimatePresence>
+
+        {!project.slides && project.video && (
+          <div className={`absolute inset-0 transition-opacity duration-700 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+            <video 
+              ref={videoRef}
+              muted 
+              loop 
+              playsInline 
+              className="w-full h-full object-cover"
+            >
+              <source src={project.video} type="video/mp4" />
+            </video>
+          </div>
+        )}
       </div>
 
-      {/* Overlay Info */}
+      {/* Info Overlay (Visible on Hover) */}
       <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2 block text-white/60">
