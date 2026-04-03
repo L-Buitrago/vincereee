@@ -9,7 +9,7 @@ export default function PlatformSupport() {
       <div className="max-w-4xl mx-auto space-y-12">
         <div className="text-center space-y-4">
           <h1 className="text-3xl font-bold text-foreground font-display">Guia do Dashboard</h1>
-          <p className="text-muted-foreground">Entenda como as métricas da Vincere Tech impulsionam seu negócio.</p>
+          <p className="text-muted-foreground">Entenda como as métricas da Vincere impulsionam seu negócio.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -95,7 +95,7 @@ export default function PlatformAdmin() {
     const orgInfo = orgs.find(o => o.id === projectOrg);
     return {
       ...proj,
-      orgName: orgInfo?.name || "Vincere Tech"
+      orgName: orgInfo?.name || "Vincere"
     };
   });
 

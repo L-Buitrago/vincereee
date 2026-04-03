@@ -119,7 +119,7 @@ export default function AppSplashScreen() {
             transition={{ delay: 1, duration: 0.5 }}
             className="mt-4 text-[10px] text-white uppercase tracking-[0.3em] font-medium"
           >
-            Vincere Tech
+            Vincere
           </motion.p>
         </motion.div>
       )}

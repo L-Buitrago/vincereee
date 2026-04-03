@@ -52,7 +52,7 @@ export default function PWAInstallPrompt() {
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <p className="text-white font-semibold text-sm">Instalar Vincere Tech</p>
+          <p className="text-white font-semibold text-sm">Instalar Vincere</p>
           <p className="text-[#888] text-xs mt-0.5">
             Acesse métricas e chat direto do celular
           </p>
