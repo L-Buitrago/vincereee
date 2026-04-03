@@ -204,16 +204,21 @@ export default function PlatformDashboard() {
   }, [transactions, activePeriod]);
 
   const totalClientes = customers.filter(c => c.status === 'Cliente Ativo').length;
-  const totalReceita = customers.reduce((sum, c) => sum + (c.total_spent || 0), 0);
+  
+  // Update: Using transactions for real-time revenue instead of static customer fields
+  const totalReceita = filteredTransactions
+    .filter(t => t.status === 'aprovado' || !t.status) // Include approved or untracked status
+    .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+
   const totalProjetosAtivos = projects.filter(p => p.status === 'EM ANDAMENTO').length;
   
-  // Churn calculation based on all customers (not just filtered by period if appropriate, or filtered)
+  // Churn calculation
   const totalCancelados = allCustomers.filter(c => c.status === 'Cancelado').length;
   const churnRate = allCustomers.length > 0 ? (totalCancelados / allCustomers.length) * 100 : 0;
 
-  const totalTransactions = filteredTransactions.length;
+  const totalTransactionsCount = filteredTransactions.length;
   const approvedTransactions = filteredTransactions.filter(t => t.status === 'aprovado').length;
-  const approvalRate = totalTransactions > 0 ? (approvedTransactions / totalTransactions) * 100 : 0;
+  const approvalRate = totalTransactionsCount > 0 ? (approvedTransactions / totalTransactionsCount) * 100 : 0;
 
   const paymentMethods = useMemo(() => {
     if (filteredTransactions.length === 0) {

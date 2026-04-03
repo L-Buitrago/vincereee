@@ -91,6 +91,8 @@ export default function PlatformSettings() {
 
       toast.success("Perfil atualizado com sucesso!");
     } catch (error: any) {
+      console.error("ERRO DETALHADO NO SETTINGS:", error);
+      alert(`Erro técnico ao salvar:\n${error.message}\n\nVerifique se rodou o SQL de sincronização de perfis.`);
       toast.error(`Erro ao salvar: ${error.message}`);
     } finally {
       setLoading(false);
