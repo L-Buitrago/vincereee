@@ -43,6 +43,14 @@ export default function PlatformSettings() {
     if (!user) return;
     setLoading(true);
     try {
+      // Handle mock user for local development
+      if (user.id === 'dev-admin-user') {
+        updateUserMetadata({ full_name: fullName });
+        toast.success("Perfil atualizado (Modo Desenvolvedor)!");
+        setLoading(false);
+        return;
+      }
+
       // 1. Update Auth Metadata
       const { error: authError } = await supabase.auth.updateUser({
         data: { full_name: fullName }
