@@ -60,11 +60,11 @@ type Customer = {
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-[#1a1b2e] px-4 py-2 rounded-xl shadow-2xl border border-white/10 relative">
-        <p className="text-white font-bold text-sm">
+      <div className="bg-popover px-4 py-2 rounded-xl shadow-2xl border border-border relative">
+        <p className="text-popover-foreground font-bold text-sm">
           {formatCurrency(payload[0].value)}
         </p>
-        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#1a1b2e] rotate-45 border-r border-b border-white/10" />
+        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-popover rotate-45 border-r border-b border-border" />
       </div>
     );
   }
@@ -249,7 +249,7 @@ export default function PlatformDashboard() {
   const recentProjects = useMemo(() => projects.slice(0, 3), [projects]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0A0A0A] text-white">
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
       {showSuccess && (
         <div className="bg-emerald-500/20 py-2 px-4 text-center border-b border-emerald-500/30">
           <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest">Assinatura Ativada com Sucesso!</p>
@@ -266,30 +266,30 @@ export default function PlatformDashboard() {
       {/* Main Content Area */}
       <main className="flex-1 p-8 pt-4 space-y-8">
         
-        <div className="flex items-center gap-2 mb-2 bg-white/5 p-1 rounded-xl w-fit border border-white/5">
+        <div className="flex items-center gap-2 mb-2 bg-muted/20 p-1 rounded-xl w-fit border border-border">
           {periods.map((p, i) => (
             <motion.button
               key={p}
               initial="hidden" animate="visible" variants={fadeUp} custom={i}
               onClick={() => setActivePeriod(p)}
               className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${
-                activePeriod === p ? "bg-sky-500 text-white" : "text-white/30 hover:text-white/60 hover:bg-white/5"
+                activePeriod === p ? "bg-sky-500 text-white" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               }`}
             >
               {p}
             </motion.button>
           ))}
           
-          <div className="w-[1px] h-4 bg-white/10 mx-1" />
+          <div className="w-[1px] h-4 bg-border mx-1" />
 
           <Popover>
             <PopoverTrigger asChild>
-              <button className="px-3 py-1.5 rounded-lg text-white/40 hover:text-white transition-colors flex items-center gap-2">
+              <button className="px-3 py-1.5 rounded-lg text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
                 <CalendarIcon className="w-3.5 h-3.5 text-sky-500" />
                 <span className="text-[10px] font-bold uppercase tracking-wider">Calendário</span>
               </button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 bg-[#0A0A0A] border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden" align="start">
+            <PopoverContent className="w-auto p-0 bg-popover border-border text-popover-foreground rounded-2xl shadow-2xl z-50 overflow-hidden" align="start">
               <Calendar
                 mode="single"
                 selected={date}
@@ -320,10 +320,10 @@ export default function PlatformDashboard() {
         {/* Analytics Section */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
            <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={10} className="lg:col-span-2">
-             <Card className="h-full bg-[#111] border-white/5 rounded-3xl overflow-hidden shadow-2xl">
+             <Card className="h-full bg-card border-border rounded-3xl overflow-hidden shadow-2xl">
               <div className="p-8 pb-0 flex items-center justify-between">
                 <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">Faturamento Mensal</h3>
+                  <h3 className="text-xl font-bold text-card-foreground">Faturamento Mensal</h3>
                   <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 rounded-full border-2 border-sky-500 flex items-center justify-center">
@@ -363,9 +363,9 @@ export default function PlatformDashboard() {
            </motion.div>
 
            <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={11}>
-             <Card className="h-full bg-[#111] border-white/5 rounded-3xl overflow-hidden p-8 flex flex-col shadow-2xl">
+             <Card className="h-full bg-card border-border rounded-3xl overflow-hidden p-8 flex flex-col shadow-2xl">
                <div className="flex items-center justify-between mb-12">
-                 <h3 className="text-xl font-bold text-white">Meios de Pagamento</h3>
+                 <h3 className="text-xl font-bold text-card-foreground">Meios de Pagamento</h3>
                  <button className="bg-[#252644] px-4 py-1.5 rounded-lg text-xs font-bold text-white flex items-center gap-2">
                    Ver Todos <ArrowUpRight className="w-3 h-3" />
                  </button>
@@ -426,7 +426,7 @@ export default function PlatformDashboard() {
                   Ver Tudo
                 </button>
               </div>
-              <Card className="bg-[#15162D] border-white/5 rounded-3xl overflow-hidden p-0 shadow-xl">
+              <Card className="bg-card border-border rounded-3xl overflow-hidden p-0 shadow-xl">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
@@ -445,8 +445,8 @@ export default function PlatformDashboard() {
                           >
                             <td className="px-6 py-4">
                               <div className="flex flex-col">
-                                <span className="font-bold text-sm text-white">{q.name}</span>
-                                <span className="text-[10px] text-white/30 uppercase">{format(new Date(q.created_at), "dd/MM/yyyy")}</span>
+                                <span className="font-bold text-sm text-foreground">{q.name}</span>
+                                <span className="text-[10px] text-muted-foreground uppercase">{format(new Date(q.created_at), "dd/MM/yyyy")}</span>
                               </div>
                             </td>
                             <td className="px-6 py-4">
@@ -473,7 +473,7 @@ export default function PlatformDashboard() {
                 </h3>
                 <button className="text-[10px] font-bold uppercase tracking-widest text-white/30">Ver Todos</button>
               </div>
-              <Card className="bg-[#15162D] border-white/5 rounded-3xl overflow-hidden p-0 shadow-xl">
+              <Card className="bg-card border-border rounded-3xl overflow-hidden p-0 shadow-xl">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
@@ -488,8 +488,8 @@ export default function PlatformDashboard() {
                           <tr key={p.id} className="hover:bg-white/[0.02] transition-colors">
                             <td className="px-6 py-4">
                               <div className="flex flex-col">
-                                <span className="font-bold text-sm text-white">{p.title}</span>
-                                <span className="text-[10px] text-white/30 uppercase">Entrega: {p.end_date ? format(new Date(p.end_date), "dd/MM/yyyy") : "---"}</span>
+                                <span className="font-bold text-sm text-foreground">{p.title}</span>
+                                <span className="text-[10px] text-muted-foreground uppercase">Entrega: {p.end_date ? format(new Date(p.end_date), "dd/MM/yyyy") : "---"}</span>
                               </div>
                             </td>
                             <td className="px-6 py-4">
