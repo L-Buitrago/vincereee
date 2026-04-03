@@ -1,11 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Plus, FileText, Loader2, Search, 
-  Bell, Moon, Sun, Wallet, Truck, Clock, MoreHorizontal,
+  FileText, Search, Bell, Wallet, Truck, Clock, MoreHorizontal,
   TrendingUp, ArrowUpRight, FolderOpen, Calendar as CalendarIcon
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -20,7 +19,6 @@ import {
 import {
   Avatar,
   AvatarFallback,
-  AvatarImage,
 } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 
@@ -35,11 +33,11 @@ const statusLabels: Record<string, string> = {
 
 const statusColors: Record<string, string> = {
   pending: "bg-yellow-500/10 text-yellow-500",
-  approved: "bg-premium-green/10 text-premium-green",
+  approved: "bg-emerald-500/10 text-emerald-500",
   rejected: "bg-red-500/10 text-red-500",
-  in_progress: "bg-blue-500/10 text-blue-500",
-  completed: "bg-premium-green/10 text-premium-green",
-  paused: "bg-premium-text-muted text-premium-text-muted",
+  in_progress: "bg-sky-500/10 text-sky-500",
+  completed: "bg-emerald-500/10 text-emerald-500",
+  paused: "bg-muted text-muted-foreground",
 };
 
 const revenueData = [
@@ -58,27 +56,27 @@ const revenueData = [
 ];
 
 const paymentMethodsData = [
-  { name: "Cartão de Crédito", value: 65, color: "#0ea5e9" }, // sky-500
+  { name: "Cartão de Crédito", value: 65, color: "#0ea5e9" }, // Vincere Blue
   { name: "Pix", value: 25, color: "#10B981" },
   { name: "Boleto", value: 7, color: "#F59E0B" },
   { name: "Outros", value: 3, color: "#31335A" },
 ];
 
 const mockQuotes = [
-  { id: '1', service_type: 'E-commerce Premium', status: 'approved', created_at: new Date().toISOString() },
-  { id: '2', service_type: 'App Mobile iOS', status: 'pending', created_at: new Date(Date.now() - 86400000).toISOString() },
-  { id: '3', service_type: 'Sistema ERP Web', status: 'in_progress', created_at: new Date(Date.now() - 172800000).toISOString() },
-  { id: '4', service_type: 'Consultoria IA', status: 'completed', created_at: new Date(Date.now() - 259200000).toISOString() },
-  { id: '5', service_type: 'Landing Page', status: 'rejected', created_at: new Date(Date.now() - 345600000).toISOString() },
+  { id: '1', service_type: 'E-commerce Premium', status: 'approved', created_at: '2026-03-22' },
+  { id: '2', service_type: 'App Mobile iOS', status: 'pending', created_at: '2026-03-21' },
+  { id: '3', service_type: 'Sistema ERP Web', status: 'in_progress', created_at: '2026-03-20' },
+  { id: '4', service_type: 'Consultoria IA', status: 'completed', created_at: '2026-03-19' },
+  { id: '5', service_type: 'Landing Page', status: 'rejected', created_at: '2026-03-18' },
 ];
 
 const mockProjects = [
-  { id: '1', title: 'Plataforma Vincere', status: 'in_progress', end_date: new Date(Date.now() + 604800000).toISOString() },
-  { id: '2', title: 'App Delivery Rápido', status: 'completed', end_date: new Date().toISOString() },
-  { id: '3', title: 'Portal de Notícias', status: 'in_progress', end_date: new Date(Date.now() + 1209600000).toISOString() },
+  { id: '1', title: 'Plataforma Vincere', status: 'in_progress', end_date: '2026-03-29', progress: 45 },
+  { id: '2', title: 'App Delivery Rápido', status: 'completed', end_date: '2026-03-22', progress: 100 },
+  { id: '3', title: 'Portal de Notícias', status: 'in_progress', end_date: '2026-04-05', progress: 45 },
 ];
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-sky-500 px-4 py-2 rounded-2xl shadow-xl border border-white/20 relative">
@@ -93,16 +91,16 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 const StatCard = ({ title, value, icon: Icon, bgColor }: any) => (
-  <Card className={`overflow-hidden border-none relative group transition-all duration-500 hover:translate-y-[-4px] ${bgColor} text-white shadow-xl`}>
-    <CardContent className="p-6 relative z-10">
+  <Card className={`overflow-hidden border-none relative group transition-all duration-500 hover:translate-y-[-4px] ${bgColor} text-white shadow-xl rounded-[2rem]`}>
+    <CardContent className="p-8 relative z-10">
       <div className="flex items-start justify-between">
-        <div className="space-y-4">
+        <div className="space-y-5">
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-white/20 transition-transform group-hover:scale-110 duration-500">
             <Icon className="w-6 h-6 text-white" />
           </div>
-          <div className="space-y-1">
-            <h3 className="text-3xl font-bold tracking-tight">{value}</h3>
-            <p className="text-sm font-medium text-white/80">
+          <div>
+            <h3 className="text-4xl font-black tracking-tight mb-1">{value}</h3>
+            <p className="text-xs font-bold text-white/80 uppercase tracking-widest leading-none">
               {title}
             </p>
           </div>
@@ -117,58 +115,44 @@ const StatCard = ({ title, value, icon: Icon, bgColor }: any) => (
 
 const DemoDashboard = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const [activePeriod, setActivePeriod] = useState("Todos");
-  const periods = ["Ontem", "Hoje", "Semana", "Mês", "Ano", "Todos"];
+  const [activePeriod, setActivePeriod] = useState("TODOS");
+  const periods = ["ONTEM", "HOJE", "SEMANA", "MÊS", "ANO", "TODOS"];
 
-  const fadeUp = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { 
-      opacity: 1, 
-      y: 0
-    }
-  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0A0A0A] text-white">
-      {/* Alert Banner for Demo */}
-      <div className="bg-sky-500/20 border-b border-sky-500/30 py-2 px-4 text-center">
-        <p className="text-[10px] sm:text-xs font-bold text-sky-400 uppercase tracking-widest">
-          Modo Visualização: Esta é uma demonstração com dados fictícios
-        </p>
-      </div>
+    <div className="flex flex-col min-h-screen bg-[#050505] text-white overflow-x-hidden font-sans pb-20">
+      {/* Platform Header */}
+      <header className="flex items-center justify-between p-6 px-10 bg-transparent sticky top-0 z-30 backdrop-blur-md border-b border-white/5">
+        <h1 className="text-2xl font-black tracking-tighter text-white">Analytics Demo</h1>
 
-      {/* Header Area */}
-      <header className="flex items-center justify-between p-6 px-8 bg-transparent sticky top-0 z-30 backdrop-blur-sm border-b border-white/5">
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-bold tracking-tight font-display text-white">Analytics Demo</h1>
-        </div>
-
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-8">
           <div className="relative hidden md:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888]" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <Input
-              className="bg-white/5 border-white/5 pl-10 w-64 text-sm rounded-xl focus-visible:ring-sky-500 text-white"
+              className="bg-white/5 border-white/10 pl-12 w-64 lg:w-80 h-12 text-sm rounded-2xl focus-visible:ring-sky-500 text-white placeholder:text-gray-500"
               placeholder="Pesquisar..."
-              disabled
             />
           </div>
 
-          <div className="flex items-center gap-3">
-             <button className="p-2.5 bg-white/5 border border-white/5 rounded-xl relative hover:bg-white/10 transition-colors">
-               <Bell className="w-4 h-4 text-[#888]" />
+          <div className="flex items-center gap-6">
+             <button className="p-3 bg-white/5 border border-white/5 rounded-2xl relative hover:bg-white/10 transition-colors">
+               <Bell className="w-5 h-5 text-gray-400" />
+               <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-red-500 border-2 border-[#050505]" />
              </button>
 
-             <div className="flex items-center gap-4 pl-3 border-l border-white/10 ml-3">
-
+             <div className="flex items-center gap-4 pl-4 border-l border-white/10">
                 <div className="flex flex-col items-end">
-                   <span className="text-sm font-bold text-white leading-none">Vitor Vincere</span>
-                   <span className="text-[10px] text-premium-text-muted mt-0.5">vitor@vincere.tech</span>
-                   <Badge variant="outline" className="mt-1 h-5 text-[9px] uppercase tracking-widest font-bold border-sky-500/30 bg-sky-500/5 text-sky-400">
-                     Plano Pro
+                   <span className="text-sm font-black text-white leading-none">Vitor Vincere</span>
+                   <span className="text-[11px] text-gray-500 mt-1 font-medium tracking-tight">vitor@vincere.tech</span>
+                   <Badge variant="outline" className="mt-1 h-5 text-[9px] uppercase tracking-widest font-black border-sky-500 bg-sky-500/10 text-sky-400">
+                     PLANO PRO
                    </Badge>
                 </div>
-                <Avatar className="w-10 h-10 rounded-xl border border-white/10 shadow-xl">
-                  <AvatarFallback className="bg-sky-500/20 text-sky-400 font-bold text-xs">
+                <Avatar className="w-12 h-12 rounded-2xl border border-white/10 shadow-xl">
+                  <AvatarFallback className="bg-sky-500 text-white font-black text-sm">
                     VV
                   </AvatarFallback>
                 </Avatar>
@@ -177,125 +161,119 @@ const DemoDashboard = () => {
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <main className="flex-1 p-8 pt-4 space-y-8">
+      {/* Content Area */}
+      <main className="max-w-7xl mx-auto w-full p-6 lg:p-10 space-y-10">
         
-        <div className="flex items-center gap-2 mb-2 bg-white/5 p-1 rounded-xl w-fit border border-white/5">
-          {periods.map((p, i) => (
-            <motion.button
-              key={p}
-              initial="hidden" animate="visible" variants={fadeUp} custom={i}
-              onClick={() => setActivePeriod(p)}
-              className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${
-                activePeriod === p ? "bg-sky-500 text-white" : "text-white/30 hover:text-white/60 hover:bg-white/5"
-              }`}
-            >
-              {p}
-            </motion.button>
-          ))}
+        {/* Toolbar */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-1 bg-[#111] p-1.5 rounded-2xl border border-white/5 w-fit overflow-x-auto scrollbar-hide">
+            {periods.map((p) => (
+              <button
+                key={p}
+                onClick={() => setActivePeriod(p)}
+                className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                  activePeriod === p ? "bg-sky-500 text-white shadow-lg shadow-sky-500/20" : "text-gray-500 hover:text-white"
+                }`}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
           
-          <div className="w-[1px] h-4 bg-white/10 mx-1" />
-
           <Popover>
             <PopoverTrigger asChild>
-              <button className="px-3 py-1.5 rounded-lg text-white/40 hover:text-white transition-colors flex items-center gap-2">
-                <CalendarIcon className="w-3.5 h-3.5 text-sky-500" />
-                <span className="text-[10px] font-bold uppercase tracking-wider">Calendário</span>
+              <button className="px-6 py-3 rounded-2xl bg-[#111] border border-white/5 text-sky-400 flex items-center gap-3 hover:bg-white/10 transition-all font-black text-[10px] uppercase tracking-widest">
+                <CalendarIcon className="w-4 h-4" />
+                Calendário
               </button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 bg-[#0A0A0A] border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden" align="start">
+            <PopoverContent className="w-auto p-0 bg-[#111] border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden" align="end">
               <Calendar
                 mode="single"
                 selected={date}
                 onSelect={setDate}
-                className="rounded-md border-none scale-90 origin-top"
+                className="rounded-md border-none"
                 locale={ptBR}
               />
             </PopoverContent>
           </Popover>
         </div>
         
-        {/* Stats Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* KPI Cards */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard 
                title="Vendas Totais" 
                value="1.450" 
                icon={FileText} 
-               bgColor="bg-emerald-500" 
+               bgColor="bg-[#10B981]" 
             />
             <StatCard 
                title="Receita Estimada" 
                value="R$ 152.840" 
                icon={Wallet} 
-               bgColor="bg-sky-500"
+               bgColor="bg-[#0ea5e9]"
             />
             <StatCard 
                title="Projetos Ativos" 
                value="12" 
                icon={Truck} 
-               bgColor="bg-amber-500"
+               bgColor="bg-[#F59E0B]"
             />
             <StatCard 
                title="Taxa de Churn" 
                value="2.4%" 
                icon={Clock} 
-               bgColor="bg-rose-500"
+               bgColor="bg-[#F43F5E]"
             />
         </section>
 
-        {/* Analytics Section */}
+        {/* Charts Grid */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-           {/* Main Revenue Chart */}
-           <Card className="lg:col-span-2 bg-[#111] border-white/5 rounded-3xl overflow-hidden shadow-2xl">
-              <div className="p-8 pb-0 flex items-center justify-between">
+           {/* Area Chart: Faturamento */}
+           <Card className="lg:col-span-2 bg-[#111] border-white/5 rounded-[2.5rem] overflow-hidden p-8 lg:p-10 shadow-2xl">
+              <div className="flex items-center justify-between mb-10">
                 <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-white">Faturamento Mensal</h3>
-                  <div className="flex items-center gap-6">
+                  <h3 className="text-xl lg:text-2xl font-black tracking-tight text-white">Faturamento Mensal</h3>
+                  <div className="flex items-center gap-8">
                     <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 rounded-full border-2 border-sky-500 flex items-center justify-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-sky-500" />
-                      </div>
-                      <span className="text-xs font-bold text-white">Este Ano</span>
+                       <div className="w-2.5 h-2.5 rounded-full bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)]" />
+                       <span className="text-[10px] uppercase font-black tracking-widest text-white/50">Este Ano</span>
                     </div>
                     <div className="flex items-center gap-2">
-                       <div className="w-4 h-4 rounded-full border-2 border-slate-700 flex items-center justify-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-slate-700" />
-                      </div>
-                      <span className="text-xs font-bold text-white">Ano Anterior</span>
+                       <div className="w-2.5 h-2.5 rounded-full bg-gray-700" />
+                       <span className="text-[10px] uppercase font-black tracking-widest text-white/50">Ano Anterior</span>
                     </div>
                   </div>
                 </div>
-                <div className="p-1 rounded-md hover:bg-white/5 cursor-pointer">
-                  <MoreHorizontal className="w-5 h-5 text-premium-text-muted" />
+                <div className="p-2 rounded-xl hover:bg-white/5 cursor-pointer text-gray-500">
+                  <MoreHorizontal className="w-5 h-5" />
                 </div>
               </div>
-              <div className="h-[400px] w-full p-4 mt-8 relative">
+              <div className="h-[400px] w-full mt-4">
                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={revenueData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                    <AreaChart data={revenueData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                       <defs>
                         <linearGradient id="colorThisYear" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.2}/>
                           <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff08" />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff03" />
                       
                       <XAxis 
                         dataKey="name" 
                         axisLine={false} 
                         tickLine={false} 
-                        tick={{ fill: "#74769A", fontSize: 11, fontWeight: "bold" }}
+                        tick={{ fill: "#4B4E6D", fontSize: 10, fontWeight: "bold" }}
+                        dy={15}
                       />
                       <YAxis 
                         axisLine={false} 
                         tickLine={false} 
-                        tick={{ fill: "#74769A", fontSize: 10, fontWeight: "bold" }}
+                        tick={{ fill: "#4B4E6D", fontSize: 10, fontWeight: "bold" }}
                         tickFormatter={(v) => `R$${v/1000}k`}
                       />
-                      <Tooltip 
-                        content={<CustomTooltip />}
-                        cursor={false}
-                      />
+                      <Tooltip content={<CustomTooltip />} cursor={false} />
                       <Area 
                         type="monotone" 
                         dataKey="thisYear" 
@@ -304,12 +282,12 @@ const DemoDashboard = () => {
                         fillOpacity={1} 
                         fill="url(#colorThisYear)" 
                         animationDuration={2000}
-                        activeDot={false}
+                        activeDot={{ r: 6, fill: "#0ea5e9", strokeWidth: 2, stroke: "#fff" }}
                       />
                       <Area 
                         type="monotone" 
                         dataKey="lastYear" 
-                        stroke="#4B4E6D" 
+                        stroke="#2D2D44" 
                         strokeWidth={4}
                         fill="none"
                         animationDuration={2000}
@@ -320,23 +298,23 @@ const DemoDashboard = () => {
               </div>
            </Card>
 
-           {/* Metrics Breakdown */}
-           <Card className="bg-[#111] border-white/5 rounded-3xl overflow-hidden p-8 flex flex-col shadow-2xl">
+           {/* Donut Chart: Pagamentos */}
+           <Card className="bg-[#111] border-white/5 rounded-[2.5rem] p-8 lg:p-10 flex flex-col shadow-2xl">
               <div className="flex items-center justify-between mb-12">
-                <h3 className="text-xl font-bold text-white">Meios de Pagamento</h3>
-                <button className="bg-[#252644] px-4 py-1.5 rounded-lg text-xs font-bold text-white flex items-center gap-2 hover:bg-[#2e2f56] transition-colors">
-                  Ver Todos <ArrowUpRight className="w-3 h-3" />
+                <h3 className="text-xl lg:text-2xl font-black tracking-tight text-white leading-none">Meios de Pagamento</h3>
+                <button className="bg-white/5 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-sky-400 group flex items-center gap-1.5 hover:bg-white/10 transition-all">
+                  Ver Todos <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
               </div>
               
               <div className="flex-1 flex flex-col justify-center items-center py-6 relative">
-                <div className="relative w-56 h-56">
+                <div className="relative w-64 h-64">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={paymentMethodsData}
                         innerRadius={75}
-                        outerRadius={100}
+                        outerRadius={105}
                         paddingAngle={8}
                         dataKey="value"
                         stroke="none"
@@ -352,23 +330,24 @@ const DemoDashboard = () => {
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-4xl font-extrabold tracking-tighter text-white">100%</span>
-                    <span className="text-xs text-premium-text-muted font-bold uppercase tracking-widest mt-1">Total</span>
+                    <span className="text-5xl font-black tracking-tighter text-white">100%</span>
+                    <span className="text-[10px] text-gray-500 font-extrabold uppercase tracking-[0.3em] mt-1">Total</span>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-6 mt-8">
+              <div className="space-y-6 mt-10">
                 {paymentMethodsData.map((item) => (
                   <div key={item.name} className="flex flex-col gap-2">
-                    <div className="flex items-center justify-between text-xs font-bold px-1">
-                      <span className="text-[#9CA3AF]">{item.name}</span>
+                    <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest px-1">
+                      <span className="text-gray-500">{item.name}</span>
                       <span className="text-white">{item.value}%</span>
                     </div>
-                    <div className="h-2.5 w-full bg-[#1F203D] rounded-full overflow-hidden p-0.5">
+                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden p-0.5">
                        <motion.div 
                          initial={{ width: 0 }}
-                         animate={{ width: `${item.value}%` }}
+                         whileInView={{ width: `${item.value}%` }}
+                         viewport={{ once: true }}
                          transition={{ duration: 1.5, ease: "easeOut" }}
                          className="h-full rounded-full" 
                          style={{ backgroundColor: item.color }} 
@@ -380,45 +359,45 @@ const DemoDashboard = () => {
            </Card>
         </section>
 
-        {/* List Areas */}
-        <section className="grid grid-cols-1 xl:grid-cols-2 gap-8 pb-8">
+        {/* Bottom Lists Section */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-10">
            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              <div className="flex items-center justify-between px-2">
+                <h3 className="text-xl font-black tracking-tight text-white flex items-center gap-3 uppercase">
                   <FileText className="w-5 h-5 text-sky-500" />
                   Orçamentos Recentes
                 </h3>
-                <button className="text-[10px] font-bold uppercase tracking-widest text-sky-500 flex items-center gap-1 hover:opacity-80 transition-opacity">
+                <button className="text-[10px] font-black uppercase tracking-[0.2em] text-sky-500 hover:opacity-80 transition-opacity">
                   Ver Tudo
                 </button>
               </div>
 
-              <Card className="bg-[#15162D] border-white/5 rounded-3xl overflow-hidden p-0 shadow-xl">
+              <Card className="bg-[#111] border-white/5 rounded-[2.5rem] overflow-hidden p-6 lg:p-8 shadow-2xl">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
                         <tr className="border-b border-white/5">
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-premium-text-muted">Serviço</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-premium-text-muted">Status</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-premium-text-muted">Ações</th>
+                          <th className="pb-6 text-[9px] font-black uppercase tracking-[0.2em] text-gray-600">Serviço</th>
+                          <th className="pb-6 text-[9px] font-black uppercase tracking-[0.2em] text-gray-600 text-center">Status</th>
+                          <th className="pb-6 text-[9px] font-black uppercase tracking-[0.2em] text-gray-600 text-right">Ações</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-white/2">
                         {mockQuotes.map((q) => (
-                          <tr key={q.id} className="group hover:bg-white/[0.02] transition-colors">
-                            <td className="px-6 py-4">
+                          <tr key={q.id} className="group hover:bg-white/[0.01] transition-colors">
+                            <td className="py-5">
                               <div className="flex flex-col">
-                                <span className="capitalize font-bold text-sm tracking-tight text-white">{q.service_type}</span>
-                                <span className="text-[10px] text-premium-text-muted uppercase">{new Date(q.created_at).toLocaleDateString("pt-BR")}</span>
+                                <span className="font-bold text-sm tracking-tight text-white leading-tight">{q.service_type}</span>
+                                <span className="text-[10px] text-gray-700 font-bold mt-0.5 tracking-tight uppercase">{format(new Date(q.created_at), "dd/MM/yyyy")}</span>
                               </div>
                             </td>
-                            <td className="px-6 py-4">
-                              <Badge className={`${statusColors[q.status] || "bg-white/5 text-white"} border-none rounded-lg px-2.5 py-0.5 font-bold text-[9px] uppercase tracking-wider`}>
-                                {statusLabels[q.status] || q.status}
+                            <td className="py-5 text-center">
+                              <Badge className={`${statusColors[q.status]} border-none rounded-lg px-3 py-1 font-black text-[9px] uppercase tracking-wider`}>
+                                {statusLabels[q.status]}
                               </Badge>
                             </td>
-                            <td className="px-6 py-4">
-                              <button className="p-2 rounded-lg hover:bg-white/5 text-premium-text-muted hover:text-white transition-all">
+                            <td className="py-5 text-right">
+                              <button className="p-2.5 rounded-xl hover:bg-white/5 text-gray-700 hover:text-white transition-all">
                                 <ArrowUpRight className="w-4 h-4" />
                               </button>
                             </td>
@@ -431,50 +410,51 @@ const DemoDashboard = () => {
            </div>
 
            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-                  <FolderOpen className="w-5 h-5 text-premium-green" />
+              <div className="flex items-center justify-between px-2">
+                <h3 className="text-xl font-black tracking-tight text-white flex items-center gap-3 uppercase">
+                  <FolderOpen className="w-5 h-5 text-emerald-500" />
                   Projetos Ativos
                 </h3>
-                <button className="text-[10px] font-bold uppercase tracking-widest text-premium-text-muted flex items-center gap-1 hover:text-white transition-colors">
+                <button className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 hover:text-white transition-colors">
                   Ver Todos
                 </button>
               </div>
 
-              <Card className="bg-[#15162D] border-white/5 rounded-3xl overflow-hidden p-0 shadow-xl">
+              <Card className="bg-[#111] border-white/5 rounded-[2.5rem] overflow-hidden p-6 lg:p-8 shadow-2xl">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
                         <tr className="border-b border-white/5">
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-premium-text-muted">Projeto</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-premium-text-muted">Progresso</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase tracking-widest text-premium-text-muted">Status</th>
+                          <th className="pb-6 text-[9px] font-black uppercase tracking-[0.2em] text-gray-600">Projeto</th>
+                          <th className="pb-6 text-[9px] font-black uppercase tracking-[0.2em] text-gray-600 text-center">Progresso</th>
+                          <th className="pb-6 text-[9px] font-black uppercase tracking-[0.2em] text-gray-600 text-right">Status</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-white/2">
                         {mockProjects.map((p) => (
-                          <tr key={p.id} className="group hover:bg-white/[0.02] transition-colors">
-                            <td className="px-6 py-4">
+                          <tr key={p.id} className="group hover:bg-white/[0.01] transition-colors">
+                            <td className="py-5">
                               <div className="flex flex-col">
-                                <span className="font-bold text-sm tracking-tight text-white">{p.title}</span>
-                                <span className="text-[10px] text-premium-text-muted uppercase">Previsão: {new Date(p.end_date).toLocaleDateString("pt-BR")}</span>
+                                <span className="font-bold text-sm tracking-tight text-white leading-tight">{p.title}</span>
+                                <span className="text-[10px] text-gray-700 font-bold mt-0.5 tracking-tight uppercase">Previsão: {format(new Date(p.end_date), "dd/MM/yyyy")}</span>
                               </div>
                             </td>
-                            <td className="px-6 py-4">
-                              <div className="flex flex-col gap-1.5 min-w-[100px]">
-                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                            <td className="py-5">
+                              <div className="flex flex-col gap-2 w-32 mx-auto">
+                                 <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden p-0.5">
                                     <motion.div 
                                       initial={{ width: 0 }}
-                                      animate={{ width: p.status === 'completed' ? '100%' : '45%' }}
-                                      transition={{ duration: 1, ease: "easeInOut" }}
-                                      className={`h-full rounded-full ${p.status === 'completed' ? 'bg-premium-green' : 'bg-sky-500'}`} 
+                                      whileInView={{ width: `${p.progress}%` }}
+                                      viewport={{ once: true }}
+                                      transition={{ duration: 1.5, ease: "easeOut" }}
+                                      className={`h-full rounded-full ${p.status === 'completed' ? 'bg-emerald-500' : 'bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.3)]'}`} 
                                     />
                                  </div>
                               </div>
                             </td>
-                            <td className="px-6 py-4">
-                              <Badge className={`${statusColors[p.status] || "bg-white/5 text-white"} border-none rounded-lg px-2.5 py-0.5 font-bold text-[9px] uppercase tracking-wider`}>
-                                {statusLabels[p.status] || p.status}
+                            <td className="py-5 text-right">
+                              <Badge className={`${statusColors[p.status]} border-none rounded-lg px-3 py-1 font-black text-[9px] uppercase tracking-wider`}>
+                                {statusLabels[p.status]}
                               </Badge>
                             </td>
                           </tr>
@@ -484,19 +464,21 @@ const DemoDashboard = () => {
                 </div>
               </Card>
            </div>
-
-
         </section>
 
-        {/* Action Bar for Demo */}
-        <section className="flex items-center justify-center pt-8 border-t border-white/5">
-          <Link to="/auth">
-            <Button size="lg" className="bg-sky-500 hover:bg-sky-600 h-14 px-12 font-bold rounded-2xl text-lg shadow-2xl shadow-sky-500/20 transition-all duration-300 hover:scale-105 gap-3">
+        {/* Final CTA Bar */}
+        <div className="pt-16 flex items-center justify-center">
+          <Link to="/auth" className="w-full max-w-2xl px-4">
+            <motion.button 
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="w-full h-20 rounded-[2rem] bg-sky-500 text-white font-black text-lg lg:text-xl flex items-center justify-center gap-4 shadow-2xl shadow-sky-500/30 transition-shadow hover:shadow-sky-500/50"
+            >
               Gostou? Comece sua Jornada Vincere Agora 
-              <ArrowUpRight className="w-5 h-5" />
-            </Button>
+              <ArrowUpRight className="w-6 h-6" />
+            </motion.button>
           </Link>
-        </section>
+        </div>
       </main>
     </div>
   );

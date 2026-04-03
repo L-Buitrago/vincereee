@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useInView, animate } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { BarChart3, Users, Clock, CheckCircle2, AlertCircle, Search, Wifi, ArrowUpRight, TrendingUp, TrendingDown } from "lucide-react";
+import { BarChart3, Users, Clock, CheckCircle2, AlertCircle, Search, Wifi, ArrowUpRight, TrendingUp, TrendingDown, Play } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Animated counter hook using Framer Motion's animate function
 const useCounter = (end: number, duration: number = 2000, inView: boolean = false) => {
@@ -92,6 +93,21 @@ const SaasDashboardReveal = () => {
                 </motion.li>
               ))}
             </ul>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="pt-6 relative z-50"
+            >
+              <Link to="/plataforma/demonstracao">
+                <button className="h-14 px-8 rounded-2xl bg-primary text-white font-bold flex items-center gap-3 shadow-xl shadow-primary/20 hover:scale-[1.03] active:scale-95 transition-all duration-300">
+                  <Play className="w-4 h-4 fill-white" />
+                  Ver demonstração
+                </button>
+              </Link>
+            </motion.div>
           </motion.div>
 
           {/* Right Side: Dashboard Reveal */}
