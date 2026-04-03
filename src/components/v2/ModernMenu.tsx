@@ -58,7 +58,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
     <>
       <header className="fixed top-0 left-0 w-full z-[120] px-6 py-8 flex justify-between items-center pointer-events-none">
         <div className="pointer-events-auto">
-          <a href="#home" className="text-xl font-serif italic tracking-tighter text-foreground mix-blend-difference">
+          <a href="#home" className="text-xl font-serif italic tracking-tighter text-foreground">
             Vincere
           </a>
         </div>
@@ -100,7 +100,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -15, scale: 0.98 }}
                   transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute top-[calc(100%+0.5rem)] right-0 w-60 bg-black/70 backdrop-blur-3xl rounded-[24px] overflow-hidden shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] z-[130] text-white border border-white/10"
+                  className="absolute top-[calc(100%+0.5rem)] right-0 w-60 bg-white/90 backdrop-blur-3xl rounded-[24px] overflow-hidden shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] z-[130] text-foreground border border-black/5"
                 >
                   <nav className="p-6">
                     <ul className="space-y-1 mb-8">
@@ -118,17 +118,17 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
                           >
                             <span className="relative inline-block">
                               {link.label}
-                              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
+                              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-foreground transition-all duration-300 group-hover:w-full" />
                             </span>
                             <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-2 transition-all duration-300 text-sm">
-                               →
+                              →
                             </span>
                           </a>
                         </motion.li>
                       ))}
                     </ul>
 
-                    <div className="pt-5 border-t border-white/5 flex flex-col gap-5">
+                    <div className="pt-5 border-t border-black/5 flex flex-col gap-5">
                       <div className="flex gap-6">
                          <a href="https://instagram.com" target="_blank" className="text-[8px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 group">
                            Instagram <span className="text-[7px] opacity-40 group-hover:opacity-100">↗</span>

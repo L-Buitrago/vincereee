@@ -32,21 +32,19 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement;
+    const isPlatform = location.pathname.startsWith('/plataforma');
 
-    root.classList.remove("light", "dark");
-
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
-
-      root.classList.add(systemTheme);
+    // Strict isolation: Homepage is ALWAYS light (Branquíssimo), Platform is ALWAYS dark (Beautiful Black)
+    if (!isPlatform) {
+      root.classList.remove("dark");
+      root.classList.add("light");
       return;
     }
 
-    root.classList.add(theme);
-  }, [theme]);
+    // Platform is always dark
+    root.classList.remove("light");
+    root.classList.add("dark");
+  }, [location.pathname]);
 
   const value = {
     theme,
