@@ -151,11 +151,11 @@ export default function NotificationBell() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-full hover:bg-white/5 transition-colors text-[#888] hover:text-white"
+        className="relative p-2 rounded-xl border border-border bg-card hover:bg-muted transition-all duration-300 text-muted-foreground hover:text-foreground shadow-sm"
       >
-        <Bell className="w-5 h-5" />
+        <Bell className="w-5 h-5 shadow-inner" />
         {unreadCount > 0 && (
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-sky-500 ring-2 ring-[#0a0a0a] animate-pulse"></span>
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-sky-500 ring-2 ring-background animate-pulse"></span>
         )}
       </motion.button>
 
@@ -166,29 +166,31 @@ export default function NotificationBell() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute right-0 mt-2 w-80 bg-[#111] border border-white/10 rounded-xl shadow-2xl z-[60] overflow-hidden"
+            className="absolute right-0 mt-3 w-85 bg-card border border-border rounded-2xl shadow-2xl z-[60] overflow-hidden"
           >
-            <div className="p-4 border-b border-white/5 flex items-center justify-between bg-black/20">
-              <h3 className="text-white font-medium">Notificações</h3>
+            <div className="p-4 border-b border-border flex items-center justify-between bg-muted/30">
+              <h3 className="text-foreground font-bold text-sm tracking-tight">Notificações</h3>
               {unreadCount > 0 && (
                 <button 
                   onClick={markAllAsRead}
-                  className="text-xs text-[#888] hover:text-white flex items-center gap-1 transition-colors"
+                  className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-sky-500 flex items-center gap-1.5 transition-all"
                 >
-                  <CopyCheck className="w-3 h-3" />
+                  <CopyCheck className="w-3.5 h-3.5" />
                   Marcar lidas
                 </button>
               )}
             </div>
             
-            <div className="max-h-96 overflow-y-auto">
+            <div className="max-h-96 overflow-y-auto scrollbar-hide">
               {notifications.length === 0 ? (
-                <div className="p-8 text-center flex flex-col items-center justify-center text-[#555]">
-                  <Inbox className="w-8 h-8 mb-2 opacity-50" />
-                  <p className="text-sm">Nenhuma notificação</p>
+                <div className="p-12 text-center flex flex-col items-center justify-center text-muted-foreground/40">
+                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                    <Inbox className="w-8 h-8 opacity-50" />
+                  </div>
+                  <p className="text-sm font-medium">Nenhuma notificação</p>
                 </div>
               ) : (
-                <div className="divide-y divide-white/5">
+                <div className="divide-y divide-border">
                   {notifications.map(notif => (
                     <motion.div 
                       key={notif.id}
@@ -198,26 +200,30 @@ export default function NotificationBell() {
                       onClick={() => {
                         if (!notif.read) markAsRead(notif.id);
                       }}
-                      className={`p-4 transition-colors cursor-pointer hover:bg-white/[0.02] ${
-                        !notif.read ? 'bg-sky-500/5' : ''
+                      className={`p-5 transition-all cursor-pointer hover:bg-muted/50 border-l-4 ${
+                        !notif.read ? 'bg-sky-500/[0.03] border-sky-500' : 'border-transparent opacity-80'
                       }`}
                     >
-                      <div className="flex gap-3 relative group/item">
-                        <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${!notif.read ? 'bg-sky-500' : 'bg-transparent'}`} />
+                      <div className="flex gap-4 relative group/item">
                         <div className="flex-1 pr-6">
-                          <p className={`text-sm ${!notif.read ? 'text-white font-medium' : 'text-[#888]'}`}>
+                          <p className={`text-sm ${!notif.read ? 'text-foreground font-bold' : 'text-muted-foreground/80 font-medium'}`}>
                             {notif.title}
                           </p>
-                          <p className="text-xs text-[#666] mt-1 pr-2 line-clamp-2 leading-relaxed">
+                          <p className="text-xs text-muted-foreground/60 mt-1.5 pr-2 line-clamp-2 leading-relaxed">
                             {notif.body}
                           </p>
-                          <span className="text-[10px] text-[#444] mt-2 block">
-                            {new Date(notif.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
-                          </span>
+                          <div className="flex items-center gap-2 mt-3">
+                            <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/40 px-2 py-0.5 rounded-md bg-muted/50">
+                              {new Date(notif.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
+                            </span>
+                            <span className="text-[9px] font-medium text-muted-foreground/30">
+                              {new Date(notif.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </div>
                         </div>
                         <button
                           onClick={(e) => deleteNotification(e, notif.id)}
-                          className="absolute right-0 top-0 p-1 opacity-0 group-hover/item:opacity-100 hover:bg-white/10 rounded-md transition-all text-[#444] hover:text-red-400"
+                          className="absolute right-0 top-0 p-1.5 opacity-0 group-hover/item:opacity-100 hover:bg-red-500/10 rounded-lg transition-all text-muted-foreground/30 hover:text-red-500"
                         >
                           <X className="w-3.5 h-3.5" />
                         </button>
@@ -226,6 +232,12 @@ export default function NotificationBell() {
                   ))}
                 </div>
               )}
+            </div>
+            
+            <div className="p-3 bg-muted/10 border-t border-border text-center">
+               <button className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">
+                 Ver histórico completo
+               </button>
             </div>
           </motion.div>
         )}

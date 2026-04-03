@@ -73,53 +73,53 @@ export default function PlatformProducts() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-[1400px]">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white">Meu Plano</h1>
-        <p className="text-sm text-[#888] mt-1">Gerencie sua assinatura e veja o uso da sua conta.</p>
+        <h1 className="text-2xl font-bold text-foreground">Meu Plano</h1>
+        <p className="text-sm text-muted-foreground mt-1">Gerencie sua assinatura e veja o uso da sua conta.</p>
       </div>
 
       <motion.div
         initial="hidden" animate="visible" variants={fadeUp} custom={0}
-        className="p-6 rounded-2xl bg-[#111] border border-white/5 mb-6"
+        className="p-6 rounded-2xl bg-card border border-border mb-6 shadow-sm"
       >
         <div className="flex items-center gap-4 mb-6">
           <div className={`w-14 h-14 rounded-xl ${plan.bgClass} flex items-center justify-center`}>
             <PlanIcon className={`w-7 h-7 ${plan.textClass}`} />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-white capitalize">{isAdmin ? "Admin Vincere" : `Plano ${currentPlan}`}</h2>
-            <p className="text-sm text-[#888]">
+            <h2 className="text-xl font-bold text-foreground capitalize">{isAdmin ? "Admin Vincere" : `Plano ${currentPlan}`}</h2>
+            <p className="text-sm text-muted-foreground">
               {isAdmin ? "Acesso total a todas as organizações" : org?.status === 'active' ? "Assinatura ativa" : "Sem assinatura"}
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="p-4 rounded-xl bg-white/5">
+          <div className="p-4 rounded-xl bg-muted/50 border border-border">
             <Users className="w-5 h-5 text-sky-400 mb-2" />
-            <p className="text-2xl font-bold text-white">{stats?.totalCustomers || 0}</p>
-            <p className="text-xs text-[#888]">Total de Clientes</p>
+            <p className="text-2xl font-bold text-foreground">{stats?.totalCustomers || 0}</p>
+            <p className="text-xs text-muted-foreground">Total de Clientes</p>
           </div>
-          <div className="p-4 rounded-xl bg-white/5">
+          <div className="p-4 rounded-xl bg-muted/50 border border-border">
             <Users className="w-5 h-5 text-platform-orange mb-2" />
-            <p className="text-2xl font-bold text-white">{stats?.leads || 0}</p>
-            <p className="text-xs text-[#888]">Leads Capturados</p>
+            <p className="text-2xl font-bold text-foreground">{stats?.leads || 0}</p>
+            <p className="text-xs text-muted-foreground">Leads Capturados</p>
           </div>
-          <div className="p-4 rounded-xl bg-white/5">
+          <div className="p-4 rounded-xl bg-muted/50 border border-border">
             <Users className="w-5 h-5 text-blue-400 mb-2" />
-            <p className="text-2xl font-bold text-white">{stats?.activeCustomers || 0}</p>
-            <p className="text-xs text-[#888]">Clientes Ativos</p>
+            <p className="text-2xl font-bold text-foreground">{stats?.activeCustomers || 0}</p>
+            <p className="text-xs text-muted-foreground">Clientes Ativos</p>
           </div>
-          <div className="p-4 rounded-xl bg-white/5">
+          <div className="p-4 rounded-xl bg-muted/50 border border-border">
             <DollarSign className="w-5 h-5 text-sky-400 mb-2" />
-            <p className="text-2xl font-bold text-white">{formatCurrency(stats?.totalRevenue || 0)}</p>
-            <p className="text-xs text-[#888]">Receita Total</p>
+            <p className="text-2xl font-bold text-foreground">{formatCurrency(stats?.totalRevenue || 0)}</p>
+            <p className="text-xs text-muted-foreground">Receita Total</p>
           </div>
         </div>
 
-        <h3 className="text-sm font-semibold text-white mb-3">Recursos do seu plano:</h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Recursos do seu plano:</h3>
         <ul className="space-y-2">
           {plan.features.map((feat, i) => (
-            <li key={i} className="flex items-center gap-2 text-sm text-[#ccc]">
+            <li key={i} className="flex items-center gap-2 text-sm text-foreground/80">
               <div className={`w-1.5 h-1.5 rounded-full ${plan.bgClass}`} />
               {feat}
             </li>
@@ -130,10 +130,10 @@ export default function PlatformProducts() {
       {currentPlan !== 'enterprise' && (
         <motion.div
           initial="hidden" animate="visible" variants={fadeUp} custom={1}
-          className="p-6 rounded-2xl bg-gradient-to-br from-sky-500/5 to-transparent border border-sky-500/10"
+          className="p-6 rounded-2xl bg-gradient-to-br from-sky-500/5 to-transparent border border-sky-500/10 shadow-sm"
         >
-          <h3 className="text-lg font-bold text-white mb-2">🚀 Quer mais recursos?</h3>
-          <p className="text-sm text-[#888] mb-4">
+          <h3 className="text-lg font-bold text-foreground mb-2">🚀 Quer mais recursos?</h3>
+          <p className="text-sm text-muted-foreground mb-4">
             Faça upgrade do seu plano para desbloquear funcionalidades avançadas e suporte prioritário.
           </p>
           <a href="/plataforma/pagamentos">

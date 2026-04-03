@@ -463,22 +463,22 @@ export default function PlatformMessages() {
       <div className={`
         ${isMobile && activeConversation ? 'hidden' : 'flex'}
         ${isMobile ? 'w-full' : 'w-80'}
-        border-r border-white/5 bg-[#111] flex-col
+        border-r border-border bg-card flex-col
       `}>
         <div className="p-4 border-b border-white/5 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-white font-bold">Mensagens</h2>
+            <h2 className="text-foreground font-bold">Mensagens</h2>
             <Button
               size="icon"
               variant="ghost"
               onClick={() => setShowNewChat(!showNewChat)}
-              className="text-sky-400 hover:text-white hover:bg-white/5 h-8 w-8"
+              className="text-sky-400 hover:text-foreground hover:bg-muted h-8 w-8"
             >
               <Plus className="w-5 h-5" />
             </Button>
           </div>
 
-          <div className="flex p-1 bg-white/5 rounded-lg border border-white/5">
+          <div className="flex p-1 bg-muted/50 rounded-lg border border-border">
             <button
               onClick={() => {
                 setActiveTab('direct');
@@ -487,7 +487,7 @@ export default function PlatformMessages() {
               className={`flex-1 flex items-center justify-center py-1.5 text-xs font-medium rounded-md transition-all ${
                 activeTab === 'direct' 
                   ? "bg-sky-600/20 text-sky-400 border border-sky-500/30" 
-                  : "text-[#888] hover:text-white"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Geral
@@ -500,7 +500,7 @@ export default function PlatformMessages() {
               className={`flex-1 flex items-center justify-center py-1.5 text-xs font-medium rounded-md transition-all ${
                 activeTab === 'support' 
                   ? "bg-sky-600/20 text-sky-400 border border-sky-500/30" 
-                  : "text-[#888] hover:text-white"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Suporte
@@ -510,14 +510,14 @@ export default function PlatformMessages() {
 
         {/* New Chat Search */}
         {showNewChat && (
-          <div className="p-3 border-b border-white/5 space-y-2">
+          <div className="p-3 border-b border-border space-y-2">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888]" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
                 placeholder="Buscar usuário..."
-                className="pl-9 bg-white/5 border-transparent focus-visible:ring-1 focus-visible:ring-sky-500 text-white text-sm"
+                className="pl-9 bg-muted/50 border-transparent focus-visible:ring-1 focus-visible:ring-sky-500 text-foreground text-sm"
                 autoFocus
               />
             </div>
@@ -527,12 +527,12 @@ export default function PlatformMessages() {
                   <button
                     key={profile.user_id}
                     onClick={() => startConversation(profile.user_id, profile.full_name || "Usuário")}
-                    className="w-full flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/5 transition-colors text-left"
+                    className="w-full flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted transition-colors text-left"
                   >
                     <div className="w-8 h-8 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 shrink-0">
                       <User className="w-4 h-4" />
                     </div>
-                    <span className="text-sm text-white truncate">{profile.full_name || "Usuário"}</span>
+                    <span className="text-sm text-foreground truncate">{profile.full_name || "Usuário"}</span>
                   </button>
                 ))}
               </div>
@@ -566,10 +566,10 @@ export default function PlatformMessages() {
                   if ((conv.category || 'direct') === 'support') setLastSupportConv(conv);
                   else setLastDirectConv(conv);
                 }}
-                className={`w-full text-left p-4 border-b border-white/5 transition-colors ${
+                className={`w-full text-left p-4 border-b border-border transition-colors ${
                   activeConversation?.id === conv.id 
                     ? (activeTab === 'support' ? "bg-sky-500/10" : "bg-sky-500/10") 
-                    : "hover:bg-white/5"
+                    : "hover:bg-muted/50"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -580,7 +580,7 @@ export default function PlatformMessages() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-center mb-0.5">
-                      <span className="font-medium text-white text-sm truncate">
+                      <span className="font-medium text-foreground text-sm truncate">
                         {conv.other_user_name || "Usuário"}
                       </span>
                       <div className="flex items-center gap-2">
@@ -596,15 +596,15 @@ export default function PlatformMessages() {
                               <X className="w-3.5 h-3.5" />
                             </button>
                           </AlertDialogTrigger>
-                          <AlertDialogContent className="bg-[#111] border-white/10 text-white">
+                         <AlertDialogContent className="bg-card border-border text-foreground">
                             <AlertDialogHeader>
                               <AlertDialogTitle>Apagar conversa?</AlertDialogTitle>
-                              <AlertDialogDescription className="text-[#888]">
+                              <AlertDialogDescription className="text-muted-foreground">
                                 Esta ação não pode ser desfeita. Todas as mensagens com {conv.other_user_name} serão removidas permanentemente.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel className="bg-white/5 border-white/10 text-white hover:bg-white/10">Cancelar</AlertDialogCancel>
+                              <AlertDialogCancel className="bg-muted border-border text-foreground hover:bg-muted/80">Cancelar</AlertDialogCancel>
                               <AlertDialogAction 
                                 onClick={(e) => deleteConversation(e as any, conv.id)}
                                 className="bg-red-600 hover:bg-red-700 text-white"
@@ -631,17 +631,17 @@ export default function PlatformMessages() {
       {activeConversation ? (
         <div className={`
           ${isMobile ? 'fixed inset-0 z-[60] h-full' : 'flex-1'}
-          flex flex-col bg-[#0a0a0a]
+          flex flex-col bg-background
         `}>
           {/* Header */}
-          <div className="h-16 border-b border-white/5 flex items-center px-4 sm:px-6 bg-[#111] shrink-0">
+          <div className="h-16 border-b border-border flex items-center px-4 sm:px-6 bg-card shrink-0">
             <div className="flex items-center gap-3 flex-1">
               {isMobile && (
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setActiveConversation(null)}
-                  className="mr-1 text-white"
+                  className="mr-1 text-foreground"
                 >
                   <ChevronLeft className="w-8 h-8" />
                 </Button>
@@ -650,7 +650,7 @@ export default function PlatformMessages() {
                 <User className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-white font-medium">
+                <h2 className="text-foreground font-medium">
                   {activeConversation.other_user_name || "Usuário"}
                 </h2>
                 <p className="text-xs text-sky-400 flex items-center gap-1">
@@ -684,7 +684,7 @@ export default function PlatformMessages() {
                         className={`p-3 rounded-2xl text-sm ${
                           isMe
                             ? "bg-sky-600 text-white rounded-tr-sm"
-                            : "bg-[#1a1a1a] text-white border border-white/10 rounded-tl-sm"
+                            : "bg-muted text-foreground border border-border rounded-tl-sm"
                         }`}
                       >
                         {msg.content}
@@ -710,13 +710,13 @@ export default function PlatformMessages() {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-white/5 bg-[#111]">
+          <div className="p-4 border-t border-border bg-card">
             <form onSubmit={sendMessage} className="flex gap-2">
               <Input
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Digite sua mensagem..."
-                className="flex-1 bg-white/5 border-transparent focus-visible:ring-1 focus-visible:ring-sky-500 text-white"
+                className="flex-1 bg-muted/50 border-transparent focus-visible:ring-1 focus-visible:ring-sky-500 text-foreground"
               />
               <Button
                 type="submit"
@@ -730,7 +730,7 @@ export default function PlatformMessages() {
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col items-center justify-center bg-[#0a0a0a] text-[#888]">
+        <div className="flex-1 flex flex-col items-center justify-center bg-background text-muted-foreground">
           <MessageSquare className="w-16 h-16 mb-4 opacity-20" />
           <p className="text-lg font-medium mb-1">Suas mensagens</p>
           <p className="text-sm text-[#666]">Selecione uma conversa ou inicie uma nova</p>

@@ -309,7 +309,7 @@ export default function PlatformClients() {
   const totalPages = Math.ceil(filtered.length / perPage);
 
   return (
-    <div className="flex flex-col h-full bg-[#0A0A0A]">
+    <div className="flex flex-col h-full bg-background">
       {/* Global Header */}
       <PlatformHeader 
         title="Clientes & Leads" 
@@ -320,13 +320,13 @@ export default function PlatformClients() {
       <div className="flex-1 p-8 space-y-6 overflow-auto">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-white">Clientes</h1>
+            <h1 className="text-2xl font-bold text-foreground">Clientes</h1>
             <p className="text-sm text-[#888] mt-1">{filtered.length} clientes encontrados</p>
           </div>
           <div className="flex gap-2">
             <label className="cursor-pointer">
               <input type="file" accept=".csv" className="hidden" onChange={importCSV} />
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 text-sm text-[#ccc] hover:bg-white/5 transition-colors">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">
                 <Upload className="w-4 h-4" /> Importar CSV
               </div>
             </label>
@@ -340,28 +340,28 @@ export default function PlatformClients() {
         </div>
 
         {showAddModal && (
-          <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setShowAddModal(false)}>
-            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
+          <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowAddModal(false)}>
+            <div className="bg-card border border-border rounded-2xl p-6 w-full max-w-md shadow-2xl" onClick={e => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-white">Novo Cliente</h2>
-                <button onClick={() => setShowAddModal(false)} className="text-[#888] hover:text-white"><X className="w-5 h-5" /></button>
+                <h2 className="text-lg font-bold text-foreground">Novo Cliente</h2>
+                <button onClick={() => setShowAddModal(false)} className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="text-xs text-[#888] mb-1 block">Nome *</label>
-                  <Input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Nome do cliente" className="bg-white/5 border-white/10 text-white" />
+                  <label className="text-xs text-muted-foreground mb-1 block">Nome *</label>
+                  <Input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Nome do cliente" className="bg-muted border-border text-foreground" />
                 </div>
                 <div>
-                  <label className="text-xs text-[#888] mb-1 block">Email *</label>
-                  <Input value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="email@cliente.com" className="bg-white/5 border-white/10 text-white" />
+                  <label className="text-xs text-muted-foreground mb-1 block">Email *</label>
+                  <Input value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="email@cliente.com" className="bg-muted border-border text-foreground" />
                 </div>
                 <div>
-                  <label className="text-xs text-[#888] mb-1 block">Telefone</label>
-                  <Input value={newPhone} onChange={e => setNewPhone(e.target.value)} placeholder="(11) 99999-9999" className="bg-white/5 border-white/10 text-white" />
+                  <label className="text-xs text-muted-foreground mb-1 block">Telefone</label>
+                  <Input value={newPhone} onChange={e => setNewPhone(e.target.value)} placeholder="(11) 99999-9999" className="bg-muted border-border text-foreground" />
                 </div>
                 <div>
-                  <label className="text-xs text-[#888] mb-1 block">Status</label>
-                  <select value={newStatus} onChange={e => setNewStatus(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm">
+                  <label className="text-xs text-muted-foreground mb-1 block">Status</label>
+                  <select value={newStatus} onChange={e => setNewStatus(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-muted border border-border text-foreground text-sm outline-none focus:ring-1 focus:ring-sky-500">
                     <option value="Lead">Lead</option>
                     <option value="Negociação">Negociação</option>
                     <option value="Cliente Ativo">Cliente Ativo</option>
@@ -369,8 +369,8 @@ export default function PlatformClients() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs text-[#888] mb-1 block">Data de Vencimento</label>
-                  <Input type="date" value={newDueDate} onChange={e => setNewDueDate(e.target.value)} className="bg-white/5 border-white/10 text-white" />
+                  <label className="text-xs text-muted-foreground mb-1 block">Data de Vencimento</label>
+                  <Input type="date" value={newDueDate} onChange={e => setNewDueDate(e.target.value)} className="bg-muted border-border text-foreground" />
                 </div>
                 <Button
                   className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold"
@@ -390,7 +390,7 @@ export default function PlatformClients() {
               key={s}
               onClick={() => { setStatusFilter(s); setPage(1); }}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${
-                statusFilter === s ? "bg-sky-500/10 text-sky-400" : "text-[#888] hover:text-white hover:bg-white/5"
+                statusFilter === s ? "bg-sky-500/10 text-sky-400" : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
             >
               {s === "todos" ? "Todos" : s}
@@ -399,19 +399,19 @@ export default function PlatformClients() {
         </div>
       </div>
 
-      <div className="rounded-2xl bg-[#111] border border-white/5 overflow-hidden">
+      <div className="rounded-2xl bg-card border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/5">
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Cliente</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Email</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Produto</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Data</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Vencimento</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Valor</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Status</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Ações</th>
+              <tr className="border-b border-border">
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Cliente</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Email</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Produto</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Data</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Vencimento</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Valor</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Status</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -431,17 +431,17 @@ export default function PlatformClients() {
                 paginated.map((c) => {
                   const sc = statusConfig[c.status || 'Cliente Ativo'] || statusConfig['Cliente Ativo'];
                   return (
-                    <tr key={c.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors">
+                    <tr key={c.id} className="border-b border-border last:border-0 hover:bg-muted/50 transition-colors">
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-xs font-medium text-[#ccc]">
+                          <div className="w-8 h-8 rounded-full bg-muted border border-border flex items-center justify-center text-xs font-medium text-muted-foreground">
                             {c.name.substring(0,2).toUpperCase()}
                           </div>
-                          <span className="text-white font-medium">{c.name}</span>
+                          <span className="text-foreground font-medium">{c.name}</span>
                         </div>
                       </td>
-                      <td className="px-5 py-3.5 text-[#888]">{c.email}</td>
-                      <td className="px-5 py-3.5 text-[#ccc]">{c.status}</td>
+                      <td className="px-5 py-3.5 text-muted-foreground">{c.email}</td>
+                      <td className="px-5 py-3.5 text-muted-foreground">{c.status}</td>
                       <td className="px-5 py-3.5 text-[#888] text-xs">
                         {new Date(c.created_at).toLocaleDateString("pt-BR")}
                       </td>
@@ -449,14 +449,14 @@ export default function PlatformClients() {
                         {c.due_date ? (() => {
                           const isOverdue = new Date(c.due_date) < new Date() && c.status === 'Cliente Ativo';
                           return (
-                            <span className={`text-xs flex items-center gap-1 ${isOverdue ? 'text-red-400 font-semibold' : 'text-[#888]'}`}>
+                            <span className={`text-xs flex items-center gap-1 ${isOverdue ? 'text-red-400 font-semibold' : 'text-muted-foreground'}`}>
                               {isOverdue && <AlertTriangle className="w-3 h-3" />}
                               {new Date(c.due_date).toLocaleDateString("pt-BR")}
                             </span>
                           );
                         })() : <span className="text-xs text-[#555]">—</span>}
                       </td>
-                      <td className="px-5 py-3.5 text-white font-medium">{formatCurrency(c.total_spent || 0)}</td>
+                      <td className="px-5 py-3.5 text-foreground font-medium">{formatCurrency(c.total_spent || 0)}</td>
                       <td className="px-5 py-3.5">
                         <select
                           value={c.status}
@@ -472,7 +472,7 @@ export default function PlatformClients() {
                       </td>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-1">
-                          <button onClick={() => setSelected(c)} className="p-1.5 rounded-lg hover:bg-white/5 text-[#888] hover:text-white transition-colors">
+                          <button onClick={() => setSelected(c)} className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
@@ -483,14 +483,14 @@ export default function PlatformClients() {
                                 toast({ title: "Sem número", description: "Este cliente não possui telefone cadastrado.", variant: "destructive" });
                               }
                             }}
-                            className="p-1.5 rounded-lg hover:bg-white/5 text-[#888] hover:text-white transition-colors"
+                            className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
                             title="Enviar WhatsApp"
                           >
                             <MessageCircle className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => deleteClient(c)}
-                            className="p-1.5 rounded-lg hover:bg-red-500/10 text-[#888] hover:text-red-400 transition-colors"
+                            className="p-1.5 rounded-lg hover:bg-red-500/10 text-muted-foreground hover:text-red-400 transition-colors"
                             title="Remover cliente"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -505,13 +505,13 @@ export default function PlatformClients() {
           </table>
         </div>
         {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 p-4 border-t border-white/5">
+          <div className="flex items-center justify-center gap-2 p-4 border-t border-border">
             {Array.from({ length: totalPages }, (_, i) => (
               <button
                 key={i}
                 onClick={() => setPage(i + 1)}
                 className={`w-8 h-8 rounded-lg text-xs font-medium transition-all ${
-                  page === i + 1 ? "bg-sky-500/10 text-sky-400" : "text-[#888] hover:bg-white/5"
+                  page === i + 1 ? "bg-sky-500/10 text-sky-400" : "text-muted-foreground hover:bg-muted"
                 }`}
               >
                 {i + 1}
@@ -532,13 +532,13 @@ export default function PlatformClients() {
           <motion.div
             initial={{ x: 400 }}
             animate={{ x: 0 }}
-            transition={{ type: "spring", damping: 25 }}
-            className="h-full w-full max-w-md bg-[#111] border-l border-white/5 p-6 overflow-y-auto"
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="h-full w-full max-w-md bg-card border-l border-border p-6 overflow-y-auto shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-white">Detalhes do Cliente</h2>
-              <button onClick={() => setSelected(null)} className="text-[#888] hover:text-white">
+              <h2 className="text-lg font-bold text-foreground">Detalhes do Cliente</h2>
+              <button onClick={() => setSelected(null)} className="text-muted-foreground hover:text-foreground">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -549,27 +549,27 @@ export default function PlatformClients() {
                   {selected.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <p className="text-white font-semibold text-lg">{selected.name}</p>
-                  <p className="text-sm text-[#888]">{selected.email}</p>
+                  <p className="text-foreground font-semibold text-lg">{selected.name}</p>
+                  <p className="text-sm text-muted-foreground">{selected.email}</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-3 rounded-xl bg-white/5">
-                  <p className="text-[10px] text-[#888] uppercase mb-1">Telefone</p>
-                  <p className="text-sm text-white">{selected.phone || "—"}</p>
+                <div className="p-3 rounded-xl bg-muted/50 border border-border">
+                  <p className="text-[10px] text-muted-foreground uppercase mb-1">Telefone</p>
+                  <p className="text-sm text-foreground">{selected.phone || "—"}</p>
                 </div>
-                <div className="p-3 rounded-xl bg-white/5">
-                  <p className="text-[10px] text-[#888] uppercase mb-1">Gasto Total</p>
-                  <p className="text-sm text-white font-medium">{formatCurrency(selected.total_spent || 0)}</p>
+                <div className="p-3 rounded-xl bg-muted/50 border border-border">
+                  <p className="text-[10px] text-muted-foreground uppercase mb-1">Gasto Total</p>
+                  <p className="text-sm text-foreground font-medium">{formatCurrency(selected.total_spent || 0)}</p>
                 </div>
-                <div className="p-3 rounded-xl bg-white/5">
-                  <p className="text-[10px] text-[#888] uppercase mb-1">Status</p>
+                <div className="p-3 rounded-xl bg-muted/50 border border-border">
+                  <p className="text-[10px] text-muted-foreground uppercase mb-1">Status</p>
                   <p className="text-sm text-sky-400 font-medium">{selected.status}</p>
                 </div>
-                <div className="p-3 rounded-xl bg-white/5">
-                  <p className="text-[10px] text-[#888] uppercase mb-1">Desde</p>
-                  <p className="text-sm text-white">{new Date(selected.created_at).toLocaleDateString("pt-BR")}</p>
+                <div className="p-3 rounded-xl bg-muted/50 border border-border">
+                  <p className="text-[10px] text-muted-foreground uppercase mb-1">Desde</p>
+                  <p className="text-sm text-foreground">{new Date(selected.created_at).toLocaleDateString("pt-BR")}</p>
                 </div>
               </div>
 
@@ -592,7 +592,7 @@ export default function PlatformClients() {
                 </Button>
                 <Button
                   variant="outline"
-                  className="flex-1 border-white/10 text-white hover:bg-white/5 bg-transparent gap-2"
+                  className="flex-1 border-border text-foreground hover:bg-muted bg-transparent gap-2"
                   onClick={() => {
                     window.open(`mailto:${selected.email}`, '_blank');
                   }}

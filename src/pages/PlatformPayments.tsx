@@ -96,11 +96,11 @@ export default function PlatformPayments() {
     <div className="p-4 sm:p-6 lg:p-8 max-w-[1400px]">
       <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Centro de Cobrança</h1>
+          <h1 className="text-2xl font-bold text-foreground">Centro de Cobrança</h1>
           <p className="text-sm text-[#888] mt-1">Gerencie suas transações e recuperações de vendas.</p>
         </div>
         
-        <div className="flex bg-[#111] p-1 rounded-xl border border-white/5">
+        <div className="flex bg-muted/20 p-1 rounded-xl border border-border">
           <button 
             onClick={() => setActiveTab('transactions')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'transactions' ? 'bg-sky-500/10 text-sky-400' : 'text-[#888] hover:text-white'}`}
@@ -109,7 +109,7 @@ export default function PlatformPayments() {
           </button>
           <button 
             onClick={() => setActiveTab('recoveries')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'recoveries' ? 'bg-sky-500/10 text-sky-400' : 'text-[#888] hover:text-white'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'recoveries' ? 'bg-sky-500/10 text-sky-400' : 'text-muted-foreground hover:text-foreground'}`}
           >
             Recuperações (AI)
           </button>
@@ -117,30 +117,30 @@ export default function PlatformPayments() {
       </div>
 
       <motion.div initial="hidden" animate="visible" variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div className="p-5 rounded-2xl bg-[#111] border border-white/5">
-          <p className="text-xs text-[#888] mb-1">Total Aprovado</p>
+        <div className="p-5 rounded-2xl bg-card border border-border">
+          <p className="text-xs text-muted-foreground mb-1">Total Aprovado</p>
           <p className="text-xl font-bold text-sky-400">{formatCurrency(totals.aprovado)}</p>
         </div>
-        <div className="p-5 rounded-2xl bg-[#111] border border-white/5">
-          <p className="text-xs text-[#888] mb-1">Total Pendente</p>
+        <div className="p-5 rounded-2xl bg-card border border-border">
+          <p className="text-xs text-muted-foreground mb-1">Total Pendente</p>
           <p className="text-xl font-bold text-platform-orange">{formatCurrency(totals.pendente)}</p>
         </div>
-        <div className="p-5 rounded-2xl bg-[#111] border border-white/5">
-          <p className="text-xs text-[#888] mb-1">Recuperações Ativas</p>
+        <div className="p-5 rounded-2xl bg-card border border-border">
+          <p className="text-xs text-muted-foreground mb-1">Recuperações Ativas</p>
           <p className="text-xl font-bold text-blue-400">{recoveries.filter(r => r.status === 'contacted').length}</p>
         </div>
       </motion.div>
 
-      <div className="rounded-2xl bg-[#111] border border-white/5 overflow-hidden">
+      <div className="rounded-2xl bg-card border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/5">
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Cliente</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Valor</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Status</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Data</th>
-                <th className="text-left text-xs text-[#888] font-medium px-5 py-3">Ações</th>
+              <tr className="border-b border-border">
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Cliente</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Valor</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Status</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Data</th>
+                <th className="text-left text-xs text-muted-foreground font-medium px-5 py-3">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -159,24 +159,24 @@ export default function PlatformPayments() {
                 </tr>
               ) : (
                 paginated.map((item: any) => (
-                  <tr key={item.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors">
+                  <tr key={item.id} className="border-b border-border last:border-0 hover:bg-muted/50 transition-colors">
                     <td className="px-5 py-3.5">
                       <div className="flex flex-col">
-                        <span className="text-white font-medium">{item.customer_name || item.clientName || 'Cliente'}</span>
-                        <span className="text-xs text-[#666]">{item.customer_email || item.email}</span>
+                        <span className="text-foreground font-medium">{item.customer_name || item.clientName || 'Cliente'}</span>
+                        <span className="text-xs text-muted-foreground">{item.customer_email || item.email}</span>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-white font-medium">{formatCurrency(item.amount || item.amount || 0)}</td>
+                    <td className="px-5 py-3.5 text-foreground font-medium">{formatCurrency(item.amount || item.amount || 0)}</td>
                     <td className="px-5 py-3.5">
-                      <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium capitalize ${statusColors[item.status || ''] || 'text-[#888] bg-white/5'}`}>
+                      <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium capitalize ${statusColors[item.status || ''] || 'text-muted-foreground bg-muted'}`}>
                         {item.status}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 text-[#888] text-xs">
+                    <td className="px-5 py-3.5 text-muted-foreground text-xs">
                       {new Date(item.created_at || item.date).toLocaleDateString("pt-BR")}
                     </td>
                     <td className="px-5 py-3.5">
-                      <button className="p-1.5 rounded-lg hover:bg-white/5 text-[#888] hover:text-white transition-colors">
+                      <button className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
                         <Eye className="w-4 h-4" />
                       </button>
                     </td>

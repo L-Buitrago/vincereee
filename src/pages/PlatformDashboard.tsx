@@ -45,7 +45,7 @@ const statusConfig: Record<string, { label: string; cls: string }> = {
   "Cliente Ativo": { label: "Ativo", cls: "bg-emerald-500/10 text-emerald-500" },
   "Lead": { label: "Lead", cls: "bg-amber-500/10 text-amber-500" },
   "Negociação": { label: "Negociação", cls: "bg-blue-500/10 text-blue-500" },
-  "Cancelado": { label: "Cancelado", cls: "bg-white/5 text-white/40" },
+  "Cancelado": { label: "Cancelado", cls: "bg-muted text-muted-foreground/40" },
 };
 
 type Customer = {
@@ -350,12 +350,12 @@ export default function PlatformDashboard() {
                           <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff08" />
-                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#666", fontSize: 11, fontWeight: "bold" }} />
-                      <YAxis axisLine={false} tickLine={false} tick={{ fill: "#666", fontSize: 10, fontWeight: "bold" }} tickFormatter={(v) => `R$${v/1000}k`} />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="opacity-[0.05]" />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 11, fontWeight: "bold", opacity: 0.4 }} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 10, fontWeight: "bold", opacity: 0.4 }} tickFormatter={(v) => `R$${v/1000}k`} />
                       <Tooltip content={<CustomTooltip />} cursor={false} />
                       <Area type="monotone" dataKey="thisYear" stroke="#0ea5e9" strokeWidth={4} fillOpacity={1} fill="url(#colorThisYear)" activeDot={false} />
-                      <Area type="monotone" dataKey="lastYear" stroke="#4B4E6D" strokeWidth={4} fill="none" activeDot={false} />
+                      <Area type="monotone" dataKey="lastYear" stroke="currentColor" strokeWidth={4} className="opacity-10" fill="none" activeDot={false} />
                     </AreaChart>
                  </ResponsiveContainer>
               </div>
@@ -366,7 +366,7 @@ export default function PlatformDashboard() {
              <Card className="h-full bg-card border-border rounded-3xl overflow-hidden p-8 flex flex-col shadow-2xl">
                <div className="flex items-center justify-between mb-12">
                  <h3 className="text-xl font-bold text-card-foreground">Meios de Pagamento</h3>
-                 <button className="bg-[#252644] px-4 py-1.5 rounded-lg text-xs font-bold text-white flex items-center gap-2">
+                 <button className="bg-muted px-4 py-1.5 rounded-lg text-xs font-bold text-foreground hover:bg-muted/80 transition-colors flex items-center gap-2">
                    Ver Todos <ArrowUpRight className="w-3 h-3" />
                  </button>
                </div>
@@ -398,11 +398,11 @@ export default function PlatformDashboard() {
                  {paymentMethods.map((item) => (
                    <div key={item.name} className="flex flex-col gap-2">
                      <div className="flex items-center justify-between text-xs font-bold px-1">
-                       <span className="text-white/40">{item.name}</span>
-                       <span className="text-white">{item.value}%</span>
+                       <span className="text-muted-foreground">{item.name}</span>
+                       <span className="text-foreground">{item.value}%</span>
                      </div>
-                     <div className="h-2.5 w-full bg-[#1F203D] rounded-full overflow-hidden p-0.5">
-                        <motion.div initial={{ width: 0 }} animate={{ width: `${item.value}%` }} className="h-full rounded-full" style={{ backgroundColor: item.color }} />
+                     <div className="h-2.5 w-full bg-muted rounded-full overflow-hidden p-0.5">
+                        <motion.div initial={{ width: 0 }} animate={{ width: `${item.value}%` }} className="h-full rounded-full shadow-[0_0_10px_rgba(var(--primary),0.3)]" style={{ backgroundColor: item.color }} />
                      </div>
                    </div>
                  ))}
@@ -415,7 +415,7 @@ export default function PlatformDashboard() {
         <section className="grid grid-cols-1 xl:grid-cols-2 gap-8 pb-8">
            <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={12} className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold flex items-center gap-2 text-white">
+                <h3 className="text-xl font-bold flex items-center gap-2 text-foreground">
                   <Users className="w-5 h-5 text-sky-500" />
                   Leads & Orçamentos
                 </h3>
@@ -430,17 +430,17 @@ export default function PlatformDashboard() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                        <tr className="border-b border-white/5">
+                        <tr className="border-b border-border">
                           <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground">Serviço</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-white/30">Status</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-white/30 text-right">Ações</th>
+                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Status</th>
+                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30 text-right">Ações</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-border">
                         {recentCustomers.map((q) => (
                           <tr 
                             key={q.id} 
-                            className="hover:bg-white/[0.02] transition-colors cursor-pointer"
+                            className="hover:bg-muted/30 transition-colors cursor-pointer"
                             onClick={() => navigate('/plataforma/clientes')}
                           >
                             <td className="px-6 py-4">
@@ -450,12 +450,12 @@ export default function PlatformDashboard() {
                               </div>
                             </td>
                             <td className="px-6 py-4">
-                              <Badge className={`${statusConfig[q.status]?.cls || "bg-white/5 text-white"} border-none rounded-lg px-2.5 py-0.5 font-bold text-[9px] uppercase`}>
+                              <Badge className={`${statusConfig[q.status]?.cls || "bg-muted text-foreground"} border-none rounded-lg px-2.5 py-0.5 font-bold text-[9px] uppercase`}>
                                 {statusConfig[q.status]?.label || q.status}
                               </Badge>
                             </td>
                             <td className="px-6 py-4 text-right">
-                              <ArrowUpRight className="w-4 h-4 text-white/30 inline" />
+                              <ArrowUpRight className="w-4 h-4 text-muted-foreground/30 inline" />
                             </td>
                           </tr>
                         ))}
@@ -477,15 +477,15 @@ export default function PlatformDashboard() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                        <tr className="border-b border-white/5">
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-white/30">Projeto</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-white/30">Progresso</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-white/30">Status</th>
+                        <tr className="border-b border-border">
+                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Projeto</th>
+                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Progresso</th>
+                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Status</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-border">
                         {recentProjects.map((p) => (
-                          <tr key={p.id} className="hover:bg-white/[0.02] transition-colors">
+                          <tr key={p.id} className="hover:bg-muted/30 transition-colors">
                             <td className="px-6 py-4">
                               <div className="flex flex-col">
                                 <span className="font-bold text-sm text-foreground">{p.title}</span>
@@ -493,7 +493,7 @@ export default function PlatformDashboard() {
                               </div>
                             </td>
                             <td className="px-6 py-4">
-                              <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                              <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
                                 <motion.div initial={{ width: 0 }} animate={{ width: p.status === 'CONCLUÍDO' ? '100%' : '45%' }} className={`h-full rounded-full ${p.status === 'CONCLUÍDO' ? 'bg-[#10B981]' : 'bg-sky-500'}`} />
                               </div>
                             </td>
