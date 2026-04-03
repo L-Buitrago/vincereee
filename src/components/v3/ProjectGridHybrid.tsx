@@ -172,11 +172,6 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
           </div>
         </div>
       </div>
-      
-      {/* Name Label */}
-      <div className="absolute top-8 left-8 px-6 py-3 bg-white/90 backdrop-blur-md rounded-2xl border border-white/20 shadow-sm opacity-100 group-hover:opacity-0 transition-opacity duration-300 z-20">
-          <p className="text-[10px] font-black uppercase tracking-widest text-foreground">{project.title}</p>
-      </div>
     </motion.div>
   );
 };
