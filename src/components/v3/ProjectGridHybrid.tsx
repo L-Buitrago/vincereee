@@ -5,8 +5,8 @@ import { useState, useRef, useEffect } from "react";
 const projects = [
   {
     id: "01",
-    title: "The Merchant Lab",
-    category: "E-commerce Solutions",
+    title: "Lojas de E-commerce",
+    category: "Exemplos Reais",
     thumb: "https://vendredi-society.com/wp-content/uploads/2026/03/ps-day-thumbnail.webp",
     slides: [
       "/images/ecommerce_tenis_br.png",
@@ -19,13 +19,18 @@ const projects = [
     mockup: "/images/merchant_mockup.png"
   },
   {
-    id: "02",
-    title: "Otio Home",
-    category: "Internet of Things",
-    thumb: "https://vendredi-society.com/wp-content/uploads/2023/12/otio_small.webp",
+    title: "Sites & Landing Pages 3D",
+    category: "Design Imersivo",
+    thumb: "/images/lp_3d_space.jpg",
+    slides: [
+      "/images/lp_3d_space.jpg",
+      "/images/lp_3d_jet.png",
+      "/images/lp_3d_viktor.jpg",
+      "/images/lp_3d_innovation.png"
+    ],
     video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
     color: "#f2f2f2",
-    mockup: "https://images.unsplash.com/photo-1634084462412-b54873c0a56d?q=85&fm=jpg&crop=entropy&cs=srgb&w=2070&auto=format&fit=crop"
+    mockup: "/images/lp_3d_space.jpg"
   },
   {
     id: "03",

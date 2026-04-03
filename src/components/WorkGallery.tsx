@@ -5,16 +5,16 @@ import { cn } from '@/lib/utils';
 
 const projects = [
   {
-    category: 'E-commerce solutions',
-    title: 'The Merchant Lab',
+    category: "Exemplos Reais",
+    title: "Lojas de E-commerce",
     image: 'https://images.unsplash.com/photo-1635405074683-96d6921a2a68?w=800&q=80',
     video: 'https://player.vimeo.com/external/494252666.sd.mp4?s=7223078a1f8c1f0674bd3685f479d2b27cc3b5c6&profile_id=164&oauth2_token_id=57447761',
     tags: ['UX Design', 'Art Direction', 'Motion Design', 'Creative development'],
     dark: true,
   },
   {
-    category: 'Internet of things',
-    title: 'Otio Home',
+    category: "Design Imersivo",
+    title: "Sites & Landing Pages 3D",
     image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80',
     video: 'https://player.vimeo.com/external/554160533.sd.mp4?s=67ef379469e3edc4280b18fa65914c62243e88fa&profile_id=165&oauth2_token_id=57447761',
     tags: ['Motion Design', 'Branding', '3D & concepts', 'Product Design'],
