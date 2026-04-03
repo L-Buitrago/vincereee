@@ -5,8 +5,8 @@ import { cn } from '@/lib/utils';
 
 const projects = [
   {
-    category: "Exemplos Reais",
-    title: "Lojas de E-commerce",
+    category: "Gestão & CRM",
+    title: "Plataforma Vincere",
     image: 'https://images.unsplash.com/photo-1635405074683-96d6921a2a68?w=800&q=80',
     video: 'https://player.vimeo.com/external/494252666.sd.mp4?s=7223078a1f8c1f0674bd3685f479d2b27cc3b5c6&profile_id=164&oauth2_token_id=57447761',
     tags: ['UX Design', 'Art Direction', 'Motion Design', 'Creative development'],
