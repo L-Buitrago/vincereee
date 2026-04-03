@@ -607,8 +607,8 @@ const BentoServices = () => {
   const card3Ref = useRef<HTMLDivElement>(null);
 
   const isCard1InView = useInView(card1Ref, { once: false, margin: "-80px" });
-  const isCard2InView = useInView(card2Ref, { once: true, margin: "-60px" });
-  const isCard3InView = useInView(card3Ref, { once: true, margin: "-60px" });
+  const isCard2InView = useInView(card2Ref, { once: false, margin: "-60px" });
+  const isCard3InView = useInView(card3Ref, { once: false, margin: "-60px" });
 
   const [chatActive, setChatActive] = useState(false);
   const wasInView = useRef(false);

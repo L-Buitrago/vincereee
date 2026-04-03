@@ -7,7 +7,10 @@ const useCounter = (end: number, duration: number = 2000, inView: boolean = fals
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView) {
+      setCount(0);
+      return;
+    }
     
     const controls = animate(0, end, {
       duration: duration / 1000,
@@ -26,7 +29,7 @@ const useCounter = (end: number, duration: number = 2000, inView: boolean = fals
 const SaasDashboardReveal = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const dashboardRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+  const isInView = useInView(containerRef, { once: false, amount: 0.1 });
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -51,7 +54,7 @@ const SaasDashboardReveal = () => {
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
@@ -78,7 +81,7 @@ const SaasDashboardReveal = () => {
                   key={i}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: false }}
                   transition={{ delay: 0.2 + (i * 0.1) }}
                   className="flex items-center gap-3 text-foreground font-semibold"
                 >
@@ -189,7 +192,7 @@ const SaasDashboardReveal = () => {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         initial={{ pathLength: 0, opacity: 0 }}
-                        animate={isInView ? { pathLength: 1, opacity: 1 } : {}}
+                        animate={isInView ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
                         transition={{ duration: 2.8, ease: "easeInOut" }}
                       />
                       {/* Upward Trend Area */}
@@ -197,7 +200,7 @@ const SaasDashboardReveal = () => {
                         d="M 0,90 C 20,95 40,85 60,88 C 90,75 120,80 150,60 C 180,45 220,15 280,5 L 280,100 L 0,100 Z"
                         fill="url(#upwardChartGrad)"
                         initial={{ opacity: 0, scaleY: 0 }}
-                        animate={isInView ? { opacity: 1, scaleY: 1 } : {}}
+                        animate={isInView ? { opacity: 1, scaleY: 1 } : { opacity: 0, scaleY: 0 }}
                         style={{ originY: 1 }}
                         transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
                       />
@@ -242,7 +245,7 @@ const SaasDashboardReveal = () => {
                       <motion.div 
                         key={i} 
                         initial={{ opacity: 0, x: -20, scale: 0.95 }}
-                        animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+                        animate={isInView ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: -20, scale: 0.95 }}
                         transition={{ delay: 1.5 + i * 0.25, type: "spring", stiffness: 100 }}
                         className="flex items-center justify-between p-4 rounded-2xl bg-white shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
                       >
