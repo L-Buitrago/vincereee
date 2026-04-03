@@ -28,11 +28,11 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         head_row: "flex",
         head_cell: "text-[#888] rounded-md w-9 font-bold text-[0.7rem] uppercase tracking-wider",
         row: "flex w-full mt-2",
-        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-transparent [&:has([aria-selected])]:bg-transparent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
         day: cn(buttonVariants({ variant: "ghost" }), "h-9 w-9 p-0 font-medium text-white/80 hover:bg-white/10 hover:text-white aria-selected:opacity-100"),
         day_range_end: "day-range-end",
         day_selected:
-          "bg-sky-500 text-white hover:bg-sky-600 hover:text-white focus:bg-sky-500 focus:text-white shadow-[0_0_15px_rgba(14,165,233,0.4)]",
+          "bg-sky-500 text-white hover:bg-sky-600 hover:text-white focus:bg-sky-500 focus:text-white shadow-[0_0_15px_rgba(14,165,233,0.4)] rounded-full",
         day_today: "bg-white/10 text-white font-bold",
         day_outside:
           "day-outside text-white/20 opacity-30 aria-selected:bg-accent/50 aria-selected:text-white/20 aria-selected:opacity-10",
