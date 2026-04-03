@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, type Client } from "@/data/platformMockData";
 import { toast } from "@/hooks/use-toast";
+import PlatformHeader from "@/components/platform/PlatformHeader";
 
 const statusConfig: Record<string, { label: string; cls: string; pulse?: boolean }> = {
   "Cliente Ativo": { label: "Ativo", cls: "text-sky-400 bg-sky-500/10" },
@@ -308,83 +309,81 @@ export default function PlatformClients() {
   const totalPages = Math.ceil(filtered.length / perPage);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-[1400px]">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Clientes</h1>
-          <p className="text-sm text-[#888] mt-1">{filtered.length} clientes encontrados</p>
-        </div>
-        <div className="flex gap-2">
-          <label className="cursor-pointer">
-            <input type="file" accept=".csv" className="hidden" onChange={importCSV} />
-            <div className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 text-sm text-[#ccc] hover:bg-white/5 transition-colors">
-              <Upload className="w-4 h-4" /> Importar CSV
-            </div>
-          </label>
-          <Button
-            className="bg-sky-500 hover:bg-sky-600 text-white font-semibold gap-2"
-            onClick={() => setShowAddModal(true)}
-          >
-            <Plus className="w-4 h-4" /> Novo Cliente
-          </Button>
-        </div>
-      </div>
+    <div className="flex flex-col h-full bg-[#0A0A0A]">
+      {/* Global Header */}
+      <PlatformHeader 
+        title="Clientes & Leads" 
+        searchQuery={search} 
+        setSearchQuery={setSearch} 
+      />
 
-      {showAddModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setShowAddModal(false)}>
-          <div className="bg-[#111] border border-white/10 rounded-2xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-white">Novo Cliente</h2>
-              <button onClick={() => setShowAddModal(false)} className="text-[#888] hover:text-white"><X className="w-5 h-5" /></button>
-            </div>
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs text-[#888] mb-1 block">Nome *</label>
-                <Input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Nome do cliente" className="bg-white/5 border-white/10 text-white" />
+      <div className="flex-1 p-8 space-y-6 overflow-auto">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-white">Clientes</h1>
+            <p className="text-sm text-[#888] mt-1">{filtered.length} clientes encontrados</p>
+          </div>
+          <div className="flex gap-2">
+            <label className="cursor-pointer">
+              <input type="file" accept=".csv" className="hidden" onChange={importCSV} />
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 text-sm text-[#ccc] hover:bg-white/5 transition-colors">
+                <Upload className="w-4 h-4" /> Importar CSV
               </div>
-              <div>
-                <label className="text-xs text-[#888] mb-1 block">Email *</label>
-                <Input value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="email@cliente.com" className="bg-white/5 border-white/10 text-white" />
-              </div>
-              <div>
-                <label className="text-xs text-[#888] mb-1 block">Telefone</label>
-                <Input value={newPhone} onChange={e => setNewPhone(e.target.value)} placeholder="(11) 99999-9999" className="bg-white/5 border-white/10 text-white" />
-              </div>
-              <div>
-                <label className="text-xs text-[#888] mb-1 block">Status</label>
-                <select value={newStatus} onChange={e => setNewStatus(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm">
-                  <option value="Lead">Lead</option>
-                  <option value="Negociação">Negociação</option>
-                  <option value="Cliente Ativo">Cliente Ativo</option>
-                  <option value="Cancelado">Cancelado</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-xs text-[#888] mb-1 block">Data de Vencimento</label>
-                <Input type="date" value={newDueDate} onChange={e => setNewDueDate(e.target.value)} className="bg-white/5 border-white/10 text-white" />
-              </div>
-              <Button
-                className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold"
-                onClick={addClient}
-                disabled={isAdding}
-              >
-                {isAdding ? "Salvando..." : "Salvar Cliente"}
-              </Button>
-            </div>
+            </label>
+            <Button
+              className="bg-sky-500 hover:bg-sky-600 text-white font-semibold gap-2"
+              onClick={() => setShowAddModal(true)}
+            >
+              <Plus className="w-4 h-4" /> Novo Cliente
+            </Button>
           </div>
         </div>
-      )}
 
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888]" />
-          <Input
-            placeholder="Buscar por nome ou email..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 bg-[#111] border-white/10 text-white placeholder:text-[#666] h-9 text-sm"
-          />
-        </div>
+        {showAddModal && (
+          <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" onClick={() => setShowAddModal(false)}>
+            <div className="bg-[#111] border border-white/10 rounded-2xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-bold text-white">Novo Cliente</h2>
+                <button onClick={() => setShowAddModal(false)} className="text-[#888] hover:text-white"><X className="w-5 h-5" /></button>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-xs text-[#888] mb-1 block">Nome *</label>
+                  <Input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Nome do cliente" className="bg-white/5 border-white/10 text-white" />
+                </div>
+                <div>
+                  <label className="text-xs text-[#888] mb-1 block">Email *</label>
+                  <Input value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="email@cliente.com" className="bg-white/5 border-white/10 text-white" />
+                </div>
+                <div>
+                  <label className="text-xs text-[#888] mb-1 block">Telefone</label>
+                  <Input value={newPhone} onChange={e => setNewPhone(e.target.value)} placeholder="(11) 99999-9999" className="bg-white/5 border-white/10 text-white" />
+                </div>
+                <div>
+                  <label className="text-xs text-[#888] mb-1 block">Status</label>
+                  <select value={newStatus} onChange={e => setNewStatus(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm">
+                    <option value="Lead">Lead</option>
+                    <option value="Negociação">Negociação</option>
+                    <option value="Cliente Ativo">Cliente Ativo</option>
+                    <option value="Cancelado">Cancelado</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs text-[#888] mb-1 block">Data de Vencimento</label>
+                  <Input type="date" value={newDueDate} onChange={e => setNewDueDate(e.target.value)} className="bg-white/5 border-white/10 text-white" />
+                </div>
+                <Button
+                  className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold"
+                  onClick={addClient}
+                  disabled={isAdding}
+                >
+                  {isAdding ? "Salvando..." : "Salvar Cliente"}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="flex items-center gap-2">
           {["todos", "Cliente Ativo", "Lead", "Negociação", "Cancelado"].map((s) => (
             <button

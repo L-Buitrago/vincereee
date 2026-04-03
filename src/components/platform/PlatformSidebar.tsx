@@ -111,28 +111,6 @@ export default function PlatformSidebar() {
       </nav>
 
         <div className="px-3 pb-6 flex flex-col gap-1 border-t border-white/5 pt-4">
-          
-          {/* User Profile Section at the bottom of sidebar */}
-          {!collapsed && (
-            <div className="px-3 py-4 mb-2 bg-white/[0.03] rounded-2xl border border-white/5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center shrink-0">
-                  <span className="text-sky-500 font-bold text-xs">{userInitials}</span>
-                </div>
-                <div className="flex flex-col min-w-0">
-                  <span className="text-sm font-bold text-white truncate">{userName}</span>
-                  <span className="text-[10px] text-white/40 truncate">{user?.email}</span>
-                </div>
-              </div>
-              {isAdmin && (
-                <div className="mt-3">
-                  <Badge className="w-full justify-center bg-sky-500/10 text-sky-400 border-sky-500/20 text-[9px] font-bold uppercase tracking-widest py-0.5">
-                    Admin
-                  </Badge>
-                </div>
-              )}
-            </div>
-          )}
 
           {bottomItems.map((item) => (
             <Link

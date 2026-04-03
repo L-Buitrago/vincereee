@@ -26,6 +26,7 @@ import { toast } from "@/hooks/use-toast";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import NotificationBell from "@/components/platform/NotificationBell";
+import PlatformHeader from "@/components/platform/PlatformHeader";
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
@@ -100,21 +101,6 @@ export default function PlatformDashboard() {
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [date, setDate] = useState<Date | undefined>(new Date());
-
-  const fullName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Usuário";
-  const userAvatar = user?.user_metadata?.avatar_url;
-  const initials = fullName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
-
-  const planName = useMemo(() => {
-    if (isAdmin) return "Admin";
-    if (!org?.plan) return "Starter";
-    const mapped: Record<string, string> = {
-      free: "Starter",
-      pro: "Pro",
-      enterprise: "Enterprise"
-    };
-    return mapped[org.plan.toLowerCase()] || org.plan;
-  }, [org, isAdmin]);
 
   useEffect(() => {
     const sessionId = searchParams.get('session_id');
@@ -270,42 +256,12 @@ export default function PlatformDashboard() {
         </div>
       )}
 
-      {/* Header Area */}
-      <header className="flex items-center justify-between p-6 px-8 bg-transparent sticky top-0 z-30 backdrop-blur-sm border-b border-white/5">
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-bold tracking-tight font-display text-white">Dashboard <span className="text-sky-500">.</span></h1>
-        </div>
-
-        <div className="flex items-center gap-6">
-          <div className="relative hidden md:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888]" />
-            <Input
-              className="bg-white/5 border-white/5 pl-10 w-64 text-sm rounded-xl focus-visible:ring-sky-500 text-white"
-              placeholder="Pesquisar..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          <div className="flex items-center gap-3">
-             <NotificationBell />
-
-             <div className="flex items-center gap-4 pl-3 border-l border-white/10 ml-3">
-                <div className="flex flex-col items-end">
-                   <span className="text-sm font-bold text-white leading-none">{fullName}</span>
-                   <span className="text-[10px] text-white/30 mt-0.5">{user?.email}</span>
-                   <Badge variant="outline" className="mt-1 h-5 text-[9px] uppercase tracking-widest font-bold border-sky-500/30 bg-sky-500/5 text-sky-400">
-                     {planName}
-                   </Badge>
-                </div>
-                <Avatar className="w-10 h-10 rounded-xl border border-white/10 shadow-xl">
-                  {userAvatar && <AvatarImage src={userAvatar} className="object-cover" />}
-                  <AvatarFallback className="bg-sky-500/20 text-sky-400 font-bold text-xs">{initials}</AvatarFallback>
-                </Avatar>
-             </div>
-          </div>
-        </div>
-      </header>
+      {/* Global Header */}
+      <PlatformHeader 
+        title="Dashboard" 
+        searchQuery={searchQuery} 
+        setSearchQuery={setSearchQuery} 
+      />
 
       {/* Main Content Area */}
       <main className="flex-1 p-8 pt-4 space-y-8">
