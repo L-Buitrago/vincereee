@@ -118,7 +118,7 @@ export default function PlatformDashboard() {
   const { data: allCustomers = [], isLoading } = useQuery({
     queryKey: ['dashboard-customers', orgId, isAdmin],
     queryFn: async () => {
-      let query = supabase.from('customers').select('*').order('created_at', { ascending: false });
+      let query = supabase.from('customer_intelligence_view' as any).select('*').order('created_at', { ascending: false });
       if (!isAdmin && orgId) query = query.eq('org_id', orgId);
       const { data, error } = await query;
       if (error) throw error;
@@ -232,13 +232,14 @@ export default function PlatformDashboard() {
       methods[gateway].count++;
       if (t.status === 'aprovado') methods[gateway].approved++;
     });
+    const totalCount = filteredTransactions.length;
     return Object.entries(methods).map(([name, stats]) => ({
       name,
-      value: Math.round((stats.count / totalTransactions) * 100),
+      value: Math.round((stats.count / totalCount) * 100),
       rate: (stats.approved / stats.count) * 100,
       color: name === 'Stripe' ? '#7C3AED' : name === 'Cartão' ? '#7C3AED' : name === 'Pix' ? '#10B981' : '#F59E0B'
     }));
-  }, [filteredTransactions, totalTransactions]);
+  }, [filteredTransactions]);
 
   const chartData = useMemo(() => {
     const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
@@ -309,7 +310,7 @@ export default function PlatformDashboard() {
         {/* Stats Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={6}>
-              <StatCard title="Vendas Totais" value={totalTransactions} icon={FileText} bgColor="bg-[#10B981]" />
+              <StatCard title="Vendas Totais" value={transactions.length} icon={FileText} bgColor="bg-[#10B981]" />
             </motion.div>
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={7}>
               <StatCard title="Receita Estimada" value={formatCurrency(totalReceita)} icon={Wallet} bgColor="bg-[#0EA5E9]" />
@@ -344,7 +345,7 @@ export default function PlatformDashboard() {
                     </div>
                   </div>
                 </div>
-                <MoreHorizontal className="w-5 h-5 text-white/20 cursor-pointer" />
+                <MoreHorizontal className="w-5 h-5 text-muted-foreground/30 cursor-pointer hover:text-sky-500 transition-colors" />
               </div>
               <div className="h-[400px] w-full p-4 mt-8">
                  <ResponsiveContainer width="100%" height="100%">
@@ -360,7 +361,7 @@ export default function PlatformDashboard() {
                       <YAxis axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 10, fontWeight: "bold", opacity: 0.4 }} tickFormatter={(v) => `R$${v/1000}k`} />
                       <Tooltip content={<CustomTooltip />} cursor={false} />
                       <Area type="monotone" dataKey="thisYear" stroke="#0ea5e9" strokeWidth={4} fillOpacity={1} fill="url(#colorThisYear)" activeDot={false} />
-                      <Area type="monotone" dataKey="lastYear" stroke="currentColor" strokeWidth={4} className="opacity-10" fill="none" activeDot={false} />
+                      <Area type="monotone" dataKey="lastYear" stroke="#94a3b8" strokeWidth={3} strokeDasharray="5 5" fill="none" activeDot={false} />
                     </AreaChart>
                  </ResponsiveContainer>
               </div>

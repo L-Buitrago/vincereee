@@ -108,7 +108,7 @@ export default function PlatformClients() {
     queryKey: ['customers', orgId, isAdmin],
     queryFn: async () => {
       let query = supabase
-        .from('customers' as any)
+        .from('customer_intelligence_view' as any)
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -192,15 +192,6 @@ export default function PlatformClients() {
       const [r1, r2, r3] = await Promise.all([p1, p2, p3]);
       
       console.log("Delete results:", { primary: r1, vi: r2, customers: r3 });
-
-      // ALERTA DE DIAGNÓSTICO PARA O USUÁRIO
-      const summary = `
-        Resultado da Exclusão:
-        - Tabela Principal: ${r1.error ? 'ERRO: ' + r1.error.message : 'OK (Status: ' + r1.status + ')'}
-        - Tabela VI Leads: ${r2.error ? 'ERRO: ' + r2.error.message : 'OK'}
-        - Tabela Clientes: ${r3.error ? 'ERRO: ' + r3.error.message : 'OK'}
-      `;
-      window.alert(summary);
 
       if (r1.error) throw r1.error;
 

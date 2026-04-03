@@ -14,7 +14,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%; /* Pure White #FFFFFF */
+    --background: 210 40% 98%; /* #F8FAFC - Premium Off-White */
     --foreground: 222 47% 11%; /* Navy deep for text */
 
     --card: 0 0% 100%;
@@ -38,8 +38,8 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 222 47% 11% / 0.1;
-    --input: 222 47% 11% / 0.1;
+    --border: 214 32% 91%; /* #E2E8F0 Subtle Slate */
+    --input: 214 32% 91%;
     --ring: 217 91% 60%;
 
     --radius: 1.5rem;
