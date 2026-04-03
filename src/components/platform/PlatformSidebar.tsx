@@ -62,11 +62,11 @@ export default function PlatformSidebar() {
   const userInitials = userName.substring(0, 2).toUpperCase();
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full bg-black">
+    <div className="flex flex-col h-full bg-background">
       {/* Logo */}
       <div className="p-6 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <span className="text-lg font-bold text-white tracking-tight font-display">Vincere</span>
+          <span className="text-lg font-bold text-foreground tracking-tight font-display">Vincere</span>
         </Link>
       </div>
 
@@ -79,8 +79,8 @@ export default function PlatformSidebar() {
             onClick={() => setMobileOpen(false)}
             className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm transition-all duration-300 group relative ${
               isActive(item.path)
-                ? "bg-sky-500/20 text-white shadow-[0_0_20px_rgba(14,165,233,0.15)]"
-                : "text-premium-text-muted hover:text-white hover:bg-white/5"
+                ? "bg-sky-500/10 text-sky-500 dark:bg-sky-500/20 dark:text-white dark:shadow-[0_0_20px_rgba(14,165,233,0.15)] font-bold shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
             }`}
           >
             <item.icon className={`w-[20px] h-[20px] shrink-0 ${isActive(item.path) ? "text-sky-500" : ""}`} />
@@ -110,14 +110,14 @@ export default function PlatformSidebar() {
         )}
       </nav>
 
-        <div className="px-3 pb-6 flex flex-col gap-1 border-t border-white/5 pt-4">
+        <div className="px-3 pb-6 flex flex-col gap-1 border-t border-border pt-4">
 
           {bottomItems.map((item) => (
             <Link
               key={item.label}
               to={item.path}
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-premium-text-muted hover:text-white hover:bg-white/5 transition-all duration-200"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
             >
               <item.icon className="w-[18px] h-[18px] shrink-0" />
               {!collapsed && <span>{item.label}</span>}
@@ -139,7 +139,7 @@ export default function PlatformSidebar() {
       {/* Mobile Toggle */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-[#111] border border-white/10 text-white"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-card border border-border text-foreground shadow-md"
       >
         {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
@@ -165,7 +165,7 @@ export default function PlatformSidebar() {
             animate={{ x: 0 }}
             exit={{ x: -280 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-black border-r border-white/5"
+            className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-[260px] bg-background border-r border-border"
           >
             <SidebarContent />
           </motion.aside>
@@ -174,7 +174,7 @@ export default function PlatformSidebar() {
 
       {/* Desktop Sidebar */}
       <aside
-        className={`hidden lg:flex flex-col sticky top-0 h-screen border-r border-white/5 bg-black transition-all duration-300 ${
+        className={`hidden lg:flex flex-col sticky top-0 h-screen border-r border-border bg-background transition-all duration-300 ${
           collapsed ? "w-[68px]" : "w-[240px]"
         }`}
       >
