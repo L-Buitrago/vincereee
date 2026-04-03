@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const metadata = stored ? JSON.parse(stored) : { full_name: 'Admin Developer' };
     
     return {
-      id: 'dev-admin-user',
+      id: '00000000-0000-0000-0000-000000000000',
       email: 'assasinghost910@gmail.com',
       user_metadata: metadata,
       aud: 'authenticated',

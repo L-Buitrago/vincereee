@@ -276,17 +276,19 @@ export default function PlatformMessages() {
   // Search users
   const handleSearch = async (query: string) => {
     setSearchQuery(query);
-    if (query.length < 1) {
+    if (!query.trim()) {
       setSearchResults([]);
       return;
     }
 
-    // Load all other profiles and filter locally
+    // Database-level filtering for better performance and accuracy
+    const q = `%${query}%`;
     const { data, error } = await supabase
       .from("profiles")
       .select("user_id, full_name")
       .neq("user_id", user?.id || "")
-      .limit(50);
+      .ilike("full_name", q)
+      .limit(20);
 
     if (error) {
       console.error("Search error:", error);
@@ -295,11 +297,7 @@ export default function PlatformMessages() {
     }
 
     if (data) {
-      const q = query.toLowerCase();
-      const filtered = (data as UserProfile[]).filter(
-        (p) => (p.full_name || "").toLowerCase().includes(q) || true
-      );
-      setSearchResults(filtered);
+      setSearchResults(data as UserProfile[]);
     }
   };
 
