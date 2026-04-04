@@ -29,16 +29,16 @@ const LupaAnim = ({ progress }: { progress: number }) => {
       />
       {/* Corpo da lupa rotacionando */}
       <g transform={`rotate(${angle}, 35, 38)`}>
-        <circle cx="32" cy="35" r="15" stroke="#1d4ed8" strokeWidth="2.8" />
-        <line x1="43" y1="46" x2="57" y2="60" stroke="#1d4ed8" strokeWidth="3.5" strokeLinecap="round" />
+        <circle cx="32" cy="35" r="15" stroke="#ffffff" strokeWidth="2.8" />
+        <line x1="43" y1="46" x2="57" y2="60" stroke="#ffffff" strokeWidth="3.5" strokeLinecap="round" />
         {/* Reflexo interno */}
         <path d="M24 28 Q28 24 34 24" stroke="#93c5fd" strokeWidth="1.5" strokeLinecap="round" />
       </g>
       {/* Ponto de foco */}
-      <circle cx={cx} cy={cy} r={3 * (1 - progress * 0.5)} fill="#2563eb" fillOpacity={0.7} />
+      <circle cx={cx} cy={cy} r={3 * (1 - progress * 0.5)} fill="#60a5fa" fillOpacity={0.8} />
       {/* Mira cruzada */}
-      <line x1={cx - 6} y1={cy} x2={cx + 6} y2={cy} stroke="#2563eb" strokeWidth="1.2" strokeOpacity={progress * 0.9} />
-      <line x1={cx} y1={cy - 6} x2={cx} y2={cy + 6} stroke="#2563eb" strokeWidth="1.2" strokeOpacity={progress * 0.9} />
+      <line x1={cx - 6} y1={cy} x2={cx + 6} y2={cy} stroke="#60a5fa" strokeWidth="1.5" strokeOpacity={progress * 1} />
+      <line x1={cx} y1={cy - 6} x2={cx} y2={cy + 6} stroke="#60a5fa" strokeWidth="1.5" strokeOpacity={progress * 1} />
     </svg>
   );
 };
@@ -243,22 +243,22 @@ const StepCard = ({
     relative flex flex-col items-center text-center rounded-[2rem] p-6 md:p-10
     border transition-all duration-700
     ${isActive
-      ? "bg-white border-blue-200 shadow-[0_20px_60px_rgba(37,99,235,0.16)] scale-[1.03]"
-      : "bg-white/60 border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.04)] scale-[0.96] opacity-40"
+      ? "bg-white/[0.03] backdrop-blur-md border-blue-500/40 shadow-[0_20px_60px_rgba(37,99,235,0.15)] scale-[1.03]"
+      : "bg-white/[0.01] border-white/5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] scale-[0.96] opacity-30"
     }
   `}>
     {/* Badge */}
-    <div className="absolute -top-4 -right-3 w-10 h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.5)] flex items-center justify-center text-white font-black text-sm z-20">
+    <div className="absolute -top-4 -right-3 w-10 h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-sm z-20">
       {id}
     </div>
 
     {/* Icon box animado */}
-    <div className="w-32 h-32 md:w-40 md:h-40 mb-6 rounded-[1.8rem] bg-gradient-to-br from-blue-50 via-white to-blue-50 border border-blue-100 flex items-center justify-center shadow-inner p-3 overflow-hidden">
+    <div className="w-32 h-32 md:w-40 md:h-40 mb-6 rounded-[1.8rem] bg-gradient-to-br from-blue-900/20 via-slate-900/40 to-blue-900/20 border border-white/5 flex items-center justify-center shadow-inner p-3 overflow-hidden">
       {children}
     </div>
 
-    <h4 className="text-base md:text-xl font-bold text-foreground mb-2">{title}</h4>
-    <p className="text-muted-foreground text-[12px] md:text-sm font-medium leading-relaxed max-w-[210px]">
+    <h4 className="text-base md:text-xl font-bold text-white mb-2">{title}</h4>
+    <p className="text-white/50 text-[12px] md:text-sm font-medium leading-relaxed max-w-[210px]">
       {desc}
     </p>
 
@@ -330,20 +330,20 @@ const DeliveryDiagnostic = () => {
   return (
     <div
       ref={wrapperRef}
-      className="w-full min-h-screen flex flex-col items-center justify-center py-16 px-4 md:px-8 relative overflow-hidden bg-[#FAFAFA]"
+      className="w-full min-h-screen flex flex-col items-center justify-center py-16 px-4 md:px-8 relative overflow-hidden bg-secondary"
       id="diagnostico"
     >
       {/* Header */}
       <div className="text-center mb-14 space-y-3 max-w-3xl">
-        <div className="flex items-center justify-center gap-2 text-blue-600 uppercase tracking-widest text-sm font-semibold">
+        <div className="flex items-center justify-center gap-2 text-primary uppercase tracking-widest text-sm font-semibold">
           <Plus className="w-4 h-4" />
           Diagnóstico de Entrega
           <Plus className="w-4 h-4" />
         </div>
-        <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight">
+        <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
           O nosso processo de <span className="text-primary">entrega</span>
         </h3>
-        <p className="text-muted-foreground text-base md:text-lg">
+        <p className="text-white/60 text-base md:text-lg">
           Role para explorar cada etapa — do diagnóstico à implementação.
         </p>
       </div>
@@ -351,7 +351,7 @@ const DeliveryDiagnostic = () => {
       {/* Cards */}
       <div className="relative w-full max-w-5xl">
         {/* Linha azul conectando (desktop) */}
-        <div className="absolute top-[2.6rem] left-[12%] right-[12%] h-[2px] bg-gray-200 hidden md:block rounded-full overflow-hidden">
+        <div className="absolute top-[2.6rem] left-[12%] right-[12%] h-[2px] bg-white/10 hidden md:block rounded-full overflow-hidden">
           <div
             className="h-full bg-blue-600 rounded-full origin-left"
             style={{ transform: `scaleX(${lineProgress})`, transition: "none" }}
@@ -631,7 +631,7 @@ const BentoServices = () => {
       {/* ── Seção de soluções ── */}
       <section
         ref={containerRef}
-        className="py-32 w-full bg-[#FAFAFA] relative overflow-hidden"
+        className="py-32 w-full bg-white relative overflow-hidden"
         id="solucoes"
       >
         <div className="container px-4 md:px-6 mx-auto relative z-10">
@@ -681,7 +681,7 @@ const BentoServices = () => {
                 className="absolute bottom-14 left-[4%] md:bottom-12 md:left-[6%] z-20"
               >
                 <WhatsAppMockup isActive={chatActive} />
-                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/20 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
+                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/10 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
               </motion.div>
             </div>
 

@@ -579,40 +579,57 @@ const WaysToWork = () => {
       </div>
 
       <div className="container mx-auto px-4 md:px-24 relative">
-        {/* Large Static Title */}
-        <div className="mb-20 text-center">
+        {/* Redesigned Header: Organic Custom Style */}
+        <div className="mb-24 text-center">
           <div className="flex flex-col items-center">
-            <motion.span 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 0.4, y: 0 }}
+            {/* Minimalist Badge with Star */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="block italic font-serif text-2xl md:text-[2vw] lowercase mb-6 font-light tracking-normal"
+              transition={{ duration: 0.6 }}
+              className="flex items-center gap-2 mb-8 text-secondary/60 font-bold uppercase tracking-widest text-[10px] md:text-sm"
             >
-              por que
-            </motion.span>
+              Nosso compromisso com a sua excelência
+            </motion.div>
             
-            <h2 className="font-extrabold tracking-tight leading-[0.9] text-foreground font-sans uppercase">
+            <h2 className="text-foreground font-sans tracking-tight leading-[1.1]">
               <motion.span 
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="block text-5xl md:text-7xl lg:text-8xl mb-2"
+                transition={{ duration: 0.8 }}
+                className="block text-5xl md:text-7xl font-extrabold mb-1"
               >
-                a Vincere é
+                A tecnologia que
               </motion.span>
               
               <motion.span 
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.3 }}
-                className="block text-6xl md:text-8xl lg:text-[10vw] text-gradient-alt bg-clip-text"
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="block text-5xl md:text-7xl font-extrabold"
               >
-                Diferente
+                impulsiona sua 
+                <span 
+                  style={{ fontFamily: "'Satisfy', cursive" }} 
+                  className="text-primary inline-block -rotate-2 ml-4"
+                >
+                  Evolução
+                </span>
               </motion.span>
             </h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 0.6, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-8 text-lg md:text-xl font-medium text-secondary max-w-2xl leading-relaxed mx-auto italic opacity-50"
+            >
+              Escalabilidade, performance e transparência total em cada projeto.
+            </motion.p>
           </div>
         </div>
 

@@ -47,19 +47,19 @@ const HeroImmersive = () => {
       ref={containerRef}
       className="relative min-h-[100vh] w-full bg-background flex items-center pt-24 pb-12 overflow-hidden selection:bg-primary/20"
     >
-      {/* Background Video (Fundo branco mexendo) */}
+      {/* Background Video (Visual impact increased) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <video 
           autoPlay 
           loop 
           muted 
           playsInline 
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
+          className="absolute inset-0 w-full h-full object-cover opacity-80"
         >
           <source src="/85590-590014592_medium.mp4" type="video/mp4" />
         </video>
         {/* Subtle overlay to ensure text contrast if needed */}
-        <div className="absolute inset-0 bg-white/20" />
+        <div className="absolute inset-0 bg-white/10" />
       </div>
 
       <div className="container relative z-10 px-4 md:px-6 mx-auto">
