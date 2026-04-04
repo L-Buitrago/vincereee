@@ -7,17 +7,17 @@ const Footer = () => {
   return (
     <footer id="footer" className="relative bg-secondary text-white overflow-hidden">
       {/* Hero Video Background Repeat (Premium Subtle Look) */}
-      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+      <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
         <video 
           autoPlay 
           muted 
           loop 
           playsInline 
-          className="w-full h-full object-cover grayscale"
+          className="w-full h-full object-cover"
         >
-          <source src="https://vendredi-society.com/wp-content/uploads/2024/01/Hero-Scan.mp4" type="video/mp4" />
+          <source src="/185365-875417518_medium.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-secondary/90" />
+        <div className="absolute inset-0 bg-secondary/80" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-24 md:py-32">
