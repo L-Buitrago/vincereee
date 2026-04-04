@@ -8,10 +8,19 @@ const FinalCTA = () => {
 
   return (
     <section id="falar-conosco" className="relative py-60 min-h-[90vh] flex items-center bg-white overflow-hidden text-[#0f172a]">
-      {/* Soft Light Blue Background Elements (Azul BB) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-[10%] -right-[5%] w-[70%] h-[70%] bg-sky-100/40 rounded-full blur-[140px]" />
-        <div className="absolute -bottom-[10%] -left-[5%] w-[60%] h-[60%] bg-sky-50/40 rounded-full blur-[120px]" />
+      {/* Background Video (Azul com branco) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        >
+          <source src="/185365-875417518_medium.mp4" type="video/mp4" />
+        </video>
+        {/* Subtle radial gradient overlay to keep it soft and clean */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white/80" />
       </div>
       
       <div className="container px-4 md:px-6 mx-auto relative z-10 w-full">
