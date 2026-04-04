@@ -42,9 +42,9 @@ const VisionSection = () => {
           {/* Left Sticky Header */}
           <div className="lg:w-[35%]">
             <div className="flex flex-col items-start pt-10">
-              <h2 className="text-5xl md:text-6xl lg:text-8xl font-sans font-medium tracking-tighter text-[#0e1711] leading-[1.05]">
+              <h2 className="text-5xl md:text-6xl lg:text-8xl font-display font-bold tracking-tighter text-[#0e1711] leading-[1.05]">
                 Made for<br />
-                <span className="v-underline">big-time returns.</span>
+                <span className="font-serif italic font-normal text-primary">big-time</span> returns.
               </h2>
             </div>
           </div>
@@ -52,8 +52,8 @@ const VisionSection = () => {
           {/* Right: Large Dark KPI Card */}
           <div className="lg:w-[65%] bg-[#0e1711] rounded-[3rem] p-12 md:p-24 flex flex-col justify-center relative overflow-hidden h-[500px] md:h-[600px] lg:h-[700px]">
              <div className="relative z-10 max-w-[500px] mx-auto text-center">
-                <h3 className="text-3xl md:text-5xl lg:text-6xl font-sans font-medium text-white tracking-tight leading-[1.1] mb-24">
-                  More than pretty designs, KPI-driven ones.
+                <h3 className="text-3xl md:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight leading-[1.1] mb-24">
+                  More than pretty designs, <span className="font-serif italic font-normal text-primary">KPI-driven</span> ones.
                 </h3>
                 
                 {/* Floating KPI Stat Card */}
@@ -89,8 +89,8 @@ const VisionSection = () => {
            
            {/* Lime Green Card */}
            <div className="bg-[#D9FF2E] rounded-[3rem] p-12 md:p-20 flex flex-col justify-between h-[600px] hover:-translate-y-2 transition-transform duration-500">
-              <h3 className="text-3xl md:text-5xl font-sans font-medium tracking-tight text-[#0e1711] leading-[1.1]">
-                Enjoy clear workflows<br />and faster results.
+              <h3 className="text-3xl md:text-5xl font-display font-bold tracking-tight text-[#0e1711] leading-[1.1]">
+                Enjoy <span className="font-serif italic font-normal text-primary">clear workflows</span><br />and faster results.
               </h3>
               
               <div ref={pillsRef} className="flex flex-col gap-5 w-full max-w-[320px] py-12">

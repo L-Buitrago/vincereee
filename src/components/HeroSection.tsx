@@ -26,9 +26,9 @@ const HeroSection = () => {
       </Suspense>
 
       <div className="relative z-10 text-center px-4 max-w-[1200px] w-full mt-20">
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[7.5rem] font-serif-display font-medium leading-[1] tracking-[-0.04em] text-[#e8e8e3] mix-blend-plus-lighter drop-shadow-2xl">
-          Syncing fast-moving<br className="hidden md:block" />
-          brands with fast-moving<br className="hidden md:block" />
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[7.5rem] font-display font-bold leading-[0.9] tracking-[-0.04em] text-[#e8e8e3] mix-blend-plus-lighter drop-shadow-2xl">
+          Syncing <span className="font-serif italic font-normal text-primary">fast-moving</span><br className="hidden md:block" />
+          brands with <span className="font-serif italic font-normal">fast-moving</span><br className="hidden md:block" />
           audiences.
         </h1>
       </div>

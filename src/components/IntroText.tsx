@@ -11,44 +11,47 @@ const IntroText = () => {
   useEffect(() => {
     if (!containerRef.current || !textRef.current) return;
 
-    // Split text into characters for the scroll reveal
-    const text = textRef.current.innerText;
+    // Improved reveal script that handles nested spans
+    const originalHTML = textRef.current.innerHTML;
     textRef.current.innerHTML = '';
-    const words = text.split(' ');
     
-    words.forEach((word, wordIndex) => {
-      const wordSpan = document.createElement('span');
-      wordSpan.className = 'inline-block whitespace-nowrap';
-      const chars = word.split('');
-      chars.forEach((char) => {
-        const charSpan = document.createElement('span');
-        charSpan.className = 'inline-block intro-char opacity-0 translate-y-8 translate-x-2 rotate-[5deg]';
-        charSpan.innerText = char;
-        wordSpan.appendChild(charSpan);
-      });
-      textRef.current?.appendChild(wordSpan);
-      if (wordIndex < words.length - 1) {
-        const spaceSpan = document.createElement('span');
-        spaceSpan.className = 'inline-block intro-char opacity-0';
-        spaceSpan.innerHTML = '&nbsp;';
-        textRef.current?.appendChild(spaceSpan);
+    // We'll use a slightly different approach: reveal words instead of characters
+    // to preserve the complex styling (spans with colors/fonts)
+    const container = document.createElement('div');
+    container.innerHTML = originalHTML;
+    
+    const elements = Array.from(container.childNodes);
+    elements.forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const words = (node.textContent || '').split(' ');
+        words.forEach((word, i) => {
+          if (word.trim() === '') return;
+          const span = document.createElement('span');
+          span.className = 'inline-block intro-word opacity-0 translate-y-4 mr-[0.25em]';
+          span.innerText = word;
+          textRef.current?.appendChild(span);
+        });
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const el = node as HTMLElement;
+        const span = document.createElement('span');
+        span.className = `inline-block intro-word opacity-0 translate-y-4 mr-[0.25em] ${el.className}`;
+        span.innerText = el.innerText;
+        textRef.current?.appendChild(span);
       }
     });
 
-    const chars = containerRef.current.querySelectorAll('.intro-char');
-    gsap.to(chars, {
+    const words = containerRef.current.querySelectorAll('.intro-word');
+    gsap.to(words, {
       opacity: 1,
       y: 0,
-      x: 0,
-      rotate: 0,
-      duration: 1,
-      stagger: 0.015,
-      ease: 'power2.out',
+      duration: 1.2,
+      stagger: 0.05,
+      ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 80%',
         end: 'bottom 20%',
-        scrub: 0.5,
+        scrub: 1,
       },
     });
 
@@ -68,9 +71,9 @@ const IntroText = () => {
         <div className="max-w-[1200px] mb-24 md:mb-40">
           <h2 
             ref={textRef} 
-            className="text-[10vw] md:text-[6.5vw] font-serif-display leading-[1.05] tracking-tight text-[#0e1711]"
+            className="text-[9vw] md:text-[6vw] font-display font-bold leading-[1.05] tracking-tight text-[#0e1711]"
           >
-            Being visible is just no longer enough. It’s all about leveraging attention. And then moving forward together. Synced.
+            Being visible is just no longer enough. It’s all about <span className="font-serif italic font-normal text-primary">leveraging attention</span>. And then moving forward together. <span className="font-serif italic font-normal">Synced.</span>
           </h2>
         </div>
 
