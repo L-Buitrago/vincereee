@@ -27,6 +27,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import NotificationBell from "@/components/platform/NotificationBell";
 import PlatformHeader from "@/components/platform/PlatformHeader";
+import { VincereOffice } from "@/components/agents/VincereOffice";
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
@@ -271,6 +272,7 @@ export default function PlatformDashboard() {
 
       {/* Main Content Area */}
       <main className="flex-1 p-8 pt-4 space-y-8">
+        <VincereOffice />
         
         <div className="flex items-center gap-2 mb-2 bg-muted/20 p-1 rounded-xl w-fit border border-border">
           {periods.map((p, i) => (
