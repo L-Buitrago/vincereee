@@ -1,0 +1,33 @@
+{
+  "metrics_mapping": [
+    {
+      "metric": "Vendas Totais",
+      "target_component": "StatCard",
+      "sql_source": "SELECT count(*) FROM revenue_transactions WHERE transaction_type = 'new_sale'",
+      "api_endpoint": "/api/v1/metrics/sales-count"
+    },
+    {
+      "metric": "Receita Estimada (MRR)",
+      "target_component": "StatCard",
+      "sql_source": "SELECT SUM(mrr_value) FROM saas_subscriptions WHERE status = 'active'",
+      "api_endpoint": "/api/v1/metrics/mrr"
+    },
+    {
+      "metric": "Taxa de Churn",
+      "target_component": "StatCard",
+      "sql_source": "SELECT (count(*)::float / (SELECT count(*) FROM saas_subscriptions WHERE status != 'canceled')) * 100 FROM churn_logs WHERE canceled_at > now() - interval '30 days'",
+      "api_endpoint": "/api/v1/metrics/churn-rate"
+    },
+    {
+      "metric": "Faturamento Mensal (Chart)",
+      "target_component": "AreaChart",
+      "sql_source": "SELECT snapshot_date, total_mrr FROM metrics_daily_snapshots WHERE snapshot_date > now() - interval '12 months'",
+      "api_endpoint": "/api/v1/metrics/trends"
+    }
+  ],
+  "integration_architecture": {
+    "frontend": "React + TanStack Query",
+    "backend": "Node.js (Express) + Supabase Client",
+    "database": "PostgreSQL (Supabase)"
+  }
+}
