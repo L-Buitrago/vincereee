@@ -133,11 +133,20 @@ const BigTimeReturns = () => {
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1, ease: [0.77, 0, 0.18, 1] }}
-              className="text-5xl md:text-[5.5vw] font-serif italic leading-[0.95] tracking-tighter text-foreground"
+              className="text-5xl md:text-[5vw] font-black tracking-tight leading-[1.05] text-foreground"
             >
-              Feito para <br />
-              <span className="relative">
-                <span className="underline decoration-2 underline-offset-8 decoration-primary/40">grandes retornos.</span>
+              Feito para grandes <br />
+              <span className="relative inline-block mt-2">
+                <span style={{ fontFamily: "'Satisfy', cursive" }} className="text-primary pr-2">
+                  retornos.
+                </span>
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, delay: 0.8, ease: "circOut" }}
+                  className="absolute -bottom-2 left-0 h-[3px] bg-primary/40 origin-left w-full rounded-full"
+                />
               </span>
             </motion.h2>
             <motion.p
