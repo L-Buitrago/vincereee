@@ -20,7 +20,7 @@ const Footer = () => {
         <div className="absolute inset-0 bg-secondary/50" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-24 md:py-32">https://127.0.0.1:63765/static/artifacts/bb810d71-d13f-4bd0-8ead-3e41adc80e98/processo_entrega_verification_1775332218951.png?csrf=b8debf7a-2182-4d13-b2ee-05fffb77b7bd
+      <div className="relative z-10 container mx-auto px-4 py-24 md:py-32">
         {/* CTA Section */}
         <div className="mb-24 md:mb-40 text-center">
           <motion.h2
