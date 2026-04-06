@@ -38,6 +38,55 @@ const testimonials = [
     rating: 5,
     highlight: false,
   },
+  {
+    quote: "A velocidade de carregamento do nosso portal é surreal. O design minimalista elevou nossa marca a outro patamar de autoridade mundial.",
+    author: "Ricardo Oliveira",
+    role: "Diretor Comercial @GlobalLog",
+    rating: 5,
+    highlight: false,
+  },
+  {
+    quote: "O dashboard de BI que a Vincere montou é uma obra de arte. Tomar decisões estratégicas agora é visual, rápido e muito prazeroso.",
+    author: "Beatriz Farias",
+    role: "Head of Product @FinTech",
+    rating: 5,
+    highlight: true,
+  },
+  {
+    quote: "Nossa taxa de conversão no mobile subiu 45% após o redesign. A Vincere não entrega apenas sites, entrega máquinas de vendas reais.",
+    author: "Lucas Albuquerque",
+    role: "Founder @PrimeAuto",
+    rating: 5,
+    highlight: false,
+  },
+  {
+    quote: "Ter a inteligência da VI integrada ao nosso ecossistema mudou o jogo. O atendimento automatizado agora tem o tom de voz da nossa marca.",
+    author: "Sophia Wagner",
+    role: "Creative Lead @VogueSpace",
+    rating: 5,
+    highlight: false,
+  },
+  {
+    quote: "Impressionante como captaram a essência da nossa marca de luxo. O site flui como uma revista digital de alta costura, impecável.",
+    author: "Helena Peixoto",
+    role: "Brand Manager @Stellar",
+    rating: 5,
+    highlight: true,
+  },
+  {
+    quote: "O novo dashboard nos permitiu fechar contratos muito maiores. A clareza dos KPIs impressiona qualquer investidor que apresentamos.",
+    author: "Marcos Vinícius",
+    role: "COO @RetailFlow",
+    rating: 5,
+    highlight: false,
+  },
+  {
+    quote: "O suporte e a visão estratégica da Vincere são o que os diferencia. Eles pensam no negócio como um todo, não apenas no código.",
+    author: "Gabriel Diniz",
+    role: "CEO @TechNova",
+    rating: 5,
+    highlight: false,
+  },
 ];
 
 const CARD_WIDTH = 420;

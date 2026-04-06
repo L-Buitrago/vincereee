@@ -386,7 +386,7 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
                        setIsSubmitting(true);
                        try {
                          const surveyDetails = Object.entries(selections).map(([stepId, value]) => `${stepId}: ${value}`).join("\n");
-                         const needsData = `Histórico da VI:\n${surveyDetails}\n\nDescrição Extra: ${customProjectDescription}`;
+                         const needsData = `${surveyDetails}\n\n[EXTRAS]\n${customProjectDescription}`;
                          
                          await supabase.from("vi_leads").insert({
                            name: leadForm.name,
