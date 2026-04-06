@@ -251,6 +251,9 @@ export default function PlatformDashboard() {
     return months.map(name => ({ name, thisYear: byMonth[name] || 0, lastYear: (byMonth[name] || 0) * 0.7 }));
   }, [customers]);
 
+  const hasThisYearData = useMemo(() => chartData.some(d => d.thisYear > 0), [chartData]);
+  const hasLastYearData = useMemo(() => chartData.some(d => d.lastYear > 0), [chartData]);
+
   const recentCustomers = useMemo(() => customers.slice(0, 5), [customers]);
   const recentProjects = useMemo(() => projects.slice(0, 3), [projects]);
 
@@ -338,8 +341,8 @@ export default function PlatformDashboard() {
                       <span className="text-xs font-bold text-muted-foreground group-hover:text-foreground">Este Ano</span>
                     </div>
                     <div className="flex items-center gap-2">
-                       <div className="w-4 h-4 rounded-full border-2 border-slate-700 flex items-center justify-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-slate-700" />
+                       <div className="w-4 h-4 rounded-full border-2 border-slate-400 flex items-center justify-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-slate-400" />
                       </div>
                       <span className="text-xs font-bold text-muted-foreground group-hover:text-foreground">Ano Anterior</span>
                     </div>
@@ -352,16 +355,36 @@ export default function PlatformDashboard() {
                     <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                       <defs>
                         <linearGradient id="colorThisYear" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.2}/>
-                          <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15}/>
+                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="opacity-[0.05]" />
                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 11, fontWeight: "bold", opacity: 0.4 }} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 10, fontWeight: "bold", opacity: 0.4 }} tickFormatter={(v) => `R$${v/1000}k`} />
                       <Tooltip content={<CustomTooltip />} cursor={false} />
-                      <Area type="monotone" dataKey="thisYear" stroke="#0ea5e9" strokeWidth={4} fillOpacity={1} fill="url(#colorThisYear)" activeDot={false} />
-                      <Area type="monotone" dataKey="lastYear" stroke="#94a3b8" strokeWidth={3} strokeDasharray="5 5" fill="none" activeDot={false} />
+                      {hasThisYearData && (
+                        <Area 
+                          type="monotone" 
+                          dataKey="thisYear" 
+                          stroke="#3b82f6" 
+                          strokeWidth={2} 
+                          fillOpacity={1} 
+                          fill="url(#colorThisYear)" 
+                          activeDot={false} 
+                        />
+                      )}
+                      {hasLastYearData && (
+                        <Area 
+                          type="monotone" 
+                          dataKey="lastYear" 
+                          stroke="#94a3b8" 
+                          strokeWidth={1.5} 
+                          strokeDasharray="4 4" 
+                          fill="none" 
+                          activeDot={false} 
+                        />
+                      )}
                     </AreaChart>
                  </ResponsiveContainer>
               </div>
