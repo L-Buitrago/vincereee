@@ -1,53 +1,14 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { BrandLoader } from "./v3/BrandLoader";
 
-export type SplashType = "minimal";
+export type SplashType = "minimal" | "neural";
 
 interface SplashScreenManagerProps {
   type: SplashType;
   onAnimationComplete: () => void;
   isLoading?: boolean;
 }
-
-// ── ONLY SPLASH REMAINING: "Minimal" — White with serif type, line reveal ──
-const MinimalSplash = () => (
-  <motion.div 
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    transition={{ duration: 0.8 }}
-    className="flex flex-col items-center gap-12"
-  >
-    <div className="overflow-hidden">
-      <motion.h1
-        initial={{ y: "100%" }}
-        animate={{ y: 0 }}
-        transition={{ duration: 1, ease: [0.77, 0, 0.18, 1] }}
-        className="text-5xl md:text-8xl font-serif text-[#0F172A] tracking-tighter leading-none"
-      >
-        Vincere
-      </motion.h1>
-    </div>
-    
-    <div className="overflow-hidden">
-      <motion.p
-        initial={{ y: "100%" }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.3, duration: 0.8, ease: [0.77, 0, 0.18, 1] }}
-        className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#0F172A]/40"
-      >
-        [ Technology &middot; Dashboard &middot; Websites ]
-      </motion.p>
-    </div>
-
-    <motion.div
-      initial={{ scaleX: 0 }}
-      animate={{ scaleX: 1 }}
-      transition={{ delay: 0.6, duration: 1.5, ease: [0.77, 0, 0.18, 1] }}
-      className="w-40 h-[1px] bg-[#0F172A]/20 origin-center"
-    />
-  </motion.div>
-);
 
 const SplashScreenManager = ({ onAnimationComplete, isLoading = false }: SplashScreenManagerProps) => {
   const [isFinished, setIsFinished] = useState(false);
@@ -58,7 +19,7 @@ const SplashScreenManager = ({ onAnimationComplete, isLoading = false }: SplashS
         setIsFinished(true);
         setTimeout(onAnimationComplete, 800);
       }
-    }, 2800);
+    }, 3200); // Slightly more time for full brand impact
 
     return () => clearTimeout(timer);
   }, [isLoading, onAnimationComplete]);
@@ -69,20 +30,32 @@ const SplashScreenManager = ({ onAnimationComplete, isLoading = false }: SplashS
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6 }}
-          className="fixed inset-0 z-[200] bg-[#f5f5f0] flex items-center justify-center p-4 overflow-hidden"
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="fixed inset-0 z-[200] bg-[#030303] flex items-center justify-center p-4 overflow-hidden"
         >
-          <div className="relative z-10">
-            <MinimalSplash />
+          {/* Subtle Grid Overlay */}
+          <div className="absolute inset-0 opacity-[0.03] bg-grid-white/[0.05] pointer-events-none" />
+          
+          <div className="relative z-10 w-full flex items-center justify-center">
+            <BrandLoader />
           </div>
 
-          {/* Progress bar */}
-          <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-black/5 overflow-hidden">
+          {/* Neural Pulse Scanning Line */}
+          <motion.div
+            initial={{ opacity: 0, scaleY: 0 }}
+            animate={{ opacity: [0, 0.4, 0], scaleY: 1 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 w-full h-[100px] bg-gradient-to-b from-transparent via-blue-500/10 to-transparent pointer-events-none"
+            style={{ top: "-10%" }}
+          />
+
+          {/* Progress bar (Precision Line) */}
+          <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-white/5 overflow-hidden">
              <motion.div 
                initial={{ scaleX: 0 }}
                animate={{ scaleX: 1 }}
-               transition={{ duration: 2.8, ease: "easeInOut" }}
-               className="h-full bg-[#0F172A] origin-left"
+               transition={{ duration: 3, ease: [0.16, 1, 0.3, 1] }}
+               className="h-full bg-blue-500 origin-left shadow-[0_0_15px_rgba(59,130,246,0.6)]"
              />
           </div>
         </motion.div>

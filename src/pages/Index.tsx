@@ -26,7 +26,7 @@ import PageTransition from "@/components/v2/PageTransition";
 const Index = () => {
   const navigate = useNavigate();
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const splashType: SplashType = "minimal";
+  const splashType: SplashType = "neural";
 
   const [showSplash, setShowSplash] = useState(() => {
     if (sessionStorage.getItem("vincere_splash_shown")) {
