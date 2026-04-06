@@ -80,24 +80,28 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-const StatCard = ({ title, value, icon: Icon, bgColor }: any) => (
-  <Card className={`overflow-hidden border-none relative group transition-all duration-500 hover:translate-y-[-4px] ${bgColor} text-white shadow-lg rounded-2xl`}>
-    <CardContent className="p-8 lg:p-10 relative z-10">
+const StatCard = ({ title, value, icon: Icon, color }: any) => (
+  <Card className="overflow-hidden border border-slate-200/60 bg-white/40 backdrop-blur-sm relative group transition-all duration-500 hover:translate-y-[-4px] hover:shadow-2xl hover:border-sky-500/20 rounded-3xl">
+    <CardContent className="p-6 lg:p-7 relative z-10">
       <div className="flex items-start justify-between">
-        <div className="space-y-6">
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-white/20 transition-transform group-hover:scale-110 duration-500">
-            <Icon className="w-7 h-7 text-white" />
+        <div className="space-y-4">
+          <div 
+            className="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 duration-500"
+            style={{ backgroundColor: `${color}15`, color: color }}
+          >
+            <Icon className="w-6 h-6" />
           </div>
-          <div className="space-y-2">
-            <h3 className="text-4xl lg:text-5xl font-bold tracking-tighter">{value}</h3>
-            <p className="text-xs lg:text-sm font-semibold text-white/80 uppercase tracking-widest leading-none">{title}</p>
+          <div className="space-y-1">
+            <h3 className="text-3xl font-bold tracking-tight text-slate-900">{value}</h3>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none">{title}</p>
           </div>
         </div>
-        <div className="p-1 rounded-md hover:bg-white/10 cursor-pointer">
-          <MoreHorizontal className="w-5 h-5 text-white/60" />
+        <div className="p-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors group/more">
+          <MoreHorizontal className="w-4 h-4 text-slate-200 group-hover/more:text-sky-500 transition-colors" />
         </div>
       </div>
     </CardContent>
+    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-sky-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
   </Card>
 );
 
@@ -140,75 +144,77 @@ const DemoDashboard = () => {
     <div ref={topRef} className="flex flex-col min-h-screen bg-[#F8FAFC] text-[#1e293b] font-sans selection:bg-sky-500/10 overflow-x-hidden">
       
       {/* Full Width Top Header */}
-      <header className="flex items-center justify-between p-6 px-10 bg-white/95 sticky top-0 z-50 backdrop-blur-2xl border-b border-slate-200 w-full shadow-md transition-all">
+      <header className="flex items-center justify-between p-4 px-10 bg-white/95 sticky top-0 z-50 backdrop-blur-2xl border-b border-slate-200/60 w-full shadow-sm transition-all h-[80px]">
         <div className="flex items-center gap-8">
-          <Link to="/" className="flex items-center gap-3 px-7 py-3.5 rounded-2xl bg-slate-900 text-white hover:bg-slate-800 transition-all font-bold text-sm shadow-2xl shadow-slate-900/40 group scale-100 hover:scale-105 active:scale-95">
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1.5 transition-transform duration-300" />
-            Voltar ao site principal
+           <Link to="/" className="flex items-center gap-2.5 px-6 py-2.5 rounded-2xl bg-slate-900 text-white hover:bg-slate-800 transition-all font-bold text-xs shadow-2xl shadow-slate-900/10 group">
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Voltar
           </Link>
-          <div className="h-10 w-[1.5px] bg-slate-200" />
-          <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-slate-900">
+
+          <div className="h-6 w-[1px] bg-slate-200" />
+
+          <h1 className="text-xl font-bold tracking-tight text-slate-900">
             Analytics Demo <span className="text-sky-500">.</span>
           </h1>
         </div>
 
-        <div className="flex items-center gap-10">
-          <div className="relative hidden md:block">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+        <div className="flex items-center gap-8">
+          <div className="relative hidden lg:block">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
             <Input
-              className="bg-slate-100 border-transparent pl-12 w-64 lg:w-96 text-sm rounded-xl focus-visible:ring-sky-500 text-slate-900 placeholder:text-slate-400 h-12 shadow-sm"
-              placeholder="Pesquisar..."
+              className="bg-slate-50 border-slate-200/60 pl-12 w-64 lg:w-80 text-xs rounded-xl focus-visible:ring-sky-500/30 text-slate-900 placeholder:text-slate-400 h-10 transition-all focus:w-96 shadow-none"
+              placeholder="Pesquisar na demo..."
             />
           </div>
 
-          <div className="flex items-center gap-3">
-            <button className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-colors cursor-pointer relative shadow-sm">
-               <Bell className="w-5 h-5" />
-               <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-red-500 border-2 border-white" />
-            </button>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <button className="w-10 h-10 rounded-xl bg-white border border-slate-200/60 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-colors cursor-pointer relative shadow-sm group">
+                 <Bell className="w-4.5 h-4.5 group-hover:rotate-12 transition-transform" />
+                 <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-sky-500 border-2 border-white" />
+              </button>
+            </div>
 
-            <div className="flex items-center gap-5 pl-6 border-l border-slate-200 ml-3">
+            <div className="flex items-center gap-4 pl-6 border-l border-slate-100">
               <div className="flex flex-col items-end">
-                <span className="text-sm font-bold text-slate-900 leading-none">Vitor Vincere</span>
-                <span className="text-[11px] text-slate-500 mt-1 uppercase tracking-wider">vitor@vincere.tech</span>
-                <Badge variant="outline" className="mt-1.5 h-6 text-[10px] uppercase tracking-widest font-extrabold border-sky-500/30 bg-sky-500/10 text-sky-600 px-3">
-                  PLANO PRO
+                <span className="text-[13px] font-bold text-slate-900 leading-none">Vitor Vincere</span>
+                <span className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">vitor@vincere.tech</span>
+                <Badge variant="outline" className="mt-2 h-5 text-[9px] uppercase tracking-[0.2em] font-black border-sky-500/20 bg-sky-500/5 text-sky-600 px-2.5 rounded-md">
+                  ADMIN
                 </Badge>
               </div>
-              <Avatar className="w-12 h-12 rounded-xl border border-slate-200 shadow-lg">
-                <AvatarFallback className="bg-sky-500/20 text-sky-600 font-bold text-sm">VV</AvatarFallback>
+              <Avatar className="w-11 h-11 rounded-2xl border-2 border-white shadow-xl shadow-sky-500/10 ring-1 ring-slate-100">
+                <AvatarFallback className="bg-gradient-to-br from-sky-500/10 to-sky-500/5 text-sky-600 font-bold text-xs">VV</AvatarFallback>
               </Avatar>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content Area (Full Width) */}
       <main className="w-full p-10 space-y-12 max-w-[1800px] mx-auto">
         
-        {/* Full Width Filters */}
-        <div className="flex items-center justify-between w-full">
-           <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
-              {periods.map((p) => (
-                <button
-                  key={p}
-                  onClick={() => setActivePeriod(p)}
-                  className={`px-7 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
-                    activePeriod === p ? "bg-sky-500 text-white shadow-lg shadow-sky-500/20" : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
-                  }`}
-                >
-                  {p}
-                </button>
-              ))}
-           </div>
-
-           <Popover>
-            <PopoverTrigger asChild>
-              <button className="px-7 py-2.5 rounded-xl bg-white border border-slate-200 text-sky-600 flex items-center gap-3 hover:bg-slate-50 transition-all font-black text-[10px] uppercase tracking-widest shadow-sm">
-                <CalendarIcon className="w-4 h-4" />
-                Calendário
+        <div className="flex items-center gap-2 mb-2 bg-slate-100/50 p-1 rounded-xl w-fit border border-slate-200/60">
+            {periods.map((p) => (
+              <button
+                key={p}
+                onClick={() => setActivePeriod(p)}
+                className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${
+                  activePeriod === p ? "bg-sky-500 text-white shadow-md shadow-sky-500/20" : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/50"
+                }`}
+              >
+                {p}
               </button>
-            </PopoverTrigger>
+            ))}
+            
+            <div className="w-[1px] h-4 bg-slate-200 mx-1" />
+
+            <Popover>
+             <PopoverTrigger asChild>
+               <button className="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-2">
+                 <CalendarIcon className="w-3.5 h-3.5 text-sky-500" />
+                 <span className="text-[10px] font-bold uppercase tracking-wider">Calendário</span>
+               </button>
+             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 bg-white border-slate-200 text-slate-900 rounded-2xl shadow-2xl z-50 overflow-hidden" align="end">
               <Calendar
                 mode="single"
@@ -221,102 +227,88 @@ const DemoDashboard = () => {
           </Popover>
         </div>
 
-        {/* Giant KPI Cards Grid */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
-            <StatCard title="Vendas Totais" value="1.450" icon={FileText} bgColor="bg-[#10B981]" />
-            <StatCard title="Receita Estimada" value="R$ 152.840" icon={Wallet} bgColor="bg-sky-500" />
-            <StatCard title="Projetos Ativos" value="12" icon={Truck} bgColor="bg-[#F59E0B]" />
-            <StatCard title="Taxa de Churn" value="2.4%" icon={Clock} bgColor="bg-rose-500" />
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+            <StatCard title="Vendas Totais" value="1.450" icon={FileText} color="#10B981" />
+            <StatCard title="Receita Estimada" value="R$ 152.840" icon={Wallet} color="#3b82f6" />
+            <StatCard title="Projetos Ativos" value="12" icon={Truck} color="#F59E0B" />
+            <StatCard title="Taxa de Churn" value="2.4%" icon={Clock} color="#F43F5E" />
         </section>
 
-        {/* Giant Analytics Section */}
-        <section className="grid grid-cols-1 xl:grid-cols-3 gap-10 w-full">
-           <Card className="xl:col-span-2 bg-white border-slate-200 rounded-[2rem] overflow-hidden shadow-xl">
-              <div className="p-10 pb-0 flex items-center justify-between">
-                <div className="space-y-5">
-                  <h3 className="text-2xl font-black text-slate-900 tracking-tighter uppercase">Faturamento Mensal</h3>
-                  <div className="flex items-center gap-10">
-                    <div className="flex items-center gap-3">
-                       <div className="w-3 h-3 rounded-full bg-sky-500 shadow-[0_0_10px_rgba(14,165,233,0.3)]" />
-                       <span className="text-xs uppercase font-extrabold text-slate-500 tracking-[0.2em]">Este Ano</span>
+        <section className="grid grid-cols-1 xl:grid-cols-3 gap-8 w-full">
+           <Card className="xl:col-span-2 bg-white border-slate-200/60 rounded-3xl overflow-hidden shadow-2xl">
+              <div className="p-8 pb-0 flex items-center justify-between">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-slate-900">Faturamento Mensal</h3>
+                  <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-2">
+                       <div className="w-4 h-4 rounded-full border-2 border-sky-500 flex items-center justify-center">
+                         <div className="w-1.5 h-1.5 rounded-full bg-sky-500" />
+                       </div>
+                       <span className="text-xs font-bold text-slate-500">Este Ano</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                       <div className="w-3 h-3 rounded-full bg-slate-200" />
-                       <span className="text-xs uppercase font-extrabold text-slate-400 tracking-[0.2em]">Ano Anterior</span>
+                    <div className="flex items-center gap-2">
+                       <div className="w-4 h-4 rounded-full border-2 border-slate-300 flex items-center justify-center">
+                         <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                       </div>
+                       <span className="text-xs font-bold text-slate-400">Ano Anterior</span>
                     </div>
                   </div>
                 </div>
-                <MoreHorizontal className="w-6 h-6 text-slate-300 cursor-pointer hover:text-slate-500 transition-colors" />
+                <MoreHorizontal className="w-5 h-5 text-slate-200 cursor-pointer hover:text-sky-500 transition-colors" />
               </div>
-              <div className="h-[450px] w-full p-6 mt-10">
+              <div className="h-[400px] w-full p-4 mt-8">
                  <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={revenueData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
                       <defs>
                         <linearGradient id="colorThisYear" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.15}/>
-                          <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
+                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1}/>
+                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#0000000a" />
-                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#94a3b8", fontSize: 11, fontWeight: "800" }} dy={10} />
-                      <YAxis axisLine={false} tickLine={false} tick={{ fill: "#94a3b8", fontSize: 10, fontWeight: "800" }} tickFormatter={(v) => `R$${v/1000}k`} />
-                      <Tooltip 
-                        content={({ active, payload }) => {
-                          if (active && payload && payload.length) {
-                            return (
-                              <div className="bg-white px-5 py-3 rounded-2xl shadow-2xl border border-slate-100 relative">
-                                <p className="text-slate-900 font-black text-sm tracking-tight">
-                                  {formatCurrency(Number(payload[0].value))}
-                                </p>
-                                <p className="text-[10px] text-slate-400 font-bold uppercase mt-0.5 tracking-widest">Faturamento</p>
-                                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-white rotate-45 border-r border-b border-slate-100" />
-                              </div>
-                            );
-                          }
-                          return null;
-                        }} 
-                        cursor={false} 
-                      />
-                      <Area type="monotone" dataKey="thisYear" stroke="#0ea5e9" strokeWidth={5} fillOpacity={1} fill="url(#colorThisYear)" activeDot={false} />
-                      <Area type="monotone" dataKey="lastYear" stroke="#cbd5e1" strokeWidth={3} strokeDasharray="10 10" fill="none" activeDot={false} />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="opacity-[0.03]" />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 11, fontWeight: "bold", opacity: 0.3 }} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 10, fontWeight: "bold", opacity: 0.3 }} tickFormatter={(v) => `R$${v/1000}k`} />
+                      <Tooltip content={<CustomTooltip />} cursor={false} />
+                      <Area type="monotone" dataKey="thisYear" stroke="#3b82f6" strokeWidth={2.5} fillOpacity={1} fill="url(#colorThisYear)" activeDot={false} />
+                      <Area type="monotone" dataKey="lastYear" stroke="#cbd5e1" strokeWidth={1.5} strokeDasharray="6 6" fill="none" activeDot={false} />
                     </AreaChart>
                  </ResponsiveContainer>
               </div>
            </Card>
 
-           <Card className="bg-white border-slate-200 rounded-[2rem] overflow-hidden p-10 flex flex-col shadow-xl">
-              <div className="flex items-center justify-between mb-16">
-                <h3 className="text-2xl font-black text-slate-900 tracking-tighter uppercase">Meios de Pagamento</h3>
-                <button className="bg-slate-50 px-6 py-2 rounded-xl text-[10px] font-black text-sky-600 flex items-center gap-2 uppercase tracking-widest hover:bg-slate-100 transition-all shadow-sm">
-                  Ver Todos <ArrowUpRight className="w-4 h-4" />
+           <Card className="bg-white border-slate-200/60 rounded-3xl overflow-hidden p-8 flex flex-col shadow-2xl">
+              <div className="flex items-center justify-between mb-12">
+                <h3 className="text-xl font-bold text-slate-900">Meios de Pagamento</h3>
+                <button className="bg-slate-50 px-4 py-1.5 rounded-lg text-[10px] font-bold text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-2 uppercase tracking-wider">
+                  Ver Todos <ArrowUpRight className="w-3 h-3" />
                 </button>
               </div>
               
-              <div className="flex-1 flex flex-col justify-center items-center py-10 relative">
-                 <div className="relative w-72 h-72">
+              <div className="flex-1 flex flex-col justify-center items-center py-6 relative">
+                 <div className="relative w-56 h-56">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
-                        <Pie data={paymentMethods} innerRadius={90} outerRadius={125} paddingAngle={8} dataKey="value" stroke="none" cornerRadius={12}>
+                        <Pie data={paymentMethods} innerRadius={75} outerRadius={100} paddingAngle={8} dataKey="value" stroke="none" cornerRadius={10}>
                           {paymentMethods.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
                         </Pie>
                       </PieChart>
                     </ResponsiveContainer>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-6xl font-black text-slate-900 tracking-tighter">100%</span>
-                      <span className="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em] mt-3">Transações</span>
+                      <span className="text-4xl font-extrabold text-slate-900">100%</span>
+                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Total</span>
                     </div>
                  </div>
               </div>
 
-              <div className="space-y-7 mt-12">
+              <div className="space-y-6 mt-8">
                 {paymentMethods.map((item) => (
-                  <div key={item.name} className="flex flex-col gap-2.5">
-                    <div className="flex items-center justify-between text-[11px] font-black px-1">
-                      <span className="text-slate-500 uppercase tracking-[0.2em]">{item.name}</span>
+                  <div key={item.name} className="flex flex-col gap-2">
+                    <div className="flex items-center justify-between text-[10px] font-bold px-1">
+                      <span className="text-slate-400 uppercase tracking-widest">{item.name}</span>
                       <span className="text-slate-900">{item.value}%</span>
                     </div>
-                    <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden p-0.5">
-                       <motion.div initial={{ width: 0 }} whileInView={{ width: `${item.value}%` }} transition={{ duration: 1.5 }} className="h-full rounded-full shadow-[0_0_10px_rgba(var(--primary),0.2)]" style={{ backgroundColor: item.color }} />
+                    <div className="h-2 w-full bg-slate-50 rounded-full overflow-hidden p-0.5">
+                       <motion.div initial={{ width: 0 }} whileInView={{ width: `${item.value}%` }} transition={{ duration: 1.5 }} className="h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.1)]" style={{ backgroundColor: item.color }} />
                     </div>
                   </div>
                 ))}
@@ -325,91 +317,92 @@ const DemoDashboard = () => {
         </section>
 
         {/* Wide Bottom Section */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 pb-16 w-full">
-           <div className="space-y-8">
-              <div className="flex items-center justify-between px-4">
-                <h3 className="text-xl font-black flex items-center gap-3 text-slate-900 uppercase tracking-tighter">
+        <section className="grid grid-cols-1 xl:grid-cols-2 gap-10 pb-16 w-full">
+           <div className="space-y-6">
+              <div className="flex items-center justify-between px-2">
+                <h3 className="text-xl font-bold flex items-center gap-3 text-slate-900">
                   <div className="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center"><FileText className="w-5 h-5 text-sky-600" /></div>
                   Orçamentos Recentes
                 </h3>
-                <button className="text-[10px] font-black uppercase tracking-[0.3em] text-sky-600 hover:opacity-70 transition-opacity">Ver Tudo</button>
+                <button className="text-[10px] font-bold uppercase tracking-widest text-sky-500 hover:opacity-70 transition-opacity">Ver Tudo</button>
               </div>
-              <Card className="bg-white border-slate-200 rounded-[2rem] overflow-hidden p-4 shadow-xl w-full">
-                <table className="w-full text-left">
-                  <thead>
-                      <tr className="border-b border-slate-100">
-                        <th className="px-8 py-6 text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">Serviço</th>
-                        <th className="px-8 py-6 text-[11px] font-black uppercase tracking-[0.3em] text-slate-400 text-center">Status</th>
-                        <th className="px-8 py-6 text-[11px] font-black uppercase tracking-[0.3em] text-slate-400 text-right">Preview</th>
-                      </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-50">
-                      {mockQuotes.map((q) => (
-                        <tr key={q.id} className="hover:bg-slate-50/50 transition-all group cursor-pointer">
-                          <td className="px-8 py-6">
-                            <div className="flex flex-col">
-                              <span className="font-bold text-base text-slate-900 group-hover:text-sky-600 transition-colors tracking-tight">{q.service}</span>
-                              <span className="text-[11px] text-slate-400 font-bold uppercase mt-1.5 tracking-widest">{format(new Date(q.date), "dd/MM/yyyy")}</span>
-                            </div>
-                          </td>
-                          <td className="px-8 py-6 text-center">
-                            <Badge className={`${statusConfig[q.status]?.cls} border-none rounded-xl px-5 py-2 font-black text-[10px] uppercase tracking-widest shadow-sm`}>
-                              {statusConfig[q.status]?.label}
-                            </Badge>
-                          </td>
-                          <td className="px-8 py-6 text-right">
-                             <button className="w-12 h-12 rounded-2xl bg-slate-50 group-hover:bg-sky-500 group-hover:text-white text-slate-300 transition-all ml-auto flex items-center justify-center border border-slate-100 group-hover:border-transparent">
-                                <ArrowUpRight className="w-5 h-5" />
-                             </button>
-                          </td>
+              <Card className="bg-white border-slate-200/60 rounded-3xl overflow-hidden shadow-xl w-full">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead>
+                        <tr className="border-b border-slate-100">
+                          <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400">Serviço</th>
+                          <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-center">Status</th>
+                          <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-right">Ações</th>
                         </tr>
-                      ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                        {mockQuotes.map((q) => (
+                          <tr key={q.id} className="hover:bg-slate-50/50 transition-all group cursor-pointer">
+                            <td className="px-8 py-4">
+                              <div className="flex flex-col">
+                                <span className="font-bold text-sm text-slate-900 group-hover:text-sky-600 transition-colors">{q.service}</span>
+                                <span className="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-widest">{format(new Date(q.date), "dd/MM/yyyy")}</span>
+                              </div>
+                            </td>
+                            <td className="px-8 py-4 text-center">
+                              <Badge className={`${statusConfig[q.status]?.cls} border-none rounded-lg px-3 py-1 font-bold text-[9px] uppercase tracking-wider shadow-sm`}>
+                                {statusConfig[q.status]?.label}
+                              </Badge>
+                            </td>
+                            <td className="px-8 py-4 text-right">
+                               <ArrowUpRight className="w-4 h-4 text-slate-200 group-hover:text-sky-500 transition-colors inline" />
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
               </Card>
            </div>
 
-           <div className="space-y-8">
-              <div className="flex items-center justify-between px-4">
-                <h3 className="text-xl font-black flex items-center gap-3 text-slate-900 uppercase tracking-tighter">
+           <div className="space-y-6">
+              <div className="flex items-center justify-between px-2">
+                <h3 className="text-xl font-bold flex items-center gap-3 text-slate-900">
                   <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center"><Folder className="w-5 h-5 text-emerald-600" /></div>
                   Projetos Ativos
                 </h3>
-                <button className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 hover:text-slate-900 transition-colors">Ver Todos</button>
+                <button className="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-colors">Ver Todos</button>
               </div>
-              <Card className="bg-white border-slate-200 rounded-[2rem] overflow-hidden p-4 shadow-xl w-full">
-                <table className="w-full text-left">
-                  <thead>
-                      <tr className="border-b border-slate-100">
-                        <th className="px-8 py-6 text-[11px] font-black uppercase tracking-[0.3em] text-slate-400">Projeto</th>
-                        <th className="px-8 py-6 text-[11px] font-black uppercase tracking-[0.3em] text-slate-400 text-center">Progresso</th>
-                        <th className="px-8 py-6 text-[11px] font-black uppercase tracking-[0.3em] text-slate-400 text-right">Status</th>
-                      </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-50">
-                      {mockProjects.map((p) => (
-                        <tr key={p.id} className="hover:bg-slate-50/50 transition-all group">
-                          <td className="px-8 py-6">
-                            <div className="flex flex-col">
-                              <span className="font-bold text-base text-slate-900 group-hover:text-emerald-600 transition-colors tracking-tight">{p.title}</span>
-                              <span className="text-[11px] text-slate-400 font-bold uppercase mt-1.5 tracking-widest">Entrega: {format(new Date(p.date), "dd/MM/yyyy")}</span>
-                            </div>
-                          </td>
-                          <td className="px-8 py-6">
-                             <div className="w-40 mx-auto">
-                                <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden p-0.5 shadow-inner">
-                                   <motion.div initial={{ width: 0 }} whileInView={{ width: `${p.progress}%` }} className={`h-full rounded-full ${p.status === 'CONCLUÍDO' ? 'bg-emerald-500' : 'bg-sky-500 shadow-[0_0_12px_rgba(14,165,233,0.4)]'}`} />
-                                </div>
-                                <div className="text-[10px] font-black text-slate-400 mt-2 text-center tracking-widest">{p.progress}% COMPLETO</div>
-                             </div>
-                          </td>
-                          <td className="px-8 py-6 text-right">
-                             <Badge className={`${p.status === 'CONCLUÍDO' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-sky-500/10 text-sky-600'} border-none rounded-xl px-5 py-2 font-black text-[10px] uppercase tracking-widest shadow-sm`}>{p.status}</Badge>
-                          </td>
+              <Card className="bg-white border-slate-200/60 rounded-3xl overflow-hidden shadow-xl w-full">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead>
+                        <tr className="border-b border-slate-100">
+                          <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400">Projeto</th>
+                          <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-center">Progresso</th>
+                          <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-right">Status</th>
                         </tr>
-                      ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                        {mockProjects.map((p) => (
+                          <tr key={p.id} className="hover:bg-slate-50/50 transition-all group">
+                            <td className="px-8 py-4">
+                              <div className="flex flex-col">
+                                <span className="font-bold text-sm text-slate-900 group-hover:text-emerald-600 transition-colors">{p.title}</span>
+                                <span className="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-widest">Entrega: {format(new Date(p.date), "dd/MM/yyyy")}</span>
+                              </div>
+                            </td>
+                            <td className="px-8 py-4">
+                               <div className="w-32 mx-auto">
+                                  <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                     <motion.div initial={{ width: 0 }} whileInView={{ width: `${p.progress}%` }} className={`h-full rounded-full ${p.status === 'CONCLUÍDO' ? 'bg-emerald-500' : 'bg-sky-500'}`} />
+                                  </div>
+                               </div>
+                            </td>
+                            <td className="px-8 py-4 text-right">
+                               <Badge className={`${p.status === 'CONCLUÍDO' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-sky-500/10 text-sky-600'} border-none rounded-lg px-3 py-1 font-bold text-[9px] uppercase tracking-wider shadow-sm`}>{p.status}</Badge>
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
               </Card>
            </div>
         </section>
