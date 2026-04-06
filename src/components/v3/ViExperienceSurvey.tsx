@@ -11,16 +11,17 @@ import {
   Check, 
   Sparkles,
   Bot,
+  TrendingDown,
   ArrowLeft,
-  Loader2,
-  TrendingDown
+  Loader2
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useToast } from "@/components/ui/use-toast";
-import { Textarea } from "@/components/ui/textarea";
+import PricingComparisonTable from "./PricingComparisonTable";
 
 type Step = {
   id: string;
@@ -301,6 +302,13 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
           </motion.div>
         ) : currentStep === -1 || currentStep === -2 ? (
           renderResult()
+        ) : steps[currentStep].id === "platform_type" ? (
+          <PricingComparisonTable 
+            onSelectPlan={(planId) => {
+              const option = steps[currentStep].options.find(o => o.value === planId);
+              if (option) handleOptionSelect(option);
+            }} 
+          />
         ) : (
           <motion.div 
             key={currentStep}

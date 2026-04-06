@@ -71,24 +71,28 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-const StatCard = ({ title, value, icon: Icon, bgColor }: any) => (
-  <Card className={`overflow-hidden border-none relative group transition-all duration-500 hover:translate-y-[-4px] ${bgColor} text-white shadow-xl`}>
+const StatCard = ({ title, value, icon: Icon, color }: any) => (
+  <Card className="overflow-hidden border border-border bg-card/40 backdrop-blur-sm relative group transition-all duration-500 hover:translate-y-[-4px] hover:shadow-2xl hover:border-border/80 rounded-3xl">
     <CardContent className="p-6 relative z-10">
       <div className="flex items-start justify-between">
         <div className="space-y-4">
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-white/20 transition-transform group-hover:scale-110 duration-500">
-            <Icon className="w-6 h-6 text-white" />
+          <div 
+            className="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 duration-500"
+            style={{ backgroundColor: `${color}15`, color: color }}
+          >
+            <Icon className="w-6 h-6" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-3xl font-bold tracking-tight">{value}</h3>
-            <p className="text-sm font-medium text-white/80">{title}</p>
+            <h3 className="text-3xl font-bold tracking-tight text-foreground">{value}</h3>
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{title}</p>
           </div>
         </div>
-        <div className="p-1 rounded-md hover:bg-white/10 cursor-pointer">
-          <MoreHorizontal className="w-4 h-4 text-white/60" />
+        <div className="p-2 rounded-xl hover:bg-muted cursor-pointer transition-colors">
+          <MoreHorizontal className="w-4 h-4 text-muted-foreground/20" />
         </div>
       </div>
     </CardContent>
+    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
   </Card>
 );
 
@@ -313,16 +317,16 @@ export default function PlatformDashboard() {
         {/* Stats Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={6}>
-              <StatCard title="Vendas Totais" value={transactions.length} icon={FileText} bgColor="bg-[#10B981]" />
+              <StatCard title="Vendas Totais" value={transactions.length} icon={FileText} color="#10B981" />
             </motion.div>
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={7}>
-              <StatCard title="Receita Estimada" value={formatCurrency(totalReceita)} icon={Wallet} bgColor="bg-[#0EA5E9]" />
+              <StatCard title="Receita Estimada" value={formatCurrency(totalReceita)} icon={Wallet} color="#3b82f6" />
             </motion.div>
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={8}>
-              <StatCard title="Projetos Ativos" value={totalProjetosAtivos} icon={Truck} bgColor="bg-[#F59E0B]" />
+              <StatCard title="Projetos Ativos" value={totalProjetosAtivos} icon={Truck} color="#F59E0B" />
             </motion.div>
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={9}>
-              <StatCard title="Taxa de Churn" value={`${churnRate.toFixed(1)}%`} icon={TrendingDown} bgColor="bg-[#F43F5E]" />
+              <StatCard title="Taxa de Churn" value={`${churnRate.toFixed(1)}%`} icon={TrendingDown} color="#F43F5E" />
             </motion.div>
         </section>
 

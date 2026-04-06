@@ -66,14 +66,8 @@ const App = () => (
                 <Route path="/plataforma" element={<Navigate to="/plataforma/dashboard" replace />} />
                 <Route path="/plataforma/proposta" element={<PlatformProposal />} />
                 <Route path="/plataforma/demonstracao" element={<DemoDashboard />} />
-                <Route
-                  path="/vincere-experiencia"
-                  element={
-                    <ProtectedRoute>
-                      <ViExperience />
-                    </ProtectedRoute>
-                  }
-                />
+                <Route path="/vi-experience" element={<ViExperience />} />
+                <Route path="/vincere-experiencia" element={<Navigate to="/vi-experience" replace />} />
                 <Route path="/demo/:service" element={<DemoServices />} />
                 {/* Payments page is accessible to any logged-in user (so they can subscribe) */}
                 <Route
