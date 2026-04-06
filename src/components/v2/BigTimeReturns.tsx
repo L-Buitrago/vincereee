@@ -137,7 +137,7 @@ const BigTimeReturns = () => {
             >
               Feito para grandes <br />
               <span className="relative inline-block mt-2">
-                <span style={{ fontFamily: "'Satisfy', cursive" }} className="text-primary pr-2">
+                <span className="font-serif italic text-primary pr-3 text-[1.1em] inline-block -rotate-2 transform translate-y-2">
                   retornos.
                 </span>
                 <motion.div

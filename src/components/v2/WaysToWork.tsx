@@ -613,8 +613,7 @@ const WaysToWork = () => {
               >
                 impulsiona sua 
                 <span 
-                  style={{ fontFamily: "'Satisfy', cursive" }} 
-                  className="text-primary inline-block -rotate-2 ml-4"
+                  className="font-serif italic text-primary inline-block -rotate-3 ml-4 transform translate-y-1"
                 >
                   Evolução
                 </span>
