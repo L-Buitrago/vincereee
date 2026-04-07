@@ -31,10 +31,10 @@ const SplashScreenManager = ({ onAnimationComplete, isLoading = false }: SplashS
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-[200] bg-[#030303] flex items-center justify-center p-4 overflow-hidden"
+          className="fixed inset-0 z-[200] bg-[#FBFCFE] flex items-center justify-center p-4 overflow-hidden"
         >
           {/* Subtle Grid Overlay */}
-          <div className="absolute inset-0 opacity-[0.03] bg-grid-white/[0.05] pointer-events-none" />
+          <div className="absolute inset-0 opacity-[0.05] bg-grid-slate-900/[0.05] pointer-events-none" />
           
           <div className="relative z-10 w-full flex items-center justify-center">
             <BrandLoader />
@@ -50,12 +50,12 @@ const SplashScreenManager = ({ onAnimationComplete, isLoading = false }: SplashS
           />
 
           {/* Progress bar (Precision Line) */}
-          <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-white/5 overflow-hidden">
+          <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-slate-100 overflow-hidden">
              <motion.div 
                initial={{ scaleX: 0 }}
                animate={{ scaleX: 1 }}
                transition={{ duration: 3, ease: [0.16, 1, 0.3, 1] }}
-               className="h-full bg-blue-500 origin-left shadow-[0_0_15px_rgba(59,130,246,0.6)]"
+               className="h-full bg-blue-500 origin-left shadow-[0_0_15px_rgba(59,130,246,0.2)]"
              />
           </div>
         </motion.div>

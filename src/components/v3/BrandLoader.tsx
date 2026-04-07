@@ -66,9 +66,9 @@ export const BrandLoader = () => {
           <motion.span
             key={index}
             variants={letterVariants}
-            className="text-6xl md:text-8xl font-sans font-extrabold tracking-tighter text-white select-none relative"
+            className="text-6xl md:text-8xl font-sans font-extrabold tracking-tighter text-slate-900 select-none relative"
             style={{
-              textShadow: "0 0 40px rgba(59, 130, 246, 0.2)",
+              textShadow: "0 0 40px rgba(59, 130, 246, 0.1)",
             }}
           >
             {char}
@@ -95,14 +95,14 @@ export const BrandLoader = () => {
         transition={{ delay: 0.2, duration: 1 }}
         className="absolute bottom-[-160px] flex flex-col items-center gap-3 w-40"
       >
-        <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-white/30 font-sans mb-1">
+        <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-slate-400 font-sans mb-1">
           Establishing Link
         </span>
         <div className="flex items-baseline space-x-2">
-          <span className="text-4xl font-light tracking-tighter text-white font-sans tabular-nums">
+          <span className="text-4xl font-light tracking-tighter text-slate-900 font-sans tabular-nums">
             {counter.toString().padStart(2, "0")}
           </span>
-          <span className="text-sm font-bold text-blue-500 font-sans leading-none">%</span>
+          <span className="text-sm font-bold text-blue-600 font-sans leading-none">%</span>
         </div>
       </motion.div>
     </div>
