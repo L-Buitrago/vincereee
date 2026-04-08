@@ -25,7 +25,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
   const menuLinks = [
     { label: "Home", href: "/" },
     { label: "Work", href: "/#cases" },
-    { label: "Services", href: "/#servicos" },
+    { label: "Services", href: "/#solucoes" },
     { label: "About", href: "/about" },
     { label: "Platform", href: "/plataforma/dashboard" },
   ];

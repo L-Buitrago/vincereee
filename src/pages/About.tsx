@@ -184,14 +184,16 @@ const About = () => {
            </div>
         </section>
 
-        {/* SECTION 3: DARK VALUES (The Green Grid) */}
-        <section className="bg-[#022c22] py-40 px-6 text-white overflow-hidden">
+        {/* SECTION 3: PREMIUM VALUES (Dark Redesign) */}
+        <section className="bg-[#050505] py-40 px-6 text-white overflow-hidden relative">
+           <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none" 
+                style={{ backgroundImage: `radial-gradient(circle at 20% 30%, #3b82f6 0%, transparent 70%)` }} />
            <div className="container mx-auto">
               <div className="mb-24 space-y-4">
                  <h2 className="text-5xl md:text-[8vw] font-black tracking-tighter leading-[0.95] mb-8">
                    Also, we <br/> challenge fluff.
                  </h2>
-                 <p className="max-w-2xl text-lg text-emerald-100/40 font-medium leading-relaxed">
+                 <p className="max-w-2xl text-lg text-white/40 font-medium leading-relaxed">
                    Brands can't afford to lose time on anything beyond useful. That's our motto — efficiency over noise.
                  </p>
               </div>
@@ -201,17 +203,17 @@ const About = () => {
                    { 
                      title: "Foco em ROI Real", 
                      desc: "Não fazemos arte pela arte. Cada pixel é projetado para converter e recuperar faturamento.",
-                     icon: <Target className="w-8 h-8 text-emerald-400" />
+                     icon: <Target className="w-8 h-8 text-primary" />
                    },
                    { 
                      title: "Velocidade Executiva", 
                      desc: "Processos enxutos, sem reuniões inúteis. Entrega de software e design em tempo recorde.",
-                     icon: <Zap className="w-8 h-8 text-emerald-400" />
+                     icon: <Zap className="w-8 h-8 text-primary" />
                    },
                    { 
                      title: "Ecossistema SaaS", 
                      desc: "Nossa tecnologia escala com seu crescimento, sem gaps de infraestrutura.",
-                     icon: <Rocket className="w-8 h-8 text-emerald-400" />
+                     icon: <Rocket className="w-8 h-8 text-primary" />
                    }
                  ].map((card, i) => (
                    <motion.div
@@ -220,11 +222,11 @@ const About = () => {
                      whileInView={{ opacity: 1, y: 0 }}
                      viewport={{ once: true }}
                      transition={{ duration: 0.8, delay: i * 0.1 }}
-                     className="bg-[#043d30]/50 border border-white/5 rounded-[2.5rem] p-12 transition-all hover:bg-white/5 group"
+                     className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-12 transition-all hover:bg-white/5 group backdrop-blur-sm"
                    >
-                     <div className="mb-12 group-hover:scale-110 transition-transform origin-left">{card.icon}</div>
+                     <div className="mb-12 group-hover:scale-110 transition-transform origin-left p-4 bg-white/[0.03] rounded-2xl w-fit border border-white/5">{card.icon}</div>
                      <h3 className="text-3xl font-bold mb-4 tracking-tight">{card.title}</h3>
-                     <p className="text-emerald-100/40 font-medium leading-relaxed">{card.desc}</p>
+                     <p className="text-white/40 font-medium leading-relaxed">{card.desc}</p>
                    </motion.div>
                  ))}
               </div>
