@@ -115,7 +115,7 @@ const About = () => {
                transition={{ duration: 1.5, delay: 1 }}
                className="text-5xl md:text-[6vw] font-black tracking-tighter leading-tight text-foreground"
              >
-               Unlimited <br/> creatives<span className="text-primary italic">.</span>
+               Criatividade <br/> sem limites<span className="text-primary italic">.</span>
              </motion.h1>
              <motion.p
                initial={{ opacity: 0 }}
@@ -123,7 +123,7 @@ const About = () => {
                transition={{ delay: 2 }}
                className="mt-8 text-sm font-bold uppercase tracking-[0.5em] text-foreground"
              >
-               Vincere Vision & Strategy
+               Vincere Visão & Estratégia
              </motion.p>
           </div>
         </section>
@@ -241,8 +241,8 @@ const About = () => {
               </h2>
               
               <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-                 <button className="px-12 py-5 bg-foreground text-background rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform">
-                   Join the club
+                 <button onClick={() => handlePageNavigate("/vi-experience")} className="px-12 py-5 bg-foreground text-background rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+                   Viver Experiência Vi
                  </button>
                  <button 
                   onClick={() => handlePageNavigate("/")}
