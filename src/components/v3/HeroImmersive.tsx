@@ -1,211 +1,216 @@
-import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, BarChart3, MessageSquareWarning, ArrowUpRight } from "lucide-react";
-import gsap from "gsap";
+import { useEffect, useRef, useMemo } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, BarChart3, Globe, MessageSquareWarning, Sparkles } from "lucide-react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Stars, Float, Sphere, MeshDistortMaterial } from "@react-three/drei";
+import * as THREE from "three";
+import { useNavigate } from "react-router-dom";
 
+// --- 3D Background Component ---
+const AbstractNeuralShape = () => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = state.clock.elapsedTime * 0.1;
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.15;
+    }
+  });
+
+  return (
+    <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
+      <mesh ref={meshRef} position={[0, 0, -2]}>
+        {/* An abstract, distorting icosahedron sphere representing "digital core/neural" */}
+        <icosahedronGeometry args={[2.5, 30]} />
+        <MeshDistortMaterial 
+          color="#1e3a8a" // Deep blue
+          emissive="#3b82f6" // Primary brand blue glow
+          emissiveIntensity={0.8}
+          wireframe={true}
+          transparent
+          opacity={0.15}
+          distort={0.4}
+          speed={1.5}
+          roughness={0}
+        />
+      </mesh>
+    </Float>
+  );
+};
+
+const NeuralBackground3D = () => {
+  return (
+    <div className="absolute inset-0 pointer-events-none z-0">
+      <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+        <ambientLight intensity={0.5} />
+        <pointLight position={[10, 10, 10]} intensity={2} color="#3b82f6" />
+        <pointLight position={[-10, -10, -10]} intensity={1} color="#60a5fa" />
+        
+        {/* Subtle background stars/particles */}
+        <Stars radius={10} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
+        
+        {/* Main interactive element */}
+        <AbstractNeuralShape />
+      </Canvas>
+    </div>
+  );
+};
+
+// --- Main Hero Component ---
 const HeroImmersive = () => {
+  const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
 
-  useEffect(() => {
-    // Subtle parallax and floating effects using GSAP
-    let ctx = gsap.context(() => {
-      gsap.to(".floating-shape", {
-        y: "random(-20, 20)",
-        x: "random(-20, 20)",
-        rotation: "random(-10, 10)",
-        duration: "random(4, 6)",
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-        stagger: 0.2,
-      });
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-      // Mouse move parallax
-      const handleMouseMove = (e: MouseEvent) => {
-        const { clientX, clientY } = e;
-        const x = (clientX / window.innerWidth - 0.5) * 20;
-        const y = (clientY / window.innerHeight - 0.5) * 20;
+  // Typography staggered animation variants
+  const wordAnimation = {
+    hidden: { filter: "blur(12px)", opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      filter: "blur(0px)",
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.12,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    }),
+  };
 
-        gsap.to(".parallax-bg", {
-          x,
-          y,
-          duration: 1,
-          ease: "power2.out",
-        });
-      };
-
-      window.addEventListener("mousemove", handleMouseMove);
-      return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, containerRef);
-    
-    return () => ctx.revert();
-  }, []);
+  const titleWords = ["Acelere", "a", "sua", "máquina", "de", "vendas."];
 
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-[100vh] w-full bg-background flex items-center pt-24 pb-12 overflow-hidden selection:bg-primary/20"
+      className="relative min-h-screen w-full bg-[#050505] flex items-center pt-32 pb-16 overflow-hidden selection:bg-primary/30"
     >
-      {/* Background Video (Visual impact increased) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="absolute inset-0 w-full h-full object-cover opacity-80"
-        >
-          <source src="/85590-590014592_medium.mp4" type="video/mp4" />
-        </video>
-        {/* Subtle overlay to ensure text contrast if needed */}
-        <div className="absolute inset-0 bg-white/10" />
-      </div>
+      {/* 3D Canvas Background */}
+      <NeuralBackground3D />
 
-      <div className="container relative z-10 px-4 md:px-6 mx-auto">
-        <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
+      {/* Radial Premium Glow Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%)"
+        }}
+      />
+
+      <motion.div 
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="container relative z-10 px-4 md:px-6 mx-auto flex flex-col items-center text-center"
+      >
+        <div className="max-w-5xl mx-auto flex flex-col items-center">
           
+          {/* Top Badge */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-primary mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 text-primary mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(59,130,246,0.1)]"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            <span className="text-sm font-medium tracking-tight">O futuro da sua receita</span>
+            <Sparkles className="w-4 h-4" />
+            <span className="text-xs font-bold uppercase tracking-widest text-white/80">O Futuro da sua Receita</span>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            ref={textRef}
-            className="space-y-6"
-          >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.05] text-foreground font-sans">
-              Acelere a sua <br className="hidden md:block" />
-              máquina de{" "}
-              <motion.span 
-                initial="initial"
-                whileHover="hover"
-                className="relative inline-flex cursor-default overflow-hidden pt-[0.1em] pb-[0.1em]"
+          {/* Majestic Typography */}
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 max-w-5xl">
+            {titleWords.map((word, i) => (
+              <motion.h1
+                custom={i}
+                initial="hidden"
+                animate="visible"
+                variants={wordAnimation}
+                key={i}
+                className={`text-6xl md:text-8xl lg:text-[7.5rem] font-black tracking-tighter leading-[0.95] ${
+                  word === "vendas." 
+                    ? "text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-blue-700 italic" 
+                    : "text-white"
+                }`}
               >
-                <span className="relative flex whitespace-nowrap">
-                  {"vendas.".split("").map((char, i) => (
-                    <span key={i} className="relative inline-block">
-                      <motion.span
-                        variants={{
-                          initial: { y: 0, opacity: 1 },
-                          hover: { y: "-110%", opacity: 0 }
-                        }}
-                        transition={{ 
-                          duration: 0.5, 
-                          delay: i * 0.03, 
-                          ease: [0.33, 1, 0.68, 1] 
-                        }}
-                        className="inline-block text-gradient relative z-10"
-                      >
-                        {char === " " ? "\u00A0" : char}
-                      </motion.span>
-                      <motion.span
-                        variants={{
-                          initial: { y: "110%", opacity: 0 },
-                          hover: { y: 0, opacity: 1 }
-                        }}
-                        transition={{ 
-                          duration: 0.5, 
-                          delay: i * 0.03, 
-                          ease: [0.33, 1, 0.68, 1] 
-                        }}
-                        className="absolute top-0 left-0 text-gradient-alt"
-                      >
-                        {char === " " ? "\u00A0" : char}
-                      </motion.span>
-                    </span>
-                  ))}
-                </span>
-              </motion.span>
-            </h1>
-            
-            <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl mx-auto font-medium tracking-tight mt-6">
-              Dashboard de métricas consolidado, criação de sites de alta conversão e recuperação inteligente via WhatsApp. <strong className="text-foreground">Tudo em um só lugar.</strong>
-            </p>
-          </motion.div>
+                {word}
+              </motion.h1>
+            ))}
+          </div>
+          
+          {/* Subtitle */}
+          <motion.p 
+            initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
+            animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+            transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-lg md:text-2xl text-white/50 max-w-2xl mx-auto font-medium tracking-tight mt-10 leading-relaxed"
+          >
+            Dashboard inteligente, engenharia de alta conversão e recuperação agressiva via WhatsApp. <strong className="text-white/90">A tríade do faturamento.</strong>
+          </motion.p>
 
+          {/* Interactive CTA */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row items-center gap-4 mt-12 w-full justify-center"
+            transition={{ duration: 0.8, delay: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-12 flex items-center justify-center pointer-events-auto z-20"
           >
-            {/* Buttons removed as requested */}
+            <button 
+              onClick={() => navigate('/vi-experience')}
+              className="group relative px-10 py-5 bg-white text-[#050505] rounded-full font-bold text-sm uppercase tracking-[0.2em] overflow-hidden transition-transform hover:scale-[1.02] active:scale-95 flex items-center gap-3"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-primary opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+              Começar Agora
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
           </motion.div>
 
-          {/* Value Props Micro-interactions */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20 md:mt-32 w-full max-w-4xl">
+          {/* Glassmorphic Value Props */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-28 md:mt-32 w-full max-w-5xl pointer-events-auto z-20">
             {[
               {
                 icon: BarChart3,
-                title: "Dashboards",
-                desc: "Controle de alunos & pacientes"
+                title: "Inteligência de Dados",
+                desc: "Controle de métricas, alunos e LTV em tempo real."
               },
               {
-                icon: ArrowUpRight,
-                title: "Criação de sites",
-                desc: "Criamos sites, landing pages e lojas para seu negócio"
+                icon: Globe,
+                title: "Engenharia Web",
+                desc: "Landing pages e plataformas de luxo que convertem."
               },
               {
                 icon: MessageSquareWarning,
-                title: "Recuperação",
-                desc: "+60% de conversão via Wpp"
+                title: "Recuperação Ativa",
+                desc: "Automações de WhatsApp que dobram seu faturamento atrasado."
               }
             ].map((prop, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                whileHover={{ 
-                  y: -12,
-                  scale: 1.02,
-                  boxShadow: "0 25px 50px -12px rgba(37, 99, 235, 0.15)"
-                }}
-                animate={{
-                  y: [0, -6, 0],
-                }}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  // Entrance transition
                   duration: 0.8,
-                  delay: 0.4 + i * 0.1,
+                  delay: 1.2 + i * 0.15,
                   ease: [0.16, 1, 0.3, 1],
-                  // Continuous floating animation
-                  y: {
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: i * 0.6
-                  },
-                  // Interaction transitions
-                  scale: { duration: 0.25 },
-                  boxShadow: { duration: 0.25 }
-                } as any}
-                className="flex flex-col items-center justify-center p-6 rounded-2xl bg-white/60 border border-gray-100 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] cursor-pointer group relative"
+                }}
+                whileHover={{ 
+                  y: -8,
+                  borderColor: "rgba(59, 130, 246, 0.3)",
+                  boxShadow: "0 20px 40px -10px rgba(59, 130, 246, 0.15)"
+                }}
+                className="flex flex-col items-start p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-md transition-all duration-300 group text-left"
               >
-                <div className="w-14 h-14 rounded-full bg-primary/5 flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors duration-300">
-                  <prop.icon className="w-7 h-7 text-primary stroke-[1.5]" />
+                <div className="w-12 h-12 rounded-2xl bg-white/[0.04] border border-white/5 flex items-center justify-center mb-6 group-hover:bg-primary/20 group-hover:border-primary/30 transition-colors duration-500">
+                  <prop.icon className="w-5 h-5 text-white/70 group-hover:text-primary transition-colors duration-500" />
                 </div>
-                <h3 className="font-bold text-foreground text-lg">{prop.title}</h3>
-                <p className="text-sm text-muted-foreground mt-2 font-medium leading-relaxed">{prop.desc}</p>
-                <div className="absolute inset-0 rounded-2xl border-2 border-primary/0 group-hover:border-primary/10 transition-colors duration-300 pointer-events-none" />
+                <h3 className="font-bold text-white text-xl tracking-tight mb-2">{prop.title}</h3>
+                <p className="text-sm text-white/40 font-medium leading-relaxed">{prop.desc}</p>
               </motion.div>
             ))}
           </div>
 
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
