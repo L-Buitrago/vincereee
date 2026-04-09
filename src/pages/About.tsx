@@ -115,7 +115,7 @@ const About = () => {
                transition={{ duration: 1.5, delay: 1 }}
                className="text-5xl md:text-[6vw] font-black tracking-tighter leading-tight text-foreground"
              >
-               Criatividade <br/> sem limites<span className="text-primary italic">.</span>
+               Unlimited <br/> creatives<span className="text-primary italic">.</span>
              </motion.h1>
              <motion.p
                initial={{ opacity: 0 }}
@@ -123,7 +123,7 @@ const About = () => {
                transition={{ delay: 2 }}
                className="mt-8 text-sm font-bold uppercase tracking-[0.5em] text-foreground"
              >
-               Vincere Visão & Estratégia
+               Vincere Vision & Strategy
              </motion.p>
           </div>
         </section>
@@ -184,16 +184,14 @@ const About = () => {
            </div>
         </section>
 
-        {/* SECTION 3: PREMIUM VALUES (Dark Redesign) */}
-        <section className="bg-[#050505] py-40 px-6 text-white overflow-hidden relative">
-           <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none" 
-                style={{ backgroundImage: `radial-gradient(circle at 20% 30%, #3b82f6 0%, transparent 70%)` }} />
+        {/* SECTION 3: DARK VALUES (The Green Grid) */}
+        <section className="bg-[#022c22] py-40 px-6 text-white overflow-hidden">
            <div className="container mx-auto">
               <div className="mb-24 space-y-4">
                  <h2 className="text-5xl md:text-[8vw] font-black tracking-tighter leading-[0.95] mb-8">
                    Also, we <br/> challenge fluff.
                  </h2>
-                 <p className="max-w-2xl text-lg text-white/40 font-medium leading-relaxed">
+                 <p className="max-w-2xl text-lg text-emerald-100/40 font-medium leading-relaxed">
                    Brands can't afford to lose time on anything beyond useful. That's our motto — efficiency over noise.
                  </p>
               </div>
@@ -203,17 +201,17 @@ const About = () => {
                    { 
                      title: "Foco em ROI Real", 
                      desc: "Não fazemos arte pela arte. Cada pixel é projetado para converter e recuperar faturamento.",
-                     icon: <Target className="w-8 h-8 text-primary" />
+                     icon: <Target className="w-8 h-8 text-emerald-400" />
                    },
                    { 
                      title: "Velocidade Executiva", 
                      desc: "Processos enxutos, sem reuniões inúteis. Entrega de software e design em tempo recorde.",
-                     icon: <Zap className="w-8 h-8 text-primary" />
+                     icon: <Zap className="w-8 h-8 text-emerald-400" />
                    },
                    { 
                      title: "Ecossistema SaaS", 
                      desc: "Nossa tecnologia escala com seu crescimento, sem gaps de infraestrutura.",
-                     icon: <Rocket className="w-8 h-8 text-primary" />
+                     icon: <Rocket className="w-8 h-8 text-emerald-400" />
                    }
                  ].map((card, i) => (
                    <motion.div
@@ -222,11 +220,11 @@ const About = () => {
                      whileInView={{ opacity: 1, y: 0 }}
                      viewport={{ once: true }}
                      transition={{ duration: 0.8, delay: i * 0.1 }}
-                     className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-12 transition-all hover:bg-white/5 group backdrop-blur-sm"
+                     className="bg-[#043d30]/50 border border-white/5 rounded-[2.5rem] p-12 transition-all hover:bg-white/5 group"
                    >
-                     <div className="mb-12 group-hover:scale-110 transition-transform origin-left p-4 bg-white/[0.03] rounded-2xl w-fit border border-white/5">{card.icon}</div>
+                     <div className="mb-12 group-hover:scale-110 transition-transform origin-left">{card.icon}</div>
                      <h3 className="text-3xl font-bold mb-4 tracking-tight">{card.title}</h3>
-                     <p className="text-white/40 font-medium leading-relaxed">{card.desc}</p>
+                     <p className="text-emerald-100/40 font-medium leading-relaxed">{card.desc}</p>
                    </motion.div>
                  ))}
               </div>
@@ -241,8 +239,8 @@ const About = () => {
               </h2>
               
               <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-                 <button onClick={() => handlePageNavigate("/vi-experience")} className="px-12 py-5 bg-foreground text-background rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform">
-                   Viver Experiência Vi
+                 <button className="px-12 py-5 bg-foreground text-background rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+                   Join the club
                  </button>
                  <button 
                   onClick={() => handlePageNavigate("/")}

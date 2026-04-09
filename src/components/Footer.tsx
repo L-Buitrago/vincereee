@@ -68,7 +68,7 @@ const Footer = () => {
             <ul className="space-y-5">
               <li><Link to="/" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group">Início <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" /></Link></li>
               <li><Link to="/about" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group">A Vincere <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" /></Link></li>
-              <li><a href="/#solucoes" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group">Serviços <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" /></a></li>
+              <li><a href="/#servicos" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group">Serviços <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" /></a></li>
               <li><Link to="/auth" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group">Plataforma <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" /></Link></li>
             </ul>
           </div>
@@ -77,7 +77,7 @@ const Footer = () => {
             <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-4">Social</p>
             <ul className="space-y-5">
               <li><a target="_blank" href="https://instagram.com" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group"><Instagram className="w-4 h-4" /> Instagram</a></li>
-              <li><a target="_blank" href="https://wa.me/5500000000000" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group"><MessageCircle className="w-4 h-4" /> WhatsApp</a></li>
+              <li><a target="_blank" href="https://linkedin.com" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group"><Linkedin className="w-4 h-4" /> LinkedIn</a></li>
             </ul>
           </div>
 
