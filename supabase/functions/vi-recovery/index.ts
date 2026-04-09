@@ -91,24 +91,98 @@ serve(async (req) => {
       .update({ last_ai_message: generatedMessage, status: 'contacted' })
       .eq("id", recoveryId);
 
-    // --- WHATSAPP INTEGRATION ---
-    // Example: Integration with Z-API or Evolution API
-    // const WHATSAPP_API_URL = Deno.env.get("WHATSAPP_API_URL");
-    // const WHATSAPP_TOKEN = Deno.env.get("WHATSAPP_TOKEN");
-    // if (WHATSAPP_API_URL && recovery.customer_phone) {
-    //   await fetch(WHATSAPP_API_URL, {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json", "Authorization": WHATSAPP_TOKEN },
-    //     body: JSON.stringify({ phone: recovery.customer_phone, message: generatedMessage })
-    //   });
-    // }
+    // ─────────────────────────────────────────────────────────────────
+    // WHATSAPP INTEGRATION VIA Z-API
+    // ─────────────────────────────────────────────────────────────────
+    // Required env vars (configure in Supabase Edge Secrets when ready):
+    //   ZAPI_INSTANCE_ID   – Your Z-API instance ID
+    //   ZAPI_TOKEN          – Your Z-API security token
+    //   ZAPI_CLIENT_TOKEN   – Your Z-API client token (optional, for extra auth)
+    //
+    // How to set up:
+    //   1. Sign up at https://z-api.io
+    //   2. Create an instance and connect your WhatsApp
+    //   3. Copy Instance ID + Token from the dashboard
+    //   4. Add them to Supabase: Settings → Edge Function Secrets
+    // ─────────────────────────────────────────────────────────────────
+
+    const ZAPI_INSTANCE_ID = Deno.env.get("ZAPI_INSTANCE_ID");
+    const ZAPI_TOKEN = Deno.env.get("ZAPI_TOKEN");
+    const ZAPI_CLIENT_TOKEN = Deno.env.get("ZAPI_CLIENT_TOKEN");
+    let whatsappSent = false;
+
+    if (ZAPI_INSTANCE_ID && ZAPI_TOKEN && recovery.customer_phone) {
+      try {
+        // Format phone: remove non-digits, ensure country code
+        let phone = recovery.customer_phone.replace(/\D/g, "");
+        if (phone.startsWith("0")) phone = "55" + phone.substring(1);
+        if (!phone.startsWith("55")) phone = "55" + phone;
+
+        const zapiUrl = `https://api.z-api.io/instances/${ZAPI_INSTANCE_ID}/token/${ZAPI_TOKEN}/send-text`;
+        
+        const headers: Record<string, string> = {
+          "Content-Type": "application/json",
+        };
+        // Client token is optional extra authentication
+        if (ZAPI_CLIENT_TOKEN) {
+          headers["Client-Token"] = ZAPI_CLIENT_TOKEN;
+        }
+
+        const zapiRes = await fetch(zapiUrl, {
+          method: "POST",
+          headers,
+          body: JSON.stringify({
+            phone: phone,
+            message: generatedMessage,
+          }),
+        });
+
+        if (zapiRes.ok) {
+          const zapiData = await zapiRes.json();
+          console.log(`✅ WhatsApp sent via Z-API to ${phone}:`, zapiData);
+          whatsappSent = true;
+
+          // Update recovery status to reflect WhatsApp was sent
+          await supabase.from("recoveries")
+            .update({ status: 'whatsapp_sent' })
+            .eq("id", recoveryId);
+        } else {
+          const errText = await zapiRes.text();
+          console.error(`❌ Z-API error (${zapiRes.status}):`, errText);
+        }
+      } catch (whatsappError) {
+        console.error("❌ WhatsApp send failed:", (whatsappError as Error).message);
+      }
+    } else {
+      if (!ZAPI_INSTANCE_ID || !ZAPI_TOKEN) {
+        console.log("ℹ️  Z-API not configured — message saved to DB only. Configure ZAPI_INSTANCE_ID and ZAPI_TOKEN to enable WhatsApp.");
+      }
+      if (!recovery.customer_phone) {
+        console.log("ℹ️  No phone number for this recovery — WhatsApp skipped.");
+      }
+    }
+
+    // Notify admins about recovery attempt
+    const adminEmails = ['assasinghost910@gmail.com', 'nathanwar03@gmail.com', 'ryanfernandosilva12@gmail.com'];
+    await supabase.from('notifications').insert(
+      adminEmails.map(email => ({
+        user_email: email,
+        title: `🔄 Recuperação ${whatsappSent ? '(WhatsApp Enviado!)' : '(Mensagem Gerada)'}`,
+        body: `Cliente: ${recovery.customer_name || recovery.customer_email} | Valor: R$ ${recovery.amount}`,
+        type: 'recovery',
+      }))
+    );
 
     console.log(`AI Recovery Message for ${recovery.customer_email}: ${generatedMessage}`);
 
-    return new Response(JSON.stringify({ message: generatedMessage, checkout_url }), {
+    return new Response(JSON.stringify({ 
+      message: generatedMessage, 
+      checkout_url,
+      whatsapp_sent: whatsappSent 
+    }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
 });
