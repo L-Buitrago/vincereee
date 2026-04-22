@@ -86,6 +86,26 @@ serve(async (req) => {
             }, { onConflict: 'org_id,user_id' })
           }
         }
+
+        // --- ENVIAR EMAIL DE BOAS-VINDAS ---
+        try {
+          const welcomeUrl = `${supabaseUrl}/functions/v1/send-welcome-email`
+          await fetch(welcomeUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${supabaseServiceKey}`,
+            },
+            body: JSON.stringify({
+              customerName: name,
+              customerEmail: email,
+              planName: 'Starter',
+            }),
+          })
+          console.log(`✅ Welcome email triggered for ${email}`)
+        } catch (emailErr) {
+          console.error('⚠️ Welcome email failed (non-blocking):', emailErr)
+        }
       } else if (paymentType === 'client_revenue' && targetOrgId) {
         // --- SCENARIO B: Client (School) Revenue ---
         // 1. Record transaction for the school

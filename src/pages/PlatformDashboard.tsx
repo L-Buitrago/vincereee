@@ -119,6 +119,14 @@ export default function PlatformDashboard() {
     }
   }, [searchParams, setSearchParams]);
 
+  // Fallback: Verificar vencimentos ao carregar o dashboard
+  // (caso pg_cron não esteja habilitado no Supabase)
+  useEffect(() => {
+    supabase.rpc('check_overdue_payments').then(({ error }) => {
+      if (error) console.warn('check_overdue_payments fallback:', error.message);
+    });
+  }, []);
+
   const { data: allCustomers = [], isLoading } = useQuery({
     queryKey: ['dashboard-customers', orgId, isAdmin],
     queryFn: async () => {

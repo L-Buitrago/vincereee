@@ -46,6 +46,28 @@ serve(async (req) => {
             status: 'active',
           })
         }
+
+        // --- ENVIAR EMAIL DE BOAS-VINDAS ---
+        try {
+          const supabaseUrl = Deno.env.get('SUPABASE_URL') || ''
+          const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
+          const welcomeUrl = `${supabaseUrl}/functions/v1/send-welcome-email`
+          await fetch(welcomeUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${supabaseServiceKey}`,
+            },
+            body: JSON.stringify({
+              customerName: name,
+              customerEmail: email,
+              planName: 'Starter',
+            }),
+          })
+          console.log(`✅ Welcome email triggered for ${email} (Asaas)`)
+        } catch (emailErr) {
+          console.error('⚠️ Welcome email failed (non-blocking):', emailErr)
+        }
       } else if (paymentType === 'client_revenue' && targetOrgId) {
         // Record transaction
         await supabase.from('transactions').insert({
