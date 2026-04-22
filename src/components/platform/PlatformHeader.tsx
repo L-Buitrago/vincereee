@@ -33,11 +33,21 @@ export default function PlatformHeader({ title, searchQuery, setSearchQuery }: P
     return mapped[org.plan.toLowerCase()] || org.plan;
   }, [org, isAdmin]);
 
+  const greeting = useMemo(() => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) return "Bom dia";
+    if (hour >= 12 && hour < 18) return "Boa tarde";
+    return "Boa noite";
+  }, []);
+
+  const firstName = fullName.split(" ")[0];
+  const headerTitle = (title === "Dashboard" || !title) ? `${greeting}, ${firstName}` : title;
+
   return (
     <header className="flex items-center justify-between p-6 px-8 bg-transparent sticky top-0 z-30 backdrop-blur-sm border-b border-border">
       <div className="flex flex-col">
         <h1 className="text-2xl font-bold tracking-tight font-display text-foreground">
-          {title || "Dashboard"} <span className="text-sky-500">.</span>
+          {headerTitle} <span className="text-sky-500">.</span>
         </h1>
       </div>
 
