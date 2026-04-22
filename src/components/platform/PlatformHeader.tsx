@@ -1,7 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useOrganization } from "@/hooks/useOrganization";
-import { useMemo } from "react";
-import { Search, Bell } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Search, Bell, Clock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -43,12 +43,53 @@ export default function PlatformHeader({ title, searchQuery, setSearchQuery }: P
   const firstName = fullName.split(" ")[0];
   const headerTitle = (title === "Dashboard" || !title) ? `${greeting}, ${firstName}` : title;
 
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const hours = time.getHours().toString().padStart(2, '0');
+  const minutes = time.getMinutes().toString().padStart(2, '0');
+  const seconds = time.getSeconds().toString().padStart(2, '0');
+
+  const offset = -time.getTimezoneOffset() / 60;
+  const offsetString = `UTC ${offset >= 0 ? '+' : ''}${Math.floor(Math.abs(offset)).toString().padStart(2, '0')}:${(Math.abs(offset) % 1 * 60).toString().padStart(2, '0')}`;
+
   return (
     <header className="flex items-center justify-between p-6 px-8 bg-transparent sticky top-0 z-30 backdrop-blur-sm border-b border-border">
       <div className="flex flex-col">
         <h1 className="text-2xl font-bold tracking-tight font-display text-foreground">
           {headerTitle} <span className="text-sky-500">.</span>
         </h1>
+      </div>
+
+      <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center justify-center min-w-[120px] group transition-all duration-500 hover:scale-105">
+        <div className="flex items-center gap-1.5 text-[7px] font-bold text-muted-foreground/30 uppercase tracking-[0.4em] mb-1.5 transition-colors group-hover:text-sky-500/40">
+          <span>{offsetString}</span>
+          <div className="w-0.5 h-0.5 rounded-full bg-border" />
+          <span>LOCAL</span>
+        </div>
+        
+        <div className="flex items-baseline gap-1.5">
+          <div className="flex items-center text-3xl font-bold tracking-tight text-foreground font-mono leading-none tabular-nums">
+            <span>{hours}</span>
+            <span className="mx-1.5 text-muted-foreground/20 animate-pulse text-xl translate-y-[-1px]">:</span>
+            <span>{minutes}</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold text-sky-500/50 font-mono tabular-nums leading-none mb-1 translate-y-[2px]">
+              {seconds}
+            </span>
+          </div>
+        </div>
+
+        <div className="text-[7px] font-black text-muted-foreground/30 uppercase tracking-[0.6em] mt-2 group-hover:text-foreground/40 transition-colors">
+          LOCAL TIME
+        </div>
       </div>
 
       <div className="flex items-center gap-6">
