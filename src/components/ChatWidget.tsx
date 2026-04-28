@@ -20,7 +20,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
   const [messages, setMessages] = useState<Msg[]>([
     { 
       role: "assistant", 
-      content: "Olá! 👋 Sou a **Vi**, sua assistente virtual especialista em design estratégico e tecnologia.\n\nComo posso ajudar a elevar sua marca hoje?" 
+      content: "Olá! Sou a **Vi**, sua assistente. Como posso ajudar?" 
     }
   ]);
   const [input, setInput] = useState("");
@@ -123,76 +123,25 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
     const allMessages = [...messages, userMsg];
 
     try {
-      const resp = await fetch(CHAT_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke("chat", {
+        body: { 
           messages: allMessages.map(m => ({ role: m.role, content: m.content })),
           model: "google/gemini-1.5-flash",
-        }),
+          stream: false
+        },
       });
 
-      if (!resp.ok || !resp.body) {
-        throw new Error("Falha ao conectar com o assistente");
-      }
+      if (error) throw error;
 
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let textBuffer = "";
-      let streamDone = false;
-
-      while (!streamDone) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        textBuffer += decoder.decode(value, { stream: true });
-
-        let newlineIndex: number;
-        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
-          let line = textBuffer.slice(0, newlineIndex);
-          textBuffer = textBuffer.slice(newlineIndex + 1);
-
-          if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (line.startsWith(":") || line.trim() === "") continue;
-          if (!line.startsWith("data: ")) continue;
-
-          const jsonStr = line.slice(6).trim();
-          if (jsonStr === "[DONE]") {
-            streamDone = true;
-            break;
-          }
-
-          try {
-            const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-            if (content) {
-              assistantSoFar += content;
-              const currentContent = assistantSoFar;
-              setMessages(prev => {
-                const last = prev[prev.length - 1];
-                if (last?.role === "assistant") {
-                  return prev.map((m, i) =>
-                    i === prev.length - 1 ? { ...m, content: currentContent } : m
-                  );
-                }
-                return [...prev, { role: "assistant", content: currentContent }];
-              });
-            }
-          } catch {
-            textBuffer = line + "\n" + textBuffer;
-            break;
-          }
-        }
-      }
+      const reply = data?.reply || "Desculpe, não consegui processar sua mensagem.";
+      setMessages(prev => [...prev, { role: "assistant", content: reply }]);
 
       // Check for contact request in the final response
-      const contactData = extractContactRequest(assistantSoFar);
+      const contactData = extractContactRequest(reply);
       if (contactData) {
         await saveContactRequest(contactData);
         // Clean the tag from displayed message
-        const cleanContent = assistantSoFar.replace(/\[CONTACT_REQUEST\]\s*\{[\s\S]*?\}/, "").trim();
+        const cleanContent = reply.replace(/\[CONTACT_REQUEST\]\s*\{[\s\S]*?\}/, "").trim();
         setMessages(prev =>
           prev.map((m, i) =>
             i === prev.length - 1 && m.role === "assistant"
@@ -205,7 +154,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
       console.error(e);
       setMessages(prev => [
         ...prev,
-        { role: "assistant", content: "Desculpe, ocorreu um erro. Tente novamente." },
+        { role: "assistant", content: "Desculpe, ocorreu um erro ao me conectar. Pode tentar de novo?" },
       ]);
     } finally {
       setIsLoading(false);

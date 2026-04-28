@@ -49,6 +49,7 @@ serve(async (req) => {
   try {
     const body = await req.json();
     const messages = body?.messages || [];
+    const shouldStream = body?.stream !== false;
     const requestedModel = body?.model || "google/gemini-1.5-flash";
 
     // Limit context history
@@ -82,7 +83,7 @@ serve(async (req) => {
           content: m.content,
         })),
         max_tokens: 4096,
-        stream: true,
+        stream: shouldStream,
       };
     } else if (requestedModel.includes("gemini") && GEMINI_API_KEY) {
       // Direct Google Gemini API (OpenAI Compatible)
@@ -91,7 +92,7 @@ serve(async (req) => {
       requestBody = {
         model: requestedModel.includes("/") ? requestedModel.split("/")[1] : requestedModel,
         messages: [{ role: "system", content: SYSTEM_PROMPT }, ...limitedMessages],
-        stream: true,
+        stream: shouldStream,
       };
     } else {
       // Fallback to Lovable AI Gateway
@@ -102,11 +103,11 @@ serve(async (req) => {
       requestBody = {
         model: requestedModel,
         messages: [{ role: "system", content: SYSTEM_PROMPT }, ...limitedMessages],
-        stream: true,
+        stream: shouldStream,
       };
     }
 
-    console.log(`Using provider for model: ${requestedModel}`);
+    console.log(`Using provider for model: ${requestedModel} (Stream: ${shouldStream})`);
 
     const response = await fetch(apiUrl, {
       method: "POST",
@@ -124,9 +125,17 @@ serve(async (req) => {
       throw new Error(`Erro na API: ${response.status}`);
     }
 
-    return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
-    });
+    if (shouldStream) {
+      return new Response(response.body, {
+        headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+      });
+    } else {
+      const data = await response.json();
+      const reply = data.choices?.[0]?.message?.content || "";
+      return new Response(JSON.stringify({ reply }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
   } catch (e) {
     console.error("chat error:", e instanceof Error ? e.message : String(e));
     return new Response(JSON.stringify({ error: "Ocorreu um erro ao processar sua mensagem." }), {
