@@ -635,8 +635,8 @@ const WaysToWork = () => {
         {/* ── Top Row: 3 Cards ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6 perspective-1000">
 
-          {/* ────── CARD 1: VI — Inteligência Artificial (LARGE) ────── */}
-          <MagneticCard className="lg:col-span-8 h-full">
+          {/* ────── CARD 1: VI — Inteligência Artificial (MEDIUM) ────── */}
+          <MagneticCard className="lg:col-span-7 h-full">
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
@@ -666,7 +666,7 @@ const WaysToWork = () => {
               <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center my-auto pt-6">
                 <div>
                   <h3 className="text-6xl md:text-[5rem] lg:text-[6rem] font-serif italic tracking-tighter mb-6 leading-[0.85]">
-                    Conheça <br /> a VI.
+                    Conheça <br /> a Vi.
                   </h3>
                   <p className="text-white/60 max-w-sm text-lg leading-relaxed">
                     Sua assistente de IA que entende seu negócio, analisa suas necessidades e cria propostas sob medida em segundos.
@@ -684,77 +684,40 @@ const WaysToWork = () => {
             </motion.div>
           </MagneticCard>
 
-          {/* Right Column */}
-          <div className="lg:col-span-4 flex flex-col gap-6 perspective-1000">
+          {/* ────── CARD 2: Prazo de Entrega (MEDIUM) ────── */}
+          <MagneticCard className="lg:col-span-5 h-full">
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-muted text-secondary rounded-[48px] p-10 h-full flex flex-col justify-between group cursor-pointer border border-secondary/5 hover:shadow-xl transition-all relative overflow-hidden gradient-border"
+            >
+              {/* Geometric pattern */}
+              <div className="absolute inset-0 opacity-[0.03]" style={{
+                backgroundImage: "linear-gradient(45deg, currentColor 25%, transparent 25%), linear-gradient(-45deg, currentColor 25%, transparent 25%)",
+                backgroundSize: "20px 20px",
+                backgroundPosition: "0 0, 0 10px"
+              }} />
 
-            {/* ────── CARD 2: Prazo de Entrega ────── */}
-            <MagneticCard className="flex-1">
-              <motion.div
-                initial={{ y: 50, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="bg-muted text-secondary rounded-[48px] p-10 h-full flex flex-col justify-between group cursor-pointer border border-secondary/5 hover:shadow-xl transition-all relative overflow-hidden gradient-border"
-              >
-                {/* Geometric pattern */}
-                <div className="absolute inset-0 opacity-[0.03]" style={{
-                  backgroundImage: "linear-gradient(45deg, currentColor 25%, transparent 25%), linear-gradient(-45deg, currentColor 25%, transparent 25%)",
-                  backgroundSize: "20px 20px",
-                  backgroundPosition: "0 0, 0 10px"
-                }} />
+              <div className="relative z-10 flex justify-between items-start">
+                <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">[ Prazo & Entrega ]</span>
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 45 }}
+                  className="w-10 h-10 rounded-full border border-secondary/10 flex items-center justify-center group-hover:bg-secondary group-hover:text-white transition-all"
+                >
+                  <ArrowUpRight className="w-4 h-4" />
+                </motion.div>
+              </div>
+              <div className="relative z-10">
+                <h3 className="text-4xl font-extrabold tracking-tight mb-2 leading-tight">Entrega <br />ágil.</h3>
+                <p className="text-secondary/40 text-sm mb-2">Prazos claros e cronograma definido desde o primeiro dia.</p>
+                <TimelineAnimation />
+              </div>
 
-                <div className="relative z-10 flex justify-between items-start">
-                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">[ Prazo & Entrega ]</span>
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 45 }}
-                    className="w-10 h-10 rounded-full border border-secondary/10 flex items-center justify-center group-hover:bg-secondary group-hover:text-white transition-all"
-                  >
-                    <ArrowUpRight className="w-4 h-4" />
-                  </motion.div>
-                </div>
-                <div className="relative z-10">
-                  <h3 className="text-4xl font-extrabold tracking-tight mb-2 leading-tight">Entrega <br />ágil.</h3>
-                  <p className="text-secondary/40 text-sm mb-2">Prazos claros e cronograma definido desde o primeiro dia.</p>
-                  <TimelineAnimation />
-                </div>
-
-                <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              </motion.div>
-            </MagneticCard>
-
-            {/* ────── CARD 3: Pagamento Flexível ────── */}
-            <MagneticCard className="flex-1">
-              <motion.div
-                initial={{ y: 50, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="bg-primary text-white rounded-[48px] p-10 h-full flex flex-col justify-between group cursor-pointer shadow-xl hover:shadow-[0_20px_60px_-12px_rgba(59,130,246,0.4)] transition-all relative overflow-hidden gradient-border gradient-border-animated"
-              >
-                <div className="absolute inset-0 opacity-[0.06]" style={{
-                  backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
-                  backgroundSize: "24px 24px"
-                }} />
-
-                <div className="relative z-10 flex justify-between items-start">
-                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">[ Pagamento ]</span>
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 45 }}
-                    className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-primary transition-all shadow-md"
-                  >
-                    <ArrowUpRight className="w-4 h-4" />
-                  </motion.div>
-                </div>
-                <div className="relative z-10">
-                  <h3 className="text-4xl font-extrabold tracking-tight mb-2 leading-tight">Pagamento <br />flexível.</h3>
-                  <p className="text-white/50 text-sm">Pix, cartão de crédito. Cancele quando quiser.</p>
-                  <CreditCardAnimation />
-                </div>
-
-                <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              </motion.div>
-            </MagneticCard>
-          </div>
+              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            </motion.div>
+          </MagneticCard>
         </div>
 
         {/* ── Bottom Row: 2 Cards ── */}
