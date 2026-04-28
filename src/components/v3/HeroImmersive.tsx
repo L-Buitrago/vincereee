@@ -48,7 +48,7 @@ const HeroImmersive = () => {
       className="relative min-h-[100vh] w-full bg-background flex items-center pt-24 pb-12 overflow-hidden selection:bg-primary/20"
     >
       {/* Background Video (Visual impact increased) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none parallax-bg">
         <video 
           autoPlay 
           loop 

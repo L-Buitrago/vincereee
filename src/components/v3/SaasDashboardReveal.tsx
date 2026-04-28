@@ -64,9 +64,10 @@ const SaasDashboardReveal = () => {
               <span className="text-sm font-bold tracking-tight">Gestão Inteligente</span>
             </div>
             
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1]">
-              Gestão completa do seu <br /> negócio em tempo <br />
-              <span className="font-serif italic text-primary inline-block transform -rotate-2 translate-y-2 text-[1.1em]">real. </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1] max-w-2xl">
+              Gestão completa do <br />
+              seu negócio em tempo <br />
+              <span className="font-serif italic text-primary inline-block transform -rotate-2 translate-y-2 ml-24 md:ml-40 lg:ml-56 text-[1.1em]">real.</span>
             </h2>
             
             <p className="text-lg text-muted-foreground font-medium max-w-lg">

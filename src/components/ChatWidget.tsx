@@ -123,6 +123,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
     const allMessages = [...messages, userMsg];
 
     try {
+      console.log("Calling chat function...");
       const { data, error } = await supabase.functions.invoke("chat", {
         body: { 
           messages: allMessages.map(m => ({ role: m.role, content: m.content })),
@@ -131,9 +132,25 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase function error:", error);
+        throw error;
+      }
 
-      const reply = data?.reply || "Desculpe, não consegui processar sua mensagem.";
+      let reply = "";
+      
+      // Handle different response formats (Response object vs parsed JSON)
+      if (data && data.reply) {
+        reply = data.reply;
+      } else if (data instanceof Response || (data && typeof data.json === 'function')) {
+        const json = await data.json();
+        reply = json.reply || "";
+      } else if (typeof data === 'string') {
+        reply = data;
+      } else {
+        console.error("Unexpected data format:", data);
+        throw new Error("Resposta vazia ou inválida da IA");
+      }
       setMessages(prev => [...prev, { role: "assistant", content: reply }]);
 
       // Check for contact request in the final response
@@ -151,7 +168,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
         );
       }
     } catch (e) {
-      console.error(e);
+      console.error("Chat Interaction Error:", e);
       setMessages(prev => [
         ...prev,
         { role: "assistant", content: "Desculpe, ocorreu um erro ao me conectar. Pode tentar de novo?" },
