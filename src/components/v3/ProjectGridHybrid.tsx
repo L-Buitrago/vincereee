@@ -23,17 +23,17 @@ const projects = [
 
 const ProjectGridHybrid = () => {
   return (
-    <section className="py-24 bg-white px-4 md:px-12 lg:px-24" id="portfolio">
-      <div className="container mx-auto">
-        <div className="mb-16">
+    <section className="py-24 bg-white overflow-hidden" id="portfolio">
+      <div className="container mx-auto px-4 md:px-12 lg:px-24 mb-16">
+        <div>
           <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-2 block">Portfólio Selecionado</span>
           <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-foreground">Trabalhos que <span className="text-primary italic">fazem história.</span></h2>
         </div>
+      </div>
 
-        {/* Single Full-Width Card */}
-        <div className="w-full">
-          <ProjectGridCard project={projects[0]} isExtraLarge={true} />
-        </div>
+      {/* Single Full-Width Card - Stretched horizontally */}
+      <div className="px-4 md:px-6 lg:px-8 max-w-[1800px] mx-auto">
+        <ProjectGridCard project={projects[0]} isExtraLarge={true} />
       </div>
     </section>
   );
@@ -103,7 +103,7 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.05 }}
               transition={{ duration: 1.5, ease: "easeInOut" }}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover object-top"
             />
           ) : (
             <motion.img 
@@ -112,7 +112,7 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
               style={{ y: imageY, scale: 1.2 }}
               animate={{ scale: isHovered ? 1.3 : 1.2, opacity: isHovered ? (project.video ? 0.4 : 1) : 1 }}
               transition={{ duration: 0.8 }}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top"
             />
           )}
         </AnimatePresence>
