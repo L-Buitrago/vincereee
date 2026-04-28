@@ -34,15 +34,6 @@ const About = () => {
     }, 800);
   };
 
-  // VORTEX PARTICLES (24 unique avatars)
-  const particles = Array.from({ length: 24 }).map((_, i) => ({
-    id: i,
-    delay: i * 0.05,
-    angle: (i / 12) * Math.PI, // Distribute in 2 circles
-    radius: 400 + (i % 3) * 120, // Increased radius for better visibility
-    imgId: 10 + i,
-  }));
-
   // FOUNDERS DATA (3 founders)
   const founders = [
     {
@@ -74,38 +65,7 @@ const About = () => {
         
         {/* SECTION 1: THE VORTEX (Intro) */}
         <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-white">
-          {/* Vortex Particles */}
-          <div className="absolute inset-0 z-10 pointer-events-none">
-            {particles.map((p) => (
-              <motion.div
-                key={p.id}
-                initial={{ 
-                   x: Math.cos(p.angle) * p.radius * 3, 
-                   y: Math.sin(p.angle) * p.radius * 3,
-                   scale: 0,
-                   opacity: 0,
-                }}
-                animate={{ 
-                  x: Math.cos(p.angle) * p.radius, 
-                  y: Math.sin(p.angle) * p.radius, 
-                  scale: 1,
-                  opacity: 1,
-                }}
-                transition={{ 
-                  duration: 2.5, 
-                  delay: p.delay,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="absolute left-1/2 top-1/2 -ml-12 -mt-12 w-24 h-24 rounded-full overflow-hidden border-2 border-white shadow-xl grayscale hover:grayscale-0 transition-all duration-500"
-              >
-                <img 
-                  src={`https://i.pravatar.cc/150?u=${p.imgId}`} 
-                  alt="Talent" 
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-            ))}
-          </div>
+
 
           {/* Central Text */}
           <div className="relative z-20 text-center">
@@ -184,14 +144,14 @@ const About = () => {
            </div>
         </section>
 
-        {/* SECTION 3: DARK VALUES (The Green Grid) */}
-        <section className="bg-[#022c22] py-40 px-6 text-white overflow-hidden">
+        {/* SECTION 3: DARK VALUES (The Neutral Grid) */}
+        <section className="bg-neutral-950 py-40 px-6 text-white overflow-hidden">
            <div className="container mx-auto">
               <div className="mb-24 space-y-4">
                  <h2 className="text-5xl md:text-[8vw] font-black tracking-tighter leading-[0.95] mb-8">
                    Also, we <br/> challenge fluff.
                  </h2>
-                 <p className="max-w-2xl text-lg text-emerald-100/40 font-medium leading-relaxed">
+                 <p className="max-w-2xl text-lg text-neutral-400 font-medium leading-relaxed">
                    Brands can't afford to lose time on anything beyond useful. That's our motto — efficiency over noise.
                  </p>
               </div>
@@ -201,17 +161,17 @@ const About = () => {
                    { 
                      title: "Foco em ROI Real", 
                      desc: "Não fazemos arte pela arte. Cada pixel é projetado para converter e recuperar faturamento.",
-                     icon: <Target className="w-8 h-8 text-emerald-400" />
+                     icon: <Target className="w-8 h-8 text-primary" />
                    },
                    { 
                      title: "Velocidade Executiva", 
                      desc: "Processos enxutos, sem reuniões inúteis. Entrega de software e design em tempo recorde.",
-                     icon: <Zap className="w-8 h-8 text-emerald-400" />
+                     icon: <Zap className="w-8 h-8 text-primary" />
                    },
                    { 
                      title: "Ecossistema SaaS", 
                      desc: "Nossa tecnologia escala com seu crescimento, sem gaps de infraestrutura.",
-                     icon: <Rocket className="w-8 h-8 text-emerald-400" />
+                     icon: <Rocket className="w-8 h-8 text-primary" />
                    }
                  ].map((card, i) => (
                    <motion.div
@@ -220,11 +180,11 @@ const About = () => {
                      whileInView={{ opacity: 1, y: 0 }}
                      viewport={{ once: true }}
                      transition={{ duration: 0.8, delay: i * 0.1 }}
-                     className="bg-[#043d30]/50 border border-white/5 rounded-[2.5rem] p-12 transition-all hover:bg-white/5 group"
+                     className="bg-neutral-900/50 border border-white/5 rounded-[2.5rem] p-12 transition-all hover:bg-white/5 group"
                    >
                      <div className="mb-12 group-hover:scale-110 transition-transform origin-left">{card.icon}</div>
                      <h3 className="text-3xl font-bold mb-4 tracking-tight">{card.title}</h3>
-                     <p className="text-emerald-100/40 font-medium leading-relaxed">{card.desc}</p>
+                     <p className="text-neutral-400 font-medium leading-relaxed">{card.desc}</p>
                    </motion.div>
                  ))}
               </div>
