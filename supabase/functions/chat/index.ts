@@ -49,7 +49,7 @@ serve(async (req) => {
   try {
     const body = await req.json();
     const messages = body?.messages || [];
-    const requestedModel = body?.model || "google/gemini-3-flash-preview";
+    const requestedModel = body?.model || "google/gemini-1.5-flash";
 
     // Limit context history
     const limitedMessages = messages.slice(-15);

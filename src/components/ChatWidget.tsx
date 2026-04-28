@@ -131,7 +131,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
         },
         body: JSON.stringify({
           messages: allMessages.map(m => ({ role: m.role, content: m.content })),
-          model: "google/gemini-3-flash-preview",
+          model: "google/gemini-1.5-flash",
         }),
       });
 
