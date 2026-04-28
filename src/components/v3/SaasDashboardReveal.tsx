@@ -65,8 +65,7 @@ const SaasDashboardReveal = () => {
             </div>
             
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-[1.1]">
-              Sua empresa na palma <br /> da sua mão. <br />
-              <span className="font-serif italic text-primary inline-block transform -rotate-2 translate-y-2 text-[1.1em]">Literalmente.</span>
+              Sua empresa na palma <br /> da sua mão.
             </h2>
             
             <p className="text-lg text-muted-foreground font-medium max-w-lg">
