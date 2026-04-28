@@ -5,41 +5,19 @@ import { useState, useRef, useEffect } from "react";
 const projects = [
   {
     id: "01",
-    title: "Lojas de E-commerce",
-    category: "Exemplos Reais",
-    thumb: "https://vendredi-society.com/wp-content/uploads/2026/03/ps-day-thumbnail.webp",
+    title: "Nossos Projetos",
+    category: "Portfólio Selecionado",
+    thumb: "/images/portfolio-1.jpg",
     slides: [
-      "/images/ecommerce_tenis_br.png",
-      "/images/luxury_watch_br.png",
-      "/images/tech_gadgets_br.png",
-      "/images/furniture_br.png"
+      "/images/portfolio-1.jpg",
+      "/images/portfolio-2.jpg",
+      "/images/portfolio-3.jpg",
+      "/images/portfolio-4.jpg",
+      "/images/portfolio-5.jpg",
+      "/images/portfolio-6.jpg",
+      "/images/portfolio-7.jpg"
     ],
-    video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
     color: "#dfe6e5",
-    mockup: "/images/merchant_mockup.png"
-  },
-  {
-    title: "Sites & Landing Pages 3D",
-    category: "Design Imersivo",
-    thumb: "/images/lp_3d_space.jpg",
-    slides: [
-      "/images/lp_3d_space.jpg",
-      "/images/lp_3d_jet.png",
-      "/images/lp_3d_viktor.jpg",
-      "/images/lp_3d_innovation.png"
-    ],
-    video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
-    color: "#f2f2f2",
-    mockup: "/images/lp_3d_space.jpg"
-  },
-  {
-    id: "03",
-    title: "PS Essentials",
-    category: "Brand Content",
-    thumb: "https://vendredi-society.com/wp-content/uploads/2023/12/PS_Essentials_Vertical_Small.webp",
-    video: "https://download-video-ak.vimeocdn.com/v3-1/playback/908723147/f65b5b00-3b53e910",
-    color: "#f8f8f8",
-    mockup: "/images/ps_mockup.png"
   }
 ];
 
@@ -52,13 +30,10 @@ const ProjectGridHybrid = () => {
           <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-foreground">Trabalhos que <span className="text-primary italic">fazem história.</span></h2>
         </div>
 
-        {/* Row 1: Merchant + Otio Home (2 column grid) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <ProjectGridCard project={projects[0]} />
-          <ProjectGridCard project={projects[1]} />
+        {/* Single Full-Width Card */}
+        <div className="w-full">
+          <ProjectGridCard project={projects[0]} isExtraLarge={true} />
         </div>
-
-        {/* Espaço reservado para novas instruções */}
       </div>
     </section>
   );
