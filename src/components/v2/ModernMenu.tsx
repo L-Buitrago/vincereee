@@ -58,7 +58,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
     <>
       <header className="fixed top-0 left-0 w-full z-[120] px-6 py-8 flex justify-between items-center pointer-events-none">
         <div className="pointer-events-auto">
-          <a href="#home" className="text-xl font-serif italic tracking-tighter text-foreground">
+          <a href="#home" className="text-3xl font-serif italic tracking-tighter text-foreground">
             Vincere
           </a>
         </div>
