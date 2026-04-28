@@ -82,7 +82,7 @@ export default function PlatformProposal() {
           </Link>
           <div className="flex items-center gap-2.5">
             <div>
-              <p className="text-sm font-semibold text-foreground">Vincere Assist</p>
+              <p className="text-sm font-semibold text-foreground">Vi</p>
               <p className="text-[10px] text-sky-400">Online</p>
             </div>
           </div>
