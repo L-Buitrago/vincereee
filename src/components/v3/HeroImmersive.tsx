@@ -160,7 +160,7 @@ const HeroImmersive = () => {
               {
                 icon: MessageSquareWarning,
                 title: "Recuperação",
-                desc: "+60% de conversão via Wpp"
+                desc: "Recuperação automática de vendas com +60% de conversão via WhatsApp"
               }
             ].map((prop, i) => (
               <motion.div
