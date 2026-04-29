@@ -632,11 +632,11 @@ const WaysToWork = () => {
           </div>
         </div>
 
-        {/* ── Top Row: 3 Cards ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6 perspective-1000">
+        {/* ── Main Grid: 3 Cards ── */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 perspective-1000">
 
-          {/* ────── CARD 1: VI — Inteligência Artificial (MEDIUM) ────── */}
-          <MagneticCard className="lg:col-span-7 h-full">
+          {/* ────── CARD 1: VI — Inteligência Artificial (FULL WIDTH) ────── */}
+          <MagneticCard className="md:col-span-12 h-full">
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
@@ -665,15 +665,15 @@ const WaysToWork = () => {
               {/* Content Grid */}
               <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center my-auto pt-6">
                 <div>
-                  <h3 className="text-6xl md:text-[5rem] lg:text-[6rem] font-serif italic tracking-tighter mb-6 leading-[0.85]">
+                  <h3 className="text-6xl md:text-[5rem] lg:text-[7rem] font-serif italic tracking-tighter mb-6 leading-[0.85]">
                     Conheça <br /> a Vi.
                   </h3>
                   <p className="text-white/60 max-w-sm text-lg leading-relaxed">
                     Sua assistente de IA que entende seu negócio, analisa suas necessidades e cria propostas sob medida em segundos.
                   </p>
                 </div>
-                <div className="flex justify-center lg:justify-end xl:pr-8">
-                  <div className="w-full max-w-[280px]">
+                <div className="flex justify-center lg:justify-end xl:pr-12">
+                  <div className="w-full max-w-[320px]">
                     <VIRobotAnimation />
                   </div>
                 </div>
@@ -684,8 +684,8 @@ const WaysToWork = () => {
             </motion.div>
           </MagneticCard>
 
-          {/* ────── CARD 2: Prazo de Entrega (MEDIUM) ────── */}
-          <MagneticCard className="lg:col-span-5 h-full">
+          {/* ────── CARD 2: Prazo de Entrega (HALF WIDTH) ────── */}
+          <MagneticCard className="md:col-span-6 h-full">
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
@@ -709,76 +709,43 @@ const WaysToWork = () => {
                   <ArrowUpRight className="w-4 h-4" />
                 </motion.div>
               </div>
-              <div className="relative z-10">
+              <div className="relative z-10 pt-8">
                 <h3 className="text-4xl font-extrabold tracking-tight mb-2 leading-tight">Entrega <br />ágil.</h3>
-                <p className="text-secondary/40 text-sm mb-2">Prazos claros e cronograma definido desde o primeiro dia.</p>
+                <p className="text-secondary/40 text-sm mb-6">Prazos claros e cronograma definido desde o primeiro dia.</p>
                 <TimelineAnimation />
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             </motion.div>
           </MagneticCard>
-        </div>
 
-        {/* ── Bottom Row: 2 Cards ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 perspective-1000">
-
-          {/* ────── CARD 4: Tecnologia Avançada ────── */}
-          <MagneticCard>
+          {/* ────── CARD 3: Resultados Transparentes (HALF WIDTH) ────── */}
+          <MagneticCard className="md:col-span-6 h-full">
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-primary rounded-[32px] p-10 md:p-12 flex flex-col items-center justify-between min-h-[400px] text-center shadow-2xl relative overflow-hidden group gradient-border gradient-border-animated"
-            >
-              <div className="absolute inset-0 opacity-[0.04]" style={{
-                backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
-                backgroundSize: "28px 28px"
-              }} />
-
-              <div className="relative z-10 w-full flex justify-between items-start">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">[ Tecnologia ]</span>
-              </div>
-
-              <h3 className="text-xl md:text-2xl font-serif italic text-white leading-tight mt-4 relative z-10">
-                Stack moderna e <br /> tecnologia de ponta.
-              </h3>
-
-              <RotatingSphereAnimation />
-
-              <a href="#about" className="px-8 py-4 bg-white text-primary rounded-full font-bold text-xs uppercase tracking-widest hover:bg-secondary hover:text-white transition-all shadow-xl relative z-10 group/btn">
-                <span className="flex items-center gap-2">
-                  Nossa stack
-                  <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:rotate-45 transition-transform" />
-                </span>
-              </a>
-
-              <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-            </motion.div>
-          </MagneticCard>
-
-          {/* ────── CARD 5: Resultados Transparentes ────── */}
-          <MagneticCard>
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-white rounded-[32px] p-10 md:p-12 flex flex-col items-center justify-between min-h-[400px] text-center border border-secondary/5 shadow-2xl relative overflow-hidden group glow-card-hover transition-shadow duration-500"
+              transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-white rounded-[48px] p-10 flex flex-col justify-between h-full border border-secondary/5 shadow-2xl relative overflow-hidden group glow-card-hover transition-shadow duration-500"
             >
               <div className="relative z-10 w-full flex justify-between items-start">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-secondary/30">[ Transparência ]</span>
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 45 }}
+                  className="w-10 h-10 rounded-full border border-secondary/10 flex items-center justify-center group-hover:bg-secondary group-hover:text-white transition-all"
+                >
+                  <ArrowUpRight className="w-4 h-4" />
+                </motion.div>
               </div>
 
-              <h3 className="text-xl md:text-2xl font-serif italic text-secondary leading-tight mt-4 relative z-10">
-                Resultados na sua mão. <br /> Acompanhe cada métrica.
-              </h3>
+              <div className="relative z-10 pt-8">
+                <h3 className="text-4xl font-extrabold tracking-tight mb-2 leading-tight text-secondary">Resultados <br />reais.</h3>
+                <p className="text-secondary/40 text-sm mb-6">Acompanhe cada métrica e KPI da sua operação em tempo real.</p>
+                <MiniDashboardAnimation />
+              </div>
 
-              <MiniDashboardAnimation />
-
-              <a href="#plataforma" className="px-8 py-4 bg-secondary text-white rounded-full font-bold text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-xl relative z-10 group/btn">
-                <span className="flex items-center gap-2">
+              <a href="#plataforma" className="mt-8 px-8 py-4 bg-secondary text-white rounded-full font-bold text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-xl relative z-10 group/btn text-center">
+                <span className="flex items-center justify-center gap-2">
                   Ver plataforma
                   <ArrowUpRight className="w-3.5 h-3.5 group-hover/btn:rotate-45 transition-transform" />
                 </span>
