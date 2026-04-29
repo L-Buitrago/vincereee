@@ -71,7 +71,7 @@ export default function PricingComparisonTable({ onSelectPlan }: PricingComparis
                 <th className="px-4 py-5 font-display">
                   <div className="flex flex-col">
                     <span className="text-lg font-black text-[#0f172a]">Starter</span>
-                    <span className="text-[10px] font-black text-gray-400 mt-0.5 uppercase tracking-widest">R$ 147/mês</span>
+                    <span className="text-[10px] font-black text-gray-400 mt-0.5 uppercase tracking-widest">R$ 197/mês</span>
                   </div>
                 </th>
                 <th className="px-4 py-5 bg-sky-50/30 relative">
