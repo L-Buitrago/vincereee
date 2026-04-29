@@ -7,10 +7,14 @@ import { useOrganization } from "@/hooks/useOrganization";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import PlatformHeader from "@/components/platform/PlatformHeader";
+import { useTheme } from "@/components/theme-provider";
+
 
 export default function PlatformSettings() {
   const { user, updateUserMetadata } = useAuth();
+  const { theme, setTheme } = useTheme();
   const { org, orgId } = useOrganization();
+
   const [activeTab, setActiveTab] = useState("perfil");
   const [loading, setLoading] = useState(false);
 
@@ -288,19 +292,39 @@ export default function PlatformSettings() {
                   </div>
                   
                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="aspect-video bg-primary/20 rounded-2xl border-2 border-primary flex items-center justify-center relative overflow-hidden group">
-                      <div className="absolute inset-x-0 bottom-0 py-2 bg-primary/80 backdrop-blur-sm text-center text-[10px] font-bold text-primary-foreground uppercase tracking-widest">
+                    <div 
+                      onClick={() => setTheme("dark")}
+                      className={`aspect-video rounded-2xl border-2 flex items-center justify-center relative overflow-hidden group cursor-pointer transition-all ${
+                        theme === "dark" 
+                          ? "bg-primary/20 border-primary shadow-[0_0_20px_hsl(var(--primary)/0.2)]" 
+                          : "bg-muted border-border hover:border-primary/50"
+                      }`}
+                    >
+                      <div className={`absolute inset-x-0 bottom-0 py-2 text-center text-[10px] font-bold uppercase tracking-widest transition-all ${
+                        theme === "dark" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                      }`}>
                         Dark
                       </div>
-                      <Palette className="w-8 h-8 text-primary" />
+                      <Palette className={`w-8 h-8 transition-all ${theme === "dark" ? "text-primary scale-110" : "text-muted-foreground/30"}`} />
                     </div>
-                    <div className="aspect-video bg-muted rounded-2xl border-2 border-border flex flex-col items-center justify-center relative overflow-hidden group hover:border-primary/50 transition-all cursor-pointer">
-                       <div className="absolute inset-x-0 bottom-0 py-2 bg-muted/80 backdrop-blur-sm text-center text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                    
+                    <div 
+                      onClick={() => setTheme("light")}
+                      className={`aspect-video rounded-2xl border-2 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer transition-all ${
+                        theme === "light" 
+                          ? "bg-primary/10 border-primary shadow-[0_0_20px_hsl(var(--primary)/0.1)]" 
+                          : "bg-muted border-border hover:border-primary/50"
+                      }`}
+                    >
+                       <div className={`absolute inset-x-0 bottom-0 py-2 text-center text-[10px] font-bold uppercase tracking-widest transition-all ${
+                        theme === "light" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                      }`}>
                         Modo Claro
                       </div>
-                       <Palette className="w-6 h-6 text-muted-foreground/30" />
+                       <Palette className={`w-8 h-8 transition-all ${theme === "light" ? "text-primary scale-110" : "text-muted-foreground/30"}`} />
                     </div>
                   </div>
+
                 </div>
               )}
             </div>
