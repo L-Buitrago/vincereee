@@ -15,8 +15,17 @@ const SubscriptionGuard = ({ children }: { children: React.ReactNode }) => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0A0A0A]">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0A0A0A] gap-4">
         <Loader2 className="h-8 w-8 animate-spin text-platform-green" />
+        <p className="text-[#444] text-xs font-mono animate-pulse">Sincronizando com a Vincere...</p>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="text-[#333] hover:text-white mt-4"
+          onClick={() => window.location.reload()}
+        >
+          Demorando muito? Clique para recarregar
+        </Button>
       </div>
     );
   }

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,8 +21,18 @@ type Organization = {
 
 export function useOrganization() {
   const { user } = useAuth();
+  const [forceStopLoading, setForceStopLoading] = (window as any)._vincere_force_loading || [false, () => {}];
+  
+  // Create a local state to force stop loading if the query hangs
+  const [localLoading, setLocalLoading] = useState(true);
 
-  // Fetch admin emails from the database
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLocalLoading(false);
+    }, 7000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const { data: adminEmails = FALLBACK_ADMIN_EMAILS } = useQuery({
     queryKey: ['admin-emails'],
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
@@ -93,7 +104,7 @@ export function useOrganization() {
     orgRole,
     org,
     isAdmin,
-    isLoading,
+    isLoading: isLoading && localLoading,
     hasOrg: !!orgId || isAdmin,
   };
 }
