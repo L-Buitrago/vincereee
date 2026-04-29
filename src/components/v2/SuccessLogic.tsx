@@ -95,47 +95,50 @@ const SPEED = 0.4;
 
 // ─── Componente de Logos Animadas ───────────────────────────────────────────
 const CustomLogos = [
-  // Logo 1: TechFlow
+  // Logo 1: Nexus Systems (EN)
   <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
     <Command className="w-8 h-8 text-blue-500" />
-    <span className="text-xl font-bold font-sans text-white tracking-tighter">TechFlow</span>
+    <span className="text-xl font-bold font-sans text-white tracking-tighter">Nexus Systems</span>
   </div>,
-  // Logo 2: LuxLife
+  // Logo 2: Lírios (PT)
   <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
-    <div className="w-8 h-8 flex items-center justify-center border-2 border-amber-400 rotate-45">
-      <span className="text-amber-400 font-serif font-bold text-lg -rotate-45">L</span>
+    <div className="w-8 h-8 flex items-center justify-center border-2 border-pink-400 rotate-45">
+      <span className="text-pink-400 font-serif font-bold text-lg -rotate-45">L</span>
     </div>
-    <span className="text-xl font-serif text-white tracking-widest">LUXLIFE</span>
+    <span className="text-xl font-serif text-white tracking-widest uppercase">Lírios</span>
   </div>,
-  // Logo 3: NextGen
+  // Logo 3: Aura Creative (EN)
   <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
     <Hexagon className="w-8 h-8 text-emerald-400" />
-    <span className="text-xl font-black font-mono text-white italic tracking-widest">NEXTGEN</span>
+    <span className="text-xl font-black font-mono text-white italic tracking-widest uppercase">AURA</span>
   </div>,
-  // Logo 4: UrbanStyle
+  // Logo 4: Fluxo Digital (PT)
   <div className="flex items-center gap-1 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
-    <span className="text-2xl font-black font-sans text-white tracking-tighter">URBAN</span>
-    <span className="text-2xl font-light font-sans text-white/50 tracking-tighter">STYLE.</span>
+    <span className="text-2xl font-black font-sans text-white tracking-tighter uppercase">Fluxo</span>
+    <span className="text-2xl font-light font-sans text-white/50 tracking-tighter italic">Digital</span>
   </div>,
-  // Logo 5: DataSynth
+  // Logo 5: Drogaria Marcellino (PT)
   <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
-    <Activity className="w-8 h-8 text-purple-500" />
-    <span className="text-xl font-bold font-sans text-white">DataSynth</span>
+    <Activity className="w-8 h-8 text-red-500" />
+    <div className="flex flex-col -space-y-1">
+      <span className="text-[10px] font-bold text-red-400 uppercase tracking-tighter">Drogaria</span>
+      <span className="text-xl font-bold font-sans text-white">Marcellino</span>
+    </div>
   </div>,
-  // Logo 6: GlobalLog
+  // Logo 6: Velocity Labs (EN)
   <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
     <Globe className="w-8 h-8 text-sky-400" />
-    <span className="text-xl font-bold font-sans text-white tracking-wide uppercase">GlobalLog</span>
+    <span className="text-xl font-bold font-sans text-white tracking-wide uppercase italic">Velocity Labs</span>
   </div>,
-  // Logo 7: FinTech Solutions
+  // Logo 7: Finanças Digitais (PT)
   <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
     <div className="flex -space-x-2">
       <Circle className="w-6 h-6 text-green-500 fill-green-500" />
       <Circle className="w-6 h-6 text-white mix-blend-difference" />
     </div>
-    <span className="text-xl font-bold font-sans text-white">FinTech</span>
+    <span className="text-xl font-bold font-sans text-white">Finanças</span>
   </div>,
-  // Logo 8: Stellar
+  // Logo 8: Stellar (EN)
   <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
     <Sparkles className="w-8 h-8 text-yellow-400" />
     <span className="text-2xl font-serif italic text-white pr-2">Stellar</span>
