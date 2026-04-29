@@ -242,8 +242,9 @@ export default function PlatformAdmin() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold text-foreground">Painel Admin</h1>
-              <p className="text-sm text-[#888]">Visão geral de todas as empresas na plataforma Vincere.</p>
-            </div>
+            <p className="text-sm text-[#888]">Visão geral de todas as empresas na plataforma Vincere.</p>
+            <p className="text-[9px] text-muted-foreground/40 mt-1 uppercase tracking-tighter">Sessão: {user?.email}</p>
+          </div>
             <Button 
               variant="outline" 
               size="sm" 
@@ -297,6 +298,11 @@ export default function PlatformAdmin() {
           <div>
             <p className="text-sm font-semibold text-foreground">📥 {totalLeads} Leads capturados</p>
             <p className="text-xs text-[#888] mt-1">Leads coletados pela Vi e formulários de todas as empresas</p>
+            {viLeads.length === 0 && (
+              <p className="text-[10px] text-amber-500/60 mt-2 font-medium italic">
+                ℹ️ Nenhum lead direto encontrado na tabela `vi_leads`. Verifique se há filtros ativos ou restrições de banco.
+              </p>
+            )}
           </div>
         </div>
 

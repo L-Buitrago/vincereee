@@ -4,6 +4,7 @@ import { useOrganization } from "@/hooks/useOrganization";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, CopyCheck, Inbox, X } from "lucide-react";
+import { toast } from "sonner";
 
 type Notification = {
   id: string;
@@ -235,7 +236,13 @@ export default function NotificationBell() {
             </div>
             
             <div className="p-3 bg-muted/10 border-t border-border text-center">
-               <button className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">
+               <button 
+                onClick={() => {
+                  setIsOpen(false);
+                  toast.info("Em breve", { description: "O histórico completo de notificações será movido para uma página dedicada na próxima atualização." });
+                }}
+                className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors"
+               >
                  Ver histórico completo
                </button>
             </div>
