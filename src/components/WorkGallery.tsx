@@ -40,11 +40,12 @@ const WorkGallery = () => {
               viewport={{ once: true }}
               className="group relative aspect-[4/5] md:aspect-[1.1/1] rounded-[2.5rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500"
             >
+              <div className="absolute inset-0 bg-[#111] -z-10" />
               <img 
                 src={project.image} 
                 alt={project.title}
                 className={cn(
-                  "absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105",
+                  "absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105",
                   hoveredIndex === idx ? "opacity-0" : "opacity-100"
                 )}
               />
