@@ -76,6 +76,11 @@ export default function PlatformMessages() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
+
+
   // Load profiles cache
   const loadProfileName = useCallback(async (userId: string) => {
     if (profilesCache[userId]) return profilesCache[userId];
@@ -389,18 +394,27 @@ export default function PlatformMessages() {
     const content = newMessage.trim();
     setNewMessage("");
 
-    const { error: msgError } = await supabase
+    const { data: newMsg, error: msgError } = await supabase
       .from("direct_messages" as any)
       .insert({
         conversation_id: activeConversation.id,
         sender_id: user.id,
         content,
-      });
+      })
+      .select()
+      .single();
 
     if (msgError) {
       toast({ title: "Erro ao enviar", description: msgError.message, variant: "destructive" });
       setNewMessage(content);
       return;
+    }
+
+    if (newMsg) {
+      setMessages((prev) => {
+        if (prev.find((m) => m.id === newMsg.id)) return prev;
+        return [...prev, newMsg as DirectMessage];
+      });
     }
 
     // Update last message on conversation
