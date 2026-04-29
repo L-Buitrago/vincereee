@@ -88,24 +88,24 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
       viewport={{ once: true }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-shadow duration-700 bg-[#0a0a0a] ${
+      className={`group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-shadow duration-700 ${
         isExtraLarge ? "h-[600px] md:h-[850px] w-full" : "h-[450px] md:h-[600px]"
       }`}
     >
       {/* Background Media */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <AnimatePresence initial={false} mode="popLayout">
+      <div className="absolute inset-0 z-0">
+        <AnimatePresence initial={false}>
           {project.slides ? (
             <motion.img
               key={currentSlide}
               src={project.slides[currentSlide]}
-              initial={{ x: "100%", opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "-30%", opacity: 0 }}
+              alt={`${project.title} slide ${currentSlide + 1}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ 
-                duration: 1.2, 
-                ease: [0.16, 1, 0.3, 1],
-                opacity: { duration: 0.6 }
+                duration: 0.8, 
+                ease: "easeInOut"
               }}
               className="absolute inset-0 w-full h-full object-cover object-top"
             />
