@@ -94,15 +94,15 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
     >
       {/* Background Media */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
           {project.slides ? (
             <motion.img
               key={currentSlide}
               src={project.slides[currentSlide]}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} // Efeito fluido de arrastar
               className="absolute inset-0 w-full h-full object-cover object-top"
             />
           ) : (
