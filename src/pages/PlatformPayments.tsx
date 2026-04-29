@@ -128,18 +128,19 @@ export default function PlatformPayments() {
           </button>
 
           <div className="flex bg-muted/20 p-1 rounded-xl border border-border">
-          <button 
-            onClick={() => setActiveTab('transactions')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'transactions' ? 'bg-sky-500/10 text-sky-400' : 'text-[#888] hover:text-white'}`}
-          >
-            Transações
-          </button>
-          <button 
-            onClick={() => setActiveTab('recoveries')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'recoveries' ? 'bg-sky-500/10 text-sky-400' : 'text-muted-foreground hover:text-foreground'}`}
-          >
-            Recuperações (AI)
-          </button>
+            <button 
+              onClick={() => setActiveTab('transactions')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'transactions' ? 'bg-sky-500/10 text-sky-400' : 'text-[#888] hover:text-white'}`}
+            >
+              Transações
+            </button>
+            <button 
+              onClick={() => setActiveTab('recoveries')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'recoveries' ? 'bg-sky-500/10 text-sky-400' : 'text-muted-foreground hover:text-foreground'}`}
+            >
+              Recuperações (AI)
+            </button>
+          </div>
         </div>
       </div>
 
