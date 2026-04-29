@@ -96,7 +96,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center pt-12 border-t border-white/5 gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-center pt-12 pb-12 border-t border-white/5 gap-8">
           <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/20">© 2026 Vincere. Todos os direitos reservados.</p>
           <div className="flex flex-wrap justify-center gap-x-12 gap-y-4">
             <Link to="/privacidade" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors">Política de Privacidade</Link>
