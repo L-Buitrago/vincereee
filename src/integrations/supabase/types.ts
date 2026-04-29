@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          role: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          role?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          role?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           content: string
@@ -43,8 +64,9 @@ export type Database = {
       }
       checkouts: {
         Row: {
+          amount: number | null
           conversion: number | null
-          created_at: string | null
+          created_at: string
           id: string
           link: string | null
           name: string
@@ -54,8 +76,9 @@ export type Database = {
           total_sales: number | null
         }
         Insert: {
+          amount?: number | null
           conversion?: number | null
-          created_at?: string | null
+          created_at?: string
           id?: string
           link?: string | null
           name: string
@@ -65,8 +88,9 @@ export type Database = {
           total_sales?: number | null
         }
         Update: {
+          amount?: number | null
           conversion?: number | null
-          created_at?: string | null
+          created_at?: string
           id?: string
           link?: string | null
           name?: string
@@ -207,7 +231,7 @@ export type Database = {
       }
       customers: {
         Row: {
-          created_at: string | null
+          created_at: string
           due_date: string | null
           email: string
           id: string
@@ -220,7 +244,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           due_date?: string | null
           email: string
           id?: string
@@ -233,7 +257,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           due_date?: string | null
           email?: string
           id?: string
@@ -258,7 +282,7 @@ export type Database = {
       direct_conversations: {
         Row: {
           category: string | null
-          created_at: string | null
+          created_at: string
           id: string
           last_message: string | null
           last_message_at: string | null
@@ -267,7 +291,7 @@ export type Database = {
         }
         Insert: {
           category?: string | null
-          created_at?: string | null
+          created_at?: string
           id?: string
           last_message?: string | null
           last_message_at?: string | null
@@ -276,7 +300,7 @@ export type Database = {
         }
         Update: {
           category?: string | null
-          created_at?: string | null
+          created_at?: string
           id?: string
           last_message?: string | null
           last_message_at?: string | null
@@ -288,24 +312,24 @@ export type Database = {
       direct_messages: {
         Row: {
           content: string
-          conversation_id: string
-          created_at: string | null
+          conversation_id: string | null
+          created_at: string
           id: string
           read: boolean | null
           sender_id: string
         }
         Insert: {
           content: string
-          conversation_id: string
-          created_at?: string | null
+          conversation_id?: string | null
+          created_at?: string
           id?: string
           read?: boolean | null
           sender_id: string
         }
         Update: {
           content?: string
-          conversation_id?: string
-          created_at?: string | null
+          conversation_id?: string | null
+          created_at?: string
           id?: string
           read?: boolean | null
           sender_id?: string
@@ -323,7 +347,7 @@ export type Database = {
       notifications: {
         Row: {
           body: string
-          created_at: string | null
+          created_at: string
           id: string
           read: boolean | null
           title: string
@@ -332,7 +356,7 @@ export type Database = {
         }
         Insert: {
           body: string
-          created_at?: string | null
+          created_at?: string
           id?: string
           read?: boolean | null
           title: string
@@ -341,7 +365,7 @@ export type Database = {
         }
         Update: {
           body?: string
-          created_at?: string | null
+          created_at?: string
           id?: string
           read?: boolean | null
           title?: string
@@ -352,24 +376,24 @@ export type Database = {
       }
       org_members: {
         Row: {
-          created_at: string | null
+          created_at: string
           id: string
           org_id: string | null
-          role: string | null
+          role: Database["public"]["Enums"]["app_role"] | null
           user_id: string | null
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           org_id?: string | null
-          role?: string | null
+          role?: Database["public"]["Enums"]["app_role"] | null
           user_id?: string | null
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           org_id?: string | null
-          role?: string | null
+          role?: Database["public"]["Enums"]["app_role"] | null
           user_id?: string | null
         }
         Relationships: [
@@ -384,7 +408,7 @@ export type Database = {
       }
       organizations: {
         Row: {
-          created_at: string | null
+          created_at: string
           id: string
           name: string
           owner_email: string
@@ -393,7 +417,7 @@ export type Database = {
           stripe_customer_id: string | null
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           name: string
           owner_email: string
@@ -402,7 +426,7 @@ export type Database = {
           stripe_customer_id?: string | null
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           name?: string
           owner_email?: string
@@ -414,7 +438,7 @@ export type Database = {
       }
       products: {
         Row: {
-          created_at: string | null
+          created_at: string
           id: string
           image: string | null
           name: string
@@ -423,7 +447,7 @@ export type Database = {
           type: string | null
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           image?: string | null
           name: string
@@ -432,7 +456,7 @@ export type Database = {
           type?: string | null
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           image?: string | null
           name?: string
@@ -551,8 +575,8 @@ export type Database = {
           id: string
           last_ai_message: string | null
           org_id: string | null
-          status: string
-          updated_at: string
+          status: string | null
+          updated_at: string | null
         }
         Insert: {
           amount?: number | null
@@ -564,8 +588,8 @@ export type Database = {
           id?: string
           last_ai_message?: string | null
           org_id?: string | null
-          status?: string
-          updated_at?: string
+          status?: string | null
+          updated_at?: string | null
         }
         Update: {
           amount?: number | null
@@ -577,8 +601,8 @@ export type Database = {
           id?: string
           last_ai_message?: string | null
           org_id?: string | null
-          status?: string
-          updated_at?: string
+          status?: string | null
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -752,11 +776,60 @@ export type Database = {
         }
         Relationships: []
       }
+      vincere_known_devices: {
+        Row: {
+          created_at: string | null
+          device_id: string
+          id: string
+          last_login_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          device_id: string
+          id?: string
+          last_login_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          device_id?: string
+          id?: string
+          last_login_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      vincere_verification_codes: {
+        Row: {
+          code: string
+          created_at: string | null
+          expires_at: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          expires_at: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          expires_at?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      check_overdue_payments: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -764,6 +837,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: never; Returns: boolean }
+      is_vincere_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
