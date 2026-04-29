@@ -42,9 +42,9 @@ const VI_PRICES = {
   landing_page: 897,
   site_institucional: 1497,
   ecommerce: 2497,
-  platform_starter: 97,
-  platform_pro: 197,
-  platform_enterprise: 497,
+  platform_starter: 197,
+  platform_pro: 297,
+  platform_enterprise: 597,
 };
 
 const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
