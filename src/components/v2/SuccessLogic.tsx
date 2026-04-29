@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
-import { Star } from "lucide-react";
+import { Star, Command, Hexagon, Triangle, Circle, Box, Sparkles, Activity, Globe } from "lucide-react";
 
 const testimonials = [
   {
@@ -93,21 +93,96 @@ const CARD_WIDTH = 420;
 const GAP = 24;
 const SPEED = 0.4;
 
-const GradientAvatar = ({ name, isHighlight }: { name: string; isHighlight: boolean }) => {
-  const colors = [["#3B82F6","#8B5CF6"],["#10B981","#3B82F6"],["#F59E0B","#EF4444"],["#8B5CF6","#EC4899"],["#06B6D4","#3B82F6"]];
-  const ci = name.charCodeAt(0) % colors.length;
-  const initials = name.split(" ").map(n => n[0]).join("");
+// ─── Componente de Logos Animadas ───────────────────────────────────────────
+const CustomLogos = [
+  // Logo 1: TechFlow
+  <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
+    <Command className="w-8 h-8 text-blue-500" />
+    <span className="text-xl font-bold font-sans text-white tracking-tighter">TechFlow</span>
+  </div>,
+  // Logo 2: LuxLife
+  <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
+    <div className="w-8 h-8 flex items-center justify-center border-2 border-amber-400 rotate-45">
+      <span className="text-amber-400 font-serif font-bold text-lg -rotate-45">L</span>
+    </div>
+    <span className="text-xl font-serif text-white tracking-widest">LUXLIFE</span>
+  </div>,
+  // Logo 3: NextGen
+  <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
+    <Hexagon className="w-8 h-8 text-emerald-400" />
+    <span className="text-xl font-black font-mono text-white italic tracking-widest">NEXTGEN</span>
+  </div>,
+  // Logo 4: UrbanStyle
+  <div className="flex items-center gap-1 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
+    <span className="text-2xl font-black font-sans text-white tracking-tighter">URBAN</span>
+    <span className="text-2xl font-light font-sans text-white/50 tracking-tighter">STYLE.</span>
+  </div>,
+  // Logo 5: DataSynth
+  <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
+    <Activity className="w-8 h-8 text-purple-500" />
+    <span className="text-xl font-bold font-sans text-white">DataSynth</span>
+  </div>,
+  // Logo 6: GlobalLog
+  <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
+    <Globe className="w-8 h-8 text-sky-400" />
+    <span className="text-xl font-bold font-sans text-white tracking-wide uppercase">GlobalLog</span>
+  </div>,
+  // Logo 7: FinTech Solutions
+  <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
+    <div className="flex -space-x-2">
+      <Circle className="w-6 h-6 text-green-500 fill-green-500" />
+      <Circle className="w-6 h-6 text-white mix-blend-difference" />
+    </div>
+    <span className="text-xl font-bold font-sans text-white">FinTech</span>
+  </div>,
+  // Logo 8: Stellar
+  <div className="flex items-center gap-2 px-8 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100 duration-500">
+    <Sparkles className="w-8 h-8 text-yellow-400" />
+    <span className="text-2xl font-serif italic text-white pr-2">Stellar</span>
+  </div>,
+];
+
+const LogoMarquee = () => {
+  const x = useMotionValue(0);
+  // Velocidade diferente para o marquee de logos
+  const MARQUEE_SPEED = 0.5;
+
+  // Calculamos uma largura arbitrária ou usamos porcentagem, 
+  // mas o framer-motion lida bem com flex e translateX.
+  useAnimationFrame((t, dt) => {
+    let currentX = x.get();
+    currentX -= MARQUEE_SPEED;
+    
+    // Quando rolar metade do conteúdo duplicado, reseta
+    // Assumimos que a largura total é longa o suficiente
+    if (currentX <= -1500) {
+      currentX += 1500;
+    }
+    
+    x.set(currentX);
+  });
+
   return (
-    <div className="relative">
-      <div className={`w-14 h-14 rounded-full p-[2px] ${isHighlight ? "gradient-border-animated" : ""}`}
-        style={{ background: `linear-gradient(135deg, ${colors[ci][0]}, ${colors[ci][1]})` }}>
-        <div className={`w-full h-full rounded-full flex items-center justify-center text-sm font-black ${isHighlight ? "bg-primary" : "bg-secondary"}`}>
-          <span className="text-white">{initials}</span>
-        </div>
+    <div className="mt-24 pt-12 border-t border-white/5 relative overflow-hidden flex flex-col items-center">
+      <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-8">Empresas que confiam na Vincere</div>
+      
+      <div className="relative w-full flex items-center fade-mask-x py-4">
+        <motion.div 
+          className="flex whitespace-nowrap items-center" 
+          style={{ x }}
+        >
+          {/* Duplicamos os logos algumas vezes para garantir o scroll infinito perfeito */}
+          {[...CustomLogos, ...CustomLogos, ...CustomLogos, ...CustomLogos].map((logo, i) => (
+            <div key={i} className="flex-shrink-0">
+              {logo}
+            </div>
+          ))}
+        </motion.div>
       </div>
     </div>
   );
 };
+
 
 const SuccessLogic = () => {
   const x = useMotionValue(0);
@@ -135,6 +210,7 @@ const SuccessLogic = () => {
   return (
     <section className="py-24 bg-secondary overflow-hidden relative">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      
       <div className="container mx-auto px-4 md:px-24 mb-16">
         <div className="flex items-center gap-4 text-primary mb-6">
           <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
@@ -166,29 +242,29 @@ const SuccessLogic = () => {
             <motion.div key={i} whileHover={{ scale: 1.01 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className={`min-w-[340px] md:min-w-[420px] rounded-[28px] flex flex-col justify-between shrink-0 relative overflow-hidden group transition-all duration-500 border border-transparent ${t.highlight ? "glass-light hover:bg-[#0ea5e9]/10 hover:border-[#0ea5e9]/30" : "glass-dark hover:bg-[#0ea5e9]/5 hover:border-[#0ea5e9]/20"}`}
-              style={{ minHeight: 300 }}>
+              style={{ minHeight: 280 }}>
               <div className={`absolute top-4 right-6 text-8xl font-serif leading-none select-none pointer-events-none transition-colors group-hover:text-sky-500/10 ${t.highlight ? "text-white/[0.06]" : "text-white/[0.04]"}`}>❝</div>
               <div className="absolute inset-0 rounded-[28px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none shadow-[0_0_40px_rgba(14,165,233,0.1)]" />
+              
               <div className="relative z-10 p-8 pb-0 flex flex-col flex-1">
-                <p className="text-base md:text-lg font-medium leading-relaxed text-white/70 flex-1">"{t.quote}"</p>
+                <p className="text-base md:text-lg font-medium leading-relaxed text-white/80 flex-1">"{t.quote}"</p>
               </div>
+              
               <div className="relative z-10 p-8 pt-6">
-                <div className="flex items-center gap-4">
-                  <GradientAvatar name={t.author} isHighlight={t.highlight} />
-                  <div>
-                    <p className="font-bold text-sm text-white">{t.author}</p>
-                    <p className="text-xs uppercase tracking-widest text-white/30 mt-0.5">{t.role}</p>
-                  </div>
+                <div>
+                  <p className="font-bold text-sm text-white">{t.author}</p>
+                  <p className="text-xs uppercase tracking-widest text-white/40 mt-0.5">{t.role}</p>
                 </div>
               </div>
               {t.highlight && <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />}
             </motion.div>
           ))}
         </motion.div>
-        <div className="flex justify-center mt-10 gap-2">
-          {testimonials.map((_, i) => (<div key={i} className={`h-1 rounded-full transition-all duration-300 ${i === 0 ? "w-8 bg-primary" : "w-4 bg-white/10"}`} />))}
-        </div>
       </div>
+
+      {/* Marquee de Logos */}
+      <LogoMarquee />
+
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
     </section>
   );
