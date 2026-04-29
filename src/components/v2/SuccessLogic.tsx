@@ -89,8 +89,8 @@ const testimonials = [
   },
 ];
 
-const CARD_WIDTH = 300;
-const GAP = 16;
+const CARD_WIDTH = 360;
+const GAP = 24;
 const SPEED = 0.4;
 
 // ─── Componente de Logos Animadas ───────────────────────────────────────────
@@ -159,10 +159,10 @@ const LogoMarquee = () => {
   });
 
   return (
-    <div className="mt-16 pt-8 border-t border-white/5 relative overflow-hidden flex flex-col items-center">
-      <div className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/30 mb-6">Empresas que confiam na Vincere</div>
+    <div className="mt-24 pt-12 border-t border-white/5 relative overflow-hidden flex flex-col items-center">
+      <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-8">Empresas que confiam na Vincere</div>
       
-      <div className="relative w-full flex items-center fade-mask-x py-2">
+      <div className="relative w-full flex items-center fade-mask-x py-4">
         <motion.div 
           className="flex whitespace-nowrap items-center" 
           style={{ x }}
@@ -201,23 +201,23 @@ const SuccessLogic = () => {
   });
 
   return (
-    <section className="py-10 bg-secondary overflow-hidden relative">
+    <section className="py-20 bg-secondary overflow-hidden relative">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
       
-      <div className="container mx-auto px-4 md:px-24 mb-8">
-        <div className="flex items-center gap-3 text-primary mb-3">
-          <div className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-          <span className="text-[9px] font-bold uppercase tracking-[0.4em]">[ Success Logic ]</span>
+      <div className="container mx-auto px-4 md:px-24 mb-16">
+        <div className="flex items-center gap-4 text-primary mb-6">
+          <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.4em]">[ Success Logic ]</span>
         </div>
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          <h2 className="text-2xl md:text-4xl font-serif italic text-white tracking-tighter">O que dizem os <br /> nossos parceiros.</h2>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <h2 className="text-4xl md:text-6xl font-serif italic text-white tracking-tighter">O que dizem os <br /> nossos parceiros.</h2>
         </div>
       </div>
 
       <div className="relative cursor-grab active:cursor-grabbing fade-mask-x"
         onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
         <motion.div 
-          className="flex gap-4 pl-4 md:pl-24" 
+          className="flex gap-6 pl-4 md:pl-24" 
           style={{ x }}
           drag="x" 
           dragElastic={0.05}
@@ -231,20 +231,21 @@ const SuccessLogic = () => {
             x.set(finalX);
           }}>
           {[...testimonials, ...testimonials].map((t, i) => (
-            <motion.div key={i} whileHover={{ scale: 1.02 }}
+            <motion.div key={i} whileHover={{ scale: 1.01 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className={`min-w-[260px] md:min-w-[300px] rounded-[20px] flex flex-col justify-between shrink-0 relative overflow-hidden group transition-all duration-500 border border-transparent ${t.highlight ? "glass-light hover:bg-[#0ea5e9]/10 hover:border-[#0ea5e9]/30" : "glass-dark hover:bg-[#0ea5e9]/5 hover:border-[#0ea5e9]/20"}`}
-              style={{ minHeight: 160 }}>
-              <div className={`absolute top-3 right-5 text-5xl font-serif leading-none select-none pointer-events-none transition-colors group-hover:text-sky-500/10 ${t.highlight ? "text-white/[0.06]" : "text-white/[0.04]"}`}>❝</div>
+              className={`min-w-[300px] md:min-w-[360px] rounded-[28px] flex flex-col justify-between shrink-0 relative overflow-hidden group transition-all duration-500 border border-transparent ${t.highlight ? "glass-light hover:bg-[#0ea5e9]/10 hover:border-[#0ea5e9]/30" : "glass-dark hover:bg-[#0ea5e9]/5 hover:border-[#0ea5e9]/20"}`}
+              style={{ minHeight: 220 }}>
+              <div className={`absolute top-4 right-6 text-7xl font-serif leading-none select-none pointer-events-none transition-colors group-hover:text-sky-500/10 ${t.highlight ? "text-white/[0.06]" : "text-white/[0.04]"}`}>❝</div>
+              <div className="absolute inset-0 rounded-[28px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none shadow-[0_0_40px_rgba(14,165,233,0.1)]" />
               
-              <div className="relative z-10 p-5 pb-0 flex flex-col flex-1">
-                <p className="text-[12px] md:text-[13px] font-medium leading-relaxed text-white/80 flex-1">"{t.quote}"</p>
+              <div className="relative z-10 p-8 pb-0 flex flex-col flex-1">
+                <p className="text-base md:text-lg font-medium leading-relaxed text-white/80 flex-1">"{t.quote}"</p>
               </div>
               
-              <div className="relative z-10 p-5 pt-2">
+              <div className="relative z-10 p-8 pt-6">
                 <div>
-                  <p className="font-bold text-[11px] text-white">{t.author}</p>
-                  <p className="text-[9px] uppercase tracking-widest text-white/40 mt-0.5">{t.role}</p>
+                  <p className="font-bold text-sm text-white">{t.author}</p>
+                  <p className="text-xs uppercase tracking-widest text-white/40 mt-0.5">{t.role}</p>
                 </div>
               </div>
               {t.highlight && <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />}
