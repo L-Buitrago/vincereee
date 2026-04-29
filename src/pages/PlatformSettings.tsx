@@ -303,7 +303,7 @@ export default function PlatformSettings() {
                       <div className={`absolute inset-x-0 bottom-0 py-2 text-center text-[10px] font-bold uppercase tracking-widest transition-all ${
                         theme === "dark" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
                       }`}>
-                        Dark
+                        Escuro
                       </div>
                       <Palette className={`w-8 h-8 transition-all ${theme === "dark" ? "text-primary scale-110" : "text-muted-foreground/30"}`} />
                     </div>
@@ -319,11 +319,28 @@ export default function PlatformSettings() {
                        <div className={`absolute inset-x-0 bottom-0 py-2 text-center text-[10px] font-bold uppercase tracking-widest transition-all ${
                         theme === "light" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
                       }`}>
-                        Modo Claro
+                        Claro
                       </div>
                        <Palette className={`w-8 h-8 transition-all ${theme === "light" ? "text-primary scale-110" : "text-muted-foreground/30"}`} />
                     </div>
+
+                    <div 
+                      onClick={() => setTheme("system")}
+                      className={`aspect-video rounded-2xl border-2 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer transition-all ${
+                        theme === "system" 
+                          ? "bg-primary/10 border-primary shadow-[0_0_20px_hsl(var(--primary)/0.1)]" 
+                          : "bg-muted border-border hover:border-primary/50"
+                      }`}
+                    >
+                       <div className={`absolute inset-x-0 bottom-0 py-2 text-center text-[10px] font-bold uppercase tracking-widest transition-all ${
+                        theme === "system" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                      }`}>
+                        Sistema
+                      </div>
+                       <Settings className={`w-8 h-8 transition-all ${theme === "system" ? "text-primary scale-110" : "text-muted-foreground/30"}`} />
+                    </div>
                   </div>
+
 
                 </div>
               )}
