@@ -46,6 +46,8 @@ export function useOrganization() {
   const { data: membership, isLoading } = useQuery({
     queryKey: ['org-membership', user?.id],
     enabled: !!user,
+    retry: false,
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       try {
         // 1. Check direct membership

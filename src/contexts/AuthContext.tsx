@@ -58,7 +58,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .select('id')
       .eq('user_id', userId)
       .eq('device_id', deviceId)
-      .maybeSingle();
+      .maybeSingle()
+      .timeout(5000);
 
     if (error) {
       console.error("Error checking device verification:", error);
