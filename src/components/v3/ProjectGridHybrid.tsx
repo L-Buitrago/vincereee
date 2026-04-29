@@ -88,21 +88,25 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
       viewport={{ once: true }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-shadow duration-700 bg-gray-100 ${
-        isExtraLarge ? "h-[500px] md:h-[700px] w-full" : "h-[450px] md:h-[600px]"
+      className={`group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-shadow duration-700 bg-[#0a0a0a] ${
+        isExtraLarge ? "h-[600px] md:h-[850px] w-full" : "h-[450px] md:h-[600px]"
       }`}
     >
       {/* Background Media */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <AnimatePresence initial={false}>
+        <AnimatePresence initial={false} mode="popLayout">
           {project.slides ? (
             <motion.img
               key={currentSlide}
               src={project.slides[currentSlide]}
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} // Efeito fluido de arrastar
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "-30%", opacity: 0 }}
+              transition={{ 
+                duration: 1.2, 
+                ease: [0.16, 1, 0.3, 1],
+                opacity: { duration: 0.6 }
+              }}
               className="absolute inset-0 w-full h-full object-cover object-top"
             />
           ) : (
