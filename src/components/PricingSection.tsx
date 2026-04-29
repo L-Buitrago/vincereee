@@ -58,7 +58,7 @@ const platformPlans = [
   {
     icon: Server,
     name: "Starter",
-    price: "97",
+    price: "197",
     desc: "Para quem está começando a vender e precisa de uma base sólida.",
     features: [
       "Até 100 vendas/mês", 
@@ -73,7 +73,7 @@ const platformPlans = [
   {
     icon: TrendingUp,
     name: "Pro",
-    price: "197",
+    price: "297",
     desc: "Para escalar suas vendas com recuperação e membros ilimitados.",
     features: [
       "Vendas ilimitadas", 
@@ -89,7 +89,7 @@ const platformPlans = [
   {
     icon: Settings2,
     name: "Enterprise",
-    price: "497",
+    price: "597",
     desc: "Para operações robustas com requisitos técnicos avançados.",
     features: [
       "Tudo do plano Pro", 
