@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { Eye, RefreshCw } from "lucide-react";
+import { Eye, RefreshCw, Download } from "lucide-react";
 import { formatCurrency, type Transaction } from "@/data/platformMockData";
 
 const statusColors: Record<string, string> = {
@@ -100,7 +100,34 @@ export default function PlatformPayments() {
           <p className="text-sm text-[#888] mt-1">Gerencie suas transações e recuperações de vendas.</p>
         </div>
         
-        <div className="flex bg-muted/20 p-1 rounded-xl border border-border">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => {
+              const dataToExport = activeTab === 'transactions' ? transactions : recoveries;
+              if (dataToExport.length === 0) return;
+              const headers = ["Cliente", "Email", "Valor", "Status", "Data"];
+              const rows = dataToExport.map((item: any) => [
+                item.customer_name || item.clientName || item.client_name || 'Cliente',
+                item.customer_email || item.email || '',
+                (item.amount || 0).toString(),
+                item.status || '',
+                new Date(item.created_at || item.date).toLocaleDateString("pt-BR")
+              ]);
+              const csvContent = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(",")).join("\n");
+              const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = `vincere_${activeTab}_${new Date().toISOString().split('T')[0]}.csv`;
+              link.click();
+              URL.revokeObjectURL(url);
+            }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-all shadow-sm"
+          >
+            <Download className="w-4 h-4" /> Exportar CSV
+          </button>
+
+          <div className="flex bg-muted/20 p-1 rounded-xl border border-border">
           <button 
             onClick={() => setActiveTab('transactions')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'transactions' ? 'bg-sky-500/10 text-sky-400' : 'text-[#888] hover:text-white'}`}

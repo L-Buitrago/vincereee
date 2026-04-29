@@ -3,6 +3,24 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0"
 
 serve(async (req) => {
   try {
+    // ── Webhook Security: Verify access token ──────────────────────
+    const webhookToken = Deno.env.get('ASAAS_WEBHOOK_TOKEN')
+    if (webhookToken) {
+      const authHeader = req.headers.get('asaas-access-token') || req.headers.get('access_token') || ''
+      const url = new URL(req.url)
+      const queryToken = url.searchParams.get('token') || ''
+      
+      if (authHeader !== webhookToken && queryToken !== webhookToken) {
+        console.error('❌ Webhook rejected: Invalid or missing authentication token')
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), { 
+          headers: { 'Content-Type': 'application/json' },
+          status: 401 
+        })
+      }
+    } else {
+      console.warn('⚠️ ASAAS_WEBHOOK_TOKEN not configured — webhook accepting all requests (INSECURE)')
+    }
+
     const body = await req.json()
     const event = body.event
     const payment = body.payment
@@ -11,7 +29,12 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-    console.log(`Asaas Webhook Received: ${event}`, payment)
+    console.log(`✅ Asaas Webhook Received: ${event}`, JSON.stringify({
+      id: payment?.id,
+      value: payment?.value,
+      status: payment?.status,
+      customer: payment?.customer,
+    }))
 
     if (event === 'PAYMENT_RECEIVED' || event === 'PAYMENT_CONFIRMED') {
       const metadata = payment.metadata || {}
@@ -49,8 +72,6 @@ serve(async (req) => {
 
         // --- ENVIAR EMAIL DE BOAS-VINDAS ---
         try {
-          const supabaseUrl = Deno.env.get('SUPABASE_URL') || ''
-          const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
           const welcomeUrl = `${supabaseUrl}/functions/v1/send-welcome-email`
           await fetch(welcomeUrl, {
             method: 'POST',
@@ -88,6 +109,35 @@ serve(async (req) => {
           status: 'Cliente Ativo',
           org_id: targetOrgId,
         }, { onConflict: 'email,org_id' })
+      }
+    }
+
+    // Handle payment overdue
+    if (event === 'PAYMENT_OVERDUE') {
+      const metadata = payment.metadata || {}
+      const email = payment.customer_email || metadata.customer_email
+      const name = payment.customer_name || 'Cliente'
+
+      console.log(`⚠️ Payment overdue for ${email}`)
+
+      // Trigger overdue email
+      try {
+        const overdueUrl = `${supabaseUrl}/functions/v1/send-overdue-email`
+        await fetch(overdueUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${supabaseServiceKey}`,
+          },
+          body: JSON.stringify({
+            customerName: name,
+            customerEmail: email,
+            amount: payment.value,
+            dueDate: payment.dueDate,
+          }),
+        })
+      } catch (emailErr) {
+        console.error('⚠️ Overdue email failed (non-blocking):', emailErr)
       }
     }
 

@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useOrganization } from "@/hooks/useOrganization";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Filter, X, MessageCircle, Eye, Trash2, Send, Plus, Upload, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, Filter, X, MessageCircle, Eye, Trash2, Send, Plus, Upload, AlertTriangle, ChevronDown, ChevronUp, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -102,6 +102,32 @@ export default function PlatformClients() {
       queryClient.invalidateQueries({ queryKey: ['dashboard-customers'] });
     }
     e.target.value = '';
+  };
+
+  const exportCSV = () => {
+    if (filtered.length === 0) {
+      toast({ title: "Nenhum dado", description: "Não há clientes para exportar.", variant: "destructive" });
+      return;
+    }
+    const headers = ["Nome", "Email", "Telefone", "Status", "Gasto Total", "Vencimento", "Data Cadastro"];
+    const rows = filtered.map(c => [
+      c.name,
+      c.email,
+      c.phone || "",
+      c.status,
+      (c.total_spent || 0).toString(),
+      c.due_date ? new Date(c.due_date).toLocaleDateString("pt-BR") : "",
+      new Date(c.created_at).toLocaleDateString("pt-BR")
+    ]);
+    const csvContent = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(",")).join("\n");
+    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `vincere_clientes_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    toast({ title: "✅ Exportado!", description: `${filtered.length} clientes exportados em CSV.` });
   };
 
   const { data: clients = [], isLoading, refetch } = useQuery({
@@ -298,6 +324,12 @@ export default function PlatformClients() {
             <p className="text-sm text-muted-foreground font-medium mt-1">{filtered.length} clientes encontrados</p>
           </div>
           <div className="flex gap-2">
+            <button
+              onClick={exportCSV}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-all shadow-sm"
+            >
+              <Download className="w-4 h-4" /> Exportar CSV
+            </button>
             <label className="cursor-pointer">
               <input type="file" accept=".csv" className="hidden" onChange={importCSV} />
               <div className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-all shadow-sm">

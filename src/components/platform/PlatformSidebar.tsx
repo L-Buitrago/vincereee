@@ -32,6 +32,7 @@ const menuItems = [
 ];
 
 const bottomItems = [
+  { label: "Minha Assinatura", icon: CreditCard, path: "/plataforma/assinatura" },
   { label: "Configurações", icon: Settings, path: "/plataforma/configuracoes" },
   { label: "Minhas Compras", icon: ShoppingBag, path: "/plataforma/compras" },
   { label: "Ajuda", icon: HelpCircle, path: "/plataforma/suporte?mode=guide" },

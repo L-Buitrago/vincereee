@@ -29,6 +29,7 @@ import PlatformSupport from "./pages/PlatformSupport";
 import PlatformSettings from "./pages/PlatformSettings";
 import PlatformPurchases from "./pages/PlatformPurchases";
 import PlatformMessages from "./pages/PlatformMessages";
+import PlatformSubscription from "./pages/PlatformSubscription";
 import DemoDashboard from "./pages/DemoDashboard";
 import ViExperience from "./pages/ViExperience";
 import DemoServices from "./pages/DemoServices";
@@ -99,6 +100,7 @@ const App = () => (
                   <Route path="/plataforma/configuracoes" element={<PlatformSettings />} />
                   <Route path="/plataforma/compras" element={<PlatformPurchases />} />
                   <Route path="/plataforma/mensagens" element={<PlatformMessages />} />
+                  <Route path="/plataforma/assinatura" element={<PlatformSubscription />} />
                 </Route>
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

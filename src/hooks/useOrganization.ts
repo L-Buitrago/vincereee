@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
-const ADMIN_EMAILS = [
+// Fallback list in case DB query fails (e.g., table not yet created)
+const FALLBACK_ADMIN_EMAILS = [
   "assasinghost910@gmail.com",
   "nathanwar03@gmail.com",
   "ryanfernandosilva12@gmail.com",
@@ -19,7 +20,21 @@ type Organization = {
 
 export function useOrganization() {
   const { user } = useAuth();
-  const isAdmin = ADMIN_EMAILS.includes(user?.email?.toLowerCase() || "");
+
+  // Fetch admin emails from the database
+  const { data: adminEmails = FALLBACK_ADMIN_EMAILS } = useQuery({
+    queryKey: ['admin-emails'],
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('admin_users' as any)
+        .select('email');
+      if (error || !data || data.length === 0) return FALLBACK_ADMIN_EMAILS;
+      return (data as any[]).map((d: any) => d.email.toLowerCase());
+    }
+  });
+
+  const isAdmin = adminEmails.includes(user?.email?.toLowerCase() || "");
 
   const { data: membership, isLoading } = useQuery({
     queryKey: ['org-membership', user?.id],
