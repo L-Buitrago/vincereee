@@ -39,11 +39,15 @@ export default function PlatformAdmin() {
   const { data: orgs = [], isLoading: orgsLoading } = useQuery({
     queryKey: ['admin-orgs'],
     queryFn: async () => {
+      console.log("Admin: Buscando organizações...");
       const { data, error } = await supabase
         .from('organizations' as any)
         .select('*')
         .order('created_at', { ascending: false });
-      if (error) throw error;
+      if (error) {
+        console.error("Erro ao buscar organizações:", error);
+        throw error;
+      }
       return data as any[] as Org[];
     }
   });
@@ -51,10 +55,14 @@ export default function PlatformAdmin() {
   const { data: allCustomers = [] } = useQuery({
     queryKey: ['admin-all-customers'],
     queryFn: async () => {
+      console.log("Admin: Buscando clientes...");
       const { data, error } = await supabase
         .from('customers' as any)
         .select('*');
-      if (error) throw error;
+      if (error) {
+        console.error("Erro ao buscar clientes:", error);
+        throw error;
+      }
       return data as any[];
     }
   });
@@ -62,8 +70,12 @@ export default function PlatformAdmin() {
   const { data: viLeads = [] } = useQuery({
     queryKey: ['admin-vi-leads'],
     queryFn: async () => {
+      console.log("Admin: Buscando leads da Vi...");
       const { data, error } = await supabase.from('vi_leads' as any).select('*').order('created_at', { ascending: false });
-      if (error) throw error;
+      if (error) {
+        console.error("Erro ao buscar leads:", error);
+        throw error;
+      }
       return data as any[];
     }
   });
@@ -227,9 +239,26 @@ export default function PlatformAdmin() {
           <div className="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center">
             <Crown className="w-5 h-5 text-sky-400" />
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Painel Admin</h1>
-            <p className="text-sm text-[#888]">Visão geral de todas as empresas na plataforma Vincere.</p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">Painel Admin</h1>
+              <p className="text-sm text-[#888]">Visão geral de todas as empresas na plataforma Vincere.</p>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => {
+                queryClient.invalidateQueries({ queryKey: ['admin-orgs'] });
+                queryClient.invalidateQueries({ queryKey: ['admin-all-customers'] });
+                queryClient.invalidateQueries({ queryKey: ['admin-vi-leads'] });
+                queryClient.invalidateQueries({ queryKey: ['admin-all-projects'] });
+                toast({ title: "Atualizando dados...", description: "Buscando informações mais recentes do banco." });
+              }}
+              className="gap-2 border-white/10 hover:bg-white/5"
+            >
+              <TrendingUp className="w-4 h-4" />
+              Sincronizar Dados
+            </Button>
           </div>
         </div>
       </div>
