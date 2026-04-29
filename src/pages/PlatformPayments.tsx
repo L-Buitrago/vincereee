@@ -140,6 +140,7 @@ export default function PlatformPayments() {
           >
             Recuperações (AI)
           </button>
+          </div>
         </div>
       </div>
 
