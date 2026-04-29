@@ -68,7 +68,7 @@ export default function PlatformHeader({ title, searchQuery, setSearchQuery }: P
       </div>
 
       <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center justify-center min-w-[120px] group transition-all duration-500 hover:scale-105">
-        <div className="flex items-center gap-1.5 text-[7px] font-bold text-muted-foreground/30 uppercase tracking-[0.4em] mb-1.5 transition-colors group-hover:text-sky-500/40">
+        <div className="flex items-center gap-1.5 text-[7px] font-bold text-muted-foreground/60 uppercase tracking-[0.4em] mb-1.5 transition-colors group-hover:text-sky-500/40">
           <span>{offsetString}</span>
           <div className="w-0.5 h-0.5 rounded-full bg-border" />
           <span>LOCAL</span>
@@ -87,7 +87,7 @@ export default function PlatformHeader({ title, searchQuery, setSearchQuery }: P
           </div>
         </div>
 
-        <div className="text-[7px] font-black text-muted-foreground/30 uppercase tracking-[0.6em] mt-2 group-hover:text-foreground/40 transition-colors">
+        <div className="text-[7px] font-black text-muted-foreground/60 uppercase tracking-[0.6em] mt-2 group-hover:text-foreground/40 transition-colors">
           LOCAL TIME
         </div>
       </div>
