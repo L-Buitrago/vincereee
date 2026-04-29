@@ -22,13 +22,15 @@ export default function PlatformSettings() {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [companyName, setCompanyName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
 
   // Security State
   const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
     if (user) {
-      setFullName(user.user_metadata?.full_name || "");
+      if (user.user_metadata?.full_name) setFullName(user.user_metadata.full_name);
+      setNewEmail(user.email || "");
       // Fetch additional profile data
       supabase
         .from("profiles")
@@ -123,6 +125,22 @@ export default function PlatformSettings() {
     }
   };
 
+  const handleUpdateEmail = async () => {
+    if (!newEmail || newEmail === user?.email) return;
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ email: newEmail });
+      if (error) throw error;
+      toast.success("E-mail de confirmação enviado!", {
+        description: "Verifique sua nova caixa de entrada para concluir a alteração."
+      });
+    } catch (error: any) {
+      toast.error(`Erro ao mudar e-mail: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const tabs = [
     { id: "perfil", label: "Perfil", icon: User },
     { id: "notificacoes", label: "Notificações", icon: Bell },
@@ -175,11 +193,28 @@ export default function PlatformSettings() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest ml-1">Email Principal</label>
-                      <input 
-                        defaultValue={user?.email || ""} 
-                        disabled 
-                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 text-sm text-muted-foreground cursor-not-allowed" 
-                      />
+                      <div className="flex gap-2">
+                        <input 
+                          value={newEmail}
+                          onChange={(e) => setNewEmail(e.target.value)}
+                          className="flex-1 bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary/50 transition-all focus:ring-1 focus:ring-primary/50 outline-none" 
+                        />
+                        {newEmail !== user?.email && (
+                          <Button 
+                            onClick={handleUpdateEmail}
+                            disabled={loading}
+                            size="sm"
+                            className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
+                          >
+                            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Alterar"}
+                          </Button>
+                        )}
+                      </div>
+                      {newEmail !== user?.email && (
+                        <p className="text-[10px] text-muted-foreground mt-1 ml-1 italic">
+                          Um link de confirmação será enviado para o novo e-mail.
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest ml-1">Telefone / WhatsApp</label>
