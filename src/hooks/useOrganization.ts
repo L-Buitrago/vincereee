@@ -21,27 +21,27 @@ type Organization = {
 
 export function useOrganization() {
   const { user } = useAuth();
-  const [forceStopLoading, setForceStopLoading] = (window as any)._vincere_force_loading || [false, () => {}];
   
-  // Create a local state to force stop loading if the query hangs
-  const [localLoading, setLocalLoading] = useState(true);
+  // Safety timeout: force loading to stop after 5 seconds no matter what
+  const [timedOut, setTimedOut] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLocalLoading(false);
-    }, 7000);
+      setTimedOut(true);
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
 
+  // Fetch admin emails from the database
   const { data: adminEmails = FALLBACK_ADMIN_EMAILS } = useQuery({
     queryKey: ['admin-emails'],
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    staleTime: 5 * 60 * 1000,
+    retry: false,
     queryFn: async () => {
       try {
         const { data, error } = await supabase
           .from('admin_users' as any)
-          .select('email')
-          .timeout(5000); // Don't wait forever
+          .select('email');
         
         if (error || !data || data.length === 0) return FALLBACK_ADMIN_EMAILS;
         return (data as any[]).map((d: any) => d.email.toLowerCase());
@@ -66,8 +66,7 @@ export function useOrganization() {
           .from('org_members' as any)
           .select('org_id, role, organizations(*)')
           .eq('user_id', user!.id)
-          .maybeSingle()
-          .timeout(5000);
+          .maybeSingle();
 
         if (!memError && directMem) return directMem;
 
@@ -77,8 +76,7 @@ export function useOrganization() {
             .from('organizations' as any)
             .select('*')
             .eq('owner_email', user.email)
-            .maybeSingle()
-            .timeout(5000);
+            .maybeSingle();
 
           if (!orgError && ownedOrg) {
             return {
@@ -104,7 +102,7 @@ export function useOrganization() {
     orgRole,
     org,
     isAdmin,
-    isLoading: isLoading && localLoading,
+    isLoading: isLoading && !timedOut,
     hasOrg: !!orgId || isAdmin,
   };
 }

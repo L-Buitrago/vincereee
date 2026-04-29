@@ -47,39 +47,43 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const checkDeviceVerification = async (userId: string) => {
-    if (!userId || userId === '00000000-0000-0000-0000-000000000000') {
-      setIsDeviceVerified(true);
-      return;
-    }
+    try {
+      if (!userId || userId === '00000000-0000-0000-0000-000000000000') {
+        setIsDeviceVerified(true);
+        return;
+      }
 
-    const deviceId = getDeviceId();
-    const { data, error } = await supabase
-      .from('vincere_known_devices')
-      .select('id')
-      .eq('user_id', userId)
-      .eq('device_id', deviceId)
-      .maybeSingle()
-      .timeout(5000);
+      const deviceId = getDeviceId();
+      const { data, error } = await supabase
+        .from('vincere_known_devices')
+        .select('id')
+        .eq('user_id', userId)
+        .eq('device_id', deviceId)
+        .maybeSingle();
 
-    if (error) {
-      console.error("Error checking device verification:", error);
-      setIsDeviceVerified(true); // Fallback to avoid lockout on error
-      return;
-    }
+      if (error) {
+        console.error("Error checking device verification:", error);
+        setIsDeviceVerified(true); // Fallback to avoid lockout on error
+        return;
+      }
 
-    if (!data) {
-      setIsDeviceVerified(false);
-      // Trigger email automatically on first detection of unknown device
-      supabase.functions.invoke("vincere-2fa", {
-        body: { 
-          action: "send", 
-          userId, 
-          email: user?.email || session?.user?.email, 
-          deviceId 
-        },
-      });
-    } else {
-      setIsDeviceVerified(true);
+      if (!data) {
+        setIsDeviceVerified(false);
+        // Trigger email automatically on first detection of unknown device
+        supabase.functions.invoke("vincere-2fa", {
+          body: { 
+            action: "send", 
+            userId, 
+            email: user?.email || session?.user?.email, 
+            deviceId 
+          },
+        });
+      } else {
+        setIsDeviceVerified(true);
+      }
+    } catch (err) {
+      console.error("Device verification failed, allowing access:", err);
+      setIsDeviceVerified(true); // Never lock user out on error
     }
   };
 
@@ -102,6 +106,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    // FAILSAFE: Force loading to false after 5 seconds no matter what
+    const failsafe = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!session && window.location.hostname === 'localhost') {
@@ -140,9 +149,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         setLoading(false);
       }
+    }).catch((err) => {
+      console.error("getSession failed:", err);
+      setLoading(false); // Always stop loading even on error
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      clearTimeout(failsafe);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signOut = async () => {
