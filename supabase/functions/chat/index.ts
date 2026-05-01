@@ -81,92 +81,77 @@ serve(async (req) => {
     const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
-    let apiUrl: string;
-    let headers: Record<string, string> = { "Content-Type": "application/json" };
-    let requestBody: any;
+    console.log(`[Chat] Model: ${requestedModel}, Gemini Key: ${GEMINI_API_KEY ? "Present" : "Missing"}`);
 
-    // Lógica para selecionar o provedor baseado no modelo e chaves disponíveis
-    if (requestedModel.includes("claude") && ANTHROPIC_API_KEY) {
-      // Direct Anthropic API
-      apiUrl = "https://api.anthropic.com/v1/messages";
-      headers["x-api-key"] = ANTHROPIC_API_KEY;
-      headers["anthropic-version"] = "2023-06-01";
-      requestBody = {
-        model: requestedModel.replace("anthropic/", ""),
-        system: SYSTEM_PROMPT,
-        messages: limitedMessages.map((m: any) => ({
-          role: m.role === "assistant" ? "assistant" : "user",
-          content: m.content,
-        })),
-        max_tokens: 4096,
-        stream: shouldStream,
-      };
-    } else if (requestedModel.includes("gemini") && GEMINI_API_KEY) {
-      // Direct Google Gemini API (OpenAI Compatible)
-      apiUrl = `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions`;
-      headers["Authorization"] = `Bearer ${GEMINI_API_KEY}`;
-      requestBody = {
-        model: requestedModel.includes("/") ? requestedModel.split("/")[1] : requestedModel,
-        messages: [{ role: "system", content: SYSTEM_PROMPT }, ...limitedMessages],
-        stream: shouldStream,
-      };
-    } else {
-      // No valid API key found
-      console.error(`No API key found for model: ${requestedModel}. GEMINI_API_KEY: ${GEMINI_API_KEY ? "SET" : "NOT SET"}, ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY ? "SET" : "NOT SET"}, LOVABLE_API_KEY: ${LOVABLE_API_KEY ? "SET" : "NOT SET"}`);
+    if (requestedModel.includes("gemini") && GEMINI_API_KEY) {
+      const modelId = requestedModel.includes("2.0") ? "gemini-2.0-flash-exp" : "gemini-1.5-flash";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${GEMINI_API_KEY.trim()}`;
       
-      if (LOVABLE_API_KEY) {
-        // Fallback to Lovable AI Gateway
-        apiUrl = "https://ai.gateway.lovable.dev/v1/chat/completions";
-        headers["Authorization"] = `Bearer ${LOVABLE_API_KEY}`;
-        requestBody = {
-          model: requestedModel,
-          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...limitedMessages],
-          stream: shouldStream,
-        };
-      } else {
-        return new Response(JSON.stringify({ 
-          error: "API Key não configurada. Configure GEMINI_API_KEY nos Secrets do Supabase.",
-          reply: "Desculpe, estou com um problema técnico no momento. A equipe já foi notificada! 🔧"
-        }), {
-          status: 200,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+      try {
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [
+              { role: "user", parts: [{ text: SYSTEM_PROMPT }] },
+              ...limitedMessages.map((m: any) => ({
+                role: m.role === "assistant" ? "model" : "user",
+                parts: [{ text: m.content }]
+              }))
+            ],
+            generationConfig: { maxOutputTokens: 2048, temperature: 0.7 }
+          }),
         });
+
+        if (response.ok) {
+          const data = await response.json();
+          const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (reply) {
+            return new Response(JSON.stringify({ reply }), {
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+          }
+        }
+        
+        console.warn(`Gemini API failed (${response.status}), falling back to Lovable...`);
+      } catch (err) {
+        console.error("Gemini fetch error, falling back to Lovable:", err);
       }
     }
 
-    console.log(`Using provider for model: ${requestedModel} (Stream: ${shouldStream})`);
+    // Fallback para Lovable AI Gateway
+    const apiKey = LOVABLE_API_KEY || GEMINI_API_KEY; 
+    if (!apiKey) {
+       return new Response(JSON.stringify({ 
+         reply: "A chave GEMINI_API_KEY não foi encontrada nas configurações do Supabase. Por favor, adicione-a nos Secrets." 
+       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
-    const response = await fetch(apiUrl, {
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
-      headers,
-      body: JSON.stringify(requestBody),
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey.trim()}`
+      },
+      body: JSON.stringify({
+        model: requestedModel.includes("gemini") ? "google/gemini-2.0-flash" : requestedModel,
+        messages: [{ role: "system", content: SYSTEM_PROMPT }, ...limitedMessages],
+      }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error(`Provider error (${response.status}):`, errorData);
-      
-      if (response.status === 402) return new Response(JSON.stringify({ error: "Créditos insuficientes no provedor." }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      if (response.status === 429) return new Response(JSON.stringify({ error: "Limite de requisições atingido." }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-      
-      throw new Error(`Erro na API: ${response.status}`);
-    }
-
-    if (shouldStream) {
-      return new Response(response.body, {
-        headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
-      });
-    } else {
-      const data = await response.json();
-      const reply = data.choices?.[0]?.message?.content || "";
-      return new Response(JSON.stringify({ reply }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    const data = await response.json();
+    const reply = data?.choices?.[0]?.message?.content || "Desculpe, ocorreu um erro na comunicação com o servidor de IA.";
+    return new Response(JSON.stringify({ reply }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (e) {
-    console.error("chat error:", e instanceof Error ? e.message : String(e));
-    return new Response(JSON.stringify({ error: "Ocorreu um erro ao processar sua mensagem." }), {
-      status: 500,
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    console.error("chat error:", errorMessage);
+    return new Response(JSON.stringify({ 
+      reply: "Ocorreu um erro interno na função. Tente novamente mais tarde.",
+      details: errorMessage
+    }), {
+      status: 200, // Retorna 200 para o chat mostrar a mensagem no balão
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }

@@ -20,7 +20,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
   const [messages, setMessages] = useState<Msg[]>([
     { 
       role: "assistant", 
-      content: "Olá, seja bem-vindo à **Vincere**. Sou a Vi, sua assistente. Você está buscando uma plataforma de gestão ou um site/loja virtual?" 
+      content: "Olá, tudo bem? Eu sou sua assistente Vi. Como posso ajudar?" 
     }
   ]);
   const [input, setInput] = useState("");
@@ -122,70 +122,82 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
     const allMessages = [...messages, userMsg];
 
     try {
-      console.log("[Vi Chat] Sending message via direct fetch...");
+      console.log("[Vi Chat] Sending message via supabase.functions.invoke...");
       
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-      
-      const res = await fetch(`${supabaseUrl}/functions/v1/chat`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${supabaseKey}`,
-          "apikey": supabaseKey,
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke("chat", {
+        body: {
           messages: allMessages.map(m => ({ role: m.role, content: m.content })),
-          model: "gemini-2.0-flash",
+          model: "gemini-1.5-flash",
           stream: false,
-        }),
+        },
       });
 
-      console.log("[Vi Chat] Response status:", res.status);
-      console.log("[Vi Chat] Content-Type:", res.headers.get("content-type"));
-
-      if (!res.ok) {
-        const errText = await res.text();
-        console.error("[Vi Chat] API error:", res.status, errText);
-        throw new Error(`Erro ${res.status}: ${errText}`);
+      if (error) {
+        console.error("[Vi Chat] Supabase function error:", error);
+        throw error;
       }
 
-      let reply = "";
-      const contentType = res.headers.get("content-type") || "";
+      console.log("[Vi Chat] Raw response data:", data);
 
-      if (contentType.includes("text/event-stream") || contentType.includes("text/plain")) {
-        // SSE streaming response - parse chunks
-        const rawText = await res.text();
-        console.log("[Vi Chat] SSE raw response length:", rawText.length);
-        
-        const lines = rawText.split("\n");
-        for (const line of lines) {
-          const trimmed = line.trim();
-          if (trimmed.startsWith("data: ") && trimmed !== "data: [DONE]") {
-            try {
-              const chunk = JSON.parse(trimmed.slice(6));
-              const delta = chunk?.choices?.[0]?.delta?.content;
-              if (delta) {
-                reply += delta;
+      let reply = "";
+
+      // Handle various response formats (Supabase invoke can return different things)
+      if (data && typeof data === 'object') {
+        if (data.reply) {
+          reply = data.reply;
+        } else if (data.choices?.[0]?.message?.content) {
+          reply = data.choices[0].message.content;
+        } else if (data.choices?.[0]?.delta?.content) {
+          // It's a single chunk?
+          reply = data.choices[0].delta.content;
+        } else {
+          // Maybe it's an error object?
+          if (data.error) throw new Error(data.error);
+          
+          // Try to see if it's an SSE string returned as a field
+          const possibleSse = data.reply || data.text || "";
+          if (typeof possibleSse === 'string' && possibleSse.includes("data: ")) {
+            const lines = possibleSse.split("\n");
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (trimmed.startsWith("data: ") && trimmed !== "data: [DONE]") {
+                try {
+                  const chunk = JSON.parse(trimmed.slice(6));
+                  reply += chunk?.choices?.[0]?.delta?.content || "";
+                } catch {}
               }
-            } catch {
-              // Skip unparseable lines (like ": OPENROUTER PROCESSING")
             }
           }
         }
-      } else {
-        // Standard JSON response
-        const data = await res.json();
-        console.log("[Vi Chat] JSON response:", data);
-        reply = data?.reply || data?.choices?.[0]?.message?.content || "";
+      } else if (typeof data === 'string') {
+        // If it's a raw string, it might be JSON or SSE
+        try {
+          const parsed = JSON.parse(data);
+          reply = parsed.reply || parsed.choices?.[0]?.message?.content || "";
+        } catch {
+          if (data.includes("data: ")) {
+            const lines = data.split("\n");
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (trimmed.startsWith("data: ") && trimmed !== "data: [DONE]") {
+                try {
+                  const chunk = JSON.parse(trimmed.slice(6));
+                  reply += chunk?.choices?.[0]?.delta?.content || "";
+                } catch {}
+              }
+            }
+          } else {
+            reply = data;
+          }
+        }
       }
-      
-      if (!reply) {
-        console.error("[Vi Chat] Empty reply from API");
+
+      if (!reply || reply.trim() === "") {
+        console.error("[Vi Chat] Could not extract reply from data:", data);
         throw new Error("Resposta vazia da IA");
       }
 
-      console.log("[Vi Chat] Final reply:", reply.substring(0, 100) + "...");
+      console.log("[Vi Chat] Final reply length:", reply.length);
       setMessages(prev => [...prev, { role: "assistant", content: reply }]);
 
       // Check for contact request in the final response
