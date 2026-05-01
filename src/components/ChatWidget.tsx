@@ -119,38 +119,46 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
     setInput("");
     setIsLoading(true);
 
-    let assistantSoFar = "";
     const allMessages = [...messages, userMsg];
 
     try {
-      console.log("Calling chat function...");
-      const { data, error } = await supabase.functions.invoke("chat", {
-        body: { 
-          messages: allMessages.map(m => ({ role: m.role, content: m.content })),
-          model: "google/gemini-1.5-flash",
-          stream: false
+      console.log("[Vi Chat] Sending message via direct fetch...");
+      
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      
+      const res = await fetch(`${supabaseUrl}/functions/v1/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${supabaseKey}`,
+          "apikey": supabaseKey,
         },
+        body: JSON.stringify({
+          messages: allMessages.map(m => ({ role: m.role, content: m.content })),
+          model: "gemini-2.0-flash",
+          stream: false,
+        }),
       });
 
-      if (error) {
-        console.error("Supabase function error:", error);
-        throw error;
+      console.log("[Vi Chat] Response status:", res.status);
+
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error("[Vi Chat] API error:", res.status, errText);
+        throw new Error(`Erro ${res.status}: ${errText}`);
       }
 
-      let reply = "";
+      const data = await res.json();
+      console.log("[Vi Chat] Response data:", data);
+
+      const reply = data?.reply || data?.choices?.[0]?.message?.content || "";
       
-      // Handle different response formats (Response object vs parsed JSON)
-      if (data && data.reply) {
-        reply = data.reply;
-      } else if (data instanceof Response || (data && typeof data.json === 'function')) {
-        const json = await data.json();
-        reply = json.reply || "";
-      } else if (typeof data === 'string') {
-        reply = data;
-      } else {
-        console.error("Unexpected data format:", data);
-        throw new Error("Resposta vazia ou inválida da IA");
+      if (!reply) {
+        console.error("[Vi Chat] Empty reply from API. Full data:", JSON.stringify(data));
+        throw new Error("Resposta vazia da IA");
       }
+
       setMessages(prev => [...prev, { role: "assistant", content: reply }]);
 
       // Check for contact request in the final response
@@ -168,7 +176,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
         );
       }
     } catch (e) {
-      console.error("Chat Interaction Error:", e);
+      console.error("[Vi Chat] Error:", e);
       setMessages(prev => [
         ...prev,
         { role: "assistant", content: "Desculpe, ocorreu um erro ao me conectar. Pode tentar de novo?" },

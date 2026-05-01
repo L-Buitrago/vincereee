@@ -95,16 +95,27 @@ serve(async (req) => {
         stream: shouldStream,
       };
     } else {
-      // Fallback to Lovable AI Gateway
-      if (!LOVABLE_API_KEY) throw new Error("API Key não configurada (Gemini, Anthropic ou Lovable)");
+      // No valid API key found
+      console.error(`No API key found for model: ${requestedModel}. GEMINI_API_KEY: ${GEMINI_API_KEY ? "SET" : "NOT SET"}, ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY ? "SET" : "NOT SET"}, LOVABLE_API_KEY: ${LOVABLE_API_KEY ? "SET" : "NOT SET"}`);
       
-      apiUrl = "https://ai.gateway.lovable.dev/v1/chat/completions";
-      headers["Authorization"] = `Bearer ${LOVABLE_API_KEY}`;
-      requestBody = {
-        model: requestedModel,
-        messages: [{ role: "system", content: SYSTEM_PROMPT }, ...limitedMessages],
-        stream: shouldStream,
-      };
+      if (LOVABLE_API_KEY) {
+        // Fallback to Lovable AI Gateway
+        apiUrl = "https://ai.gateway.lovable.dev/v1/chat/completions";
+        headers["Authorization"] = `Bearer ${LOVABLE_API_KEY}`;
+        requestBody = {
+          model: requestedModel,
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...limitedMessages],
+          stream: shouldStream,
+        };
+      } else {
+        return new Response(JSON.stringify({ 
+          error: "API Key não configurada. Configure GEMINI_API_KEY nos Secrets do Supabase.",
+          reply: "Desculpe, estou com um problema técnico no momento. A equipe já foi notificada! 🔧"
+        }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
     }
 
     console.log(`Using provider for model: ${requestedModel} (Stream: ${shouldStream})`);

@@ -89,8 +89,8 @@ const testimonials = [
   },
 ];
 
-const CARD_WIDTH = 340;
-const GAP = 20;
+const CARD_WIDTH = 440;
+const GAP = 24;
 const SPEED = 0.4;
 
 // ─── Componente de Logos Animadas ───────────────────────────────────────────
@@ -233,19 +233,19 @@ const SuccessLogic = () => {
           {[...testimonials, ...testimonials].map((t, i) => (
             <motion.div key={i} whileHover={{ scale: 1.01 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className={`min-w-[280px] md:min-w-[340px] rounded-[24px] flex flex-col justify-between shrink-0 relative overflow-hidden group transition-all duration-500 border border-transparent ${t.highlight ? "glass-light hover:bg-[#0ea5e9]/10 hover:border-[#0ea5e9]/30" : "glass-dark hover:bg-[#0ea5e9]/5 hover:border-[#0ea5e9]/20"}`}
-              style={{ minHeight: 200 }}>
-              <div className={`absolute top-4 right-6 text-6xl font-serif leading-none select-none pointer-events-none transition-colors group-hover:text-sky-500/10 ${t.highlight ? "text-white/[0.06]" : "text-white/[0.04]"}`}>❝</div>
+              className={`w-[320px] md:w-[440px] max-w-[440px] rounded-[24px] flex flex-col justify-between shrink-0 relative overflow-hidden group transition-all duration-500 border border-transparent ${t.highlight ? "glass-light hover:bg-[#0ea5e9]/10 hover:border-[#0ea5e9]/30" : "glass-dark hover:bg-[#0ea5e9]/5 hover:border-[#0ea5e9]/20"}`}
+              style={{ minHeight: 280, flexBasis: 'auto' }}>
+              <div className={`absolute top-5 right-7 text-7xl font-serif leading-none select-none pointer-events-none transition-colors group-hover:text-sky-500/10 ${t.highlight ? "text-white/[0.06]" : "text-white/[0.04]"}`}>❝</div>
               <div className="absolute inset-0 rounded-[24px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none shadow-[0_0_40px_rgba(14,165,233,0.1)]" />
               
-              <div className="relative z-10 p-6 pb-0 flex flex-col flex-1">
-                <p className="text-sm md:text-base font-medium leading-relaxed text-white/80 flex-1">"{t.quote}"</p>
+              <div className="relative z-10 p-8 pb-0 flex flex-col flex-1">
+                <p className="text-base md:text-lg font-medium leading-[1.7] text-white/80 flex-1 whitespace-normal">"{t.quote}"</p>
               </div>
               
-              <div className="relative z-10 p-6 pt-4">
+              <div className="relative z-10 p-8 pt-5">
                 <div>
-                  <p className="font-bold text-[13px] text-white">{t.author}</p>
-                  <p className="text-[10px] uppercase tracking-widest text-white/40 mt-0.5">{t.role}</p>
+                  <p className="font-bold text-sm text-white">{t.author}</p>
+                  <p className="text-[11px] uppercase tracking-widest text-white/40 mt-1">{t.role}</p>
                 </div>
               </div>
               {t.highlight && <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />}
