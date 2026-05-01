@@ -59,16 +59,34 @@ REGRAS GERAIS:
 - Se o cliente fizer perguntas fora do escopo, redirecione educadamente para o fluxo de coleta de dados.`;
 
 
+// Helper: parse SSE streaming text into a single reply string
+function parseSSEResponse(text: string): string {
+  let result = "";
+  const lines = text.split("\n");
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith("data: ") && trimmed !== "data: [DONE]") {
+      try {
+        const chunk = JSON.parse(trimmed.slice(6));
+        const delta = chunk?.choices?.[0]?.delta?.content || "";
+        if (delta) result += delta;
+      } catch {
+        // skip unparseable lines
+      }
+    }
+  }
+  return result;
+}
+
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     const body = await req.json();
     const messages = body?.messages || [];
-    const shouldStream = body?.stream !== false;
-    const requestedModel = body?.model || "google/gemini-1.5-flash";
+    const requestedModel = body?.model || "gemini-2.0-flash";
 
-    // Limit context history
     const limitedMessages = messages.slice(-15);
 
     if (limitedMessages.length === 0) {
@@ -78,80 +96,132 @@ serve(async (req) => {
     }
 
     const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
-    const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
-    console.log(`[Chat] Model: ${requestedModel}, Gemini Key: ${GEMINI_API_KEY ? "Present" : "Missing"}`);
+    console.log(`[Chat] Model: ${requestedModel}, Gemini: ${GEMINI_API_KEY ? "SET" : "MISSING"}, Lovable: ${LOVABLE_API_KEY ? "SET" : "MISSING"}`);
 
-    if (requestedModel.includes("gemini") && GEMINI_API_KEY) {
-      const modelId = requestedModel.includes("2.0") ? "gemini-2.0-flash-exp" : "gemini-1.5-flash";
+    let geminiStatus = 0;
+    let geminiErrorText = "";
+    let lovableStatus = 0;
+    let lovableErrorText = "";
+
+    // ===== STRATEGY 1: Native Google Gemini API =====
+    if (GEMINI_API_KEY) {
+      const modelId = "gemini-2.5-flash";
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${GEMINI_API_KEY.trim()}`;
       
+      console.log(`[Chat] Trying native Gemini with model: ${modelId}`);
+
       try {
-        const response = await fetch(apiUrl, {
+        // Build contents array ensuring proper role alternation
+        const contents: any[] = [];
+        for (const m of limitedMessages) {
+          const role = m.role === "assistant" ? "model" : "user";
+          // Avoid consecutive same-role messages
+          if (contents.length > 0 && contents[contents.length - 1].role === role) {
+            contents[contents.length - 1].parts[0].text += "\n" + m.content;
+          } else {
+            contents.push({ role, parts: [{ text: m.content }] });
+          }
+        }
+
+        const geminiResponse = await fetch(apiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            contents: [
-              { role: "user", parts: [{ text: SYSTEM_PROMPT }] },
-              ...limitedMessages.map((m: any) => ({
-                role: m.role === "assistant" ? "model" : "user",
-                parts: [{ text: m.content }]
-              }))
-            ],
+            systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+            contents,
             generationConfig: { maxOutputTokens: 2048, temperature: 0.7 }
           }),
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        const geminiText = await geminiResponse.text();
+        geminiStatus = geminiResponse.status;
+        if (!geminiResponse.ok) geminiErrorText = geminiText;
+        console.log(`[Chat] Gemini status: ${geminiResponse.status}, body: ${geminiText.substring(0, 200)}`);
+
+        if (geminiResponse.ok) {
+          const geminiData = JSON.parse(geminiText);
+          const reply = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
           if (reply) {
+            console.log(`[Chat] Gemini success! Reply length: ${reply.length}`);
             return new Response(JSON.stringify({ reply }), {
               headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
           }
+          console.warn("[Chat] Gemini returned empty reply, falling back...");
+        } else {
+          console.warn(`[Chat] Gemini API error ${geminiResponse.status}: ${geminiText.substring(0, 200)}`);
         }
-        
-        console.warn(`Gemini API failed (${response.status}), falling back to Lovable...`);
       } catch (err) {
-        console.error("Gemini fetch error, falling back to Lovable:", err);
+        console.error("[Chat] Gemini fetch exception:", err);
+        geminiErrorText = String(err);
       }
     }
 
-    // Fallback para Lovable AI Gateway
-    const apiKey = LOVABLE_API_KEY || GEMINI_API_KEY; 
-    if (!apiKey) {
-       return new Response(JSON.stringify({ 
-         reply: "A chave GEMINI_API_KEY não foi encontrada nas configurações do Supabase. Por favor, adicione-a nos Secrets." 
-       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    // ===== STRATEGY 2: Lovable AI Gateway (handles SSE streaming) =====
+    if (LOVABLE_API_KEY) {
+      console.log("[Chat] Falling back to Lovable Gateway...");
+      
+      const lovableResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${LOVABLE_API_KEY.trim()}`
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...limitedMessages],
+          stream: false,
+        }),
+      });
+
+      const lovableText = await lovableResponse.text();
+      lovableStatus = lovableResponse.status;
+      if (!lovableResponse.ok) lovableErrorText = lovableText;
+      console.log(`[Chat] Lovable status: ${lovableResponse.status}, body length: ${lovableText.length}`);
+
+      // Try parsing as JSON first
+      try {
+        const data = JSON.parse(lovableText);
+        const reply = data?.choices?.[0]?.message?.content;
+        if (reply) {
+          console.log(`[Chat] Lovable JSON success! Reply length: ${reply.length}`);
+          return new Response(JSON.stringify({ reply }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+      } catch {
+        // Not JSON — probably SSE streaming
+      }
+
+      // Parse as SSE streaming
+      const sseReply = parseSSEResponse(lovableText);
+      if (sseReply) {
+        console.log(`[Chat] Lovable SSE success! Reply length: ${sseReply.length}`);
+        return new Response(JSON.stringify({ reply: sseReply }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      console.error("[Chat] Lovable returned unparseable response:", lovableText.substring(0, 300));
     }
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey.trim()}`
-      },
-      body: JSON.stringify({
-        model: requestedModel.includes("gemini") ? "google/gemini-2.0-flash" : requestedModel,
-        messages: [{ role: "system", content: SYSTEM_PROMPT }, ...limitedMessages],
-      }),
-    });
-
-    const data = await response.json();
-    const reply = data?.choices?.[0]?.message?.content || "Desculpe, ocorreu um erro na comunicação com o servidor de IA.";
-    return new Response(JSON.stringify({ reply }), {
+    // ===== NO STRATEGY WORKED =====
+    return new Response(JSON.stringify({ 
+      reply: "Estou com dificuldades técnicas no momento. Por favor, entre em contato pelo WhatsApp."
+    }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
+
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : String(e);
-    console.error("chat error:", errorMessage);
+    console.error("[Chat] Fatal error:", errorMessage);
     return new Response(JSON.stringify({ 
-      reply: "Ocorreu um erro interno na função. Tente novamente mais tarde.",
+      reply: "Desculpe, ocorreu um erro ao me conectar. Pode tentar de novo?",
       details: errorMessage
     }), {
-      status: 200, // Retorna 200 para o chat mostrar a mensagem no balão
+      status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
