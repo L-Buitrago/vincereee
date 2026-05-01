@@ -124,13 +124,22 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
     try {
       console.log("[Vi Chat] Sending message via supabase.functions.invoke...");
       
-      const { data, error } = await supabase.functions.invoke("chat", {
+      // Criar um timeout para evitar carregamento infinito
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error("Timeout: A requisição demorou mais de 15 segundos.")), 15000);
+      });
+
+      const invokePromise = supabase.functions.invoke("chat", {
         body: {
           messages: allMessages.map(m => ({ role: m.role, content: m.content })),
-          model: "gemini-1.5-flash",
+          model: "gemini-2.5-flash",
           stream: false,
         },
       });
+
+      console.log("[Vi Chat] Waiting for response...");
+      const { data, error } = await Promise.race([invokePromise, timeoutPromise]) as any;
+      console.log("[Vi Chat] Response received:", { data, error });
 
       if (error) {
         console.error("[Vi Chat] Supabase function error:", error);
