@@ -20,7 +20,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
   const [messages, setMessages] = useState<Msg[]>([
     { 
       role: "assistant", 
-      content: "Olá! Sou a **Vi**, sua assistente. Como posso ajudar?" 
+      content: "Olá, seja bem-vindo à **Vincere**. Sou a Vi, sua assistente. Você está buscando uma plataforma de gestão ou um site/loja virtual?" 
     }
   ]);
   const [input, setInput] = useState("");
@@ -142,6 +142,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
       });
 
       console.log("[Vi Chat] Response status:", res.status);
+      console.log("[Vi Chat] Content-Type:", res.headers.get("content-type"));
 
       if (!res.ok) {
         const errText = await res.text();
@@ -149,16 +150,42 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
         throw new Error(`Erro ${res.status}: ${errText}`);
       }
 
-      const data = await res.json();
-      console.log("[Vi Chat] Response data:", data);
+      let reply = "";
+      const contentType = res.headers.get("content-type") || "";
 
-      const reply = data?.reply || data?.choices?.[0]?.message?.content || "";
+      if (contentType.includes("text/event-stream") || contentType.includes("text/plain")) {
+        // SSE streaming response - parse chunks
+        const rawText = await res.text();
+        console.log("[Vi Chat] SSE raw response length:", rawText.length);
+        
+        const lines = rawText.split("\n");
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (trimmed.startsWith("data: ") && trimmed !== "data: [DONE]") {
+            try {
+              const chunk = JSON.parse(trimmed.slice(6));
+              const delta = chunk?.choices?.[0]?.delta?.content;
+              if (delta) {
+                reply += delta;
+              }
+            } catch {
+              // Skip unparseable lines (like ": OPENROUTER PROCESSING")
+            }
+          }
+        }
+      } else {
+        // Standard JSON response
+        const data = await res.json();
+        console.log("[Vi Chat] JSON response:", data);
+        reply = data?.reply || data?.choices?.[0]?.message?.content || "";
+      }
       
       if (!reply) {
-        console.error("[Vi Chat] Empty reply from API. Full data:", JSON.stringify(data));
+        console.error("[Vi Chat] Empty reply from API");
         throw new Error("Resposta vazia da IA");
       }
 
+      console.log("[Vi Chat] Final reply:", reply.substring(0, 100) + "...");
       setMessages(prev => [...prev, { role: "assistant", content: reply }]);
 
       // Check for contact request in the final response
