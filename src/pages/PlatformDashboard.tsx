@@ -154,7 +154,8 @@ export default function PlatformDashboard() {
       }
       
       return data as any[] as Customer[];
-    }
+    },
+    staleTime: 5 * 60 * 1000,
   });
   
   const { data: transactions = [] } = useQuery({
@@ -165,7 +166,8 @@ export default function PlatformDashboard() {
       const { data, error } = await query;
       if (error) throw error;
       return data;
-    }
+    },
+    staleTime: 5 * 60 * 1000,
   });
   
   const { data: projects = [], isLoading: projectsLoading } = useQuery({
@@ -176,7 +178,8 @@ export default function PlatformDashboard() {
       const { data, error } = await query;
       if (error) throw error;
       return data as any[];
-    }
+    },
+    staleTime: 5 * 60 * 1000,
   });
 
   const customers = useMemo(() => {

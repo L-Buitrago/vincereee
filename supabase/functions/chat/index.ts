@@ -107,7 +107,7 @@ serve(async (req) => {
 
     // ===== STRATEGY 1: Native Google Gemini API =====
     if (GEMINI_API_KEY) {
-      const modelId = "gemini-2.5-flash";
+      const modelId = "gemini-2.0-flash";
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${GEMINI_API_KEY.trim()}`;
       
       console.log(`[Chat] Trying native Gemini with model: ${modelId}`);
@@ -170,7 +170,7 @@ serve(async (req) => {
           "Authorization": `Bearer ${LOVABLE_API_KEY.trim()}`
         },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
+          model: "google/gemini-2.0-flash",
           messages: [{ role: "system", content: SYSTEM_PROMPT }, ...limitedMessages],
           stream: false,
         }),
