@@ -153,7 +153,7 @@ export default function PlatformDashboard() {
         }
       }
       
-      return data as any[] as Customer[];
+      return (data || []) as any[] as Customer[];
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -165,7 +165,7 @@ export default function PlatformDashboard() {
       if (!isAdmin && orgId) query = query.eq('org_id', orgId);
       const { data, error } = await query;
       if (error) throw error;
-      return data;
+      return data || [];
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -177,7 +177,7 @@ export default function PlatformDashboard() {
       if (!isAdmin && user?.id) query = query.eq('user_id', user.id);
       const { data, error } = await query;
       if (error) throw error;
-      return data as any[];
+      return (data || []) as any[];
     },
     staleTime: 5 * 60 * 1000,
   });

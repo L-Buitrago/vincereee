@@ -145,7 +145,7 @@ export default function PlatformClients() {
       const { data, error } = await query;
       if (error) throw error;
       
-      const customersData = data as any[] as Customer[];
+      const customersData = (data || []) as any[] as Customer[];
       
       if (isAdmin) {
         const { data: viLeadsData, error: viError } = await supabase.from('vi_leads' as any).select('*');
