@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useOrganization } from "@/hooks/useOrganization";
+import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Building2, Users, DollarSign, TrendingUp, Crown, Folder, Trash2, ChevronDown, ChevronUp } from "lucide-react";
@@ -32,6 +33,7 @@ type Org = {
 
 export default function PlatformAdmin() {
   const { isAdmin } = useOrganization();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
 
   if (!isAdmin) return <Navigate to="/plataforma/dashboard" replace />;

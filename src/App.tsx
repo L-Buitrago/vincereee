@@ -3,38 +3,39 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import SubscriptionGuard from "@/components/SubscriptionGuard";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SmoothScroller } from "@/components/SmoothScroller";
 import { DeviceVerification } from "@/components/auth/DeviceVerification";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Auth from "./pages/Auth";
-import ResetPassword from "./pages/ResetPassword";
-import NotFound from "./pages/NotFound";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import Returns from "./pages/Returns";
-import Admin from "./pages/Admin";
-import PlatformLayout from "./components/platform/PlatformLayout";
-import PlatformDashboard from "./pages/PlatformDashboard";
-import PlatformClients from "./pages/PlatformClients";
-import PlatformProducts from "./pages/PlatformProducts";
-import PlatformCheckouts from "./pages/PlatformCheckouts";
-import PlatformPayments from "./pages/PlatformPayments";
-import PlatformProposal from "./pages/PlatformProposal";
-import PlatformAdmin from "./pages/PlatformAdmin";
-import PlatformSupport from "./pages/PlatformSupport";
-import PlatformSettings from "./pages/PlatformSettings";
-import PlatformPurchases from "./pages/PlatformPurchases";
-import PlatformMessages from "./pages/PlatformMessages";
-import PlatformSubscription from "./pages/PlatformSubscription";
-import DemoDashboard from "./pages/DemoDashboard";
-import ViExperience from "./pages/ViExperience";
-import DemoServices from "./pages/DemoServices";
 import ScrollToTop from "./components/ScrollToTop";
+
+const Index = lazy(() => import("./pages/Index"));
+const About = lazy(() => import("./pages/About"));
+const Auth = lazy(() => import("./pages/Auth"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Returns = lazy(() => import("./pages/Returns"));
+const Admin = lazy(() => import("./pages/Admin"));
+const PlatformLayout = lazy(() => import("./components/platform/PlatformLayout"));
+const PlatformDashboard = lazy(() => import("./pages/PlatformDashboard"));
+const PlatformClients = lazy(() => import("./pages/PlatformClients"));
+const PlatformProducts = lazy(() => import("./pages/PlatformProducts"));
+const PlatformCheckouts = lazy(() => import("./pages/PlatformCheckouts"));
+const PlatformPayments = lazy(() => import("./pages/PlatformPayments"));
+const PlatformProposal = lazy(() => import("./pages/PlatformProposal"));
+const PlatformAdmin = lazy(() => import("./pages/PlatformAdmin"));
+const PlatformSupport = lazy(() => import("./pages/PlatformSupport"));
+const PlatformSettings = lazy(() => import("./pages/PlatformSettings"));
+const PlatformPurchases = lazy(() => import("./pages/PlatformPurchases"));
+const PlatformMessages = lazy(() => import("./pages/PlatformMessages"));
+const PlatformSubscription = lazy(() => import("./pages/PlatformSubscription"));
+const DemoDashboard = lazy(() => import("./pages/DemoDashboard"));
+const ViExperience = lazy(() => import("./pages/ViExperience"));
+const DemoServices = lazy(() => import("./pages/DemoServices"));
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const AppRoutes = () => {
           onCancel={() => {}} 
         />
       )}
+      <Suspense fallback={<div className="min-h-screen bg-background" />}>
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/about" element={<About />} />
@@ -107,6 +109,7 @@ const AppRoutes = () => {
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </Suspense>
     </>
   );
 };
@@ -117,14 +120,12 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <SmoothScroller>
-            <BrowserRouter>
-              <ScrollToTop />
-              <ThemeProvider defaultTheme="light" storageKey="vincere-theme">
-                <AppRoutes />
-              </ThemeProvider>
-            </BrowserRouter>
-          </SmoothScroller>
+          <BrowserRouter>
+            <ScrollToTop />
+            <ThemeProvider defaultTheme="light" storageKey="vincere-theme">
+              <AppRoutes />
+            </ThemeProvider>
+          </BrowserRouter>
         </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>

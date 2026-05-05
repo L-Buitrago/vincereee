@@ -79,10 +79,11 @@ export function useOrganization() {
             .maybeSingle();
 
           if (!orgError && ownedOrg) {
+            const organization = ownedOrg as any;
             return {
-              org_id: ownedOrg.id,
+              org_id: organization.id,
               role: 'owner',
-              organizations: ownedOrg
+              organizations: organization
             } as any;
           }
         }

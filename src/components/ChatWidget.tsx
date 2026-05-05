@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback, forwardRef } from "react";
 import { Bot, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { useOrganization } from "@/hooks/useOrganization";
 import ReactMarkdown from "react-markdown";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -28,7 +27,6 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
   const [sessionId] = useState(generateSessionId);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { orgId } = useOrganization();
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -86,7 +84,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
           name: data.customer_name,
           phone: data.customer_phone || null,
           status: "Lead",
-          org_id: orgId || null // Associate with current org if user is logged into the platform
+          org_id: null
         };
 
         if (data.customer_email) {

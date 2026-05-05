@@ -112,7 +112,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, 5000);
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         if (!session && window.location.hostname === 'localhost') {
           setUser(getMockUser());
           setIsDeviceVerified(true);
@@ -120,14 +120,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } else {
           setSession(session);
           setUser(session?.user ?? null);
+          setLoading(false);
           
           if (session?.user) {
-            await checkDeviceVerification(session.user.id);
+            checkDeviceVerification(session.user.id);
           } else {
             setIsDeviceVerified(true);
           }
-          
-          setLoading(false);
         }
       }
     );
@@ -140,14 +139,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         setSession(session);
         setUser(session?.user ?? null);
+        setLoading(false);
         
         if (session?.user) {
-          await checkDeviceVerification(session.user.id);
+          checkDeviceVerification(session.user.id);
         } else {
           setIsDeviceVerified(true);
         }
-        
-        setLoading(false);
       }
     }).catch((err) => {
       console.error("getSession failed:", err);
