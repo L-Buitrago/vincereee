@@ -304,8 +304,8 @@ export default function PlatformClients() {
   };
 
   const filtered = clients.filter((c) => {
-    const matchSearch = c.name.toLowerCase().includes(search.toLowerCase()) ||
-      c.email.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = (c.name?.toLowerCase() || '').includes(search.toLowerCase()) ||
+      (c.email?.toLowerCase() || '').includes(search.toLowerCase());
     const matchStatus = statusFilter === "todos" || c.status === statusFilter;
     return matchSearch && matchStatus;
   });
@@ -440,9 +440,9 @@ export default function PlatformClients() {
                         <td className="px-6 py-5">
                           <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-2xl bg-muted border border-border flex items-center justify-center text-xs font-bold text-muted-foreground group-hover:border-sky-500/20 group-hover:bg-sky-500/5 transition-all">
-                              {c.name.substring(0,2).toUpperCase()}
+                              {c.name ? c.name.substring(0,2).toUpperCase() : "??"}
                             </div>
-                            <span className="text-foreground font-bold">{c.name}</span>
+                            <span className="text-foreground font-bold">{c.name || "Sem Nome"}</span>
                           </div>
                         </td>
                         <td className="px-6 py-5 text-muted-foreground/80 font-medium">{c.email}</td>
@@ -545,11 +545,11 @@ export default function PlatformClients() {
             <div className="space-y-8">
               <div className="flex items-center gap-6 p-6 rounded-3xl bg-muted/30 border border-border shadow-inner">
                 <div className="w-20 h-20 rounded-2xl bg-sky-500 text-white flex items-center justify-center text-3xl font-black shadow-lg shadow-sky-500/30">
-                  {selected.name.substring(0, 2).toUpperCase()}
+                  {selected.name ? selected.name.substring(0, 2).toUpperCase() : "??"}
                 </div>
                 <div>
-                  <p className="text-2xl font-black text-foreground tracking-tighter">{selected.name}</p>
-                  <p className="text-sm font-medium text-muted-foreground">{selected.email}</p>
+                  <p className="text-2xl font-black text-foreground tracking-tighter">{selected.name || "Sem Nome"}</p>
+                  <p className="text-sm font-medium text-muted-foreground">{selected.email || "Sem Email"}</p>
                   <div className="flex gap-2 mt-2">
                     <Badge className="bg-sky-500/10 text-sky-500 border-none font-black text-[10px] uppercase tracking-widest px-3">{selected.status}</Badge>
                   </div>

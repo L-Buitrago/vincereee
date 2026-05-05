@@ -187,7 +187,7 @@ export default function PlatformDashboard() {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       filtered = filtered.filter(c => 
-        c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q)
+        (c.name?.toLowerCase() || '').includes(q) || (c.email?.toLowerCase() || '').includes(q)
       );
     }
     if (activePeriod !== "Todos") {
@@ -198,7 +198,11 @@ export default function PlatformDashboard() {
       else if (activePeriod === "Semana") limitDate = startOfWeek(now, { weekStartsOn: 1 });
       else if (activePeriod === "Mês") limitDate = startOfMonth(now);
       else if (activePeriod === "Ano") limitDate = startOfYear(now);
-      filtered = filtered.filter(c => isAfter(new Date(c.created_at), limitDate));
+      filtered = filtered.filter(c => {
+        if (!c.created_at) return false;
+        const d = new Date(c.created_at);
+        return !isNaN(d.getTime()) && isAfter(d, limitDate);
+      });
     }
     return filtered;
   }, [allCustomers, searchQuery, activePeriod]);
@@ -260,7 +264,10 @@ export default function PlatformDashboard() {
     const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
     const byMonth: Record<string, number> = {};
     customers.forEach(c => {
-      const month = months[new Date(c.created_at).getMonth()];
+      if (!c.created_at) return;
+      const d = new Date(c.created_at);
+      if (isNaN(d.getTime())) return;
+      const month = months[d.getMonth()];
       byMonth[month] = (byMonth[month] || 0) + (c.total_spent || 0);
     });
     return months.map(name => ({ name, thisYear: byMonth[name] || 0, lastYear: (byMonth[name] || 0) * 0.7 }));
@@ -489,8 +496,8 @@ export default function PlatformDashboard() {
                           >
                             <td className="px-6 py-4">
                               <div className="flex flex-col">
-                                <span className="font-bold text-sm text-foreground">{q.name}</span>
-                                <span className="text-[10px] text-muted-foreground uppercase">{format(new Date(q.created_at), "dd/MM/yyyy")}</span>
+                                <span className="font-bold text-sm text-foreground">{q.name || "Sem Nome"}</span>
+                                <span className="text-[10px] text-muted-foreground uppercase">{q.created_at && !isNaN(new Date(q.created_at).getTime()) ? format(new Date(q.created_at), "dd/MM/yyyy") : "---"}</span>
                               </div>
                             </td>
                             <td className="px-6 py-4">
@@ -532,8 +539,8 @@ export default function PlatformDashboard() {
                           <tr key={p.id} className="hover:bg-muted/30 transition-colors">
                             <td className="px-6 py-4">
                               <div className="flex flex-col">
-                                <span className="font-bold text-sm text-foreground">{p.title}</span>
-                                <span className="text-[10px] text-muted-foreground uppercase">Entrega: {p.end_date ? format(new Date(p.end_date), "dd/MM/yyyy") : "---"}</span>
+                                <span className="font-bold text-sm text-foreground">{p.title || "Sem Título"}</span>
+                                <span className="text-[10px] text-muted-foreground uppercase">Entrega: {p.end_date && !isNaN(new Date(p.end_date).getTime()) ? format(new Date(p.end_date), "dd/MM/yyyy") : "---"}</span>
                               </div>
                             </td>
                             <td className="px-6 py-4">
