@@ -410,10 +410,12 @@ export default function PlatformMessages() {
       return;
     }
 
-    if (newMsg) {
+    const insertedMessage = newMsg as unknown as DirectMessage | null;
+
+    if (insertedMessage) {
       setMessages((prev) => {
-        if (prev.find((m) => m.id === newMsg.id)) return prev;
-        return [...prev, newMsg as DirectMessage];
+        if (prev.find((m) => m.id === insertedMessage.id)) return prev;
+        return [...prev, insertedMessage];
       });
     }
 
