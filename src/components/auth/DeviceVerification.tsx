@@ -94,6 +94,7 @@ export const DeviceVerification = ({ onVerified, onCancel }: DeviceVerificationP
             maxLength={6}
             value={code}
             onChange={(value) => setCode(value)}
+          >
             <InputOTPGroup className="gap-2">
               <InputOTPSlot index={0} className="w-12 h-14 text-lg border-primary/20 bg-primary/5 focus:ring-primary" />
               <InputOTPSlot index={1} className="w-12 h-14 text-lg border-primary/20 bg-primary/5 focus:ring-primary" />
@@ -102,7 +103,7 @@ export const DeviceVerification = ({ onVerified, onCancel }: DeviceVerificationP
               <InputOTPSlot index={4} className="w-12 h-14 text-lg border-primary/20 bg-primary/5 focus:ring-primary" />
               <InputOTPSlot index={5} className="w-12 h-14 text-lg border-primary/20 bg-primary/5 focus:ring-primary" />
             </InputOTPGroup>
-          />
+          </InputOTP>
 
           <div className="w-full space-y-3">
             <Button 
