@@ -23,6 +23,33 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "@/hooks/use-toast";
+import React, { ErrorInfo } from "react";
+
+class SectionErrorBoundary extends React.Component<{ children: React.ReactNode, name: string }, { hasError: boolean, error: Error | null }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error(`Section ${this.props.name} crashed:`, error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-4 rounded-xl border border-red-500/20 bg-red-500/10 text-red-500 flex flex-col items-center justify-center text-center h-full min-h-[100px] w-full">
+          <AlertTriangle className="w-6 h-6 mb-2 opacity-50" />
+          <span className="text-[10px] font-bold uppercase tracking-widest">{this.props.name} Error</span>
+          <span className="text-xs opacity-70 mt-1">{this.state.error?.message}</span>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import NotificationBell from "@/components/platform/NotificationBell";
@@ -183,7 +210,7 @@ export default function PlatformDashboard() {
   });
 
   const customers = useMemo(() => {
-    let filtered = allCustomers;
+    let filtered = Array.isArray(allCustomers) ? allCustomers : [];
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       filtered = filtered.filter(c => 
@@ -208,7 +235,7 @@ export default function PlatformDashboard() {
   }, [allCustomers, searchQuery, activePeriod]);
 
   const filteredTransactions = useMemo(() => {
-    let filtered = transactions;
+    let filtered = Array.isArray(transactions) ? transactions : [];
     if (activePeriod !== "Todos") {
       const now = new Date();
       let limitDate = new Date(0);
@@ -240,18 +267,17 @@ export default function PlatformDashboard() {
   const approvalRate = totalTransactionsCount > 0 ? (approvedTransactions / totalTransactionsCount) * 100 : 0;
 
   const paymentMethods = useMemo(() => {
-    if (filteredTransactions.length === 0) {
-      return [];
-    }
-
+    const fTransactions = Array.isArray(filteredTransactions) ? filteredTransactions : [];
+    if (fTransactions.length === 0) return [];
+    
     const methods: Record<string, { count: number; approved: number }> = {};
-    filteredTransactions.forEach(t => {
+    fTransactions.forEach(t => {
       const gateway = t.gateway || 'Outros';
       if (!methods[gateway]) methods[gateway] = { count: 0, approved: 0 };
       methods[gateway].count++;
       if (t.status === 'aprovado') methods[gateway].approved++;
     });
-    const totalCount = filteredTransactions.length;
+    const totalCount = fTransactions.length;
     return Object.entries(methods).map(([name, stats]) => ({
       name,
       value: Math.round((stats.count / totalCount) * 100),
@@ -264,7 +290,7 @@ export default function PlatformDashboard() {
     const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
     const byMonth: Record<string, number> = {};
     customers.forEach(c => {
-      if (!c.created_at) return;
+      if (!c || !c.created_at) return;
       const d = new Date(c.created_at);
       if (isNaN(d.getTime())) return;
       const month = months[d.getMonth()];
@@ -273,11 +299,11 @@ export default function PlatformDashboard() {
     return months.map(name => ({ name, thisYear: byMonth[name] || 0, lastYear: (byMonth[name] || 0) * 0.7 }));
   }, [customers]);
 
-  const hasThisYearData = useMemo(() => chartData.some(d => d.thisYear > 0), [chartData]);
-  const hasLastYearData = useMemo(() => chartData.some(d => d.lastYear > 0), [chartData]);
+  const hasThisYearData = useMemo(() => Array.isArray(chartData) && chartData.some(d => d.thisYear > 0), [chartData]);
+  const hasLastYearData = useMemo(() => Array.isArray(chartData) && chartData.some(d => d.lastYear > 0), [chartData]);
 
-  const recentCustomers = useMemo(() => customers.slice(0, 5), [customers]);
-  const recentProjects = useMemo(() => projects.slice(0, 3), [projects]);
+  const recentCustomers = useMemo(() => (Array.isArray(customers) ? customers : []).slice(0, 5), [customers]);
+  const recentProjects = useMemo(() => (Array.isArray(projects) ? projects : []).slice(0, 3), [projects]);
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground transition-colors duration-500">
@@ -374,40 +400,42 @@ export default function PlatformDashboard() {
               </div>
               <div className="h-[400px] w-full p-4 mt-8">
                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                      <defs>
-                        <linearGradient id="colorThisYear" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15}/>
-                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="opacity-[0.05]" />
-                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 11, fontWeight: "bold", opacity: 0.4 }} />
-                      <YAxis axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 10, fontWeight: "bold", opacity: 0.4 }} tickFormatter={(v) => `R$${v/1000}k`} />
-                      <Tooltip content={<CustomTooltip />} cursor={false} />
-                      {hasThisYearData && (
-                        <Area 
-                          type="monotone" 
-                          dataKey="thisYear" 
-                          stroke="#3b82f6" 
-                          strokeWidth={2} 
-                          fillOpacity={1} 
-                          fill="url(#colorThisYear)" 
-                          activeDot={false} 
-                        />
-                      )}
-                      {hasLastYearData && (
-                        <Area 
-                          type="monotone" 
-                          dataKey="lastYear" 
-                          stroke="#94a3b8" 
-                          strokeWidth={1.5} 
-                          strokeDasharray="4 4" 
-                          fill="none" 
-                          activeDot={false} 
-                        />
-                      )}
-                    </AreaChart>
+                     <SectionErrorBoundary name="AreaChart">
+                       <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                         <defs>
+                           <linearGradient id="colorThisYear" x1="0" y1="0" x2="0" y2="1">
+                             <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.15}/>
+                             <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                           </linearGradient>
+                         </defs>
+                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="opacity-[0.05]" />
+                         <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 11, fontWeight: "bold", opacity: 0.4 }} />
+                         <YAxis axisLine={false} tickLine={false} tick={{ fill: "currentColor", fontSize: 10, fontWeight: "bold", opacity: 0.4 }} tickFormatter={(v) => `R$${v/1000}k`} />
+                         <Tooltip content={<CustomTooltip />} cursor={false} />
+                         {hasThisYearData && (
+                           <Area 
+                             type="monotone" 
+                             dataKey="thisYear" 
+                             stroke="#3b82f6" 
+                             strokeWidth={2} 
+                             fillOpacity={1} 
+                             fill="url(#colorThisYear)" 
+                             activeDot={false} 
+                           />
+                         )}
+                         {hasLastYearData && (
+                           <Area 
+                             type="monotone" 
+                             dataKey="lastYear" 
+                             stroke="#94a3b8" 
+                             strokeWidth={1.5} 
+                             strokeDasharray="4 4" 
+                             fill="none" 
+                             activeDot={false} 
+                           />
+                         )}
+                       </AreaChart>
+                     </SectionErrorBoundary>
                  </ResponsiveContainer>
               </div>
              </Card>
@@ -426,11 +454,13 @@ export default function PlatformDashboard() {
                  {paymentMethods.length > 0 ? (
                    <div className="relative w-56 h-56">
                      <ResponsiveContainer width="100%" height="100%">
-                       <PieChart>
-                         <Pie data={paymentMethods} innerRadius={75} outerRadius={100} paddingAngle={8} dataKey="value" stroke="none" cornerRadius={10}>
-                           {paymentMethods.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
-                         </Pie>
-                       </PieChart>
+                       <SectionErrorBoundary name="PieChart">
+                         <PieChart>
+                           <Pie data={paymentMethods} innerRadius={75} outerRadius={100} paddingAngle={8} dataKey="value" stroke="none" cornerRadius={10}>
+                             {(paymentMethods || []).map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
+                           </Pie>
+                         </PieChart>
+                       </SectionErrorBoundary>
                      </ResponsiveContainer>
                      <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <span className="text-4xl font-extrabold text-foreground">100%</span>
@@ -479,39 +509,41 @@ export default function PlatformDashboard() {
               </div>
               <Card className="bg-card border-border rounded-3xl overflow-hidden p-0 shadow-xl">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left">
-                    <thead>
-                        <tr className="border-b border-border">
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground">Serviço</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Status</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30 text-right">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border">
-                        {recentCustomers.map((q) => (
-                          <tr 
-                            key={q.id} 
-                            className="hover:bg-muted/30 transition-colors cursor-pointer"
-                            onClick={() => navigate('/plataforma/clientes')}
-                          >
-                            <td className="px-6 py-4">
-                              <div className="flex flex-col">
-                                <span className="font-bold text-sm text-foreground">{q.name || "Sem Nome"}</span>
-                                <span className="text-[10px] text-muted-foreground uppercase">{q.created_at && !isNaN(new Date(q.created_at).getTime()) ? format(new Date(q.created_at), "dd/MM/yyyy") : "---"}</span>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4">
-                              <Badge className={`${statusConfig[q.status]?.cls || "bg-muted text-foreground"} border-none rounded-lg px-2.5 py-0.5 font-bold text-[9px] uppercase`}>
-                                {statusConfig[q.status]?.label || q.status}
-                              </Badge>
-                            </td>
-                            <td className="px-6 py-4 text-right">
-                              <ArrowUpRight className="w-4 h-4 text-muted-foreground/30 inline" />
-                            </td>
+                  <SectionErrorBoundary name="RecentCustomersTable">
+                    <table className="w-full text-left">
+                      <thead>
+                          <tr className="border-b border-border">
+                            <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground">Serviço</th>
+                            <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Status</th>
+                            <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30 text-right">Ações</th>
                           </tr>
-                        ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-border">
+                          {recentCustomers.map((q) => (
+                            <tr 
+                              key={q.id} 
+                              className="hover:bg-muted/30 transition-colors cursor-pointer"
+                              onClick={() => navigate('/plataforma/clientes')}
+                            >
+                              <td className="px-6 py-4">
+                                <div className="flex flex-col">
+                                  <span className="font-bold text-sm text-foreground">{q.name || "Sem Nome"}</span>
+                                  <span className="text-[10px] text-muted-foreground uppercase">{q.created_at && !isNaN(new Date(q.created_at).getTime()) ? format(new Date(q.created_at), "dd/MM/yyyy") : "---"}</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                <Badge className={`${statusConfig[q.status]?.cls || "bg-muted text-foreground"} border-none rounded-lg px-2.5 py-0.5 font-bold text-[9px] uppercase`}>
+                                  {statusConfig[q.status]?.label || q.status}
+                                </Badge>
+                              </td>
+                              <td className="px-6 py-4 text-right">
+                                <ArrowUpRight className="w-4 h-4 text-muted-foreground/30 inline" />
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </SectionErrorBoundary>
                 </div>
               </Card>
            </motion.div>
@@ -526,35 +558,37 @@ export default function PlatformDashboard() {
               </div>
               <Card className="bg-card border-border rounded-3xl overflow-hidden p-0 shadow-xl">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left">
-                    <thead>
-                        <tr className="border-b border-border">
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Projeto</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Progresso</th>
-                          <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border">
-                        {recentProjects.map((p) => (
-                          <tr key={p.id} className="hover:bg-muted/30 transition-colors">
-                            <td className="px-6 py-4">
-                              <div className="flex flex-col">
-                                <span className="font-bold text-sm text-foreground">{p.title || "Sem Título"}</span>
-                                <span className="text-[10px] text-muted-foreground uppercase">Entrega: {p.end_date && !isNaN(new Date(p.end_date).getTime()) ? format(new Date(p.end_date), "dd/MM/yyyy") : "---"}</span>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4">
-                              <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                                <motion.div initial={{ width: 0 }} animate={{ width: p.status === 'CONCLUÍDO' ? '100%' : '45%' }} className={`h-full rounded-full ${p.status === 'CONCLUÍDO' ? 'bg-[#10B981]' : 'bg-sky-500'}`} />
-                              </div>
-                            </td>
-                            <td className="px-6 py-4">
-                               <Badge className={`${p.status === 'CONCLUÍDO' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-sky-500/10 text-sky-500'} border-none rounded-lg px-2.5 py-0.5 font-bold text-[9px] uppercase`}>{p.status}</Badge>
-                            </td>
+                  <SectionErrorBoundary name="RecentProjectsTable">
+                    <table className="w-full text-left">
+                      <thead>
+                          <tr className="border-b border-border">
+                            <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Projeto</th>
+                            <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Progresso</th>
+                            <th className="px-6 py-5 text-[10px] font-bold uppercase text-muted-foreground/30">Status</th>
                           </tr>
-                        ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-border">
+                          {recentProjects.map((p) => (
+                            <tr key={p.id} className="hover:bg-muted/30 transition-colors">
+                              <td className="px-6 py-4">
+                                <div className="flex flex-col">
+                                  <span className="font-bold text-sm text-foreground">{p.title || "Sem Título"}</span>
+                                  <span className="text-[10px] text-muted-foreground uppercase">Entrega: {p.end_date && !isNaN(new Date(p.end_date).getTime()) ? format(new Date(p.end_date), "dd/MM/yyyy") : "---"}</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                                  <motion.div initial={{ width: 0 }} animate={{ width: p.status === 'CONCLUÍDO' ? '100%' : '45%' }} className={`h-full rounded-full ${p.status === 'CONCLUÍDO' ? 'bg-[#10B981]' : 'bg-sky-500'}`} />
+                                </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                 <Badge className={`${p.status === 'CONCLUÍDO' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-sky-500/10 text-sky-500'} border-none rounded-lg px-2.5 py-0.5 font-bold text-[9px] uppercase`}>{p.status}</Badge>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </SectionErrorBoundary>
                 </div>
               </Card>
            </motion.div>

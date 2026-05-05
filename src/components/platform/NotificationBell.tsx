@@ -144,7 +144,7 @@ export default function NotificationBell() {
 
   if (!isAdmin) return null;
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = (Array.isArray(notifications) ? notifications : []).filter(n => n && !n.read).length;
 
   return (
     <div className="relative" ref={dropdownRef}>

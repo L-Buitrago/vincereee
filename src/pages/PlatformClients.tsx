@@ -10,6 +10,33 @@ import { Badge } from "@/components/ui/badge";
 import { formatCurrency, type Client } from "@/data/platformMockData";
 import { toast } from "@/hooks/use-toast";
 import PlatformHeader from "@/components/platform/PlatformHeader";
+import React, { ErrorInfo } from "react";
+
+class SectionErrorBoundary extends React.Component<{ children: React.ReactNode, name: string }, { hasError: boolean, error: Error | null }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error(`Section ${this.props.name} crashed:`, error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-4 rounded-xl border border-red-500/20 bg-red-500/10 text-red-500 flex flex-col items-center justify-center text-center h-full min-h-[100px] w-full">
+          <AlertTriangle className="w-6 h-6 mb-2 opacity-50" />
+          <span className="text-[10px] font-bold uppercase tracking-widest">{this.props.name} Error</span>
+          <span className="text-xs opacity-70 mt-1">{this.state.error?.message}</span>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 
 const statusConfig: Record<string, { label: string; cls: string; pulse?: boolean }> = {
   "Cliente Ativo": { label: "Ativo", cls: "text-sky-400 bg-sky-500/10" },
@@ -303,7 +330,8 @@ export default function PlatformClients() {
     );
   };
 
-  const filtered = clients.filter((c) => {
+  const filtered = (Array.isArray(clients) ? clients : []).filter((c) => {
+    if (!c) return false;
     const matchSearch = (c.name?.toLowerCase() || '').includes(search.toLowerCase()) ||
       (c.email?.toLowerCase() || '').includes(search.toLowerCase());
     const matchStatus = statusFilter === "todos" || c.status === statusFilter;
@@ -401,117 +429,121 @@ export default function PlatformClients() {
 
         <div className="rounded-2xl bg-card border border-border overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border bg-muted/30">
-                  <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Cliente</th>
-                  <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Email</th>
-                  <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Produto</th>
-                  <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Data</th>
-                  <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Vencimento</th>
-                  <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Valor</th>
-                  <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Status</th>
-                  <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading ? (
-                  <tr>
-                    <td colSpan={8} className="px-5 py-16 text-center text-muted-foreground">
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="w-8 h-8 border-3 border-sky-500 border-t-transparent rounded-full animate-spin" />
-                        <span className="font-bold text-sm tracking-widest uppercase">Carregando dados...</span>
-                      </div>
-                    </td>
+            <SectionErrorBoundary name="ClientsTable">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/30">
+                    <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Cliente</th>
+                    <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Email</th>
+                    <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Produto</th>
+                    <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Data</th>
+                    <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Vencimento</th>
+                    <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Valor</th>
+                    <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Status</th>
+                    <th className="text-left text-xs text-muted-foreground font-bold px-6 py-5 uppercase tracking-widest">Ações</th>
                   </tr>
-                ) : clients.length === 0 ? (
-                  <tr>
-                    <td colSpan={8} className="px-5 py-16 text-center text-muted-foreground font-medium uppercase tracking-widest text-[10px]">Nenhum cliente cadastrado.</td>
-                  </tr>
-                ) : paginated.length === 0 ? (
-                  <tr>
-                    <td colSpan={8} className="px-5 py-16 text-center text-muted-foreground font-medium uppercase tracking-widest text-[10px]">Nenhum filtro corresponde.</td>
-                  </tr>
-                ) : (
-                  paginated.map((c) => {
-                    const sc = statusConfig[c.status || 'Cliente Ativo'] || statusConfig['Cliente Ativo'];
-                    return (
-                      <tr key={c.id} className="border-b border-border last:border-0 hover:bg-muted/20 transition-colors group">
-                        <td className="px-6 py-5">
-                          <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-2xl bg-muted border border-border flex items-center justify-center text-xs font-bold text-muted-foreground group-hover:border-sky-500/20 group-hover:bg-sky-500/5 transition-all">
-                              {c.name ? c.name.substring(0,2).toUpperCase() : "??"}
+                </thead>
+                <tbody>
+                  {isLoading ? (
+                    <tr>
+                      <td colSpan={8} className="px-5 py-16 text-center text-muted-foreground">
+                        <div className="flex flex-col items-center gap-3">
+                          <div className="w-8 h-8 border-3 border-sky-500 border-t-transparent rounded-full animate-spin" />
+                          <span className="font-bold text-sm tracking-widest uppercase">Carregando dados...</span>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : (Array.isArray(clients) ? clients : []).length === 0 ? (
+                    <tr>
+                      <td colSpan={8} className="px-5 py-16 text-center text-muted-foreground font-medium uppercase tracking-widest text-[10px]">Nenhum cliente cadastrado.</td>
+                    </tr>
+                  ) : paginated.length === 0 ? (
+                    <tr>
+                      <td colSpan={8} className="px-5 py-16 text-center text-muted-foreground font-medium uppercase tracking-widest text-[10px]">Nenhum filtro corresponde.</td>
+                    </tr>
+                  ) : (
+                    paginated.map((c) => {
+                      if (!c) return null;
+                      const sc = statusConfig[c.status || 'Cliente Ativo'] || statusConfig['Cliente Ativo'];
+                      return (
+                        <tr key={c.id} className="border-b border-border last:border-0 hover:bg-muted/20 transition-colors group">
+                          <td className="px-6 py-5">
+                            <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 rounded-2xl bg-muted border border-border flex items-center justify-center text-xs font-bold text-muted-foreground group-hover:border-sky-500/20 group-hover:bg-sky-500/5 transition-all">
+                                {c.name ? String(c.name).substring(0,2).toUpperCase() : "??"}
+                              </div>
+                              <span className="text-foreground font-bold">{c.name || "Sem Nome"}</span>
                             </div>
-                            <span className="text-foreground font-bold">{c.name || "Sem Nome"}</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-5 text-muted-foreground/80 font-medium">{c.email}</td>
-                        <td className="px-6 py-5">
-                          <Badge variant="outline" className="bg-muted/50 border-border text-muted-foreground font-bold text-[10px] uppercase tracking-widest px-2 py-0.5">
-                            {c.status}
-                          </Badge>
-                        </td>
-                        <td className="px-6 py-5 text-muted-foreground/60 text-xs font-bold">
-                          {new Date(c.created_at).toLocaleDateString("pt-BR")}
-                        </td>
-                        <td className="px-6 py-5">
-                          {c.due_date ? (() => {
-                            const isOverdue = new Date(c.due_date) < new Date() && c.status === 'Cliente Ativo';
-                            return (
-                              <span className={`text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5 ${isOverdue ? 'text-red-500' : 'text-muted-foreground/50'}`}>
-                                {isOverdue && <AlertTriangle className="w-3.5 h-3.5" />}
-                                {new Date(c.due_date).toLocaleDateString("pt-BR")}
-                              </span>
-                            );
-                          })() : <span className="text-xs text-muted-foreground/20">—</span>}
-                        </td>
-                        <td className="px-6 py-5 text-foreground font-black tracking-tight">{formatCurrency(c.total_spent || 0)}</td>
-                        <td className="px-6 py-5">
-                          <select
-                            value={c.status}
-                            onChange={(e) => updateStatus(c, e.target.value)}
-                            className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-tighter border-0 cursor-pointer outline-none transition-all shadow-sm hover:shadow-md ${sc.cls}`}
-                            style={{ WebkitAppearance: 'none', appearance: 'none' }}
-                          >
-                            <option value="Lead">Lead</option>
-                            <option value="Negociação">Negociação</option>
-                            <option value="Cliente Ativo">Ativo</option>
-                            <option value="Cancelado">Cancelado</option>
-                          </select>
-                        </td>
-                        <td className="px-6 py-5">
-                          <div className="flex items-center gap-2">
-                            <button onClick={() => setSelected(c)} className="p-2.5 rounded-xl bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all shadow-sm active:scale-90" title="Ver detalhes">
-                              <Eye className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => {
-                                if (c.phone) {
-                                  window.open(`https://wa.me/55${c.phone.replace(/\D/g, '')}`, '_blank');
-                                } else {
-                                  toast({ title: "Sem número", description: "Este cliente não possui telefone cadastrado.", variant: "destructive" });
-                                }
-                              }}
-                              className="p-2.5 rounded-xl bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all shadow-sm active:scale-90"
-                              title="Enviar WhatsApp"
+                          </td>
+                          <td className="px-6 py-5 text-muted-foreground/80 font-medium">{c.email}</td>
+                          <td className="px-6 py-5">
+                            <Badge variant="outline" className="bg-muted/50 border-border text-muted-foreground font-bold text-[10px] uppercase tracking-widest px-2 py-0.5">
+                              {c.status}
+                            </Badge>
+                          </td>
+                          <td className="px-6 py-5 text-muted-foreground/60 text-xs font-bold">
+                            {c.created_at ? new Date(c.created_at).toLocaleDateString("pt-BR") : "---"}
+                          </td>
+                          <td className="px-6 py-5">
+                            {c.due_date ? (() => {
+                              const dDate = new Date(c.due_date);
+                              const isOverdue = !isNaN(dDate.getTime()) && dDate < new Date() && c.status === 'Cliente Ativo';
+                              return (
+                                <span className={`text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5 ${isOverdue ? 'text-red-500' : 'text-muted-foreground/50'}`}>
+                                  {isOverdue && <AlertTriangle className="w-3.5 h-3.5" />}
+                                  {!isNaN(dDate.getTime()) ? dDate.toLocaleDateString("pt-BR") : "---"}
+                                </span>
+                              );
+                            })() : <span className="text-xs text-muted-foreground/20">—</span>}
+                          </td>
+                          <td className="px-6 py-5 text-foreground font-black tracking-tight">{formatCurrency(c.total_spent || 0)}</td>
+                          <td className="px-6 py-5">
+                            <select
+                              value={c.status}
+                              onChange={(e) => updateStatus(c, e.target.value)}
+                              className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-tighter border-0 cursor-pointer outline-none transition-all shadow-sm hover:shadow-md ${sc.cls}`}
+                              style={{ WebkitAppearance: 'none', appearance: 'none' }}
                             >
-                              <MessageCircle className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => deleteClient(c)}
-                              className="p-2.5 rounded-xl bg-red-500/5 hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-all shadow-sm active:scale-90"
-                              title="Remover cliente"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
+                              <option value="Lead">Lead</option>
+                              <option value="Negociação">Negociação</option>
+                              <option value="Cliente Ativo">Ativo</option>
+                              <option value="Cancelado">Cancelado</option>
+                            </select>
+                          </td>
+                          <td className="px-6 py-5">
+                            <div className="flex items-center gap-2">
+                              <button onClick={() => setSelected(c)} className="p-2.5 rounded-xl bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all shadow-sm active:scale-90" title="Ver detalhes">
+                                <Eye className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  if (c.phone) {
+                                    window.open(`https://wa.me/55${String(c.phone).replace(/\D/g, '')}`, '_blank');
+                                  } else {
+                                    toast({ title: "Sem número", description: "Este cliente não possui telefone cadastrado.", variant: "destructive" });
+                                  }
+                                }}
+                                className="p-2.5 rounded-xl bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all shadow-sm active:scale-90"
+                                title="Enviar WhatsApp"
+                              >
+                                <MessageCircle className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => deleteClient(c)}
+                                className="p-2.5 rounded-xl bg-red-500/5 hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-all shadow-sm active:scale-90"
+                                title="Remover cliente"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </SectionErrorBoundary>
           </div>
           {totalPages > 1 && (
             <div className="flex items-center justify-between gap-2 p-6 border-t border-border bg-muted/5">
