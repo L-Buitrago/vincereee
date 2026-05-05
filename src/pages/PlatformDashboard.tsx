@@ -307,6 +307,21 @@ export default function PlatformDashboard() {
   const recentCustomers = useMemo(() => (Array.isArray(customers) ? customers : []).slice(0, 5), [customers]);
   const recentProjects = useMemo(() => (Array.isArray(projects) ? projects : []).slice(0, 3), [projects]);
 
+  if (window.location.search.includes('safe=1')) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center text-center p-10">
+        <h1 className="text-4xl font-bold text-sky-500 mb-4">MODO DE SEGURANÇA</h1>
+        <p className="text-muted-foreground max-w-md mb-8">
+          O Dashboard foi simplificado para diagnosticar o erro de carregamento.
+        </p>
+        <div className="flex gap-4">
+          <Button onClick={() => navigate('/plataforma/clientes')}>Ir para Clientes</Button>
+          <Button variant="outline" onClick={() => window.location.href = '/plataforma/dashboard'}>Tentar Modo Normal</Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground transition-colors duration-500">
       {showSuccess && (
@@ -324,6 +339,8 @@ export default function PlatformDashboard() {
 
       {/* Main Content Area */}
       <main className="flex-1 p-8 pt-4 space-y-8">
+
+
         
         <div className="flex items-center gap-2 mb-2 bg-muted/20 p-1 rounded-xl w-fit border border-border">
           {periods.map((p, i) => (
