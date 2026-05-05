@@ -30,6 +30,15 @@ export class ErrorBoundary extends React.Component<
           <pre style={{ background: '#222', padding: '1rem', overflow: 'auto', marginTop: '1rem', fontSize: '10px' }}>
             {this.state.errorInfo?.componentStack}
           </pre>
+          {(window as any).LAST_CRASH && (
+            <div style={{ marginTop: '2rem', border: '1px dashed #444', padding: '1rem' }}>
+              <h3 style={{ color: '#888', fontSize: '0.8rem' }}>Detalhes do Crash Global:</h3>
+              <pre style={{ fontSize: '9px', color: '#666' }}>
+                {JSON.stringify((window as any).LAST_CRASH, null, 2)}
+              </pre>
+            </div>
+          )}
+
           <button 
             onClick={() => window.location.reload()} 
             style={{ marginTop: '2rem', padding: '0.5rem 1rem', background: '#fff', color: '#000', cursor: 'pointer', marginRight: '1rem', fontWeight: 'bold' }}

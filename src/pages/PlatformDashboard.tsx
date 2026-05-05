@@ -249,22 +249,24 @@ export default function PlatformDashboard() {
     return filtered;
   }, [transactions, activePeriod]);
 
-  const totalClientes = customers.filter(c => c.status === 'Cliente Ativo').length;
+  const totalClientes = useMemo(() => (Array.isArray(customers) ? customers : []).filter(c => c.status === 'Cliente Ativo').length, [customers]);
   
-  // Update: Using transactions for real-time revenue instead of static customer fields
-  const totalReceita = filteredTransactions
-    .filter(t => t.status === 'aprovado' || !t.status) // Include approved or untracked status
-    .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+  const totalReceita = useMemo(() => (Array.isArray(filteredTransactions) ? filteredTransactions : [])
+    .filter(t => t.status === 'aprovado' || !t.status)
+    .reduce((sum, t) => sum + (Number(t.amount) || 0), 0), [filteredTransactions]);
 
-  const totalProjetosAtivos = projects.filter(p => p.status === 'EM ANDAMENTO').length;
+  const totalProjetosAtivos = useMemo(() => (Array.isArray(projects) ? projects : []).filter(p => p.status === 'EM ANDAMENTO').length, [projects]);
   
-  // Churn calculation
-  const totalCancelados = allCustomers.filter(c => c.status === 'Cancelado').length;
-  const churnRate = allCustomers.length > 0 ? (totalCancelados / allCustomers.length) * 100 : 0;
+  const churnData = useMemo(() => {
+    const clients = Array.isArray(allCustomers) ? allCustomers : [];
+    const cancelados = clients.filter(c => c && c.status === 'Cancelado').length;
+    const rate = clients.length > 0 ? (cancelados / clients.length) * 100 : 0;
+    return { cancelados, rate };
+  }, [allCustomers]);
 
-  const totalTransactionsCount = filteredTransactions.length;
-  const approvedTransactions = filteredTransactions.filter(t => t.status === 'aprovado').length;
-  const approvalRate = totalTransactionsCount > 0 ? (approvedTransactions / totalTransactionsCount) * 100 : 0;
+  const totalTransactionsCount = useMemo(() => (Array.isArray(filteredTransactions) ? filteredTransactions : []).length, [filteredTransactions]);
+  const approvedTransactions = useMemo(() => (Array.isArray(filteredTransactions) ? filteredTransactions : []).filter(t => t.status === 'aprovado').length, [filteredTransactions]);
+  const approvalRate = useMemo(() => totalTransactionsCount > 0 ? (approvedTransactions / totalTransactionsCount) * 100 : 0, [totalTransactionsCount, approvedTransactions]);
 
   const paymentMethods = useMemo(() => {
     const fTransactions = Array.isArray(filteredTransactions) ? filteredTransactions : [];
@@ -370,7 +372,7 @@ export default function PlatformDashboard() {
               <StatCard title="Projetos Ativos" value={totalProjetosAtivos} icon={Truck} color="#F59E0B" />
             </motion.div>
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={9}>
-              <StatCard title="Taxa de Churn" value={`${churnRate.toFixed(1)}%`} icon={TrendingDown} color="#F43F5E" />
+              <StatCard title="Taxa de Churn" value={`${churnData.rate.toFixed(1)}%`} icon={TrendingDown} color="#F43F5E" />
             </motion.div>
         </section>
 

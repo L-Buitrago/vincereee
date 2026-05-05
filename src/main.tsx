@@ -11,6 +11,13 @@ window.addEventListener("beforeinstallprompt", (e) => {
   window.dispatchEvent(new Event("app-install-prompt"));
 });
 
+window.onerror = function(message, source, lineno, colno, error) {
+  console.error("GLOBAL ERROR CAPTURED:", { message, source, lineno, colno, error });
+  // Store it for ErrorBoundary to find
+  (window as any).LAST_CRASH = { message, source, lineno, colno, error: error?.stack };
+  return false;
+};
+
 createRoot(document.getElementById("root")!).render(
   <ErrorBoundary>
     <App />

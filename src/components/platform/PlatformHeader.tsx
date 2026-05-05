@@ -20,7 +20,16 @@ export default function PlatformHeader({ title, searchQuery, setSearchQuery }: P
 
   const fullName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Usuário";
   const userAvatar = user?.user_metadata?.avatar_url;
-  const initials = fullName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
+  const initials = useMemo(() => {
+    if (!fullName) return "??";
+    return fullName
+      .split(/\s+/)
+      .filter(Boolean)
+      .map(n => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2) || "??";
+  }, [fullName]);
 
   const planName = useMemo(() => {
     if (isAdmin) return "Admin";
