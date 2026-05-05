@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { CSSProperties, useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 export type AgentRole = 'CEO' | 'CTO' | 'Programmer' | 'Reviewer' | 'Designer';
@@ -10,6 +10,7 @@ interface AgentAvatarProps {
   isMoving?: boolean;
   direction?: 'left' | 'right';
   className?: string;
+  style?: CSSProperties;
 }
 
 const colors: Record<AgentRole, { primary: string; secondary: string; hair: string }> = {
@@ -27,11 +28,12 @@ export const AgentAvatar: React.FC<AgentAvatarProps> = ({
   isMoving,
   direction = 'right',
   className = '',
+  style,
 }) => {
   const { primary, secondary, hair } = useMemo(() => colors[role], [role]);
 
   return (
-    <div className={`relative flex flex-col items-center ${className}`}>
+    <div className={`relative flex flex-col items-center ${className}`} style={style}>
       {/* Thinking Bubble */}
       {isThinking && (
         <motion.div

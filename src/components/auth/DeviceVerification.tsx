@@ -97,7 +97,7 @@ export const DeviceVerification = ({ onVerified, onCancel }: DeviceVerificationP
             render={({ slots }) => (
               <InputOTPGroup className="gap-2">
                 {slots.map((slot, index) => (
-                  <InputOTPSlot key={index} {...slot} className="w-12 h-14 text-lg border-primary/20 bg-primary/5 focus:ring-primary" />
+                  <InputOTPSlot key={index} index={index} {...slot} className="w-12 h-14 text-lg border-primary/20 bg-primary/5 focus:ring-primary" />
                 ))}
               </InputOTPGroup>
             )}
