@@ -79,8 +79,8 @@ export default function NotificationBell() {
         .order('created_at', { ascending: false })
         .limit(20);
 
-      if (!error && data) {
-        setNotifications(data as any as Notification[]);
+      if (!error) {
+        setNotifications((data as any as Notification[]) || []);
       }
     };
 
