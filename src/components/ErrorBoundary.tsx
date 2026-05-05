@@ -32,10 +32,29 @@ export class ErrorBoundary extends React.Component<
           </pre>
           <button 
             onClick={() => window.location.reload()} 
-            style={{ marginTop: '2rem', padding: '0.5rem 1rem', background: '#fff', color: '#000', cursor: 'pointer' }}
+            style={{ marginTop: '2rem', padding: '0.5rem 1rem', background: '#fff', color: '#000', cursor: 'pointer', marginRight: '1rem', fontWeight: 'bold' }}
           >
-            Reload Page
+            🔄 Recarregar Página
           </button>
+          <button 
+            onClick={() => {
+              if (window.caches) {
+                caches.keys().then(names => {
+                  for (let name of names) caches.delete(name);
+                });
+              }
+              localStorage.clear();
+              sessionStorage.clear();
+              window.location.href = window.location.origin + '?clear_cache=' + Date.now();
+            }} 
+            style={{ marginTop: '2rem', padding: '0.5rem 1rem', background: '#ff4444', color: '#fff', cursor: 'pointer', border: 'none', fontWeight: 'bold' }}
+          >
+            🧹 Limpar Cache e Forçar Atualização
+          </button>
+          <p style={{ marginTop: '2rem', fontSize: '12px', color: '#666' }}>
+            ID do Build Atual: {import.meta.env.MODE} | URL: {window.location.pathname}
+          </p>
+
         </div>
       );
     }
