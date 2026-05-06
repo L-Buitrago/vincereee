@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const navLinks = [
-  { label: 'Work', href: '/work' },
-  { label: 'Expertise', href: '/expertise' },
-  { label: 'Agency', href: '/agency' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Portfólio', href: '/work' },
+  { label: 'Especialidade', href: '/expertise' },
+  { label: 'Agência', href: '/agency' },
+  { label: 'Contato', href: '/contact' },
 ];
 
 const Navigation = () => {
@@ -51,7 +51,7 @@ const Navigation = () => {
             )}
             onClick={() => setIsOpen(!isOpen)}
           >
-            {isOpen ? 'Close' : 'Menu'}
+            {isOpen ? 'Fechar' : 'Menu'}
           </button>
 
           <button 
@@ -61,7 +61,7 @@ const Navigation = () => {
               document.querySelector('#footer')?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
-            Book a call
+            Agendar chamada
           </button>
 
           {/* EXACT DROPDOWN CARD FROM SCREENSHOT */}
@@ -110,7 +110,7 @@ const Navigation = () => {
                   }}
                   className="w-full bg-white text-black font-medium rounded-xl py-3.5 transition-all duration-300 text-sm tracking-wide hover:bg-white/90"
                 >
-                  Contact us
+                  Contato
                 </button>
               </motion.div>
             )}

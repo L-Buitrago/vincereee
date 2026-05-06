@@ -23,11 +23,11 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
   }, []);
 
   const menuLinks = [
-    { label: "Home", href: "/" },
-    { label: "Work", href: "/#cases" },
-    { label: "Services", href: "/#servicos" },
-    { label: "About", href: "/about" },
-    { label: "Platform", href: "/plataforma/dashboard" },
+    { label: "Início", href: "/" },
+    { label: "Portfólio", href: "/#cases" },
+    { label: "Serviços", href: "/#servicos" },
+    { label: "Sobre", href: "/about" },
+    { label: "Plataforma", href: "/plataforma/dashboard" },
   ];
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -77,7 +77,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
               }`}
             >
               <ShuffleText 
-                text={isOpen ? "CLOSE" : "MENU"} 
+                text={isOpen ? "FECHAR" : "MENU"} 
                 className="w-12 text-center" 
               />
               <div className="relative w-4 h-4 overflow-hidden">
@@ -146,7 +146,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
                         }}
                         className="w-full py-3.5 bg-[#60A5FA] text-secondary rounded-xl font-bold text-[9px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-xl"
                       >
-                        Contact us
+                        Contato
                       </button>
                     </div>
                   </nav>
