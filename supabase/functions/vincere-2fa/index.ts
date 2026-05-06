@@ -38,40 +38,52 @@ serve(async (req) => {
       const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
       const RESEND_FROM = Deno.env.get('RESEND_FROM') || 'Vincere <security@resend.dev>'
 
-      if (RESEND_API_KEY) {
-        const emailHtml = `
-          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-            <h2 style="color: #0ea5e9;">Verificação de Novo Dispositivo</h2>
-            <p>Olá,</p>
-            <p>Identificamos uma tentativa de login na sua conta Vincere a partir de um novo dispositivo ou navegador.</p>
-            <p>Use o código abaixo para autorizar este dispositivo:</p>
-            <div style="background: #f4f4f4; padding: 20px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 5px; margin: 20px 0; border-radius: 5px;">
-              ${verificationCode}
-            </div>
-            <p style="color: #666; font-size: 14px;">Este código expira em 10 minutos. Se você não solicitou este login, recomendamos alterar sua senha imediatamente.</p>
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
-            <p style="font-size: 12px; color: #999;">© Vincere Tecnologia</p>
+      if (!RESEND_API_KEY) {
+        console.error('RESEND_API_KEY is not set')
+        return new Response(
+          JSON.stringify({ error: 'Sistema de e-mail não configurado (RESEND_API_KEY ausente)' }), 
+          { status: 500, headers: corsHeaders }
+        )
+      }
+
+      const emailHtml = `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+          <h2 style="color: #0ea5e9;">Verificação de Novo Dispositivo</h2>
+          <p>Olá,</p>
+          <p>Identificamos uma tentativa de login na sua conta Vincere a partir de um novo dispositivo ou navegador.</p>
+          <p>Use o código abaixo para autorizar este dispositivo:</p>
+          <div style="background: #f4f4f4; padding: 20px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 5px; margin: 20px 0; border-radius: 5px;">
+            ${verificationCode}
           </div>
-        `
+          <p style="color: #666; font-size: 14px;">Este código expira em 10 minutos. Se você não solicitou este login, recomendamos alterar sua senha imediatamente.</p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+          <p style="font-size: 12px; color: #999;">© Vincere Tecnologia</p>
+        </div>
+      `
 
-        const res = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${RESEND_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: RESEND_FROM,
-            to: [email],
-            subject: 'Seu código de verificação Vincere',
-            html: emailHtml,
-          }),
-        })
+      console.log(`Sending verification code ${verificationCode} to ${email}`)
 
-        if (!res.ok) {
-          const err = await res.text()
-          console.error('Resend error:', err)
-        }
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: RESEND_FROM,
+          to: [email],
+          subject: 'Seu código de verificação Vincere',
+          html: emailHtml,
+        }),
+      })
+
+      if (!res.ok) {
+        const err = await res.text()
+        console.error('Resend error:', err)
+        return new Response(
+          JSON.stringify({ error: `Erro ao enviar e-mail: ${err}` }), 
+          { status: 500, headers: corsHeaders }
+        )
       }
 
       return new Response(JSON.stringify({ success: true }), { headers: corsHeaders })
