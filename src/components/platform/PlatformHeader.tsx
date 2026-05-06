@@ -97,7 +97,7 @@ export default function PlatformHeader({ title, searchQuery, setSearchQuery }: P
         </div>
 
         <div className="text-[7px] font-black text-muted-foreground/60 uppercase tracking-[0.6em] mt-2 group-hover:text-foreground/40 transition-colors">
-          LOCAL TIME
+          HORA LOCAL
         </div>
       </div>
 

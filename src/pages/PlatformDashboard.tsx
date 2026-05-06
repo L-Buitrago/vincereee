@@ -9,7 +9,7 @@ import {
   TrendingUp, TrendingDown, FileText, Wallet, Truck, Clock, 
   Search, Bell, Folder, MoreHorizontal, ArrowUpRight,
   CheckCircle2, Users, DollarSign, PieChart as PieChartIcon,
-  Calendar as CalendarIcon
+  Calendar as CalendarIcon, AlertTriangle
 } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -569,7 +569,7 @@ export default function PlatformDashboard() {
 
            <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={13} className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold flex items-center gap-2 text-white">
+                <h3 className="text-xl font-bold flex items-center gap-2 text-foreground">
                   <Folder className="w-5 h-5 text-[#10B981]" />
                   Projetos Ativos
                 </h3>
