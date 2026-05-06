@@ -8,7 +8,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import SubscriptionGuard from "@/components/SubscriptionGuard";
 import { ThemeProvider } from "@/components/theme-provider";
-import { DeviceVerification } from "@/components/auth/DeviceVerification";
+
 import ScrollToTop from "./components/ScrollToTop";
 
 const Index = lazy(() => import("./pages/Index"));
@@ -44,12 +44,7 @@ const AppRoutes = () => {
   
   return (
     <>
-      {!isDeviceVerified && (
-        <DeviceVerification 
-          onVerified={() => refreshVerification()} 
-          onCancel={() => {}} 
-        />
-      )}
+
       <Suspense fallback={<div className="min-h-screen bg-background" />}>
       <Routes>
         <Route path="/" element={<Index />} />
