@@ -47,44 +47,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const checkDeviceVerification = async (userId: string) => {
-    try {
-      if (!userId || userId === '00000000-0000-0000-0000-000000000000') {
-        setIsDeviceVerified(true);
-        return;
-      }
-
-      const deviceId = getDeviceId();
-      const { data, error } = await supabase
-        .from('vincere_known_devices')
-        .select('id')
-        .eq('user_id', userId)
-        .eq('device_id', deviceId)
-        .maybeSingle();
-
-      if (error) {
-        console.error("Error checking device verification:", error);
-        setIsDeviceVerified(true); // Fallback to avoid lockout on error
-        return;
-      }
-
-      if (!data) {
-        setIsDeviceVerified(false);
-        // Trigger email automatically on first detection of unknown device
-        supabase.functions.invoke("vincere-2fa", {
-          body: { 
-            action: "send", 
-            userId, 
-            email: user?.email || session?.user?.email, 
-            deviceId 
-          },
-        });
-      } else {
-        setIsDeviceVerified(true);
-      }
-    } catch (err) {
-      console.error("Device verification failed, allowing access:", err);
-      setIsDeviceVerified(true); // Never lock user out on error
-    }
+    // 2FA disabled temporarily as requested
+    setIsDeviceVerified(true);
+    return;
   };
 
   const refreshVerification = async () => {
