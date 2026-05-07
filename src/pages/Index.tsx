@@ -76,7 +76,7 @@ const Index = () => {
           <main className="relative">
             {/* 1. HERO (V3) */}
             <div id="home">
-              <HeroImmersive />
+              <HeroImmersive onNavigate={handleNavigate} />
             </div>
 
             {/* 2. INTRO + MOTTO COMBINED */}

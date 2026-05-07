@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, BarChart3, MessageSquareWarning, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 
-const HeroImmersive = () => {
+const HeroImmersive = ({ onNavigate }: { onNavigate?: (id: string) => void }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
@@ -150,17 +150,20 @@ const HeroImmersive = () => {
               {
                 icon: BarChart3,
                 title: "Dashboards",
-                desc: "Controle de alunos & pacientes"
+                desc: "Controle de alunos & pacientes",
+                target: "#plataforma"
               },
               {
                 icon: ArrowUpRight,
                 title: "Criação de sites",
-                desc: "Criamos sites, landing pages e lojas para seu negócio"
+                desc: "Criamos sites, landing pages e lojas para seu negócio",
+                target: "#cases"
               },
               {
                 icon: MessageSquareWarning,
                 title: "Recuperação",
-                desc: "Recuperamos seus carrinhos abandonados e faturas pendentes via WhatsApp"
+                desc: "Recuperamos seus carrinhos abandonados e faturas pendentes via WhatsApp",
+                target: "#solucoes"
               }
             ].map((prop, i) => (
               <motion.div
@@ -173,21 +176,12 @@ const HeroImmersive = () => {
                   scale: 1.02,
                   boxShadow: "0 25px 50px -12px rgba(37, 99, 235, 0.15)"
                 }}
-                animate={{
-                  y: [0, -6, 0],
-                }}
+                onClick={() => onNavigate && onNavigate(prop.target)}
                 transition={{
                   // Entrance transition
                   duration: 0.8,
                   delay: 0.4 + i * 0.1,
                   ease: [0.16, 1, 0.3, 1],
-                  // Continuous floating animation
-                  y: {
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: i * 0.6
-                  },
                   // Interaction transitions
                   scale: { duration: 0.25 },
                   boxShadow: { duration: 0.25 }
