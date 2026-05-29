@@ -9,6 +9,12 @@ import { toast } from "sonner";
 import PlatformHeader from "@/components/platform/PlatformHeader";
 import { useTheme } from "@/components/theme-provider";
 
+const NOTIFICATION_KEYS: Record<string, string> = {
+  "Novas vendas via checkout": "checkoutSales",
+  "Pagamentos em atraso": "latePayments",
+  "Novos leads registrados": "newLeads",
+  "Alertas críticos do sistema": "criticalAlerts",
+};
 
 export default function PlatformSettings() {
   const { user, updateUserMetadata } = useAuth();
@@ -26,6 +32,36 @@ export default function PlatformSettings() {
 
   // Security State
   const [newPassword, setNewPassword] = useState("");
+
+  // Notifications State
+  const [notifications, setNotifications] = useState(() => {
+    const saved = localStorage.getItem("platform_notifications");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Error parsing notifications", e);
+      }
+    }
+    return {
+      checkoutSales: true,
+      latePayments: true,
+      newLeads: true,
+      criticalAlerts: true,
+    };
+  });
+
+  const handleToggleNotification = (item: string) => {
+    const key = NOTIFICATION_KEYS[item];
+    if (!key) return;
+
+    setNotifications((prev: any) => {
+      const updated = { ...prev, [key]: !prev[key] };
+      localStorage.setItem("platform_notifications", JSON.stringify(updated));
+      toast.success(`Notificação "${item}" ${updated[key] ? "ativada" : "desativada"}!`);
+      return updated;
+    });
+  };
 
   useEffect(() => {
     if (user) {
@@ -257,15 +293,24 @@ export default function PlatformSettings() {
                   </div>
                   
                   <div className="space-y-2">
-                    {["Novas vendas via checkout", "Pagamentos em atraso", "Novos leads registrados", "Alertas críticos do sistema"].map((item) => (
-                      <div key={item} className="flex items-center justify-between py-4 border-b border-border px-2 hover:bg-muted/50 transition-colors rounded-lg">
-                        <span className="text-sm font-medium text-foreground/80">{item}</span>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input type="checkbox" defaultChecked className="sr-only peer" />
-                          <div className="w-10 h-5.5 bg-muted peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-background after:rounded-full after:h-4.5 after:w-4.5 after:transition-all peer-checked:bg-primary" />
-                        </label>
-                      </div>
-                    ))}
+                    {["Novas vendas via checkout", "Pagamentos em atraso", "Novos leads registrados", "Alertas críticos do sistema"].map((item) => {
+                      const key = NOTIFICATION_KEYS[item];
+                      const isChecked = notifications[key as keyof typeof notifications] ?? true;
+                      return (
+                        <div key={item} className="flex items-center justify-between py-4 border-b border-border px-2 hover:bg-muted/50 transition-colors rounded-lg">
+                          <span className="text-sm font-medium text-foreground/80">{item}</span>
+                          <label className="relative inline-flex items-center cursor-pointer select-none">
+                            <input 
+                              type="checkbox" 
+                              checked={isChecked}
+                              onChange={() => handleToggleNotification(item)}
+                              className="sr-only peer" 
+                            />
+                            <div className="w-11 h-6 bg-muted-foreground/20 rounded-full peer peer-focus:ring-2 peer-focus:ring-primary/20 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all after:shadow-sm peer-checked:bg-primary transition-all duration-300" />
+                          </label>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
