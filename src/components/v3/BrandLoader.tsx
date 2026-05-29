@@ -40,7 +40,7 @@ export const BrandLoader = () => {
     },
   };
 
-  const words = "VINCERE".split("");
+  const words = "VINCEREAT".split("");
 
   return (
     <div className="flex flex-col items-center justify-center space-y-12 relative">
@@ -84,7 +84,7 @@ export const BrandLoader = () => {
           transition={{ delay: 0.8, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-xs md:text-sm font-medium uppercase tracking-[0.6em] text-blue-400/60 font-sans"
         >
-          [ Building The Future of Conversion ]
+          [ Construindo o Futuro da Conversão ]
         </motion.p>
       </div>
 
@@ -96,7 +96,7 @@ export const BrandLoader = () => {
         className="absolute bottom-[-160px] flex flex-col items-center gap-3 w-40"
       >
         <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-slate-400 font-sans mb-1">
-          Establishing Link
+          Conectando
         </span>
         <div className="flex items-baseline space-x-2">
           <span className="text-4xl font-light tracking-tighter text-slate-900 font-sans tabular-nums">

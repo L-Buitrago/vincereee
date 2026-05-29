@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Settings, User, Bell, Shield, CreditCard, Palette, Save, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,8 +21,12 @@ export default function PlatformSettings() {
   const { user, updateUserMetadata } = useAuth();
   const { theme, setTheme } = useTheme();
   const { org, orgId } = useOrganization();
+  const [searchParams] = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState("perfil");
+  const [activeTab, setActiveTab] = useState(() => {
+    const tabParam = searchParams.get("tab");
+    return tabParam || "perfil";
+  });
   const [loading, setLoading] = useState(false);
 
   // Profile State

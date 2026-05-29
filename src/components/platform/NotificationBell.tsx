@@ -239,7 +239,7 @@ export default function NotificationBell() {
                <button 
                 onClick={() => {
                   setIsOpen(false);
-                  toast.info("Em breve", { description: "O histórico completo de notificações será movido para uma página dedicada na próxima atualização." });
+                  window.location.href = "/plataforma/configuracoes?tab=notificacoes";
                 }}
                 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors"
                >
