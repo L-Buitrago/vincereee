@@ -20,8 +20,8 @@ export default defineConfig(({ mode }) => ({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "favicon.ico", "favicon.png", "logo-v.png"],
       manifest: {
-        name: "Vincere Tech",
-        short_name: "Vincere",
+        name: "VincereAT",
+        short_name: "VincereAT",
         description: "Plataforma inteligente de software, automação e IA para empresas.",
         theme_color: "#000000",
         background_color: "#000000",

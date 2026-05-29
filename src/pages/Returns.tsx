@@ -12,7 +12,7 @@ const Returns = () => {
         
         <div className="prose prose-slate dark:prose-invert max-w-none space-y-6">
           <p>
-            Na Vincere Tech, buscamos garantir a total satisfação de nossos clientes com a máxima transparência e em consonância as exigências do Código de Defesa do Consumidor. Leia atentamente as regras para cancelamentos de serviços prestados ou devoluções e trocas.
+            Na VincereAT, buscamos garantir a total satisfação de nossos clientes com a máxima transparência e em consonância as exigências do Código de Defesa do Consumidor. Leia atentamente as regras para cancelamentos de serviços prestados ou devoluções e trocas.
           </p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">1. Cancelamento de Serviços Recorrentes e Contratos</h2>

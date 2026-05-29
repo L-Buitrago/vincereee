@@ -12,7 +12,7 @@ const Privacy = () => {
         
         <div className="prose prose-slate dark:prose-invert max-w-none space-y-6">
           <p>
-            A Vincere Tech ("nós", "nosso") valoriza a privacidade dos seus usuários ("você", "seu"). Esta Política de Privacidade explica como coletamos, usamos, protegemos e divulgamos suas informações com base na Lei Geral de Proteção de Dados (LGPD).
+            A VincereAT ("nós", "nosso") valoriza a privacidade dos seus usuários ("você", "seu"). Esta Política de Privacidade explica como coletamos, usamos, protegemos e divulgamos suas informações com base na Lei Geral de Proteção de Dados (LGPD).
           </p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">1. Informações que Coletamos</h2>

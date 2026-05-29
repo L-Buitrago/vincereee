@@ -14,7 +14,7 @@ const Terms = () => {
           <p className="text-muted-foreground">Última atualização: {new Date().toLocaleDateString('pt-BR')}</p>
 
           <p>
-            Bem-vindo ao site da Vincere Tech. Ao acessar ou usar nosso site ("Serviço"), você concorda em ficar vinculado a estes Termos de Uso. Leia-os atentamente.
+            Bem-vindo ao site da VincereAT. Ao acessar ou usar nosso site ("Serviço"), você concorda em ficar vinculado a estes Termos de Uso. Leia-os atentamente.
           </p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">1. Aceitação dos Termos</h2>
@@ -35,22 +35,22 @@ const Terms = () => {
 
           <h2 className="text-2xl font-bold mt-8 mb-4">3. Propriedade Intelectual</h2>
           <p>
-            Todo o conteúdo presente no site, incluindo, mas não se limitando a, textos, gráficos, imagens, logotipos, ícones de botões e compilações de software, é propriedade exclusiva da Vincere Tech ou de seus fornecedores de conteúdo e protegido pelas leis de direitos autorais, marcas registradas e propriedades intelectuais aplicáveis no Brasil e internacionalmente.
+            Todo o conteúdo presente no site, incluindo, mas não se limitando a, textos, gráficos, imagens, logotipos, ícones de botões e compilações de software, é propriedade exclusiva da VincereAT ou de seus fornecedores de conteúdo e protegido pelas leis de direitos autorais, marcas registradas e propriedades intelectuais aplicáveis no Brasil e internacionalmente.
           </p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">4. Isenção de Responsabilidade</h2>
           <p>
-            O conteúdo do site é fornecido "no estado em que se encontra", sem quaisquer garantias expressas ou implícitas de qualquer espécie. A Vincere Tech não garante que o site funcionará ininterruptamente ou que estará livre de erros.
+            O conteúdo do site é fornecido "no estado em que se encontra", sem quaisquer garantias expressas ou implícitas de qualquer espécie. A VincereAT não garante que o site funcionará ininterruptamente ou que estará livre de erros.
           </p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">5. Limitação de Responsabilidade</h2>
           <p>
-            Em nenhuma hipótese a Vincere Tech será responsável por quaisquer danos diretos, indiretos, incidentais, especiais ou consequências sofridas em resultado do uso ou incapacidade de usar o nosso site.
+            Em nenhuma hipótese a VincereAT será responsável por quaisquer danos diretos, indiretos, incidentais, especiais ou consequências sofridas em resultado do uso ou incapacidade de usar o nosso site.
           </p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">6. Links de Terceiros</h2>
           <p>
-            Nosso Serviço pode conter links e redirecionamentos para sites de terceiros que não são controlados pela Vincere Tech. Não assumimos qualquer responsabilidade pelo conteúdo, políticas de privacidade ou práticas de qualquer site de terceiros.
+            Nosso Serviço pode conter links e redirecionamentos para sites de terceiros que não são controlados pela VincereAT. Não assumimos qualquer responsabilidade pelo conteúdo, políticas de privacidade ou práticas de qualquer site de terceiros.
           </p>
 
           <h2 className="text-2xl font-bold mt-8 mb-4">7. Alterações e Continuidade do Serviço</h2>
@@ -60,7 +60,7 @@ const Terms = () => {
 
           <h2 className="text-2xl font-bold mt-8 mb-4">8. Foro e Legislação Aplicável</h2>
           <p>
-            Estes Termos serão regidos e interpretados de acordo com a legislação da República Federativa do Brasil. Quaisquer disputas ou controvérsias decorrentes ou relacionadas a estes Termos ou ao uso do site serão submetidas ao foro da comarca da sede da Vincere Tech.
+            Estes Termos serão regidos e interpretados de acordo com a legislação da República Federativa do Brasil. Quaisquer disputas ou controvérsias decorrentes ou relacionadas a estes Termos ou ao uso do site serão submetidas ao foro da comarca da sede da VincereAT.
           </p>
         </div>
       </main>

@@ -56,7 +56,7 @@ const Footer = () => {
           <div className="md:col-span-12 lg:col-span-5 space-y-8">
             <Link to="/" className="flex items-center gap-3 group">
               <VincereLogo className="w-8 h-8 group-hover:scale-110 transition-transform duration-500" />
-              <span className="text-3xl font-serif italic tracking-tighter">Vincere</span>
+              <span className="text-3xl font-serif italic tracking-tighter">VincereAT</span>
             </Link>
             <p className="text-white/50 text-xl font-medium leading-relaxed max-w-md">
               Elevando marcas através do design estratégico, tecnologia de ponta e inteligência artificial. Onde o luxo encontra a performance.
@@ -67,7 +67,7 @@ const Footer = () => {
             <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/30 border-b border-white/5 pb-4">Menu</p>
             <ul className="space-y-5">
               <li><Link to="/" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group">Início <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" /></Link></li>
-              <li><Link to="/about" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group">A Vincere <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" /></Link></li>
+              <li><Link to="/about" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group">A VincereAT <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" /></Link></li>
               <li><a href="/#servicos" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group">Serviços <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" /></a></li>
               <li><Link to="/auth" className="text-sm font-bold text-white/70 hover:text-white transition-all flex items-center gap-2 group">Plataforma <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" /></Link></li>
             </ul>
@@ -97,7 +97,7 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center pt-12 pb-12 border-t border-white/5 gap-8">
-          <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/20">© 2026 Vincere. Todos os direitos reservados.</p>
+          <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/20">© 2026 VincereAT. Todos os direitos reservados.</p>
           <div className="flex flex-wrap justify-center gap-x-12 gap-y-4">
             <Link to="/privacidade" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors">Política de Privacidade</Link>
             <Link to="/termos" className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors">Termos de Uso</Link>
