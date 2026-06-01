@@ -247,7 +247,7 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
                 Falar com Especialista <ArrowRight className="w-4 h-4" />
               </a>
             </Button>
-            <Button size="lg" variant="outline" className="flex-1 h-16 font-black text-[11px] uppercase tracking-widest gap-2 rounded-2xl transition-all hover:scale-105 border-gray-300 hover:bg-gray-100" onClick={() => navigate('/auth')}>
+            <Button size="lg" variant="outline" className="flex-1 h-16 font-black text-[11px] uppercase tracking-widest gap-2 rounded-2xl transition-all hover:scale-105 border-gray-300 hover:bg-gray-100" onClick={() => navigate(`/checkout?plan=Plano+Vi+Experience&price=${total}`)}>
                 Fechar Plano Agora <ArrowRight className="w-4 h-4" />
             </Button>
           </div>

@@ -36,6 +36,7 @@ const PlatformSubscription = lazy(() => import("./pages/PlatformSubscription"));
 const DemoDashboard = lazy(() => import("./pages/DemoDashboard"));
 const ViExperience = lazy(() => import("./pages/ViExperience"));
 const DemoServices = lazy(() => import("./pages/DemoServices"));
+const Checkout = lazy(() => import("./pages/Checkout"));
 
 const queryClient = new QueryClient();
 
@@ -69,6 +70,7 @@ const AppRoutes = () => {
         <Route path="/vi-experience" element={<ViExperience />} />
         <Route path="/vincere-experiencia" element={<Navigate to="/vi-experience" replace />} />
         <Route path="/demo/:service" element={<DemoServices />} />
+        <Route path="/checkout" element={<Checkout />} />
         {/* Payments page is accessible to any logged-in user (so they can subscribe) */}
         <Route
           path="/plataforma/pagamentos"
