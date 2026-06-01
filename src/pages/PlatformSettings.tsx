@@ -134,6 +134,16 @@ export default function PlatformSettings() {
           console.error("Org update error:", orgError);
           throw new Error(`Erro na empresa: ${orgError.message}`);
         }
+      } else if (companyName && user.email) {
+        // Create an organization if one doesn't exist for this user
+        const { error: orgError } = await supabase
+          .from("organizations")
+          .insert({ name: companyName, owner_email: user.email });
+        
+        if (orgError) {
+          console.error("Org insert error:", orgError);
+          throw new Error(`Erro ao criar empresa: ${orgError.message}`);
+        }
       }
 
       toast.success("Perfil atualizado com sucesso!");

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Menu as MenuIcon, ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ShuffleText from "./ShuffleText";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ModernMenuProps {
   onNavigate?: (id: string) => void;
@@ -13,6 +14,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
   const [isOpen, setIsOpen] = useState(false);
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -126,6 +128,30 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
                           </a>
                         </motion.li>
                       ))}
+                      {user && (
+                        <motion.li 
+                          initial={{ y: 12, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          transition={{ delay: menuLinks.length * 0.03 + 0.1, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                          <button 
+                            onClick={async () => {
+                              await signOut();
+                              setIsOpen(false);
+                              navigate("/");
+                            }}
+                            className="w-full text-left text-lg font-medium tracking-tight hover:opacity-100 opacity-60 transition-all flex items-center justify-between group py-1.5 text-red-500"
+                          >
+                            <span className="relative inline-block">
+                              Sair da conta atual
+                              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-red-500 transition-all duration-300 group-hover:w-full" />
+                            </span>
+                            <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-2 transition-all duration-300 text-sm">
+                              →
+                            </span>
+                          </button>
+                        </motion.li>
+                      )}
                     </ul>
 
                     <div className="pt-5 border-t border-black/5 flex flex-col gap-5">

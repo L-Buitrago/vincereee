@@ -67,7 +67,7 @@ export default function PlatformSidebar() {
       {/* Logo */}
       <div className="p-6 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <span className="text-lg font-bold text-foreground tracking-tight font-display">Vincere</span>
+          <span className="text-lg font-bold text-foreground tracking-tight font-display">VincereAT</span>
         </Link>
       </div>
 

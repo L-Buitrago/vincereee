@@ -241,11 +241,14 @@ const ViExperienceSurvey = ({ onComplete }: { onComplete?: () => void }) => {
             {isPlatform && <span className="text-xl font-bold text-gray-400">/mês</span>}
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-6 max-w-md mx-auto">
-            <Button size="lg" className="w-full h-16 bg-primary hover:bg-primary/90 text-white font-black text-sm uppercase tracking-widest gap-3 rounded-2xl shadow-[0_20px_50px_rgba(59,130,246,0.3)] transition-all hover:scale-105" asChild>
+          <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+            <Button size="lg" className="flex-1 h-16 bg-primary hover:bg-primary/90 text-white font-black text-[11px] uppercase tracking-widest gap-2 rounded-2xl shadow-[0_20px_50px_rgba(59,130,246,0.3)] transition-all hover:scale-105" asChild>
               <a href={`https://wa.me/5511999999999?text=Olá VI! Fiz meu orçamento e quero começar meu projeto de R$ ${total}!`} target="_blank" rel="noopener noreferrer">
-                Falar com Especialista <ArrowRight className="w-5 h-5" />
+                Falar com Especialista <ArrowRight className="w-4 h-4" />
               </a>
+            </Button>
+            <Button size="lg" variant="outline" className="flex-1 h-16 font-black text-[11px] uppercase tracking-widest gap-2 rounded-2xl transition-all hover:scale-105 border-gray-300 hover:bg-gray-100" onClick={() => navigate('/auth')}>
+                Fechar Plano Agora <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </div>
