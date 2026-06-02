@@ -78,6 +78,7 @@ export default function Checkout() {
       });
 
       if (error) throw error;
+      if (data?.error) throw new Error(data.error);
 
       if (data && data.invoiceUrl) {
         toast({ title: "Redirecionando para pagamento seguro...", description: "Aguarde..." });
