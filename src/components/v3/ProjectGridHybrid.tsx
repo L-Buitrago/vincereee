@@ -1,21 +1,22 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { assetUrl } from "@/lib/assetUrl";
 
 const projects = [
   {
     id: "01",
     title: "Nossos Projetos",
     category: "Portfólio Selecionado",
-    thumb: "/images/portfolio-1.jpg",
+    thumb: assetUrl("/images/portfolio-1.jpg"),
     slides: [
-      "/images/portfolio-1.jpg",
-      "/images/portfolio-2.jpg",
-      "/images/portfolio-3.jpg",
-      "/images/portfolio-4.jpg",
-      "/images/portfolio-5.jpg",
-      "/images/portfolio-6.jpg",
-      "/images/portfolio-7.jpg"
+      assetUrl("/images/portfolio-1.jpg"),
+      assetUrl("/images/portfolio-2.jpg"),
+      assetUrl("/images/portfolio-3.jpg"),
+      assetUrl("/images/portfolio-4.jpg"),
+      assetUrl("/images/portfolio-5.jpg"),
+      assetUrl("/images/portfolio-6.jpg"),
+      assetUrl("/images/portfolio-7.jpg")
     ],
     color: "#dfe6e5",
   }

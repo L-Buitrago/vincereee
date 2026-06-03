@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { assetUrl } from "@/lib/assetUrl";
 
 const TrueHero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -17,7 +18,7 @@ const TrueHero = () => {
           playsInline
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         >
-          <source src="/hero-video.mp4" type="video/mp4" />
+          <source src={assetUrl("/hero-video.mp4")} type="video/mp4" />
         </video>
         
         <div className="container relative z-10 mx-auto px-4 flex flex-col items-center justify-center text-center">

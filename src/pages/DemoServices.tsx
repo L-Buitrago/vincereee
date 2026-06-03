@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { assetUrl } from "@/lib/assetUrl";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Layout, ShoppingBag, Bot, Code2, Cog, Check, Smartphone, Globe, Zap, MessageCircle, Send, ShoppingCart, CreditCard, Package, Star, Workflow, Settings, Database, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,10 +24,10 @@ const LandingPagesDemo = () => (
     {/* Example showcases */}
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       {[
-        { title: "Landing Page", desc: "Focada em conversão com CTA estratégico e prova social", icon: Globe, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", image: "/landing_page_mockup.png" },
+        { title: "Landing Page", desc: "Focada em conversão com CTA estratégico e prova social", icon: Globe, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", image: assetUrl("/landing_page_mockup.png") },
         { title: "Site Institucional", desc: "Presença profissional com animações e design moderno", icon: Layout, color: "text-sky-400", bg: "bg-sky-500/10", border: "border-sky-500/20", image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&q=80&w=800" },
-        { title: "Loja Virtual", desc: "E-commerce completo com catálogo, carrinho e checkout seguro", icon: ShoppingBag, color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", image: "/ecommerce_mockup.png" },
-        { title: "Portfolio Digital", desc: "Showcase interativo dos seus trabalhos e cases de sucesso", icon: Star, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", image: "/portfolio_mockup.png" },
+        { title: "Loja Virtual", desc: "E-commerce completo com catálogo, carrinho e checkout seguro", icon: ShoppingBag, color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", image: assetUrl("/ecommerce_mockup.png") },
+        { title: "Portfolio Digital", desc: "Showcase interativo dos seus trabalhos e cases de sucesso", icon: Star, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", image: assetUrl("/portfolio_mockup.png") },
       ].map((item, i) => (
         <motion.div key={item.title} initial="hidden" animate="visible" variants={fadeUp} custom={i}
           className={`relative p-8 rounded-2xl border ${item.border} ${item.bg} group hover:-translate-y-2 transition-all duration-500 overflow-hidden min-h-[280px] cursor-pointer`}

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { assetUrl } from "@/lib/assetUrl";
 import VincereLogo from "./VincereLogo";
 import { MessageCircle, Mail, Instagram, Linkedin, ArrowUpRight } from "lucide-react";
 
@@ -15,7 +16,7 @@ const Footer = () => {
           playsInline
           className="w-full h-full object-cover"
         >
-          <source src="/185365-875417518_medium.mp4" type="video/mp4" />
+          <source src={assetUrl("/185365-875417518_medium.mp4")} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-secondary/50" />
       </div>

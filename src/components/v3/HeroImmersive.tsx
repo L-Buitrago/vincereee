@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, BarChart3, MessageSquareWarning, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
+import { assetUrl } from "@/lib/assetUrl";
 
 const HeroImmersive = ({ onNavigate }: { onNavigate?: (id: string) => void }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -56,7 +57,7 @@ const HeroImmersive = ({ onNavigate }: { onNavigate?: (id: string) => void }) =>
           playsInline 
           className="absolute inset-0 w-full h-full object-cover opacity-80"
         >
-          <source src="/85590-590014592_medium.mp4" type="video/mp4" />
+          <source src={assetUrl("/85590-590014592_medium.mp4")} type="video/mp4" />
         </video>
         {/* Subtle overlay to ensure text contrast if needed */}
         <div className="absolute inset-0 bg-white/10" />

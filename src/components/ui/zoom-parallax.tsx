@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useScroll, useTransform, motion } from 'framer-motion';
+import { assetUrl } from "@/lib/assetUrl";
 import { useRef } from 'react';
 
 interface ParallaxItem {
@@ -46,7 +47,7 @@ const ImageOrCarousel = ({ item }: { item: ParallaxItem }) => {
 
   return (
     <img
-      src={item.src || '/placeholder.svg'}
+      src={item.src || assetUrl('/placeholder.svg')}
       alt={item.alt || 'Parallax image'}
       className={`h-full w-full ${item.src?.includes('robot') ? 'object-cover' : 'object-contain p-2'}`}
     />
