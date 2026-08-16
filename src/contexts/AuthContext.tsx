@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     return {
       id: '00000000-0000-0000-0000-000000000000',
-      email: 'assasinghost910@gmail.com',
+      email: 'luisgu0703@gmail.com',
       user_metadata: metadata,
       aud: 'authenticated',
       app_metadata: {},

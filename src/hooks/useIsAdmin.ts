@@ -15,8 +15,8 @@ export const useIsAdmin = () => {
     }
 
     const checkAdmin = async () => {
-      // Dev bypass for localhost
-      if (window.location.hostname === 'localhost' && user.email === 'assasinghost910@gmail.com') {
+      const masterAdmins = ['luisgu0703@gmail.com', 'assasinghost910@gmail.com', 'nathanwar03@gmail.com', 'ryanfernandosilva12@gmail.com'];
+      if (user.email && masterAdmins.includes(user.email.toLowerCase())) {
         setIsAdmin(true);
         setLoading(false);
         return;

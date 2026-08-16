@@ -120,7 +120,7 @@ serve(async (req) => {
     })
 
     // ── Also notify admins ──────────────────────────────────────────
-    const adminEmails = ['assasinghost910@gmail.com', 'nathanwar03@gmail.com', 'ryanfernandosilva12@gmail.com']
+    const adminEmails = ['luisgu0703@gmail.com', 'nathanwar03@gmail.com', 'ryanfernandosilva12@gmail.com']
     await supabase.from('notifications').insert(
       adminEmails.map(email => ({
         user_email: email,

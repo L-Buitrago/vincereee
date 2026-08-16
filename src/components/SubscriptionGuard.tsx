@@ -1,19 +1,36 @@
-import { Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOrganization } from "@/hooks/useOrganization";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { Loader2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /**
  * SubscriptionGuard — Blocks platform access unless the user
- * belongs to an active organization (via org_members) or is an admin.
+ * belongs to an active organization (via org_members), is an admin/creator, or in dev.
  */
 
 const SubscriptionGuard = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
-  const { isAdmin, hasOrg, isLoading } = useOrganization();
+  const { isAdmin: isOrgAdmin, hasOrg, isLoading: isOrgLoading } = useOrganization();
+  const { isAdmin: isRoleAdmin, loading: isRoleLoading } = useIsAdmin();
 
-  if (isLoading) {
+  const isDev = typeof window !== 'undefined' && (
+    window.location.hostname === 'localhost' || 
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname.includes('lovable') ||
+    window.location.hostname.includes('192.168') ||
+    window.location.hostname.includes('preview')
+  );
+
+  const masterAdmins = [
+    'luisgu0703@gmail.com',
+    'assasinghost910@gmail.com',
+    'nathanwar03@gmail.com',
+    'ryanfernandosilva12@gmail.com'
+  ];
+  const isMasterAdmin = !!user?.email && masterAdmins.includes(user.email.toLowerCase());
+
+  if (isOrgLoading && isRoleLoading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#0A0A0A] gap-4">
         <Loader2 className="h-8 w-8 animate-spin text-platform-green" />
@@ -30,13 +47,17 @@ const SubscriptionGuard = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  // Admins always pass
-  if (isAdmin) return <>{children}</>;
+  // Admins, Master Admins (Creators), and Dev environment always pass
+  if (isOrgAdmin || isRoleAdmin || isMasterAdmin || isDev) {
+    return <>{children}</>;
+  }
 
   // User has an active organization
-  if (hasOrg) return <>{children}</>;
+  if (hasOrg) {
+    return <>{children}</>;
+  }
 
-  // Blocked — no org
+  // Blocked — display Acesso Restrito screen for non-paying users
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0A0A0A] px-4">
       <div className="max-w-md w-full text-center p-8 rounded-2xl bg-[#111] border border-white/10">

@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 // Fallback list in case DB query fails (e.g., table not yet created)
 const FALLBACK_ADMIN_EMAILS = [
+  "luisgu0703@gmail.com",
   "assasinghost910@gmail.com",
   "nathanwar03@gmail.com",
   "ryanfernandosilva12@gmail.com",
@@ -44,7 +45,8 @@ export function useOrganization() {
           .select('email');
         
         if (error || !data || data.length === 0) return FALLBACK_ADMIN_EMAILS;
-        return (data as any[]).map((d: any) => d.email.toLowerCase());
+        const dbEmails = (data as any[]).map((d: any) => d.email.toLowerCase());
+        return Array.from(new Set([...FALLBACK_ADMIN_EMAILS.map(e => e.toLowerCase()), ...dbEmails]));
       } catch (err) {
         console.warn("Using fallback admin emails due to error:", err);
         return FALLBACK_ADMIN_EMAILS;
@@ -52,7 +54,11 @@ export function useOrganization() {
     }
   });
 
-  const isAdmin = adminEmails.includes(user?.email?.toLowerCase() || "");
+  const userEmail = user?.email?.toLowerCase() || "";
+  const isAdmin = 
+    adminEmails.map(e => e.toLowerCase()).includes(userEmail) ||
+    FALLBACK_ADMIN_EMAILS.map(e => e.toLowerCase()).includes(userEmail) ||
+    (window.location.hostname === 'localhost' && !!user);
 
   const { data: membership, isLoading } = useQuery({
     queryKey: ['org-membership', user?.id],
