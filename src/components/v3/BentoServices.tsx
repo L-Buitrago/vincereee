@@ -366,12 +366,13 @@ const DeliveryDiagnostic = () => {
           Diagnóstico de Entrega
           <Plus className="w-4 h-4" />
         </div>
-        <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
+        <h3 className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
           O nosso processo de <span className="text-primary">entrega</span>
         </h3>
-        <p className="text-white/60 text-base md:text-lg">
+        <p className="text-white/60 text-sm md:text-lg">
           Role para explorar cada etapa — do diagnóstico à implementação.
         </p>
+
       </div>
 
       {/* Cards */}
