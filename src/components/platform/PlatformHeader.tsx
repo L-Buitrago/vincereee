@@ -69,9 +69,9 @@ export default function PlatformHeader({ title, searchQuery, setSearchQuery }: P
   const offsetString = `UTC ${offset >= 0 ? '+' : ''}${Math.floor(Math.abs(offset)).toString().padStart(2, '0')}:${(Math.abs(offset) % 1 * 60).toString().padStart(2, '0')}`;
 
   return (
-    <header className="flex items-center justify-between p-6 px-8 bg-transparent sticky top-0 z-30 backdrop-blur-sm border-b border-border">
-      <div className="flex flex-col">
-        <h1 className="text-2xl font-bold tracking-tight font-display text-foreground">
+    <header className="flex items-center justify-between p-4 sm:p-6 px-4 sm:px-8 bg-transparent sticky top-0 z-30 backdrop-blur-sm border-b border-border">
+      <div className="flex flex-col min-w-0">
+        <h1 className="text-lg sm:text-2xl font-bold tracking-tight font-display text-foreground truncate">
           {headerTitle} <span className="text-sky-500">.</span>
         </h1>
       </div>
@@ -101,7 +101,7 @@ export default function PlatformHeader({ title, searchQuery, setSearchQuery }: P
         </div>
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-2 sm:gap-6">
         {setSearchQuery && (
           <div className="relative hidden md:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -114,19 +114,19 @@ export default function PlatformHeader({ title, searchQuery, setSearchQuery }: P
           </div>
         )}
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <ThemeToggle />
           <NotificationBell />
 
-          <div className="flex items-center gap-4 pl-4 border-l border-border ml-2">
-            <div className="flex flex-col items-end">
+          <div className="flex items-center gap-2 sm:gap-4 pl-2 sm:pl-4 border-l border-border ml-1 sm:ml-2">
+            <div className="hidden sm:flex flex-col items-end">
               <span className="text-sm font-bold text-foreground leading-none">{fullName}</span>
               <span className="text-[10px] text-muted-foreground mt-0.5">{user?.email}</span>
               <Badge variant="outline" className="mt-1 h-5 text-[9px] uppercase tracking-widest font-bold border-sky-500/30 bg-sky-500/10 text-sky-500">
                 {planName}
               </Badge>
             </div>
-            <Avatar className="w-10 h-10 rounded-xl border border-border shadow-md">
+            <Avatar className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl border border-border shadow-md">
               {userAvatar && <AvatarImage src={userAvatar} className="object-cover" />}
               <AvatarFallback className="bg-sky-500/20 text-sky-400 font-bold text-xs">{initials}</AvatarFallback>
             </Avatar>

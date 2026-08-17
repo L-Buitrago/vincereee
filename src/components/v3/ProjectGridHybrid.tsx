@@ -89,12 +89,12 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
       viewport={{ once: true }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-shadow duration-700 ${
-        isExtraLarge ? "h-[600px] md:h-[850px] w-full" : "h-[450px] md:h-[600px]"
+      className={`group relative rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[3rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-700 ${
+        isExtraLarge ? "h-[280px] sm:h-[480px] md:h-[850px] w-full" : "h-[240px] sm:h-[400px] md:h-[600px]"
       }`}
     >
       {/* Background Media */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-[#0f172a]">
         <AnimatePresence initial={false}>
           {project.slides ? (
             <motion.img
@@ -108,7 +108,7 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
                 duration: 0.8, 
                 ease: "easeInOut"
               }}
-              className="absolute inset-0 w-full h-full object-cover object-top"
+              className="absolute inset-0 w-full h-full object-cover object-top sm:object-top"
             />
           ) : (
             <motion.img 
@@ -137,20 +137,47 @@ const ProjectGridCard = ({ project, isExtraLarge = false, isScrollable = false, 
         )}
       </div>
 
-      {/* Info Overlay (Visible on Hover) */}
-      <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
+      {/* Slide Indicators for Mobile / Touch */}
+      {project.slides && (
+        <div className="absolute top-4 right-4 z-30 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+          <span className="text-[10px] font-mono font-bold text-white/90">
+            {currentSlide + 1} / {project.slides.length}
+          </span>
+        </div>
+      )}
+
+      {/* Info Overlay (Visible on Hover for desktop, subtle for mobile) */}
+      <div className="absolute inset-0 p-5 md:p-12 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 z-20">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2 block text-white/60">
+          <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] mb-1 md:mb-2 block text-white/70">
             {project.category}
           </span>
-          <h3 className="text-2xl md:text-5xl font-black tracking-tighter text-white">
+          <h3 className="text-xl md:text-5xl font-black tracking-tighter text-white">
             {project.title}
           </h3>
         </div>
         
-        <div className="mt-8 flex justify-between items-center">
-          <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white bg-white/10 backdrop-blur-md">
-            <ArrowUpRight className="w-5 h-5" />
+        <div className="mt-4 md:mt-8 flex justify-between items-center">
+          {/* Navigation Dots */}
+          {project.slides && (
+            <div className="flex items-center gap-1.5">
+              {project.slides.map((_: any, i: number) => (
+                <button
+                  key={i}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentSlide(i);
+                  }}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === currentSlide ? "w-6 bg-primary" : "w-1.5 bg-white/40"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+
+          <div className="w-9 h-9 md:w-12 md:h-12 rounded-full border border-white/20 flex items-center justify-center text-white bg-white/10 backdrop-blur-md shrink-0 ml-auto">
+            <ArrowUpRight className="w-4 h-4 md:w-5 md:h-5" />
           </div>
         </div>
       </div>
