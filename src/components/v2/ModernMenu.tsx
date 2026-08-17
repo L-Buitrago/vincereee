@@ -58,14 +58,15 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-[120] px-6 py-8 flex justify-between items-center pointer-events-none">
+      <header className="fixed top-0 left-0 w-full z-[120] px-4 py-4 md:px-6 md:py-8 flex justify-between items-center gap-3 pointer-events-none">
         <div className="pointer-events-auto">
-          <a href="#home" className="text-3xl font-serif italic tracking-tighter text-foreground">
+          <a href="#home" className="text-xl md:text-3xl font-serif italic tracking-tighter text-foreground">
             VincereAT
           </a>
         </div>
 
-        <div className="flex gap-3 pointer-events-auto items-center">
+        <div className="flex gap-2 md:gap-3 pointer-events-auto items-center">
+
           {/* Menu Button + Dropdown Container */}
           <div className="relative">
             <button 
