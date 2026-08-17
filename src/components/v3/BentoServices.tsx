@@ -399,11 +399,12 @@ const DeliveryDiagnostic = () => {
         </div>
       </div>
 
-      {/* Scroll hint */}
+      {/* Scroll hint (apenas desktop, onde a seção é fixada) */}
       <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-blue-500 transition-opacity duration-500"
+        className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-blue-500 transition-opacity duration-500"
         style={{ opacity: activeStep < 3 ? 1 : 0 }}
       >
+
         <span className="text-[10px] font-semibold uppercase tracking-widest">
           {activeStep < 0 ? "Role para explorar" : `Etapa ${activeStep + 1} de ${steps.length}`}
         </span>
