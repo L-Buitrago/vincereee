@@ -416,9 +416,9 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   }, [isActive]);
 
   return (
-    <div className="rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col"
-      style={{ width: 330, height: 540 }}
+    <div className="rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col w-full max-w-[300px] md:max-w-none md:w-[330px] h-[460px] md:h-[540px]"
     >
+
       <div className="flex items-center justify-between px-4 pt-2 pb-1.5 text-white/60">
         <span className="text-[10px] font-semibold">14:02</span>
         <div className="flex items-center gap-1">
