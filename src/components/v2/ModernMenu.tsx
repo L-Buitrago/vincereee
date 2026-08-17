@@ -73,11 +73,12 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
               onClick={() => setIsOpen(!isOpen)}
               onMouseEnter={() => setIsButtonHovered(true)}
               onMouseLeave={() => setIsButtonHovered(false)}
-              className={`px-8 py-3.5 backdrop-blur-xl rounded-full font-bold text-[10px] uppercase tracking-[0.2em] flex items-center gap-3 transition-all duration-500 min-w-[140px] justify-center border ${
+              className={`px-4 py-2.5 md:px-8 md:py-3.5 backdrop-blur-xl rounded-full font-bold text-[9px] md:text-[10px] uppercase tracking-[0.15em] md:tracking-[0.2em] flex items-center gap-2 md:gap-3 transition-all duration-500 min-w-0 md:min-w-[140px] justify-center border ${
                 isOpen 
                   ? "bg-white/10 text-foreground border-black/10 shadow-sm" 
                   : "bg-black/5 text-foreground border-black/5 hover:bg-black/10 shadow-sm"
               }`}
+
             >
               <ShuffleText 
                 text={isOpen ? "FECHAR" : "MENU"} 
