@@ -240,34 +240,37 @@ const StepCard = ({
   progress: number; isActive: boolean; children: React.ReactNode;
 }) => (
   <div className={`
-    relative flex flex-col items-center text-center rounded-[1.5rem] md:rounded-[2rem] p-4 md:p-10
+    relative flex flex-row lg:flex-col items-center text-left lg:text-center gap-4 lg:gap-0
+    rounded-[1.25rem] lg:rounded-[2rem] p-4 lg:p-10
     border transition-all duration-700
     ${isActive
-      ? "bg-white/[0.03] backdrop-blur-md border-blue-500/40 shadow-[0_20px_60px_rgba(37,99,235,0.15)] md:scale-[1.03]"
-      : "bg-white/[0.01] border-white/5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] md:scale-[0.96] opacity-60 md:opacity-30"
+      ? "bg-white/[0.04] backdrop-blur-md border-blue-500/40 shadow-[0_20px_60px_rgba(37,99,235,0.15)] lg:scale-[1.03]"
+      : "bg-white/[0.02] border-white/5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] lg:scale-[0.96] opacity-100 lg:opacity-30"
     }
   `}>
     {/* Badge */}
-    <div className="absolute -top-3 -right-2 md:-top-4 md:-right-3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-[11px] md:text-sm z-20">
+    <div className="absolute top-3 right-3 lg:top-auto lg:right-auto lg:-mt-14 lg:relative w-7 h-7 lg:w-10 lg:h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-[10px] lg:text-sm z-20">
       {id}
     </div>
 
     {/* Icon box animado */}
-    <div className="w-20 h-20 md:w-40 md:h-40 mb-4 md:mb-6 rounded-[1.2rem] md:rounded-[1.8rem] bg-gradient-to-br from-blue-900/20 via-slate-900/40 to-blue-900/20 border border-white/5 flex items-center justify-center shadow-inner p-2 md:p-3 overflow-hidden">
+    <div className="w-16 h-16 shrink-0 lg:w-40 lg:h-40 lg:mb-6 rounded-[1rem] lg:rounded-[1.8rem] bg-gradient-to-br from-blue-900/20 via-slate-900/40 to-blue-900/20 border border-white/5 flex items-center justify-center shadow-inner p-1.5 lg:p-3 overflow-hidden">
       {children}
     </div>
 
-    <h4 className="text-[13px] md:text-xl font-bold text-white mb-1.5 md:mb-2 leading-snug">{title}</h4>
-    <p className="text-white/50 text-[11px] md:text-sm font-medium leading-relaxed max-w-[210px]">
-      {desc}
-    </p>
-
+    <div className="min-w-0 flex-1 lg:flex-none pr-8 lg:pr-0 lg:contents">
+      <h4 className="text-[15px] lg:text-xl font-bold text-white mb-1 lg:mb-2 leading-snug">{title}</h4>
+      <p className="text-white/50 text-[12px] lg:text-sm font-medium leading-relaxed lg:max-w-[210px]">
+        {desc}
+      </p>
+    </div>
 
     {/* Barra ativa */}
     {isActive && (
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full bg-blue-600 transition-all duration-500" />
+      <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full bg-blue-600 transition-all duration-500" />
     )}
   </div>
+
 );
 
 // ─── DeliveryDiagnostic (Scroll Pinned + SVG animados) ───────────────────────
