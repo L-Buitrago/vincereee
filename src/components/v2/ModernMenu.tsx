@@ -82,7 +82,8 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
             >
               <ShuffleText 
                 text={isOpen ? "FECHAR" : "MENU"} 
-                className="w-12 text-center" 
+                className="w-10 md:w-12 text-center" 
+
               />
               <div className="relative w-4 h-4 overflow-hidden">
                  <motion.div
