@@ -192,7 +192,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
                 navigate("/plataforma/dashboard");
               }
             }}
-            className="px-8 py-3.5 bg-black/5 backdrop-blur-md text-foreground border border-black/5 rounded-full font-bold text-[10px] uppercase tracking-[0.2em] transition-all hover:bg-primary hover:text-white hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:border-primary active:scale-95"
+            className="px-4 py-2.5 md:px-8 md:py-3.5 bg-black/5 backdrop-blur-md text-foreground border border-black/5 rounded-full font-bold text-[9px] md:text-[10px] uppercase tracking-[0.15em] md:tracking-[0.2em] transition-all hover:bg-primary hover:text-white hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:border-primary active:scale-95"
           >
             Plataforma
           </button>
