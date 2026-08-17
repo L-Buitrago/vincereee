@@ -296,6 +296,30 @@ const DeliveryDiagnostic = () => {
   ];
 
   useGSAP(() => {
+    const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+
+    if (isMobile) {
+      // Mobile: sem pin (rolagem natural), revela as etapas conforme a seção entra na tela
+      const st = ScrollTrigger.create({
+        trigger: wrapperRef.current,
+        start: "top 80%",
+        end: "bottom 40%",
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const p = self.progress;
+          const active = Math.min(Math.floor(p * steps.length), steps.length - 1);
+          setActiveStep(active);
+          setLineProgress(Math.min(p * (steps.length / (steps.length - 1)), 1));
+          setProgresses(steps.map((_, i) => {
+            const start = i / steps.length;
+            const end = (i + 1) / steps.length;
+            return Math.max(0, Math.min(1, (p - start) / (end - start)));
+          }));
+        },
+      });
+      return () => st.kill();
+    }
+
     // Pinar a seção enquanto rola — cada step ocupa 500px de scroll
     ScrollTrigger.create({
       trigger: wrapperRef.current,
@@ -319,6 +343,7 @@ const DeliveryDiagnostic = () => {
       },
     });
   }, { scope: wrapperRef });
+
 
   const icons = [
     <LupaAnim key="lupa" progress={progresses[0]} />,
