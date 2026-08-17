@@ -685,7 +685,7 @@ const BentoServices = () => {
               </motion.div>
             </div>
 
-            </div>
+
 
             <div className="md:col-span-5 flex flex-col gap-6">
               {/* Card 2: Desenvolvimento Premium */}
