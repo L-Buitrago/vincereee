@@ -355,11 +355,12 @@ const DeliveryDiagnostic = () => {
   return (
     <div
       ref={wrapperRef}
-      className="w-full min-h-screen flex flex-col items-center justify-center py-16 px-4 md:px-8 relative overflow-hidden bg-secondary"
+      className="w-full md:min-h-screen flex flex-col items-center justify-center py-20 md:py-16 px-4 md:px-8 relative overflow-hidden bg-secondary"
       id="diagnostico"
     >
       {/* Header */}
-      <div className="text-center mb-14 space-y-3 max-w-3xl">
+      <div className="text-center mb-10 md:mb-14 space-y-3 max-w-3xl">
+
         <div className="flex items-center justify-center gap-2 text-primary uppercase tracking-widest text-sm font-semibold">
           <Plus className="w-4 h-4" />
           Diagnóstico de Entrega
