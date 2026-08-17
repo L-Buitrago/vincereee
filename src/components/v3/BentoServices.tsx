@@ -654,16 +654,16 @@ const BentoServices = () => {
             className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
           >
             {/* Card 1: WhatsApp */}
-            <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[720px]">
+            <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 md:min-h-[720px]">
               <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
               <div className="relative z-10 flex justify-between items-start mb-6">
-                <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
-                  <MessageCircle className="w-7 h-7 text-green-600" />
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
+                  <MessageCircle className="w-6 h-6 md:w-7 md:h-7 text-green-600" />
                 </div>
                 <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
               </div>
-              <div className="relative z-30 md:ml-auto md:text-right md:max-w-[46%] flex flex-col items-end">
-                <h3 className="text-3xl font-bold text-foreground mb-3 tracking-tight leading-tight">
+              <div className="relative z-30 md:ml-auto text-left md:text-right md:max-w-[46%] flex flex-col items-start md:items-end">
+                <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3 tracking-tight leading-tight">
                   Recuperação via <span className="text-green-500">WhatsApp</span>
                 </h3>
                 <p className="text-muted-foreground text-sm md:text-base md:ml-auto font-medium leading-relaxed">
@@ -678,11 +678,13 @@ const BentoServices = () => {
                   scale: { duration: 0.8, type: "spring", stiffness: 100 },
                   opacity: { duration: 0.6 }
                 }}
-                className="absolute bottom-14 left-[4%] md:bottom-12 md:left-[6%] z-20"
+                className="relative mt-8 mx-auto md:mt-0 md:mx-0 md:absolute md:bottom-12 md:left-[6%] z-20"
               >
                 <WhatsAppMockup isActive={chatActive} />
                 <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/10 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
               </motion.div>
+            </div>
+
             </div>
 
             <div className="md:col-span-5 flex flex-col gap-6">
