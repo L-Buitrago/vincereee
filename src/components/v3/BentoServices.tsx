@@ -240,27 +240,28 @@ const StepCard = ({
   progress: number; isActive: boolean; children: React.ReactNode;
 }) => (
   <div className={`
-    relative flex flex-col items-center text-center rounded-[2rem] p-6 md:p-10
+    relative flex flex-col items-center text-center rounded-[1.5rem] md:rounded-[2rem] p-4 md:p-10
     border transition-all duration-700
     ${isActive
-      ? "bg-white/[0.03] backdrop-blur-md border-blue-500/40 shadow-[0_20px_60px_rgba(37,99,235,0.15)] scale-[1.03]"
-      : "bg-white/[0.01] border-white/5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] scale-[0.96] opacity-30"
+      ? "bg-white/[0.03] backdrop-blur-md border-blue-500/40 shadow-[0_20px_60px_rgba(37,99,235,0.15)] md:scale-[1.03]"
+      : "bg-white/[0.01] border-white/5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] md:scale-[0.96] opacity-60 md:opacity-30"
     }
   `}>
     {/* Badge */}
-    <div className="absolute -top-4 -right-3 w-10 h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-sm z-20">
+    <div className="absolute -top-3 -right-2 md:-top-4 md:-right-3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-[11px] md:text-sm z-20">
       {id}
     </div>
 
     {/* Icon box animado */}
-    <div className="w-32 h-32 md:w-40 md:h-40 mb-6 rounded-[1.8rem] bg-gradient-to-br from-blue-900/20 via-slate-900/40 to-blue-900/20 border border-white/5 flex items-center justify-center shadow-inner p-3 overflow-hidden">
+    <div className="w-20 h-20 md:w-40 md:h-40 mb-4 md:mb-6 rounded-[1.2rem] md:rounded-[1.8rem] bg-gradient-to-br from-blue-900/20 via-slate-900/40 to-blue-900/20 border border-white/5 flex items-center justify-center shadow-inner p-2 md:p-3 overflow-hidden">
       {children}
     </div>
 
-    <h4 className="text-base md:text-xl font-bold text-white mb-2">{title}</h4>
-    <p className="text-white/50 text-[12px] md:text-sm font-medium leading-relaxed max-w-[210px]">
+    <h4 className="text-[13px] md:text-xl font-bold text-white mb-1.5 md:mb-2 leading-snug">{title}</h4>
+    <p className="text-white/50 text-[11px] md:text-sm font-medium leading-relaxed max-w-[210px]">
       {desc}
     </p>
+
 
     {/* Barra ativa */}
     {isActive && (
