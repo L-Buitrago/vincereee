@@ -297,7 +297,7 @@ const DeliveryDiagnostic = () => {
   ];
 
   useGSAP(() => {
-    const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+    const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
 
     if (isMobile) {
       // Mobile: sem pin (rolagem natural), revela as etapas conforme a seção entra na tela
@@ -445,7 +445,7 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   }, [isActive]);
 
   return (
-    <div className="rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col w-full max-w-[300px] md:max-w-none md:w-[330px] h-[460px] md:h-[540px]"
+    <div className="rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col w-full max-w-[300px] lg:max-w-none lg:w-[330px] h-[460px] lg:h-[540px]"
     >
 
       <div className="flex items-center justify-between px-4 pt-2 pb-1.5 text-white/60">
@@ -683,7 +683,7 @@ const BentoServices = () => {
             className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
           >
             {/* Card 1: WhatsApp */}
-            <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 md:min-h-[720px]">
+            <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-6 lg:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 lg:min-h-[720px]">
               <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
               <div className="relative z-10 flex justify-between items-start mb-6">
                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
@@ -691,11 +691,11 @@ const BentoServices = () => {
                 </div>
                 <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
               </div>
-              <div className="relative z-30 md:ml-auto text-left md:text-right md:max-w-[46%] flex flex-col items-start md:items-end">
+              <div className="relative z-30 lg:ml-auto text-left lg:text-right lg:max-w-[46%] flex flex-col items-start lg:items-end">
                 <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3 tracking-tight leading-tight">
                   Recuperação via <span className="text-green-500">WhatsApp</span>
                 </h3>
-                <p className="text-muted-foreground text-sm md:text-base md:ml-auto font-medium leading-relaxed">
+                <p className="text-muted-foreground text-sm lg:text-base lg:ml-auto font-medium leading-relaxed">
                   Transforme carrinhos abandonados e mensalidades atrasadas em dinheiro limpo.
                 </p>
               </div>
@@ -707,7 +707,7 @@ const BentoServices = () => {
                   scale: { duration: 0.8, type: "spring", stiffness: 100 },
                   opacity: { duration: 0.6 }
                 }}
-                className="relative mt-8 mx-auto md:mt-0 md:mx-0 md:absolute md:bottom-12 md:left-[6%] z-20"
+                className="relative mt-8 mx-auto lg:mt-0 lg:mx-0 lg:absolute lg:bottom-12 lg:left-[6%] z-20"
               >
                 <WhatsAppMockup isActive={chatActive} />
                 <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/10 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
