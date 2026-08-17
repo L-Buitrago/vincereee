@@ -58,14 +58,14 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-[120] px-4 py-4 md:px-6 md:py-8 flex justify-between items-center gap-3 pointer-events-none">
+      <header className="fixed top-0 left-0 w-full z-[120] px-4 py-4 lg:px-6 lg:py-8 flex justify-between items-center gap-2 lg:gap-3 pointer-events-none">
         <div className="pointer-events-auto">
-          <a href="#home" className="text-xl md:text-3xl font-serif italic tracking-tighter text-foreground">
+          <a href="#home" className="text-lg lg:text-3xl font-serif italic tracking-tighter text-foreground">
             VincereAT
           </a>
         </div>
 
-        <div className="flex gap-2 md:gap-3 pointer-events-auto items-center">
+        <div className="flex gap-2 lg:gap-3 pointer-events-auto items-center shrink-0">
 
           {/* Menu Button + Dropdown Container */}
           <div className="relative">
@@ -73,7 +73,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
               onClick={() => setIsOpen(!isOpen)}
               onMouseEnter={() => setIsButtonHovered(true)}
               onMouseLeave={() => setIsButtonHovered(false)}
-              className={`px-4 py-2.5 md:px-8 md:py-3.5 backdrop-blur-xl rounded-full font-bold text-[9px] md:text-[10px] uppercase tracking-[0.15em] md:tracking-[0.2em] flex items-center gap-2 md:gap-3 transition-all duration-500 min-w-0 md:min-w-[140px] justify-center border ${
+              className={`px-3.5 py-2.5 lg:px-8 lg:py-3.5 backdrop-blur-xl rounded-full font-bold text-[9px] lg:text-[10px] uppercase tracking-[0.12em] lg:tracking-[0.2em] flex items-center gap-2 lg:gap-3 transition-all duration-500 min-w-0 lg:min-w-[140px] justify-center border ${
                 isOpen 
                   ? "bg-white/10 text-foreground border-black/10 shadow-sm" 
                   : "bg-black/5 text-foreground border-black/5 hover:bg-black/10 shadow-sm"
@@ -82,7 +82,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
             >
               <ShuffleText 
                 text={isOpen ? "FECHAR" : "MENU"} 
-                className="w-10 md:w-12 text-center" 
+                className="w-9 lg:w-12 text-center" 
 
               />
               <div className="relative w-4 h-4 overflow-hidden">
@@ -192,7 +192,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
                 navigate("/plataforma/dashboard");
               }
             }}
-            className="px-4 py-2.5 md:px-8 md:py-3.5 bg-black/5 backdrop-blur-md text-foreground border border-black/5 rounded-full font-bold text-[9px] md:text-[10px] uppercase tracking-[0.15em] md:tracking-[0.2em] transition-all hover:bg-primary hover:text-white hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:border-primary active:scale-95"
+            className="px-3.5 py-2.5 lg:px-8 lg:py-3.5 bg-black/5 backdrop-blur-md text-foreground border border-black/5 rounded-full font-bold text-[9px] lg:text-[10px] uppercase tracking-[0.12em] lg:tracking-[0.2em] whitespace-nowrap transition-all hover:bg-primary hover:text-white hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:border-primary active:scale-95"
           >
             Plataforma
           </button>

@@ -240,34 +240,37 @@ const StepCard = ({
   progress: number; isActive: boolean; children: React.ReactNode;
 }) => (
   <div className={`
-    relative flex flex-col items-center text-center rounded-[1.5rem] md:rounded-[2rem] p-4 md:p-10
+    relative flex flex-row lg:flex-col items-center text-left lg:text-center gap-4 lg:gap-0
+    rounded-[1.25rem] lg:rounded-[2rem] p-4 lg:p-10
     border transition-all duration-700
     ${isActive
-      ? "bg-white/[0.03] backdrop-blur-md border-blue-500/40 shadow-[0_20px_60px_rgba(37,99,235,0.15)] md:scale-[1.03]"
-      : "bg-white/[0.01] border-white/5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] md:scale-[0.96] opacity-60 md:opacity-30"
+      ? "bg-white/[0.04] backdrop-blur-md border-blue-500/40 shadow-[0_20px_60px_rgba(37,99,235,0.15)] lg:scale-[1.03]"
+      : "bg-white/[0.02] border-white/5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] lg:scale-[0.96] opacity-100 lg:opacity-30"
     }
   `}>
     {/* Badge */}
-    <div className="absolute -top-3 -right-2 md:-top-4 md:-right-3 w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-[11px] md:text-sm z-20">
+    <div className="absolute top-3 right-3 lg:-top-4 lg:-right-3 w-7 h-7 lg:w-10 lg:h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-[10px] lg:text-sm z-20">
       {id}
     </div>
 
     {/* Icon box animado */}
-    <div className="w-20 h-20 md:w-40 md:h-40 mb-4 md:mb-6 rounded-[1.2rem] md:rounded-[1.8rem] bg-gradient-to-br from-blue-900/20 via-slate-900/40 to-blue-900/20 border border-white/5 flex items-center justify-center shadow-inner p-2 md:p-3 overflow-hidden">
+    <div className="w-16 h-16 shrink-0 lg:w-40 lg:h-40 lg:mb-6 rounded-[1rem] lg:rounded-[1.8rem] bg-gradient-to-br from-blue-900/20 via-slate-900/40 to-blue-900/20 border border-white/5 flex items-center justify-center shadow-inner p-1.5 lg:p-3 overflow-hidden">
       {children}
     </div>
 
-    <h4 className="text-[13px] md:text-xl font-bold text-white mb-1.5 md:mb-2 leading-snug">{title}</h4>
-    <p className="text-white/50 text-[11px] md:text-sm font-medium leading-relaxed max-w-[210px]">
-      {desc}
-    </p>
-
+    <div className="min-w-0 flex-1 lg:flex-none pr-8 lg:pr-0 lg:contents">
+      <h4 className="text-[15px] lg:text-xl font-bold text-white mb-1 lg:mb-2 leading-snug">{title}</h4>
+      <p className="text-white/50 text-[12px] lg:text-sm font-medium leading-relaxed lg:max-w-[210px]">
+        {desc}
+      </p>
+    </div>
 
     {/* Barra ativa */}
     {isActive && (
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full bg-blue-600 transition-all duration-500" />
+      <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full bg-blue-600 transition-all duration-500" />
     )}
   </div>
+
 );
 
 // ─── DeliveryDiagnostic (Scroll Pinned + SVG animados) ───────────────────────
@@ -297,7 +300,7 @@ const DeliveryDiagnostic = () => {
   ];
 
   useGSAP(() => {
-    const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+    const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
 
     if (isMobile) {
       // Mobile: sem pin (rolagem natural), revela as etapas conforme a seção entra na tela
@@ -356,22 +359,23 @@ const DeliveryDiagnostic = () => {
   return (
     <div
       ref={wrapperRef}
-      className="w-full md:min-h-screen flex flex-col items-center justify-center py-20 md:py-16 px-4 md:px-8 relative overflow-hidden bg-secondary"
+      className="w-full lg:min-h-screen flex flex-col items-center justify-center py-16 lg:py-16 px-4 lg:px-8 relative overflow-hidden bg-secondary"
       id="diagnostico"
     >
       {/* Header */}
-      <div className="text-center mb-10 md:mb-14 space-y-3 max-w-3xl">
+      <div className="text-center mb-8 lg:mb-14 space-y-3 max-w-3xl">
 
         <div className="flex items-center justify-center gap-2 text-primary uppercase tracking-widest text-sm font-semibold">
           <Plus className="w-4 h-4" />
           Diagnóstico de Entrega
           <Plus className="w-4 h-4" />
         </div>
-        <h3 className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
+        <h3 className="text-[28px] md:text-5xl lg:text-6xl font-black text-white tracking-tight">
           O nosso processo de <span className="text-primary">entrega</span>
         </h3>
         <p className="text-white/60 text-sm md:text-lg">
-          Role para explorar cada etapa — do diagnóstico à implementação.
+          <span className="lg:hidden">Do diagnóstico à implementação, passo a passo.</span>
+          <span className="hidden lg:inline">Role para explorar cada etapa — do diagnóstico à implementação.</span>
         </p>
 
       </div>
@@ -379,14 +383,14 @@ const DeliveryDiagnostic = () => {
       {/* Cards */}
       <div className="relative w-full max-w-5xl">
         {/* Linha azul conectando (desktop) */}
-        <div className="absolute top-[2.6rem] left-[12%] right-[12%] h-[2px] bg-white/10 hidden md:block rounded-full overflow-hidden">
+        <div className="absolute top-[2.6rem] left-[12%] right-[12%] h-[2px] bg-white/10 hidden lg:block rounded-full overflow-hidden">
           <div
             className="h-full bg-blue-600 rounded-full origin-left"
             style={{ transform: `scaleX(${lineProgress})`, transition: "none" }}
           />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-4">
           {steps.map((step, i) => (
             <StepCard
               key={step.id}
@@ -402,7 +406,7 @@ const DeliveryDiagnostic = () => {
 
       {/* Scroll hint (apenas desktop, onde a seção é fixada) */}
       <div
-        className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-blue-500 transition-opacity duration-500"
+        className="hidden lg:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-blue-500 transition-opacity duration-500"
         style={{ opacity: activeStep < 3 ? 1 : 0 }}
       >
 
@@ -445,7 +449,7 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   }, [isActive]);
 
   return (
-    <div className="rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col w-full max-w-[300px] md:max-w-none md:w-[330px] h-[460px] md:h-[540px]"
+    <div className="rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col w-full max-w-[300px] lg:max-w-none lg:w-[330px] h-[460px] lg:h-[540px]"
     >
 
       <div className="flex items-center justify-between px-4 pt-2 pb-1.5 text-white/60">
@@ -683,7 +687,7 @@ const BentoServices = () => {
             className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
           >
             {/* Card 1: WhatsApp */}
-            <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 md:min-h-[720px]">
+            <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-6 lg:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 lg:min-h-[720px]">
               <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
               <div className="relative z-10 flex justify-between items-start mb-6">
                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
@@ -691,11 +695,11 @@ const BentoServices = () => {
                 </div>
                 <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
               </div>
-              <div className="relative z-30 md:ml-auto text-left md:text-right md:max-w-[46%] flex flex-col items-start md:items-end">
+              <div className="relative z-30 lg:ml-auto text-left lg:text-right lg:max-w-[46%] flex flex-col items-start lg:items-end">
                 <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3 tracking-tight leading-tight">
                   Recuperação via <span className="text-green-500">WhatsApp</span>
                 </h3>
-                <p className="text-muted-foreground text-sm md:text-base md:ml-auto font-medium leading-relaxed">
+                <p className="text-muted-foreground text-sm lg:text-base lg:ml-auto font-medium leading-relaxed">
                   Transforme carrinhos abandonados e mensalidades atrasadas em dinheiro limpo.
                 </p>
               </div>
@@ -707,7 +711,7 @@ const BentoServices = () => {
                   scale: { duration: 0.8, type: "spring", stiffness: 100 },
                   opacity: { duration: 0.6 }
                 }}
-                className="relative mt-8 mx-auto md:mt-0 md:mx-0 md:absolute md:bottom-12 md:left-[6%] z-20"
+                className="relative mt-8 mx-auto lg:mt-0 lg:mx-0 lg:absolute lg:bottom-12 lg:left-[6%] z-20"
               >
                 <WhatsAppMockup isActive={chatActive} />
                 <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/10 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
