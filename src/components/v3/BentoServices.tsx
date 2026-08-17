@@ -240,33 +240,37 @@ const StepCard = ({
   progress: number; isActive: boolean; children: React.ReactNode;
 }) => (
   <div className={`
-    relative flex flex-col items-center text-center rounded-[2rem] p-6 md:p-10
+    relative flex flex-row lg:flex-col items-center text-left lg:text-center gap-4 lg:gap-0
+    rounded-[1.25rem] lg:rounded-[2rem] p-4 lg:p-10
     border transition-all duration-700
     ${isActive
-      ? "bg-white/[0.03] backdrop-blur-md border-blue-500/40 shadow-[0_20px_60px_rgba(37,99,235,0.15)] scale-[1.03]"
-      : "bg-white/[0.01] border-white/5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] scale-[0.96] opacity-30"
+      ? "bg-white/[0.04] backdrop-blur-md border-blue-500/40 shadow-[0_20px_60px_rgba(37,99,235,0.15)] lg:scale-[1.03]"
+      : "bg-white/[0.02] border-white/5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] lg:scale-[0.96] opacity-100 lg:opacity-30"
     }
   `}>
     {/* Badge */}
-    <div className="absolute -top-4 -right-3 w-10 h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-sm z-20">
+    <div className="absolute top-3 right-3 lg:-top-4 lg:-right-3 w-7 h-7 lg:w-10 lg:h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-[10px] lg:text-sm z-20">
       {id}
     </div>
 
     {/* Icon box animado */}
-    <div className="w-32 h-32 md:w-40 md:h-40 mb-6 rounded-[1.8rem] bg-gradient-to-br from-blue-900/20 via-slate-900/40 to-blue-900/20 border border-white/5 flex items-center justify-center shadow-inner p-3 overflow-hidden">
+    <div className="w-16 h-16 shrink-0 lg:w-40 lg:h-40 lg:mb-6 rounded-[1rem] lg:rounded-[1.8rem] bg-gradient-to-br from-blue-900/20 via-slate-900/40 to-blue-900/20 border border-white/5 flex items-center justify-center shadow-inner p-1.5 lg:p-3 overflow-hidden">
       {children}
     </div>
 
-    <h4 className="text-base md:text-xl font-bold text-white mb-2">{title}</h4>
-    <p className="text-white/50 text-[12px] md:text-sm font-medium leading-relaxed max-w-[210px]">
-      {desc}
-    </p>
+    <div className="min-w-0 flex-1 lg:flex-none pr-8 lg:pr-0 lg:contents">
+      <h4 className="text-[15px] lg:text-xl font-bold text-white mb-1 lg:mb-2 leading-snug">{title}</h4>
+      <p className="text-white/50 text-[12px] lg:text-sm font-medium leading-relaxed lg:max-w-[210px]">
+        {desc}
+      </p>
+    </div>
 
     {/* Barra ativa */}
     {isActive && (
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full bg-blue-600 transition-all duration-500" />
+      <div className="hidden lg:block absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full bg-blue-600 transition-all duration-500" />
     )}
   </div>
+
 );
 
 // ─── DeliveryDiagnostic (Scroll Pinned + SVG animados) ───────────────────────
@@ -296,6 +300,30 @@ const DeliveryDiagnostic = () => {
   ];
 
   useGSAP(() => {
+    const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
+
+    if (isMobile) {
+      // Mobile: sem pin (rolagem natural), revela as etapas conforme a seção entra na tela
+      const st = ScrollTrigger.create({
+        trigger: wrapperRef.current,
+        start: "top 80%",
+        end: "bottom 40%",
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const p = self.progress;
+          const active = Math.min(Math.floor(p * steps.length), steps.length - 1);
+          setActiveStep(active);
+          setLineProgress(Math.min(p * (steps.length / (steps.length - 1)), 1));
+          setProgresses(steps.map((_, i) => {
+            const start = i / steps.length;
+            const end = (i + 1) / steps.length;
+            return Math.max(0, Math.min(1, (p - start) / (end - start)));
+          }));
+        },
+      });
+      return () => st.kill();
+    }
+
     // Pinar a seção enquanto rola — cada step ocupa 500px de scroll
     ScrollTrigger.create({
       trigger: wrapperRef.current,
@@ -320,6 +348,7 @@ const DeliveryDiagnostic = () => {
     });
   }, { scope: wrapperRef });
 
+
   const icons = [
     <LupaAnim key="lupa" progress={progresses[0]} />,
     <MapaAnim key="mapa" progress={progresses[1]} />,
@@ -330,35 +359,38 @@ const DeliveryDiagnostic = () => {
   return (
     <div
       ref={wrapperRef}
-      className="w-full min-h-screen flex flex-col items-center justify-center py-16 px-4 md:px-8 relative overflow-hidden bg-secondary"
+      className="w-full lg:min-h-screen flex flex-col items-center justify-center py-16 lg:py-16 px-4 lg:px-8 relative overflow-hidden bg-secondary"
       id="diagnostico"
     >
       {/* Header */}
-      <div className="text-center mb-14 space-y-3 max-w-3xl">
+      <div className="text-center mb-8 lg:mb-14 space-y-3 max-w-3xl">
+
         <div className="flex items-center justify-center gap-2 text-primary uppercase tracking-widest text-sm font-semibold">
           <Plus className="w-4 h-4" />
           Diagnóstico de Entrega
           <Plus className="w-4 h-4" />
         </div>
-        <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
+        <h3 className="text-[28px] md:text-5xl lg:text-6xl font-black text-white tracking-tight">
           O nosso processo de <span className="text-primary">entrega</span>
         </h3>
-        <p className="text-white/60 text-base md:text-lg">
-          Role para explorar cada etapa — do diagnóstico à implementação.
+        <p className="text-white/60 text-sm md:text-lg">
+          <span className="lg:hidden">Do diagnóstico à implementação, passo a passo.</span>
+          <span className="hidden lg:inline">Role para explorar cada etapa — do diagnóstico à implementação.</span>
         </p>
+
       </div>
 
       {/* Cards */}
       <div className="relative w-full max-w-5xl">
         {/* Linha azul conectando (desktop) */}
-        <div className="absolute top-[2.6rem] left-[12%] right-[12%] h-[2px] bg-white/10 hidden md:block rounded-full overflow-hidden">
+        <div className="absolute top-[2.6rem] left-[12%] right-[12%] h-[2px] bg-white/10 hidden lg:block rounded-full overflow-hidden">
           <div
             className="h-full bg-blue-600 rounded-full origin-left"
             style={{ transform: `scaleX(${lineProgress})`, transition: "none" }}
           />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-4">
           {steps.map((step, i) => (
             <StepCard
               key={step.id}
@@ -372,11 +404,12 @@ const DeliveryDiagnostic = () => {
         </div>
       </div>
 
-      {/* Scroll hint */}
+      {/* Scroll hint (apenas desktop, onde a seção é fixada) */}
       <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-blue-500 transition-opacity duration-500"
+        className="hidden lg:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-blue-500 transition-opacity duration-500"
         style={{ opacity: activeStep < 3 ? 1 : 0 }}
       >
+
         <span className="text-[10px] font-semibold uppercase tracking-widest">
           {activeStep < 0 ? "Role para explorar" : `Etapa ${activeStep + 1} de ${steps.length}`}
         </span>
@@ -416,9 +449,9 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   }, [isActive]);
 
   return (
-    <div className="rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col"
-      style={{ width: 330, height: 540 }}
+    <div className="rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col w-full max-w-[300px] lg:max-w-none lg:w-[330px] h-[460px] lg:h-[540px]"
     >
+
       <div className="flex items-center justify-between px-4 pt-2 pb-1.5 text-white/60">
         <span className="text-[10px] font-semibold">14:02</span>
         <div className="flex items-center gap-1">
@@ -654,6 +687,7 @@ const BentoServices = () => {
             className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
           >
             {/* Card 1: WhatsApp */}
+            {/* Card 1: WhatsApp */}
             <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-5 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[620px] sm:min-h-[680px] md:min-h-[720px]">
               <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
               <div className="relative z-10 flex justify-between items-start mb-4 md:mb-6">
@@ -684,6 +718,8 @@ const BentoServices = () => {
                 <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/10 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
               </motion.div>
             </div>
+
+
 
             <div className="md:col-span-5 flex flex-col gap-6">
               {/* Card 2: Desenvolvimento Premium */}

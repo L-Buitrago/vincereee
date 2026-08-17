@@ -297,14 +297,15 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
     <div ref={ref}>
       {/* Floating buttons */}
       {!open && (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
+        <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col gap-3 items-end">
           <button
             onClick={() => setOpen(true)}
-            className="w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-105"
+            className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-105 opacity-80 md:opacity-100"
             aria-label="Abrir chat"
           >
-            <Bot className="h-6 w-6" />
+            <Bot className="h-5 w-5 md:h-6 md:w-6" />
           </button>
+
         </div>
       )}
 
