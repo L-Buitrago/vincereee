@@ -249,7 +249,7 @@ const StepCard = ({
     }
   `}>
     {/* Badge */}
-    <div className="absolute top-3 right-3 lg:top-auto lg:right-auto lg:-mt-14 lg:relative w-7 h-7 lg:w-10 lg:h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-[10px] lg:text-sm z-20">
+    <div className="absolute top-3 right-3 lg:-top-4 lg:-right-3 w-7 h-7 lg:w-10 lg:h-10 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center text-white font-black text-[10px] lg:text-sm z-20">
       {id}
     </div>
 
@@ -359,22 +359,23 @@ const DeliveryDiagnostic = () => {
   return (
     <div
       ref={wrapperRef}
-      className="w-full md:min-h-screen flex flex-col items-center justify-center py-20 md:py-16 px-4 md:px-8 relative overflow-hidden bg-secondary"
+      className="w-full lg:min-h-screen flex flex-col items-center justify-center py-16 lg:py-16 px-4 lg:px-8 relative overflow-hidden bg-secondary"
       id="diagnostico"
     >
       {/* Header */}
-      <div className="text-center mb-10 md:mb-14 space-y-3 max-w-3xl">
+      <div className="text-center mb-8 lg:mb-14 space-y-3 max-w-3xl">
 
         <div className="flex items-center justify-center gap-2 text-primary uppercase tracking-widest text-sm font-semibold">
           <Plus className="w-4 h-4" />
           Diagnóstico de Entrega
           <Plus className="w-4 h-4" />
         </div>
-        <h3 className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
+        <h3 className="text-[28px] md:text-5xl lg:text-6xl font-black text-white tracking-tight">
           O nosso processo de <span className="text-primary">entrega</span>
         </h3>
         <p className="text-white/60 text-sm md:text-lg">
-          Role para explorar cada etapa — do diagnóstico à implementação.
+          <span className="lg:hidden">Do diagnóstico à implementação, passo a passo.</span>
+          <span className="hidden lg:inline">Role para explorar cada etapa — do diagnóstico à implementação.</span>
         </p>
 
       </div>
@@ -382,14 +383,14 @@ const DeliveryDiagnostic = () => {
       {/* Cards */}
       <div className="relative w-full max-w-5xl">
         {/* Linha azul conectando (desktop) */}
-        <div className="absolute top-[2.6rem] left-[12%] right-[12%] h-[2px] bg-white/10 hidden md:block rounded-full overflow-hidden">
+        <div className="absolute top-[2.6rem] left-[12%] right-[12%] h-[2px] bg-white/10 hidden lg:block rounded-full overflow-hidden">
           <div
             className="h-full bg-blue-600 rounded-full origin-left"
             style={{ transform: `scaleX(${lineProgress})`, transition: "none" }}
           />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-4">
           {steps.map((step, i) => (
             <StepCard
               key={step.id}
@@ -405,7 +406,7 @@ const DeliveryDiagnostic = () => {
 
       {/* Scroll hint (apenas desktop, onde a seção é fixada) */}
       <div
-        className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-blue-500 transition-opacity duration-500"
+        className="hidden lg:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-blue-500 transition-opacity duration-500"
         style={{ opacity: activeStep < 3 ? 1 : 0 }}
       >
 
