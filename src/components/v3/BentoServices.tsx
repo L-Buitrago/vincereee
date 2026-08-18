@@ -463,7 +463,7 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   }, [isActive]);
 
   return (
-    <div className="rounded-[28px] lg:rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col w-full max-w-[280px] sm:max-w-[320px] lg:max-w-none lg:w-[330px] h-[430px] sm:h-[480px] lg:h-[540px]"
+    <div className="rounded-[22px] sm:rounded-[28px] lg:rounded-[34px] bg-[#111b21] border-[2.5px] sm:border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col w-full max-w-[260px] xs:max-w-[290px] sm:max-w-[320px] lg:max-w-none lg:w-[330px] h-[350px] xs:h-[390px] sm:h-[480px] lg:h-[540px]"
     >
 
       <div className="flex items-center justify-between px-4 pt-2 pb-1.5 text-white/60">
@@ -712,17 +712,16 @@ const BentoServices = () => {
             className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-7xl mx-auto"
           >
             {/* Card 1: WhatsApp */}
-            {/* Card 1: WhatsApp */}
-            <div ref={card1Ref} className="lg:col-span-7 group relative flex flex-col gap-5 lg:gap-0 overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-5 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 lg:min-h-[720px]">
+            <div ref={card1Ref} className="lg:col-span-7 group relative flex flex-col gap-4 lg:gap-0 overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-4 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-0 lg:min-h-[720px]">
               <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
               <div className="relative z-10 flex justify-between items-start lg:mb-6">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
-                  <MessageCircle className="w-6 h-6 lg:w-7 lg:h-7 text-green-600" />
+                <div className="w-10 h-10 lg:w-14 lg:h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
+                  <MessageCircle className="w-5 h-5 lg:w-7 lg:h-7 text-green-600" />
                 </div>
-                <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
+                <ArrowUpRight className="w-5 h-5 lg:w-6 lg:h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
               </div>
-              <div className="relative z-30 text-left lg:text-right lg:ml-auto lg:max-w-[46%] flex flex-col items-start lg:items-end lg:mb-0">
-                <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 md:mb-3 tracking-tight leading-tight">
+              <div className="relative z-20 text-left lg:text-right lg:ml-auto lg:max-w-[46%] flex flex-col items-start lg:items-end">
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1.5 sm:mb-3 tracking-tight leading-tight">
                   Recuperação via <span className="text-green-500">WhatsApp</span>
                 </h3>
                 <p className="text-muted-foreground text-xs sm:text-sm lg:text-base font-medium leading-relaxed">
@@ -731,13 +730,13 @@ const BentoServices = () => {
               </div>
               <motion.div
                 initial={{ scale: 0.8, opacity: 0, y: 30 }}
-                 animate={isCard1InView ? (isCompact ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 1, y: [0, -8, 0] }) : {}}
+                animate={isCard1InView ? (isCompact ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 1, y: [0, -8, 0] }) : {}}
                 transition={{
                   y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
                   scale: { duration: 0.8, type: "spring", stiffness: 100 },
                   opacity: { duration: 0.6 }
                 }}
-                 className="relative lg:absolute lg:bottom-12 lg:left-[6%] z-20 flex justify-center w-full lg:w-auto origin-top clear-both"
+                className="relative lg:absolute lg:bottom-12 lg:left-[6%] z-10 flex justify-center w-full lg:w-auto mt-3 lg:mt-0 origin-top clear-both"
               >
                 <WhatsAppMockup isActive={chatActive} />
                 <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/10 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />

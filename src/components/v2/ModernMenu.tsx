@@ -58,21 +58,21 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
 
   return (
     <>
-      <header className="absolute lg:fixed top-0 left-0 w-full z-[120] px-4 py-4 lg:px-6 lg:py-8 grid grid-cols-[auto_1fr] lg:flex lg:justify-between items-center gap-4 pointer-events-none">
+      <header className="absolute lg:fixed top-0 left-0 w-full z-[120] px-3 py-3 sm:px-4 sm:py-4 lg:px-6 lg:py-8 flex justify-between items-center gap-2 max-w-full overflow-x-hidden pointer-events-none">
         <div className="pointer-events-auto shrink-0">
-          <a href="#home" className="block text-[17px] sm:text-xl lg:text-3xl font-serif italic tracking-normal lg:tracking-tighter text-foreground whitespace-nowrap">
+          <a href="#home" className="block text-base sm:text-xl lg:text-3xl font-serif italic tracking-normal lg:tracking-tighter text-foreground whitespace-nowrap">
             VincereAT
           </a>
         </div>
 
-        <div className="flex gap-2 lg:gap-3 pointer-events-auto items-center justify-self-end shrink-0">
+        <div className="flex gap-1.5 sm:gap-2 lg:gap-3 pointer-events-auto items-center shrink-0">
           {/* Menu Button + Dropdown Container */}
           <div className="relative">
             <button 
               onClick={() => setIsOpen(!isOpen)}
               onMouseEnter={() => setIsButtonHovered(true)}
               onMouseLeave={() => setIsButtonHovered(false)}
-              className={`h-10 w-[82px] sm:w-[96px] lg:w-auto lg:h-auto lg:px-8 lg:py-3.5 backdrop-blur-xl rounded-full font-bold text-[8px] lg:text-[10px] uppercase tracking-[0.12em] lg:tracking-[0.2em] flex items-center gap-1.5 lg:gap-3 transition-all duration-500 min-w-0 lg:min-w-[140px] justify-center border ${
+              className={`h-9 px-2.5 sm:h-10 sm:px-4 lg:h-auto lg:px-8 lg:py-3.5 backdrop-blur-xl rounded-full font-bold text-[8px] sm:text-[9px] lg:text-[10px] uppercase tracking-[0.08em] sm:tracking-[0.12em] lg:tracking-[0.2em] flex items-center gap-1 sm:gap-1.5 lg:gap-3 transition-all duration-500 justify-center border ${
                 isOpen 
                   ? "bg-white/10 text-foreground border-black/10 shadow-sm" 
                   : "bg-black/5 text-foreground border-black/5 hover:bg-black/10 shadow-sm"
@@ -80,16 +80,16 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
             >
               <ShuffleText 
                 text={isOpen ? "FECHAR" : "MENU"} 
-                className="w-9 lg:w-12 text-center" 
+                className="w-7 sm:w-9 lg:w-12 text-center" 
               />
-              <div className="relative w-3.5 h-3.5 lg:w-4 lg:h-4 overflow-hidden">
+              <div className="relative w-3 h-3 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 overflow-hidden">
                  <motion.div
                    animate={{ y: isOpen ? -16 : 0 }}
                    transition={{ duration: 0.4, ease: [0.77, 0, 0.18, 1] }}
                    className="flex flex-col"
                  >
-                   <MenuIcon className="w-3.5 h-3.5 lg:w-4 lg:h-4 shrink-0" />
-                   <X className="w-3.5 h-3.5 lg:w-4 lg:h-4 shrink-0" />
+                   <MenuIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 shrink-0" />
+                   <X className="w-3 h-3 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 shrink-0" />
                  </motion.div>
               </div>
             </button>
@@ -189,7 +189,7 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
                 navigate("/plataforma/dashboard");
               }
             }}
-            className="h-10 w-[96px] sm:w-[116px] lg:w-auto lg:h-auto lg:px-8 lg:py-3.5 bg-black/5 backdrop-blur-md text-foreground border border-black/5 rounded-full font-bold text-[8px] lg:text-[10px] uppercase tracking-[0.08em] lg:tracking-[0.2em] transition-all hover:bg-primary hover:text-white hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:border-primary active:scale-95 whitespace-nowrap"
+            className="h-9 px-2.5 sm:h-10 sm:px-4 lg:h-auto lg:px-8 lg:py-3.5 bg-black/5 backdrop-blur-md text-foreground border border-black/5 rounded-full font-bold text-[8px] sm:text-[9px] lg:text-[10px] uppercase tracking-[0.06em] sm:tracking-[0.08em] lg:tracking-[0.2em] transition-all hover:bg-primary hover:text-white hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:border-primary active:scale-95 whitespace-nowrap"
           >
             Plataforma
           </button>
