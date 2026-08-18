@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import { registerSW } from "virtual:pwa-register";
 import App from "./App.tsx";
 import "./index.css";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -24,5 +23,3 @@ createRoot(document.getElementById("root")!).render(
   </ErrorBoundary>
 );
 
-// Register service worker for PWA
-registerSW({ immediate: true });
