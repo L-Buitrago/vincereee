@@ -658,7 +658,9 @@ const BentoServices = () => {
   const isCard3InView = useInView(card3Ref, { once: false, margin: "-60px" });
 
   const [chatActive, setChatActive] = useState(false);
-  const [isCompact, setIsCompact] = useState(false);
+  const [isCompact, setIsCompact] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches
+  );
   const wasInView = useRef(false);
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
@@ -706,20 +708,20 @@ const BentoServices = () => {
           </div>
 
           <motion.div
-            style={{ scale, opacity }}
+            style={isCompact ? undefined : { scale, opacity }}
             className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-7xl mx-auto"
           >
             {/* Card 1: WhatsApp */}
             {/* Card 1: WhatsApp */}
-            <div ref={card1Ref} className="lg:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-5 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 lg:min-h-[720px]">
+            <div ref={card1Ref} className="lg:col-span-7 group relative flex flex-col gap-5 lg:gap-0 overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-5 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 lg:min-h-[720px]">
               <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
-              <div className="relative z-10 flex justify-between items-start mb-4 lg:mb-6">
+              <div className="relative z-10 flex justify-between items-start lg:mb-6">
                 <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
                   <MessageCircle className="w-6 h-6 lg:w-7 lg:h-7 text-green-600" />
                 </div>
                 <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
               </div>
-              <div className="relative z-30 text-left lg:text-right lg:ml-auto lg:max-w-[46%] flex flex-col items-start lg:items-end mb-6 lg:mb-0">
+              <div className="relative z-30 text-left lg:text-right lg:ml-auto lg:max-w-[46%] flex flex-col items-start lg:items-end lg:mb-0">
                 <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 md:mb-3 tracking-tight leading-tight">
                   Recuperação via <span className="text-green-500">WhatsApp</span>
                 </h3>
@@ -735,7 +737,7 @@ const BentoServices = () => {
                   scale: { duration: 0.8, type: "spring", stiffness: 100 },
                   opacity: { duration: 0.6 }
                 }}
-                 className="relative lg:absolute mt-2 lg:mt-0 lg:bottom-12 lg:left-[6%] z-20 flex justify-center w-full lg:w-auto origin-top"
+                 className="relative lg:absolute lg:bottom-12 lg:left-[6%] z-20 flex justify-center w-full lg:w-auto origin-top clear-both"
               >
                 <WhatsAppMockup isActive={chatActive} />
                 <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/10 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
