@@ -273,6 +273,30 @@ const StepCard = ({
 
 );
 
+const MobileStepCard = ({
+  id, title, desc, index, children
+}: {
+  id: string; title: string; desc: string; index: number; children: React.ReactNode;
+}) => (
+  <motion.article
+    initial={{ opacity: 0, y: 34 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.35 }}
+    transition={{ duration: 0.55, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+    className="relative grid grid-cols-[72px_1fr] sm:grid-cols-[92px_1fr] items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 sm:p-5 overflow-hidden"
+  >
+    <div className="w-[72px] h-[72px] sm:w-[92px] sm:h-[92px] rounded-xl bg-blue-950/40 border border-white/10 p-2 overflow-hidden">
+      {children}
+    </div>
+    <div className="min-w-0 pr-7">
+      <span className="block text-primary text-[10px] font-black uppercase tracking-widest mb-1">Etapa {id}</span>
+      <h4 className="text-base sm:text-lg font-bold text-white mb-1 leading-tight">{title}</h4>
+      <p className="text-white/55 text-xs sm:text-sm font-medium leading-relaxed">{desc}</p>
+    </div>
+    <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
+  </motion.article>
+);
+
 // ─── DeliveryDiagnostic (Scroll Pinned + SVG animados) ───────────────────────
 const DeliveryDiagnostic = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -302,27 +326,7 @@ const DeliveryDiagnostic = () => {
   useGSAP(() => {
     const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches;
 
-    if (isMobile) {
-      // Mobile: sem pin (rolagem natural), revela as etapas conforme a seção entra na tela
-      const st = ScrollTrigger.create({
-        trigger: wrapperRef.current,
-        start: "top 80%",
-        end: "bottom 40%",
-        scrub: 0.5,
-        onUpdate: (self) => {
-          const p = self.progress;
-          const active = Math.min(Math.floor(p * steps.length), steps.length - 1);
-          setActiveStep(active);
-          setLineProgress(Math.min(p * (steps.length / (steps.length - 1)), 1));
-          setProgresses(steps.map((_, i) => {
-            const start = i / steps.length;
-            const end = (i + 1) / steps.length;
-            return Math.max(0, Math.min(1, (p - start) / (end - start)));
-          }));
-        },
-      });
-      return () => st.kill();
-    }
+    if (isMobile) return;
 
     // Pinar a seção enquanto rola — cada step ocupa 500px de scroll
     ScrollTrigger.create({
@@ -359,7 +363,7 @@ const DeliveryDiagnostic = () => {
   return (
     <div
       ref={wrapperRef}
-      className="w-full lg:min-h-screen flex flex-col items-center justify-center py-16 lg:py-16 px-4 lg:px-8 relative overflow-hidden bg-secondary"
+      className="w-full lg:min-h-screen flex flex-col items-center justify-center py-20 lg:py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-secondary"
       id="diagnostico"
     >
       {/* Header */}
@@ -373,8 +377,8 @@ const DeliveryDiagnostic = () => {
         <h3 className="text-[28px] md:text-5xl lg:text-6xl font-black text-white tracking-tight">
           O nosso processo de <span className="text-primary">entrega</span>
         </h3>
-        <p className="text-white/60 text-sm md:text-lg">
-          <span className="lg:hidden">Do diagnóstico à implementação, passo a passo.</span>
+        <p className="text-white/60 text-sm lg:text-lg">
+          <span className="lg:hidden">Cada etapa aparece no seu tempo, do diagnóstico à implementação.</span>
           <span className="hidden lg:inline">Role para explorar cada etapa — do diagnóstico à implementação.</span>
         </p>
 
@@ -390,7 +394,7 @@ const DeliveryDiagnostic = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-4">
+        <div className="hidden lg:grid lg:grid-cols-4 gap-4">
           {steps.map((step, i) => (
             <StepCard
               key={step.id}
@@ -400,6 +404,16 @@ const DeliveryDiagnostic = () => {
             >
               {icons[i]}
             </StepCard>
+          ))}
+        </div>
+        <div className="grid lg:hidden grid-cols-1 gap-4">
+          {steps.map((step, i) => (
+            <MobileStepCard key={step.id} {...step} index={i}>
+              {i === 0 && <LupaAnim progress={1} />}
+              {i === 1 && <MapaAnim progress={1} />}
+              {i === 2 && <CodigoAnim progress={1} />}
+              {i === 3 && <SuporteAnim progress={1} />}
+            </MobileStepCard>
           ))}
         </div>
       </div>
@@ -449,7 +463,7 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
   }, [isActive]);
 
   return (
-    <div className="rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col w-full max-w-[300px] lg:max-w-none lg:w-[330px] h-[460px] lg:h-[540px]"
+    <div className="rounded-[28px] lg:rounded-[34px] bg-[#111b21] border-[3px] border-[#2a3942] shadow-2xl overflow-hidden flex flex-col w-full max-w-[280px] sm:max-w-[320px] lg:max-w-none lg:w-[330px] h-[430px] sm:h-[480px] lg:h-[540px]"
     >
 
       <div className="flex items-center justify-between px-4 pt-2 pb-1.5 text-white/60">
@@ -644,6 +658,7 @@ const BentoServices = () => {
   const isCard3InView = useInView(card3Ref, { once: false, margin: "-60px" });
 
   const [chatActive, setChatActive] = useState(false);
+  const [isCompact, setIsCompact] = useState(false);
   const wasInView = useRef(false);
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
@@ -656,6 +671,14 @@ const BentoServices = () => {
     wasInView.current = isCard1InView;
   }, [isCard1InView]);
 
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 1023px)");
+    const update = () => setIsCompact(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
   return (
     <>
       {/* ── Seção de diagnóstico (scroll pinned) ── */}
@@ -664,11 +687,11 @@ const BentoServices = () => {
       {/* ── Seção de soluções ── */}
       <section
         ref={containerRef}
-        className="py-32 w-full bg-white relative overflow-hidden"
+        className="py-20 lg:py-32 w-full bg-white relative overflow-hidden"
         id="solucoes"
       >
         <div className="container px-4 md:px-6 mx-auto relative z-10">
-          <div className="flex flex-col items-center justify-center text-center mb-16 md:mb-24 space-y-4">
+          <div className="flex flex-col items-center justify-center text-center mb-10 lg:mb-24 space-y-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -684,35 +707,35 @@ const BentoServices = () => {
 
           <motion.div
             style={{ scale, opacity }}
-            className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-7xl mx-auto"
           >
             {/* Card 1: WhatsApp */}
             {/* Card 1: WhatsApp */}
-            <div ref={card1Ref} className="md:col-span-7 group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-5 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 min-h-[620px] sm:min-h-[680px] md:min-h-[720px]">
+            <div ref={card1Ref} className="lg:col-span-7 group relative flex flex-col overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-5 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 lg:min-h-[720px]">
               <div className="absolute top-0 left-0 w-64 h-64 bg-green-400/10 rounded-full blur-[80px] group-hover:bg-green-400/20 transition-colors duration-500" />
-              <div className="relative z-10 flex justify-between items-start mb-4 md:mb-6">
-                <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
-                  <MessageCircle className="w-6 h-6 md:w-7 md:h-7 text-green-600" />
+              <div className="relative z-10 flex justify-between items-start mb-4 lg:mb-6">
+                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-2xl bg-green-50 flex items-center justify-center border border-green-100">
+                  <MessageCircle className="w-6 h-6 lg:w-7 lg:h-7 text-green-600" />
                 </div>
                 <ArrowUpRight className="w-6 h-6 text-gray-300 group-hover:text-foreground transition-colors group-hover:translate-x-1 group-hover:-translate-y-1 duration-300" />
               </div>
-              <div className="relative z-30 text-left md:text-right md:ml-auto md:max-w-[46%] flex flex-col items-start md:items-end mb-4 md:mb-0">
+              <div className="relative z-30 text-left lg:text-right lg:ml-auto lg:max-w-[46%] flex flex-col items-start lg:items-end mb-6 lg:mb-0">
                 <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 md:mb-3 tracking-tight leading-tight">
                   Recuperação via <span className="text-green-500">WhatsApp</span>
                 </h3>
-                <p className="text-muted-foreground text-xs sm:text-sm md:text-base font-medium leading-relaxed">
+                <p className="text-muted-foreground text-xs sm:text-sm lg:text-base font-medium leading-relaxed">
                   Transforme carrinhos abandonados e mensalidades atrasadas em dinheiro limpo.
                 </p>
               </div>
               <motion.div
                 initial={{ scale: 0.8, opacity: 0, y: 30 }}
-                animate={isCard1InView ? { opacity: 1, scale: 1, y: [0, -8, 0] } : {}}
+                 animate={isCard1InView ? (isCompact ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 1, y: [0, -8, 0] }) : {}}
                 transition={{
                   y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
                   scale: { duration: 0.8, type: "spring", stiffness: 100 },
                   opacity: { duration: 0.6 }
                 }}
-                className="relative md:absolute mt-2 md:mt-0 bottom-auto left-auto md:bottom-12 md:left-[6%] z-20 flex justify-center w-full md:w-auto scale-[0.85] sm:scale-95 md:scale-100 origin-top"
+                 className="relative lg:absolute mt-2 lg:mt-0 lg:bottom-12 lg:left-[6%] z-20 flex justify-center w-full lg:w-auto origin-top"
               >
                 <WhatsAppMockup isActive={chatActive} />
                 <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full h-16 bg-green-600/10 rounded-full blur-[40px] opacity-40 group-hover:opacity-80 transition-opacity duration-700" />
@@ -721,7 +744,7 @@ const BentoServices = () => {
 
 
 
-            <div className="md:col-span-5 flex flex-col gap-6">
+            <div className="lg:col-span-5 flex flex-col gap-6">
               {/* Card 2: Desenvolvimento Premium */}
               <div ref={card2Ref} className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-white border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex-1 min-h-[250px]">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] group-hover:bg-primary/20 transition-colors duration-500" />
