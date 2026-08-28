@@ -178,6 +178,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
       const invokePromise = supabase.functions.invoke("chat", {
         body: {
           messages: allMessages.map(m => ({ role: m.role, content: m.content })),
+          sessionId: sessionId,
           model: "gemini-2.0-flash",
           stream: false,
         },
