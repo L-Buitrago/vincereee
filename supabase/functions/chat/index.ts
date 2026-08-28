@@ -84,7 +84,7 @@ serve(async (req) => {
     const body = await req.json();
     const rawMessages = body?.messages || [];
 
-    // Filter and sanitize messages (remove leading empty/assistant messages if starting, strip previous tags)
+    // Filter and sanitize messages
     const cleanMessages = rawMessages
       .map((m: any) => ({
         role: m.role === "assistant" ? "assistant" : "user",
@@ -99,24 +99,64 @@ serve(async (req) => {
       });
     }
 
-    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
     const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
+    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
     const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const GROQ_API_KEY = Deno.env.get("GROQ_API_KEY");
 
-    console.log(`[Chat] Keys check - Gemini: ${!!GEMINI_API_KEY}, OpenRouter: ${!!OPENROUTER_API_KEY}, OpenAI: ${!!OPENAI_API_KEY}, Lovable: ${!!LOVABLE_API_KEY}, Groq: ${!!GROQ_API_KEY}`);
+    // ===== STRATEGY 1: OpenRouter API (Fast & Reliable) =====
+    if (OPENROUTER_API_KEY) {
+      const openRouterModels = [
+        "google/gemini-2.5-flash",
+        "openai/gpt-4o-mini",
+        "meta-llama/llama-3.3-70b-instruct"
+      ];
 
-    // ===== STRATEGY 1: Native Google Gemini API =====
+      for (const model of openRouterModels) {
+        try {
+          const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${OPENROUTER_API_KEY.trim()}`,
+              "Content-Type": "application/json",
+              "HTTP-Referer": "https://vincere.com.br",
+              "X-Title": "Vincere Vi"
+            },
+            body: JSON.stringify({
+              model,
+              messages: [
+                { role: "system", content: SYSTEM_PROMPT },
+                ...cleanMessages
+              ],
+              max_tokens: 800,
+              temperature: 0.7
+            }),
+            signal: AbortSignal.timeout(6000)
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const reply = data?.choices?.[0]?.message?.content;
+            if (reply && reply.trim()) {
+              return new Response(JSON.stringify({ reply }), {
+                headers: { ...corsHeaders, "Content-Type": "application/json" },
+              });
+            }
+          }
+        } catch (err) {
+          console.warn(`[Chat] OpenRouter (${model}) error:`, err);
+        }
+      }
+    }
+
+    // ===== STRATEGY 2: Native Google Gemini API =====
     if (GEMINI_API_KEY) {
-      const geminiModels = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
-      
-      // Format contents for Gemini: must start with 'user', alternate roles
       const contents: Array<{ role: "user" | "model"; parts: Array<{ text: string }> }> = [];
       let foundFirstUser = false;
       for (const m of cleanMessages) {
         if (!foundFirstUser) {
-          if (m.role !== "user") continue; // Gemini requires first turn to be 'user'
+          if (m.role !== "user") continue;
           foundFirstUser = true;
         }
         const role = m.role === "assistant" ? "model" : "user";
@@ -127,14 +167,12 @@ serve(async (req) => {
         }
       }
 
-      // If no user message was in the list, provide fallback turn
       if (contents.length === 0) {
         contents.push({ role: "user", parts: [{ text: cleanMessages[cleanMessages.length - 1].content }] });
       }
 
-      for (const modelId of geminiModels) {
+      for (const modelId of ["gemini-2.5-flash", "gemini-2.0-flash"]) {
         try {
-          console.log(`[Chat] Trying Gemini native model: ${modelId}`);
           const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${GEMINI_API_KEY.trim()}`;
           const geminiResponse = await fetch(apiUrl, {
             method: "POST",
@@ -142,78 +180,22 @@ serve(async (req) => {
             body: JSON.stringify({
               systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
               contents,
-              generationConfig: { maxOutputTokens: 1024, temperature: 0.7 }
+              generationConfig: { maxOutputTokens: 800, temperature: 0.7 }
             }),
+            signal: AbortSignal.timeout(5000)
           });
-
-          const geminiText = await geminiResponse.text();
-          console.log(`[Chat] Gemini (${modelId}) status: ${geminiResponse.status}`);
 
           if (geminiResponse.ok) {
-            const geminiData = JSON.parse(geminiText);
+            const geminiData = await geminiResponse.json();
             const reply = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
             if (reply && reply.trim()) {
-              console.log(`[Chat] Gemini native success!`);
               return new Response(JSON.stringify({ reply }), {
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
               });
             }
-          } else {
-            console.warn(`[Chat] Gemini error ${geminiResponse.status}: ${geminiText.substring(0, 200)}`);
           }
         } catch (err) {
-          console.error(`[Chat] Gemini (${modelId}) exception:`, err);
-        }
-      }
-    }
-
-    // ===== STRATEGY 2: OpenRouter API =====
-    if (OPENROUTER_API_KEY) {
-      const openRouterModels = [
-        "google/gemini-2.5-flash",
-        "openai/gpt-4o-mini",
-        "meta-llama/llama-3.3-70b-instruct"
-      ];
-
-      for (const model of openRouterModels) {
-        try {
-          console.log(`[Chat] Trying OpenRouter model: ${model}`);
-          const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-            method: "POST",
-            headers: {
-              "Authorization": `Bearer ${OPENROUTER_API_KEY.trim()}`,
-              "Content-Type": "application/json",
-              "HTTP-Referer": "https://vincere.com.br",
-              "X-Title": "Vincere Assistente Vi"
-            },
-            body: JSON.stringify({
-              model,
-              messages: [
-                { role: "system", content: SYSTEM_PROMPT },
-                ...cleanMessages
-              ],
-              max_tokens: 1000,
-              temperature: 0.7
-            })
-          });
-
-          const respText = await response.text();
-          console.log(`[Chat] OpenRouter (${model}) status: ${response.status}`);
-
-          if (response.ok) {
-            const data = JSON.parse(respText);
-            const reply = data?.choices?.[0]?.message?.content;
-            if (reply && reply.trim()) {
-              console.log(`[Chat] OpenRouter (${model}) success!`);
-              return new Response(JSON.stringify({ reply }), {
-                headers: { ...corsHeaders, "Content-Type": "application/json" },
-              });
-            }
-          } else {
-            console.warn(`[Chat] OpenRouter (${model}) error ${response.status}: ${respText.substring(0, 200)}`);
-          }
-        } catch (err) {
-          console.error(`[Chat] OpenRouter (${model}) exception:`, err);
+          console.warn(`[Chat] Gemini (${modelId}) error:`, err);
         }
       }
     }
@@ -221,7 +203,6 @@ serve(async (req) => {
     // ===== STRATEGY 3: OpenAI API (Direct) =====
     if (OPENAI_API_KEY) {
       try {
-        console.log(`[Chat] Trying OpenAI native...`);
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
           headers: {
@@ -234,33 +215,29 @@ serve(async (req) => {
               { role: "system", content: SYSTEM_PROMPT },
               ...cleanMessages
             ],
-            max_tokens: 1000,
+            max_tokens: 800,
             temperature: 0.7
-          })
+          }),
+          signal: AbortSignal.timeout(5000)
         });
 
-        const respText = await response.text();
-        console.log(`[Chat] OpenAI status: ${response.status}`);
-
         if (response.ok) {
-          const data = JSON.parse(respText);
+          const data = await response.json();
           const reply = data?.choices?.[0]?.message?.content;
           if (reply && reply.trim()) {
-            console.log(`[Chat] OpenAI direct success!`);
             return new Response(JSON.stringify({ reply }), {
               headers: { ...corsHeaders, "Content-Type": "application/json" },
             });
           }
         }
       } catch (err) {
-        console.error(`[Chat] OpenAI exception:`, err);
+        console.warn("[Chat] OpenAI error:", err);
       }
     }
 
     // ===== STRATEGY 4: Lovable AI Gateway =====
     if (LOVABLE_API_KEY) {
       try {
-        console.log("[Chat] Trying Lovable Gateway...");
         const lovableResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
           method: "POST",
           headers: { 
@@ -272,11 +249,10 @@ serve(async (req) => {
             messages: [{ role: "system", content: SYSTEM_PROMPT }, ...cleanMessages],
             stream: false,
           }),
+          signal: AbortSignal.timeout(5000)
         });
 
         const lovableText = await lovableResponse.text();
-        console.log(`[Chat] Lovable status: ${lovableResponse.status}`);
-
         if (lovableResponse.ok) {
           try {
             const data = JSON.parse(lovableText);
@@ -296,14 +272,13 @@ serve(async (req) => {
           }
         }
       } catch (err) {
-        console.error("[Chat] Lovable exception:", err);
+        console.warn("[Chat] Lovable error:", err);
       }
     }
 
     // ===== STRATEGY 5: Groq API =====
     if (GROQ_API_KEY) {
       try {
-        console.log(`[Chat] Trying Groq API...`);
         const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: {
@@ -316,9 +291,10 @@ serve(async (req) => {
               { role: "system", content: SYSTEM_PROMPT },
               ...cleanMessages
             ],
-            max_tokens: 1000,
+            max_tokens: 800,
             temperature: 0.7
-          })
+          }),
+          signal: AbortSignal.timeout(5000)
         });
 
         if (response.ok) {
@@ -331,14 +307,13 @@ serve(async (req) => {
           }
         }
       } catch (err) {
-        console.error(`[Chat] Groq exception:`, err);
+        console.warn("[Chat] Groq error:", err);
       }
     }
 
-    // ===== NO STRATEGY WORKED =====
-    console.error("[Chat] All strategies failed.");
+    // Fallback if all AI APIs unreachable
     return new Response(JSON.stringify({ 
-      reply: "Olá! Seja bem-vindo à Vincere. Em que podemos ajudar hoje? Você busca uma plataforma de gestão ou criação de site?"
+      reply: "Entendido! Qual o seu nome para continuarmos?"
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

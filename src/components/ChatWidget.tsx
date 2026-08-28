@@ -120,7 +120,7 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
         const { error: viError } = await supabase.from("vi_leads" as any).insert({
           name: data.customer_name,
           email: data.customer_email || `chat_${sessionId.substring(0, 8)}@vincere.temp`,
-          phone: data.customer_phone || null,
+          phone: data.customer_phone || "Não informado",
           needs: `[Via Chat Vi]\nServiço: ${data.service_type}\n\n${messages.map(m => `${m.role}: ${m.content}`).join("\n")}`,
         });
 
@@ -135,23 +135,18 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
       if (data.customer_name) {
         const payload: any = {
           name: data.customer_name,
-          phone: data.customer_phone || null,
+          phone: data.customer_phone || "Não informado",
           status: "Lead",
-          org_id: null
+          org_id: null,
+          email: data.customer_email || `lead_${sessionId.substring(0, 8)}@vincere.temp`
         };
-
-        if (data.customer_email) {
-          payload.email = data.customer_email;
-        } else {
-          payload.email = `lead_${sessionId.substring(0, 8)}@vincere.temp`;
-        }
 
         const { error: customerError } = await supabase
           .from("customers" as any)
-          .upsert(payload, { onConflict: 'email' });
+          .insert(payload);
 
         if (customerError) {
-          console.error("Critical error saving customer lead:", customerError.message);
+          console.warn("Error saving customer lead (table insert):", customerError.message);
         } else {
           console.log("[Vi Chat] Lead saved to CRM customers ✅");
         }
@@ -175,9 +170,9 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
     try {
       console.log("[Vi Chat] Sending message via supabase.functions.invoke...");
       
-      // Criar um timeout para evitar carregamento infinito
+      // Criar um timeout de segurança (30s)
       const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error("Timeout: A requisição demorou mais de 15 segundos.")), 15000);
+        setTimeout(() => reject(new Error("Timeout: A requisição demorou mais de 30 segundos.")), 30000);
       });
 
       const invokePromise = supabase.functions.invoke("chat", {
