@@ -16,10 +16,7 @@ const SubscriptionGuard = ({ children }: { children: React.ReactNode }) => {
 
   const isDev = typeof window !== 'undefined' && (
     window.location.hostname === 'localhost' || 
-    window.location.hostname === '127.0.0.1' ||
-    window.location.hostname.includes('lovable') ||
-    window.location.hostname.includes('192.168') ||
-    window.location.hostname.includes('preview')
+    window.location.hostname === '127.0.0.1'
   );
 
   const masterAdmins = [
@@ -30,15 +27,20 @@ const SubscriptionGuard = ({ children }: { children: React.ReactNode }) => {
   ];
   const isMasterAdmin = !!user?.email && masterAdmins.includes(user.email.toLowerCase());
 
+  // Master Admins (Creators) and Dev environment always pass immediately without waiting for DB queries
+  if (isMasterAdmin || isDev) {
+    return <>{children}</>;
+  }
+
   if (isOrgLoading && isRoleLoading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0A0A0A] gap-4">
-        <Loader2 className="h-8 w-8 animate-spin text-platform-green" />
-        <p className="text-[#444] text-xs font-mono animate-pulse">Sincronizando com a Vincere...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground gap-4">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-muted-foreground text-xs font-mono animate-pulse">Sincronizando com a Vincere...</p>
         <Button 
           variant="ghost" 
           size="sm" 
-          className="text-[#333] hover:text-white mt-4"
+          className="text-muted-foreground hover:text-foreground mt-4"
           onClick={() => window.location.reload()}
         >
           Demorando muito? Clique para recarregar
@@ -47,8 +49,8 @@ const SubscriptionGuard = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  // Admins, Master Admins (Creators), and Dev environment always pass
-  if (isOrgAdmin || isRoleAdmin || isMasterAdmin || isDev) {
+  // Admins with org or role permissions
+  if (isOrgAdmin || isRoleAdmin) {
     return <>{children}</>;
   }
 

@@ -35,126 +35,11 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
-
-  useEffect(() => {
+  useEffect(() => {
     if (open && inputRef.current) {
       inputRef.current.focus();
     }
   }, [open]);
-
-  // Track if we already saved a lead this session to avoid duplicates
-  const leadSavedRef = useRef(false);
-
-  const extractContactRequest = (content: string) => {
-    const match = content.match(/\[CONTACT_REQUEST\]\s*(\{[\s\S]*?\})/);
-    if (match) {
-      try {
-        return JSON.parse(match[1]);
-      } catch {
-        return null;
-      }
-    }
-    return null;
-  };
-
-  // Fallback: scan the entire conversation for name, phone and email
-  const extractLeadFromConversation = (allMsgs: Msg[]) => {
-    const userTexts = allMsgs.filter(m => m.role === "user").map(m => m.content);
-    const fullText = userTexts.join(" ");
-
-    // Extract phone: Brazilian formats like (11)99999-9999, 11999999999, +5511999999999
-    const phoneMatch = fullText.match(/(?:\+?55\s?)?(?:\(?\d{2}\)?\s?)?\d{4,5}[\s.-]?\d{4}/);
-    const phone = phoneMatch ? phoneMatch[0].trim() : null;
-
-    // Extract email
-    const emailMatch = fullText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-    const email = emailMatch ? emailMatch[0].trim() : null;
-
-    // Extract name: the first short user message (2-4 words, no numbers, no @) is likely a name
-    let name: string | null = null;
-    for (const msg of userTexts) {
-      const clean = msg.trim();
-      // Skip if it looks like a phone, email, or very long message
-      if (clean.match(/\d{4,}/) || clean.includes("@") || clean.split(/\s+/).length > 5 || clean.length > 60) continue;
-      // Skip common greetings / short words that aren't names
-      const lower = clean.toLowerCase();
-      if (["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite", "sim", "não", "nao", "ok", "obrigado", "obrigada", "site", "dashboard", "plataforma", "loja", "automação", "automacao"].includes(lower)) continue;
-      // Likely a name if 1-4 words, all letters
-      if (clean.match(/^[A-Za-zÀ-ÿ\s]{2,50}$/) && clean.split(/\s+/).length <= 4) {
-        name = clean;
-        break;
-      }
-    }
-
-    if (!name && !phone && !email) return null;
-    return { customer_name: name, customer_phone: phone, customer_email: email, service_type: "chat_lead" };
-  };
-
-  const saveContactRequest = async (data: {
-    service_type: string;
-    customer_name?: string;
-    customer_phone?: string;
-    customer_email?: string;
-  }) => {
-    try {
-      console.log("[Vi Chat] Saving contact request for session:", sessionId, data);
-      leadSavedRef.current = true;
-      
-      // 1. Save to contact_requests table (conversation log)
-      const { error: contactError } = await supabase.from("contact_requests" as any).insert({
-        session_id: sessionId,
-        service_type: data.service_type,
-        customer_name: data.customer_name || null,
-        customer_phone: data.customer_phone || null,
-        customer_email: data.customer_email || null,
-        message: messages.map(m => `${m.role}: ${m.content}`).join("\n"),
-        status: "pending",
-      });
-
-      if (contactError) {
-        console.warn("Error saving to contact_requests:", contactError.message);
-      }
-
-      // 2. Save to vi_leads table (always, for admin visibility)
-      if (data.customer_name) {
-        const { error: viError } = await supabase.from("vi_leads" as any).insert({
-          name: data.customer_name,
-          email: data.customer_email || `chat_${sessionId.substring(0, 8)}@vincere.temp`,
-          phone: data.customer_phone || "Não informado",
-          needs: `[Via Chat Vi]\nServiço: ${data.service_type}\n\n${messages.map(m => `${m.role}: ${m.content}`).join("\n")}`,
-        });
-
-        if (viError) {
-          console.warn("Error saving to vi_leads:", viError.message);
-        } else {
-          console.log("[Vi Chat] Lead saved to vi_leads ✅");
-        }
-      }
-
-      // 3. Save to CRM customers table as a Lead
-      if (data.customer_name) {
-        const payload: any = {
-          name: data.customer_name,
-          phone: data.customer_phone || "Não informado",
-          status: "Lead",
-          org_id: null,
-          email: data.customer_email || `lead_${sessionId.substring(0, 8)}@vincere.temp`
-        };
-
-        const { error: customerError } = await supabase
-          .from("customers" as any)
-          .insert(payload);
-
-        if (customerError) {
-          console.warn("Error saving customer lead (table insert):", customerError.message);
-        } else {
-          console.log("[Vi Chat] Lead saved to CRM customers ✅");
-        }
-      }
-    } catch (err) {
-      console.error("Unexpected error in saveContactRequest:", err);
-    }
-  };
 
   const send = async () => {
     const text = input.trim();
@@ -204,13 +89,10 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
         } else if (data.choices?.[0]?.message?.content) {
           reply = data.choices[0].message.content;
         } else if (data.choices?.[0]?.delta?.content) {
-          // It's a single chunk?
           reply = data.choices[0].delta.content;
         } else {
-          // Maybe it's an error object?
           if (data.error) throw new Error(data.error);
           
-          // Try to see if it's an SSE string returned as a field
           const possibleSse = data.reply || data.text || "";
           if (typeof possibleSse === 'string' && possibleSse.includes("data: ")) {
             const lines = possibleSse.split("\n");
@@ -226,7 +108,6 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
           }
         }
       } else if (typeof data === 'string') {
-        // If it's a raw string, it might be JSON or SSE
         try {
           const parsed = JSON.parse(data);
           reply = parsed.reply || parsed.choices?.[0]?.message?.content || "";
@@ -253,31 +134,11 @@ const ChatWidget = forwardRef<HTMLDivElement>((_props, ref) => {
         throw new Error("Resposta vazia da IA");
       }
 
-      console.log("[Vi Chat] Final reply length:", reply.length);
-      const updatedMessages: Msg[] = [...allMessages, { role: "assistant", content: reply }];
-      setMessages(prev => [...prev, { role: "assistant", content: reply }]);
-
-      // Check for contact request in the final response
-      const contactData = extractContactRequest(reply);
-      if (contactData) {
-        await saveContactRequest(contactData);
-        // Clean the tag from displayed message
-        const cleanContent = reply.replace(/\[CONTACT_REQUEST\]\s*\{[\s\S]*?\}/, "").trim();
-        setMessages(prev =>
-          prev.map((m, i) =>
-            i === prev.length - 1 && m.role === "assistant"
-              ? { ...m, content: cleanContent }
-              : m
-          )
-        );
-      } else if (!leadSavedRef.current) {
-        // FALLBACK: IA didn't emit tag — try to extract lead data from conversation
-        const fallbackData = extractLeadFromConversation(updatedMessages);
-        if (fallbackData && fallbackData.customer_name) {
-          console.log("[Vi Chat] Fallback lead extraction found:", fallbackData);
-          await saveContactRequest(fallbackData);
-        }
-      }
+      // Clean [CONTACT_REQUEST] tags from display (backend handles lead saving)
+      const cleanReply = reply.replace(/\[CONTACT_REQUEST\]\s*\{[\s\S]*?\}/g, "").trim();
+      
+      console.log("[Vi Chat] Final reply length:", cleanReply.length);
+      setMessages(prev => [...prev, { role: "assistant", content: cleanReply }]);
     } catch (e) {
       console.error("[Vi Chat] Error:", e);
       setMessages(prev => [

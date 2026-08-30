@@ -218,6 +218,19 @@ CREATE TABLE public.user_roles (
   role public.app_role NOT NULL
 );
 
+-- 16b. Admin Users (Tabela de Emails Admin para consulta do frontend)
+CREATE TABLE public.admin_users (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  email TEXT NOT NULL UNIQUE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
+);
+
+INSERT INTO public.admin_users (email) VALUES
+  ('luisgu0703@gmail.com'),
+  ('assasinghost910@gmail.com'),
+  ('nathanwar03@gmail.com'),
+  ('ryanfernandosilva12@gmail.com');
+
 -- 17. Chat Messages (Histórico de Chat com IA)
 CREATE TABLE public.chat_messages (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -281,6 +294,7 @@ CREATE OR REPLACE FUNCTION public.is_vincere_admin()
 RETURNS BOOLEAN AS $$
 BEGIN
   RETURN LOWER(COALESCE(auth.jwt() ->> 'email', auth.email())) IN (
+    'luisgu0703@gmail.com',
     'assasinghost910@gmail.com', 
     'nathanwar03@gmail.com', 
     'ryanfernandosilva12@gmail.com'
@@ -413,7 +427,7 @@ BEGIN
     'Novo Lead Capturado pela VI', 
     'Nome: ' || NEW.name || ' | E-mail: ' || NEW.email || ' | Empresa: ' || COALESCE(NEW.company, 'N/A'), 
     'lead'
-  FROM (SELECT unnest(ARRAY['assasinghost910@gmail.com', 'nathanwar03@gmail.com', 'ryanfernandosilva12@gmail.com']) AS email) admins;
+  FROM (SELECT unnest(ARRAY['luisgu0703@gmail.com', 'assasinghost910@gmail.com', 'nathanwar03@gmail.com', 'ryanfernandosilva12@gmail.com']) AS email) admins;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
@@ -440,7 +454,7 @@ BEGIN
     'Novo Projeto Personalizado Recebido! 🚀',
     'Nova solicitação de: ' || client_name || ' (' || client_email || '). Serviço: ' || NEW.service_type || '.',
     'quote'
-  FROM (SELECT unnest(ARRAY['assasinghost910@gmail.com', 'nathanwar03@gmail.com', 'ryanfernandosilva12@gmail.com']) AS admin_email) admins;
+  FROM (SELECT unnest(ARRAY['luisgu0703@gmail.com', 'assasinghost910@gmail.com', 'nathanwar03@gmail.com', 'ryanfernandosilva12@gmail.com']) AS admin_email) admins;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

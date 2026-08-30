@@ -50,10 +50,14 @@ const Index = () => {
   };
 
   const handlePageNavigate = (href: string) => {
+    if (href.startsWith("/plataforma")) {
+      navigate(href);
+      return;
+    }
     setIsTransitioning(true);
     setTimeout(() => {
       navigate(href);
-    }, 800);
+    }, 400);
   };
 
   return (

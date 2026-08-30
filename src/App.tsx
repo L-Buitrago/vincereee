@@ -11,6 +11,22 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import ScrollToTop from "./components/ScrollToTop";
 
+// Platform SaaS pages - direct imports for instant 0ms tab switching without screen flicker or unmounting
+import PlatformLayout from "./components/platform/PlatformLayout";
+import PlatformDashboard from "./pages/PlatformDashboard";
+import PlatformClients from "./pages/PlatformClients";
+import PlatformProducts from "./pages/PlatformProducts";
+import PlatformCheckouts from "./pages/PlatformCheckouts";
+import PlatformPayments from "./pages/PlatformPayments";
+import PlatformProposal from "./pages/PlatformProposal";
+import PlatformAdmin from "./pages/PlatformAdmin";
+import PlatformSupport from "./pages/PlatformSupport";
+import PlatformSettings from "./pages/PlatformSettings";
+import PlatformPurchases from "./pages/PlatformPurchases";
+import PlatformMessages from "./pages/PlatformMessages";
+import PlatformSubscription from "./pages/PlatformSubscription";
+
+// Public pages - lazy loaded
 const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("./pages/About"));
 const Auth = lazy(() => import("./pages/Auth"));
@@ -20,19 +36,6 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Returns = lazy(() => import("./pages/Returns"));
 const Admin = lazy(() => import("./pages/Admin"));
-const PlatformLayout = lazy(() => import("./components/platform/PlatformLayout"));
-const PlatformDashboard = lazy(() => import("./pages/PlatformDashboard"));
-const PlatformClients = lazy(() => import("./pages/PlatformClients"));
-const PlatformProducts = lazy(() => import("./pages/PlatformProducts"));
-const PlatformCheckouts = lazy(() => import("./pages/PlatformCheckouts"));
-const PlatformPayments = lazy(() => import("./pages/PlatformPayments"));
-const PlatformProposal = lazy(() => import("./pages/PlatformProposal"));
-const PlatformAdmin = lazy(() => import("./pages/PlatformAdmin"));
-const PlatformSupport = lazy(() => import("./pages/PlatformSupport"));
-const PlatformSettings = lazy(() => import("./pages/PlatformSettings"));
-const PlatformPurchases = lazy(() => import("./pages/PlatformPurchases"));
-const PlatformMessages = lazy(() => import("./pages/PlatformMessages"));
-const PlatformSubscription = lazy(() => import("./pages/PlatformSubscription"));
 const DemoDashboard = lazy(() => import("./pages/DemoDashboard"));
 const ViExperience = lazy(() => import("./pages/ViExperience"));
 const DemoServices = lazy(() => import("./pages/DemoServices"));

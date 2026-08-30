@@ -52,13 +52,10 @@ serve(async (req) => {
 
     const business_name = (recovery as any).organizations?.name || "Vincere";
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
-
-    // Generate recovery URL
+    // Generate recovery URL (Asaas payment link or Vincere proposal page)
     const checkout_url = recovery.checkout_id 
-      ? `https://checkout.stripe.com/pay/${recovery.checkout_id}`
-      : "https://vincere-tecnologia.lovable.app/plataforma/proposta";
+      ? `https://www.asaas.com/i/${recovery.checkout_id}`
+      : "https://vincere.com.br/#/plataforma/proposta";
 
     // Replace variables in prompt
     const prompt = SYSTEM_PROMPT_RECOVERY
@@ -67,24 +64,69 @@ serve(async (req) => {
       .replace("{{amount}}", `R$ ${recovery.amount}`)
       .replace("{{checkout_url}}", checkout_url);
 
-    // Call AI to generate message
-    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-pro",
-        messages: [
-          { role: "system", content: prompt },
-          { role: "user", content: "Gere a mensagem de recuperação para este cliente." }
-        ],
-      }),
-    });
+    // Call AI to generate recovery message (multi-provider fallback)
+    const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
+    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
 
-    const aiResult = await aiResponse.json();
-    const generatedMessage = aiResult.choices[0].message.content;
+    let generatedMessage = "";
+
+    // Strategy 1: OpenRouter
+    if (OPENROUTER_API_KEY && !generatedMessage) {
+      try {
+        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${OPENROUTER_API_KEY.trim()}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://vincere.com.br",
+            "X-Title": "Vincere Recovery"
+          },
+          body: JSON.stringify({
+            model: "google/gemini-2.5-flash",
+            messages: [
+              { role: "system", content: prompt },
+              { role: "user", content: "Gere a mensagem de recuperação para este cliente." }
+            ],
+            max_tokens: 500,
+            temperature: 0.8
+          }),
+          signal: AbortSignal.timeout(8000)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          generatedMessage = data?.choices?.[0]?.message?.content || "";
+        }
+      } catch (err) {
+        console.warn("[Recovery] OpenRouter error:", err);
+      }
+    }
+
+    // Strategy 2: Native Gemini API
+    if (GEMINI_API_KEY && !generatedMessage) {
+      try {
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY.trim()}`;
+        const res = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: prompt }] },
+            contents: [{ role: "user", parts: [{ text: "Gere a mensagem de recuperação para este cliente." }] }],
+            generationConfig: { maxOutputTokens: 500, temperature: 0.8 }
+          }),
+          signal: AbortSignal.timeout(6000)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          generatedMessage = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        }
+      } catch (err) {
+        console.warn("[Recovery] Gemini error:", err);
+      }
+    }
+
+    if (!generatedMessage) {
+      throw new Error("Nenhuma API de IA configurada (OPENROUTER_API_KEY ou GEMINI_API_KEY)");
+    }
 
     // Save generated message to DB
     await supabase.from("recoveries")

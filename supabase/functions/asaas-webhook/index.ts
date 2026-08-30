@@ -45,6 +45,11 @@ serve(async (req) => {
       const amount = payment.value
 
       if (paymentType === 'vincere_subscription') {
+        // Determine plan based on amount paid
+        let plan = 'starter'
+        if (amount >= 497) plan = 'enterprise'
+        else if (amount >= 197) plan = 'pro'
+
         // Find org by owner_email or metadata.org_id
         let { data: org } = await supabase
           .from('organizations')
@@ -58,16 +63,35 @@ serve(async (req) => {
 
         if (org) {
           await supabase.from('organizations')
-            .update({ status: 'active' })
+            .update({ status: 'active', plan })
             .eq('id', org.id)
         } else {
           // Create new org if it doesn't exist
-          await supabase.from('organizations').insert({
+          const { data: newOrg } = await supabase.from('organizations').insert({
             name: `Empresa de ${name}`,
             owner_email: email,
-            plan: 'starter',
+            plan,
             status: 'active',
-          })
+          }).select('id').single()
+
+          org = newOrg
+        }
+
+        // Auto-associate user as org_member (so SubscriptionGuard grants access)
+        if (org && email) {
+          const { data: authUser } = await supabase.auth.admin.listUsers()
+          const matchedUser = authUser?.users?.find(
+            (u: any) => u.email?.toLowerCase() === email.toLowerCase()
+          )
+          if (matchedUser) {
+            // Upsert to avoid duplicate key error
+            await supabase.from('org_members').upsert({
+              org_id: org.id,
+              user_id: matchedUser.id,
+              role: 'admin'
+            }, { onConflict: 'org_id,user_id' })
+            console.log(`✅ User ${email} linked to org ${org.id} as admin`)
+          }
         }
 
         // --- ENVIAR EMAIL DE BOAS-VINDAS ---
@@ -82,7 +106,7 @@ serve(async (req) => {
             body: JSON.stringify({
               customerName: name,
               customerEmail: email,
-              planName: 'Starter',
+              planName: plan.charAt(0).toUpperCase() + plan.slice(1),
             }),
           })
           console.log(`✅ Welcome email triggered for ${email} (Asaas)`)
