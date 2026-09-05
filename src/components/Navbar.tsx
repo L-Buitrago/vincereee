@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -28,38 +29,38 @@ const Navbar = () => {
       }`}
     >
       <nav className="container mx-auto flex items-center justify-between py-4 px-4 md:px-8">
-        <a href="/" className="font-display text-xl font-medium tracking-tight text-white">
+        <Link to="/" className="font-display text-xl font-medium tracking-tight text-white">
           VincereAT
-        </a>
+        </Link>
 
         {/* Desktop */}
         <ul className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-sm font-medium text-white/50 hover:text-sky-400 hover:scale-110 inline-block transform transition-all duration-300"
+              <Link
+                to={link.href}
+                className="text-sm font-medium text-white/70 hover:text-white transition-colors"
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
 
         <div className="hidden md:flex items-center gap-3">
           {isAdmin && (
-            <a href="/admin">
+            <Link to="/admin">
               <Button size={"sm" as any} variant={"outline" as any} className="font-display font-semibold border-white/10 text-white hover:bg-white/5 bg-transparent">Admin</Button>
-            </a>
+            </Link>
           )}
           {user ? (
-            <a href="/plataforma/dashboard">
+            <Link to="/plataforma/dashboard">
               <Button size={"sm" as any} className="font-display font-semibold bg-gradient-to-r from-white/90 to-white/70 text-black hover:from-white hover:to-white/80">Meu Dashboard</Button>
-            </a>
+            </Link>
           ) : (
-              <a href="/auth">
+              <Link to="/auth">
                 <Button size={"sm" as any} variant={"ghost" as any} className="font-display font-semibold text-white/70 hover:text-white hover:bg-white/5">Entrar / Cadastrar</Button>
-              </a>
+              </Link>
           )}
         </div>
 
@@ -74,28 +75,28 @@ const Navbar = () => {
             <SheetTitle className="font-display text-lg text-white">Menu</SheetTitle>
             <div className="flex flex-col gap-6 mt-8">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.href}
-                  href={link.href}
+                  to={link.href}
                   onClick={() => setOpen(false)}
                   className="text-lg font-medium text-white/50 hover:text-sky-400 hover:scale-105 inline-block transform transition-all duration-300"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               {isAdmin && (
-                <a href="/admin" onClick={() => setOpen(false)}>
+                <Link to="/admin" onClick={() => setOpen(false)}>
                   <Button variant="outline" className="w-full font-display font-semibold border-white/10 text-white bg-transparent">Admin</Button>
-                </a>
+                </Link>
               )}
               {user ? (
-                <a href="/plataforma/dashboard" onClick={() => setOpen(false)}>
+                <Link to="/plataforma/dashboard" onClick={() => setOpen(false)}>
                   <Button className="w-full font-display font-semibold bg-gradient-to-r from-white/90 to-white/70 text-black">Meu Dashboard</Button>
-                </a>
+                </Link>
               ) : (
-                  <a href="/auth" onClick={() => setOpen(false)}>
+                  <Link to="/auth" onClick={() => setOpen(false)}>
                     <Button variant="outline" className="w-full font-display font-semibold border-white/10 text-white bg-transparent">Entrar / Cadastrar</Button>
-                  </a>
+                  </Link>
               )}
             </div>
           </SheetContent>

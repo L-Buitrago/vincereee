@@ -121,8 +121,10 @@ const Auth = () => {
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    // Use hash path for HashRouter compatibility, fallback handled in AppRoutes
+    const redirectUrl = `${window.location.origin}/#/reset-password`;
     const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: redirectUrl,
     });
     setLoading(false);
     if (error) {

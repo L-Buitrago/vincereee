@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useOrganization } from "@/hooks/useOrganization";
 import { motion } from "framer-motion";
@@ -136,11 +137,11 @@ export default function PlatformProducts() {
           <p className="text-sm text-muted-foreground mb-4">
             Faça upgrade do seu plano para desbloquear funcionalidades avançadas e suporte prioritário.
           </p>
-          <a href="/plataforma/pagamentos">
+          <Link to="/plataforma/pagamentos">
             <button className="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold text-sm transition-colors">
               Ver planos disponíveis
             </button>
-          </a>
+          </Link>
         </motion.div>
       )}
     </div>

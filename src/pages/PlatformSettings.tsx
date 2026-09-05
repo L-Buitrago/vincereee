@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Settings, User, Bell, Shield, CreditCard, Palette, Save, Loader2 } from "lucide-react";
+import { Settings, User, Bell, Shield, CreditCard, Palette, Save, Loader2, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOrganization } from "@/hooks/useOrganization";
@@ -37,6 +37,7 @@ export default function PlatformSettings() {
 
   // Security State
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   // Notifications State
   const [notifications, setNotifications] = useState(() => {
@@ -161,6 +162,14 @@ export default function PlatformSettings() {
       toast.error("Por favor, digite a nova senha");
       return;
     }
+    if (newPassword.length < 6) {
+      toast.error("A senha deve conter no mínimo 6 caracteres");
+      return;
+    }
+    if (confirmPassword && newPassword !== confirmPassword) {
+      toast.error("As senhas não coincidem");
+      return;
+    }
     setLoading(true);
     try {
       const { error } = await supabase.auth.updateUser({
@@ -169,8 +178,32 @@ export default function PlatformSettings() {
       if (error) throw error;
       toast.success("Senha atualizada com sucesso!");
       setNewPassword("");
+      setConfirmPassword("");
     } catch (error: any) {
-      toast.error(`Erro: ${error.message}`);
+      toast.error(`Erro ao atualizar senha: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSendResetEmail = async () => {
+    const targetEmail = user?.email || newEmail;
+    if (!targetEmail) {
+      toast.error("E-mail do usuário não identificado");
+      return;
+    }
+    setLoading(true);
+    try {
+      const redirectUrl = `${window.location.origin}/#/reset-password`;
+      const { error } = await supabase.auth.resetPasswordForEmail(targetEmail, {
+        redirectTo: redirectUrl
+      });
+      if (error) throw error;
+      toast.success(`E-mail de redefinição enviado para ${targetEmail}!`, {
+        description: "Verifique sua caixa de entrada e spam para criar a nova senha."
+      });
+    } catch (error: any) {
+      toast.error(`Erro ao enviar e-mail: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -337,7 +370,7 @@ export default function PlatformSettings() {
                     <p className="text-sm text-muted-foreground">Mantenha sua conta protegida com uma senha forte.</p>
                   </div>
                   
-                  <div className="max-w-md space-y-4">
+                  <div className="max-w-md space-y-5">
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest ml-1">Nova Senha</label>
                       <input 
@@ -348,14 +381,42 @@ export default function PlatformSettings() {
                         className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary/50 transition-all focus:ring-1 focus:ring-primary/50 outline-none" 
                       />
                     </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest ml-1">Confirmar Nova Senha</label>
+                      <input 
+                        type="password" 
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="••••••••" 
+                        className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary/50 transition-all focus:ring-1 focus:ring-primary/50 outline-none" 
+                      />
+                    </div>
+
                     <Button 
                       onClick={handleUpdatePassword} 
                       disabled={loading}
-                      className="w-full bg-muted border border-border hover:bg-muted/80 text-foreground font-bold py-6 rounded-xl transition-all gap-2"
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 rounded-xl transition-all gap-2 shadow-sm"
                     >
                       {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Shield className="w-5 h-5" />}
-                      Atualizar Senha
+                      Atualizar Senha Diretamente
                     </Button>
+
+                    <div className="pt-6 border-t border-border/80">
+                      <p className="text-xs text-muted-foreground mb-3">
+                        Prefere trocar de senha através de um link seguro enviado para o seu e-mail?
+                      </p>
+                      <Button 
+                        type="button"
+                        variant="outline"
+                        onClick={handleSendResetEmail} 
+                        disabled={loading}
+                        className="w-full border-border hover:bg-muted/70 text-foreground font-semibold py-5 rounded-xl transition-all gap-2 text-xs"
+                      >
+                        <Mail className="w-4 h-4 text-sky-500" />
+                        Enviar link de redefinição para {user?.email || newEmail || "meu e-mail"}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -370,11 +431,11 @@ export default function PlatformSettings() {
                     <p className="text-sm text-muted-foreground mb-8">
                       Clique no botão abaixo para gerenciar seus planos, histórico de faturas e métodos de pagamento.
                     </p>
-                    <a href="/plataforma/pagamentos" className="block">
+                    <Link to="/plataforma/pagamentos" className="block">
                       <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-6 rounded-xl gap-2">
                         Abrir Financeiro
                       </Button>
-                    </a>
+                    </Link>
                   </div>
                 </div>
               )}
