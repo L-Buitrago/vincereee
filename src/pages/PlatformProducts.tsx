@@ -87,7 +87,7 @@ export default function PlatformProducts() {
             <PlanIcon className={`w-7 h-7 ${plan.textClass}`} />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-foreground capitalize">{isAdmin ? "Admin Vincere" : `Plano ${currentPlan}`}</h2>
+            <h2 className="text-xl font-bold text-foreground capitalize">{isAdmin ? "Admin Sovtre" : `Plano ${currentPlan}`}</h2>
             <p className="text-sm text-muted-foreground">
               {isAdmin ? "Acesso total a todas as organizações" : org?.status === 'active' ? "Assinatura ativa" : "Sem assinatura"}
             </p>

@@ -9,8 +9,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0"
  * 
  * Required env vars:
  *   RESEND_API_KEY  – Your Resend.com API key
- *   RESEND_FROM     – Verified sender (e.g. "Vincere <onboarding@vinceretech.com>")
- *                     Falls back to "Vincere <onboarding@resend.dev>" (Resend sandbox)
+ *   RESEND_FROM     – Verified sender (e.g. "Sovtre <onboarding@vinceretech.com>")
+ *                     Falls back to "Sovtre <onboarding@resend.dev>" (Resend sandbox)
  */
 
 const corsHeaders = {
@@ -35,7 +35,7 @@ serve(async (req) => {
 
     const plan = planName || 'Starter'
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
-    const RESEND_FROM = Deno.env.get('RESEND_FROM') || 'Vincere <onboarding@resend.dev>'
+    const RESEND_FROM = Deno.env.get('RESEND_FROM') || 'Sovtre <onboarding@resend.dev>'
 
     // ── Build the email HTML ──────────────────────────────────────────
     const emailHtml = `
@@ -46,7 +46,7 @@ serve(async (req) => {
   <div style="max-width:560px;margin:40px auto;background:#111;border-radius:16px;overflow:hidden;border:1px solid #1a1a1a">
     <!-- Header -->
     <div style="padding:40px 32px 24px;text-align:center;background:linear-gradient(135deg,#0a0a0a,#111)">
-      <h1 style="color:#fff;font-size:28px;margin:0 0 8px">Bem-vindo à Vincere! 🚀</h1>
+      <h1 style="color:#fff;font-size:28px;margin:0 0 8px">Bem-vindo à Sovtre! 🚀</h1>
       <p style="color:#888;font-size:14px;margin:0">${customerName}, sua jornada começa agora.</p>
     </div>
     <!-- Body -->
@@ -68,7 +68,7 @@ serve(async (req) => {
       <p style="color:#555;font-size:11px;margin:0">
         Precisa de ajuda? Fale com a Vi, nossa assistente inteligente, ou responda este email.
       </p>
-      <p style="color:#333;font-size:10px;margin:8px 0 0">© ${new Date().getFullYear()} Vincere Tecnologia</p>
+      <p style="color:#333;font-size:10px;margin:8px 0 0">© ${new Date().getFullYear()} Sovtre Tecnologia</p>
     </div>
   </div>
 </body>
@@ -87,7 +87,7 @@ serve(async (req) => {
         body: JSON.stringify({
           from: RESEND_FROM,
           to: [customerEmail],
-          subject: `Bem-vindo à Vincere, ${customerName}! 🎉`,
+          subject: `Bem-vindo à Sovtre, ${customerName}! 🎉`,
           html: emailHtml,
         }),
       })

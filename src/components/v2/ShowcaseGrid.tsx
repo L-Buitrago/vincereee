@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 const projects = [
   {
     number: "01",
-    title: "Vincere Platform",
+    title: "Sovtre Platform",
     category: "Software Development",
     image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070",
     color: "bg-[#dfe6e5]",

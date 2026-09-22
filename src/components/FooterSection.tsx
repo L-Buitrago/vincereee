@@ -97,7 +97,7 @@ const FooterSection = () => {
               <span>X ↗</span>
             </div>
             <div className="mt-4 md:mt-0">
-              VINCERE © {new Date().getFullYear()}
+              SOVTRE © {new Date().getFullYear()}
             </div>
          </div>
       </div>

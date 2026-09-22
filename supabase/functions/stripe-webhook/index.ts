@@ -45,7 +45,7 @@ serve(async (req) => {
       if (!email) return new Response('Email missing', { status: 400 })
 
       if (paymentType === 'vincere_subscription') {
-        // --- SCENARIO A: Vincere Platform Subscription ---
+        // --- SCENARIO A: Sovtre Platform Subscription ---
         let finalOrgId: string | null = null
 
         const { data: existingOrg } = await supabase

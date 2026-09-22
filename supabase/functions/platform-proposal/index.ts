@@ -6,7 +6,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const SYSTEM_PROMPT = `Você é a Vi, a inteligência artificial da Vincere. Sua missão é ajudar novos clientes a entenderem como a Vincere pode escalar o negócio deles.
+const SYSTEM_PROMPT = `Você é a Vi, a inteligência artificial da Sovtre. Sua missão é ajudar novos clientes a entenderem como a Sovtre pode escalar o negócio deles.
 
 ## Sua Personalidade:
 - Profissional, direta e objetiva.

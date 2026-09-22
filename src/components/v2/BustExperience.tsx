@@ -20,7 +20,7 @@ const useBustScene = (containerRef: React.RefObject<HTMLDivElement>, scrollProgr
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0x3b82f6, 2); // Blue light for Vincere
+    const pointLight = new THREE.PointLight(0x3b82f6, 2); // Blue light for Sovtre
     pointLight.position.set(5, 5, 5);
     scene.add(pointLight);
 

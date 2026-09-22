@@ -21,11 +21,11 @@ serve(async (req) => {
     }
 
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
-    const RESEND_FROM = Deno.env.get('RESEND_FROM') || 'Vincere <cobranca@resend.dev>'
+    const RESEND_FROM = Deno.env.get('RESEND_FROM') || 'Sovtre <cobranca@resend.dev>'
 
     const formattedAmount = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(amount || 0)
     const formattedDate = dueDate ? new Date(dueDate).toLocaleDateString('pt-BR') : 'em breve'
-    const plan = planName || 'Vincere'
+    const plan = planName || 'Sovtre'
 
     const emailHtml = `
 <!DOCTYPE html>
@@ -69,7 +69,7 @@ serve(async (req) => {
       <p style="color:#555;font-size:11px;margin:0">
         Se precisar alterar seu plano ou método de pagamento, acesse suas configurações.
       </p>
-      <p style="color:#333;font-size:10px;margin:8px 0 0">© ${new Date().getFullYear()} Vincere Tecnologia</p>
+      <p style="color:#333;font-size:10px;margin:8px 0 0">© ${new Date().getFullYear()} Sovtre Tecnologia</p>
     </div>
   </div>
 </body>

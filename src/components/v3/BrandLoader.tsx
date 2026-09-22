@@ -40,7 +40,7 @@ export const BrandLoader = () => {
     },
   };
 
-  const words = "VINCEREAT".split("");
+  const words = "SOVTRE".split("");
 
   return (
     <div className="flex flex-col items-center justify-center space-y-12 relative">

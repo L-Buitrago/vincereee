@@ -24,7 +24,7 @@ const ViExperience = () => {
           <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:border-primary transition-all">
             <Bot className="w-5 h-5 text-primary" />
           </div>
-          Vincere <span className="text-primary italic">VI</span>
+          Sovtre <span className="text-primary italic">VI</span>
         </Link>
         <button onClick={() => navigate("/")} className="text-sm text-gray-400 hover:text-primary transition-colors flex items-center gap-2 font-bold">
           <ArrowLeft className="w-4 h-4" /> Voltar para o início

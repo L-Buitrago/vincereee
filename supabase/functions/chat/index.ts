@@ -13,7 +13,7 @@ const ADMIN_EMAILS = [
   'ryanfernandosilva12@gmail.com'
 ];
 
-const SYSTEM_PROMPT = `Você é a Vi, a assistente inteligente da Vincere. Você é profissional, objetiva e direta. Sem enrolação, sem excesso de emojis — apenas comunicação clara e eficiente.
+const SYSTEM_PROMPT = `Você é a Vi, a assistente inteligente da Sovtre. Você é profissional, objetiva e direta. Sem enrolação, sem excesso de emojis — apenas comunicação clara e eficiente.
 
 ## Sua Personalidade:
 - Tom profissional e confiante. Você transmite autoridade e competência.
@@ -21,7 +21,7 @@ const SYSTEM_PROMPT = `Você é a Vi, a assistente inteligente da Vincere. Você
 - Respostas curtas e diretas — máximo 2-3 frases por mensagem.
 - Você representa uma empresa de tecnologia premium. Fale como tal.
 
-## O que a Vincere oferece:
+## O que a Sovtre oferece:
 1. **Dashboard / Plataforma de Gestão** — Painel completo com CRM, financeiro, automações e inteligência artificial integrada. Ideal para quem precisa de controle total do negócio.
 2. **Sites, Lojas Virtuais e Landing Pages** — Design premium, alta conversão e performance. Ideal para quem precisa de presença digital de alto nível.
 3. **Automações e IA** — WhatsApp, e-mail marketing, recuperação de vendas e atendimento automatizado.
@@ -29,7 +29,7 @@ const SYSTEM_PROMPT = `Você é a Vi, a assistente inteligente da Vincere. Você
 ## Fluxo de Atendimento (SIGA ESTA ORDEM EXATA):
 
 PASSO 1: Cumprimente brevemente e pergunte o que o cliente está buscando.
-Exemplo: "Olá, seja bem-vindo à Vincere. Você está buscando uma plataforma de gestão/dashboard ou um site/loja virtual?"
+Exemplo: "Olá, seja bem-vindo à Sovtre. Você está buscando uma plataforma de gestão/dashboard ou um site/loja virtual?"
 
 PASSO 2: Após entender o interesse, pergunte o nome.
 Exemplo: "Entendido. Qual o seu nome?"
@@ -41,7 +41,7 @@ PASSO 4: Após o telefone, pergunte o e-mail.
 Exemplo: "Perfeito. E qual o melhor e-mail para enviarmos os detalhes?"
 
 PASSO 5: Após coletar os 3 dados, confirme e encerre.
-Exemplo: "Pronto, [nome]. Seus dados foram registrados. Nossa equipe vai entrar em contato em breve com todos os detalhes. Obrigada pelo interesse na Vincere."
+Exemplo: "Pronto, [nome]. Seus dados foram registrados. Nossa equipe vai entrar em contato em breve com todos os detalhes. Obrigada pelo interesse na Sovtre."
 
 REGRAS DO FLUXO:
 - Siga os passos na ordem. Não pule etapas.
@@ -293,7 +293,7 @@ serve(async (req) => {
               "Authorization": `Bearer ${OPENROUTER_API_KEY.trim()}`,
               "Content-Type": "application/json",
               "HTTP-Referer": "https://vincere.com.br",
-              "X-Title": "Vincere Vi"
+              "X-Title": "Sovtre Vi"
             },
             body: JSON.stringify({
               model: "google/gemini-2.5-flash",
@@ -377,7 +377,7 @@ serve(async (req) => {
     if (!reply) {
       const lastMsg = cleanMessages[cleanMessages.length - 1]?.content?.toLowerCase() || "";
       if (lastMsg.match(/oi|olá|ola|bom dia|boa tarde|boa noite|hey|eai/)) {
-        reply = "Olá! Seja bem-vindo à Vincere. Você está buscando uma plataforma de gestão/dashboard ou um site/loja virtual?";
+        reply = "Olá! Seja bem-vindo à Sovtre. Você está buscando uma plataforma de gestão/dashboard ou um site/loja virtual?";
       } else {
         reply = "Obrigada pelo interesse! Para que eu possa te ajudar melhor, poderia me dizer seu nome?";
       }
@@ -399,7 +399,7 @@ serve(async (req) => {
     const errorMessage = e instanceof Error ? e.message : String(e);
     console.error("[Chat] Fatal error:", errorMessage);
     return new Response(JSON.stringify({ 
-      reply: "Olá! Em que posso ajudar você hoje com a Vincere?",
+      reply: "Olá! Em que posso ajudar você hoje com a Sovtre?",
       details: errorMessage
     }), {
       status: 200,

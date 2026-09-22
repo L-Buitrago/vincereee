@@ -42,7 +42,7 @@ serve(async (req) => {
              currency: 'brl',
              product_data: {
                name: paymentType === 'vincere_subscription' 
-                ? `Vincere Plataforma - Plano ${planName}`
+                ? `Sovtre Plataforma - Plano ${planName}`
                 : `Mensalidade / Serviço`,
              },
              unit_amount: Math.round(priceAmount * 100), // Ensure integer

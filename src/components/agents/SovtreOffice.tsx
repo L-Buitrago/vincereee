@@ -25,9 +25,9 @@ const initialAgents: Agent[] = [
   { id: '3', name: 'Dev (Dev)', role: 'Programmer', pos: { x: 8, y: 12 }, target: { x: 8, y: 12 }, state: 'idle' },
 ];
 
-export const VincereOffice: React.FC = () => {
+export const SovtreOffice: React.FC = () => {
   const [agents, setAgents] = useState<Agent[]>(initialAgents);
-  const [missionLog, setMissionLog] = useState<string[]>(['Time Vincere Inicializado...']);
+  const [missionLog, setMissionLog] = useState<string[]>(['Time Sovtre Inicializado...']);
 
   // Simulate AI logic / Movement
   useEffect(() => {
@@ -130,7 +130,7 @@ export const VincereOffice: React.FC = () => {
           <div className="w-4 h-4 rounded-full bg-sky-500 animate-pulse" />
         </div>
         <div className="flex-1 space-y-2">
-          <h4 className="text-[10px] uppercase font-black text-sky-400 tracking-widest">Missão Vincere: SQL Metrics Generation</h4>
+          <h4 className="text-[10px] uppercase font-black text-sky-400 tracking-widest">Missão Sovtre: SQL Metrics Generation</h4>
           <div className="h-0.5 w-full bg-white/10 rounded-full">
             <motion.div 
                animate={{ width: ['0%', '100%'] }}

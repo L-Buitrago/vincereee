@@ -23,7 +23,7 @@ const PageTransition = ({ children, className }: PageTransitionProps) => {
         transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: 0.1 }}
         className="fixed inset-0 z-[200] bg-primary text-primary-foreground flex flex-col items-center justify-center pointer-events-none"
       >
-        <span className="text-4xl lg:text-7xl font-bold tracking-tighter mix-blend-difference opacity-50">VINCERE</span>
+        <span className="text-4xl lg:text-7xl font-bold tracking-tighter mix-blend-difference opacity-50">SOVTRE</span>
       </motion.div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}

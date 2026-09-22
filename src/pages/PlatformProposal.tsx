@@ -67,7 +67,7 @@ export default function PlatformProposal() {
 
   const goToWhatsApp = (plan: string) => {
     const msg = encodeURIComponent(
-      `Olá! Vim pelo site da Vincere e tenho interesse no plano ${plan}. Gostaria de mais informações para fechar!`
+      `Olá! Vim pelo site da Sovtre e tenho interesse no plano ${plan}. Gostaria de mais informações para fechar!`
     );
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
   };

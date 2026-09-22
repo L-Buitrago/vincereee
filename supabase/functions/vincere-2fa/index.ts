@@ -36,7 +36,7 @@ serve(async (req) => {
 
       // Send Email
       const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
-      const RESEND_FROM = Deno.env.get('RESEND_FROM') || 'Vincere <security@resend.dev>'
+      const RESEND_FROM = Deno.env.get('RESEND_FROM') || 'Sovtre <security@resend.dev>'
 
       if (!RESEND_API_KEY) {
         console.error('RESEND_API_KEY is not set')
@@ -50,14 +50,14 @@ serve(async (req) => {
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
           <h2 style="color: #0ea5e9;">Verificação de Novo Dispositivo</h2>
           <p>Olá,</p>
-          <p>Identificamos uma tentativa de login na sua conta Vincere a partir de um novo dispositivo ou navegador.</p>
+          <p>Identificamos uma tentativa de login na sua conta Sovtre a partir de um novo dispositivo ou navegador.</p>
           <p>Use o código abaixo para autorizar este dispositivo:</p>
           <div style="background: #f4f4f4; padding: 20px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 5px; margin: 20px 0; border-radius: 5px;">
             ${verificationCode}
           </div>
           <p style="color: #666; font-size: 14px;">Este código expira em 10 minutos. Se você não solicitou este login, recomendamos alterar sua senha imediatamente.</p>
           <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
-          <p style="font-size: 12px; color: #999;">© Vincere Tecnologia</p>
+          <p style="font-size: 12px; color: #999;">© Sovtre Tecnologia</p>
         </div>
       `
 
@@ -72,7 +72,7 @@ serve(async (req) => {
         body: JSON.stringify({
           from: RESEND_FROM,
           to: [email],
-          subject: 'Seu código de verificação Vincere',
+          subject: 'Seu código de verificação Sovtre',
           html: emailHtml,
         }),
       })

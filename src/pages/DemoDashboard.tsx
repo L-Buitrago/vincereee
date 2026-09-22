@@ -53,7 +53,7 @@ const mockQuotes = [
 ];
 
 const mockProjects = [
-  { id: '1', title: 'Plataforma Vincere', status: 'EM ANDAMENTO', date: '2026-03-29', progress: 45 },
+  { id: '1', title: 'Plataforma Sovtre', status: 'EM ANDAMENTO', date: '2026-03-29', progress: 45 },
   { id: '2', title: 'App Delivery Rápido', status: 'CONCLUÍDO', date: '2026-03-22', progress: 100 },
   { id: '3', title: 'Portal de Notícias', status: 'EM ANDAMENTO', date: '2026-04-05', progress: 45 },
 ];
@@ -177,7 +177,7 @@ const DemoDashboard = () => {
 
             <div className="flex items-center gap-4 pl-6 border-l border-slate-100">
               <div className="flex flex-col items-end">
-                <span className="text-[13px] font-bold text-slate-900 leading-none">Vitor Vincere</span>
+                <span className="text-[13px] font-bold text-slate-900 leading-none">Vitor Sovtre</span>
                 <span className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">vitor@vincere.tech</span>
                 <Badge variant="outline" className="mt-2 h-5 text-[9px] uppercase tracking-[0.2em] font-black border-sky-500/20 bg-sky-500/5 text-sky-600 px-2.5 rounded-md">
                   ADMIN
@@ -409,7 +409,7 @@ const DemoDashboard = () => {
 
         {/* Final Wide CTA Removed per request */}
          <div className="flex flex-col items-center gap-2 py-10 pb-20">
-            <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.8em]">Demonstração Oficial Vincere Platform</p>
+            <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.8em]">Demonstração Oficial Sovtre Platform</p>
          </div>
       </main>
     </div>
