@@ -478,7 +478,7 @@ const WhatsAppMockup = ({ isActive }: { isActive: boolean }) => {
       <div className="flex items-center gap-3 px-4 py-2.5 bg-[#1f2c34] border-b border-white/5">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-[12px] font-bold shrink-0">V</div>
         <div className="min-w-0">
-          <div className="text-white text-[13px] font-semibold truncate">Vincere • Cobrança</div>
+          <div className="text-white text-[13px] font-semibold truncate">Sovtre • Cobrança</div>
           <div className="text-green-400 text-[11px]">online</div>
         </div>
       </div>
@@ -817,7 +817,7 @@ const BentoServices = () => {
                     animate={isCard3InView ? { opacity: 1 } : {}}
                     transition={{ duration: 0.5, delay: 0.6 }}
                     className="text-gray-400 text-base font-medium"
-                  >Números que comprovam o impacto da Vincere nos nossos clientes.</motion.p>
+                  >Números que comprovam o impacto da Sovtre nos nossos clientes.</motion.p>
                 </div>
               </div>
             </div>

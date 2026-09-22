@@ -30,7 +30,7 @@ const Navbar = () => {
     >
       <nav className="container mx-auto flex items-center justify-between py-4 px-4 md:px-8">
         <Link to="/" className="font-display text-xl font-medium tracking-tight text-white">
-          VincereAT
+          Sovtre
         </Link>
 
         {/* Desktop */}

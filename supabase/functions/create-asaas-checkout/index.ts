@@ -64,7 +64,7 @@ serve(async (req) => {
       billingType: 'UNDEFINED', // Allow user to choose in checkout (Pix, Card, Boleto)
       value: priceAmount,
       dueDate: new Date(Date.now() + 86400000).toISOString().split('T')[0], // Tomorrow
-      description: isSubscription ? `Assinatura Vincere - Plano ${planName}` : 'Pagamento Vincere',
+      description: isSubscription ? `Assinatura Sovtre - Plano ${planName}` : 'Pagamento Sovtre',
       metadata: {
         payment_type: paymentType,
         org_id: orgId || ''

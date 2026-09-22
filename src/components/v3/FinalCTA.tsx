@@ -29,7 +29,7 @@ const FinalCTA = () => {
             className="px-5 py-2 rounded-full bg-sky-100/50 border border-sky-200 flex items-center gap-2 mb-2"
           >
             <Sparkles className="w-3.5 h-3.5 text-primary" />
-            <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">EXPERIÊNCIA ÚNICA VINCERE</span>
+            <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">EXPERIÊNCIA ÚNICA SOVTRE</span>
           </motion.div>
           
           <motion.h2

@@ -109,7 +109,7 @@ export default function PlatformAdmin() {
     const orgInfo = orgs.find(o => o.id === projectOrg);
     return {
       ...proj,
-      orgName: orgInfo?.name || "Vincere"
+      orgName: orgInfo?.name || "Sovtre"
     };
   });
 
@@ -244,7 +244,7 @@ export default function PlatformAdmin() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold text-foreground">Painel Admin</h1>
-            <p className="text-sm text-[#888]">Visão geral de todas as empresas na plataforma Vincere.</p>
+            <p className="text-sm text-[#888]">Visão geral de todas as empresas na plataforma Sovtre.</p>
             <p className="text-[9px] text-muted-foreground/40 mt-1 uppercase tracking-tighter">Sessão: {user?.email}</p>
           </div>
             <Button 

@@ -3,7 +3,7 @@ import { assetUrl } from "@/lib/assetUrl";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Layout, ShoppingBag, Bot, Code2, Cog, Check, Smartphone, Globe, Zap, MessageCircle, Send, ShoppingCart, CreditCard, Package, Star, Workflow, Settings, Database, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import VincereLogo from "@/components/VincereLogo";
+import SovtreLogo from "@/components/SovtreLogo";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -75,7 +75,7 @@ const EcommerceDemo = () => (
     {/* Simulated Store */}
     <div className="bg-[#111] rounded-2xl border border-white/5 overflow-hidden">
       <div className="p-4 border-b border-white/5 flex items-center justify-between">
-        <span className="text-white font-bold">Loja Demo — Vincere Store</span>
+        <span className="text-white font-bold">Loja Demo — Sovtre Store</span>
         <div className="flex items-center gap-2">
           <span className="text-xs text-[#888]">3 itens no carrinho</span>
           <ShoppingCart className="w-5 h-5 text-sky-400" />
@@ -128,7 +128,7 @@ const WhatsAppDemo = () => (
             <Bot className="w-5 h-5 text-emerald-400" />
           </div>
           <div>
-            <p className="text-white font-medium text-sm">Vi — Assistente Vincere</p>
+            <p className="text-white font-medium text-sm">Vi — Assistente Sovtre</p>
             <p className="text-emerald-400 text-[10px]">● Online agora</p>
           </div>
         </div>
@@ -319,8 +319,8 @@ export default function DemoServices() {
       <nav className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5">
-            <VincereLogo className="w-5 h-5" />
-            <span className="font-semibold text-white text-sm">Vincere</span>
+            <SovtreLogo className="w-5 h-5" />
+            <span className="font-semibold text-white text-sm">Sovtre</span>
           </Link>
           <div className="flex items-center gap-3">
             <Link to="/">

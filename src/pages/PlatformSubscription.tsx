@@ -248,7 +248,7 @@ export default function PlatformSubscription() {
                   invoices.map((inv: any) => (
                     <tr key={inv.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
                       <td className="px-5 py-3.5">
-                        <span className="text-foreground font-medium">{inv.product || inv.description || 'Assinatura Vincere'}</span>
+                        <span className="text-foreground font-medium">{inv.product || inv.description || 'Assinatura Sovtre'}</span>
                       </td>
                       <td className="px-5 py-3.5 text-foreground font-medium">
                         {formatCurrency(inv.amount || 0)}

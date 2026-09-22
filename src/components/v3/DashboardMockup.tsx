@@ -29,7 +29,7 @@ const DashboardMockup = () => {
       {/* Sidebar Mockup (Dark Mode) */}
       <div className="w-20 md:w-60 bg-[#000000] border-r border-white/5 flex flex-col pt-8 pb-6 px-3 shrink-0">
         <div className="px-4 mb-10 overflow-hidden flex items-center gap-3">
-          <span className="text-xl font-black tracking-tight text-white hidden md:block">Vincere</span>
+          <span className="text-xl font-black tracking-tight text-white hidden md:block">Sovtre</span>
         </div>
 
         <nav className="flex-1 space-y-1.5 overflow-y-auto scrollbar-hide px-1">

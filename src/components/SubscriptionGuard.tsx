@@ -37,7 +37,7 @@ const SubscriptionGuard = ({ children }: { children: React.ReactNode }) => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background text-foreground gap-4">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground text-xs font-mono animate-pulse">Sincronizando com a Vincere...</p>
+        <p className="text-muted-foreground text-xs font-mono animate-pulse">Sincronizando com a Sovtre...</p>
         <Button 
           variant="ghost" 
           size="sm" 
@@ -69,7 +69,7 @@ const SubscriptionGuard = ({ children }: { children: React.ReactNode }) => {
         </div>
         <h2 className="text-2xl font-bold text-white mb-2">Acesso Restrito</h2>
         <p className="text-[#888] mb-6">
-          Você precisa ter uma assinatura ativa para acessar a plataforma Vincere.
+          Você precisa ter uma assinatura ativa para acessar a plataforma Sovtre.
           Escolha um plano abaixo para começar!
         </p>
         <div className="space-y-3">

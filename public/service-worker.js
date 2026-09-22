@@ -1,4 +1,4 @@
-function isVincereAppCache(name) {
+function isSovtreAppCache(name) {
   const isWorkboxCache = /(^|-)precache-v\d+-|(^|-)runtime-|(^|-)googleAnalytics-/.test(name);
   return isWorkboxCache && name.endsWith(self.registration.scope);
 }
@@ -10,7 +10,7 @@ self.addEventListener("activate", (event) => {
     (async () => {
       try {
         const cacheNames = await caches.keys();
-        const appCacheNames = cacheNames.filter(isVincereAppCache);
+        const appCacheNames = cacheNames.filter(isSovtreAppCache);
         await Promise.allSettled(appCacheNames.map((name) => caches.delete(name)));
         await self.clients.claim();
         const windowClients = await self.clients.matchAll({ type: "window" });

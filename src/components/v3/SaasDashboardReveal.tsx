@@ -127,7 +127,7 @@ const SaasDashboardReveal = () => {
               <div className="h-16 border-b border-gray-50 flex items-center justify-between px-6 bg-gray-50/50">
                 <div className="flex items-center gap-4">
                   <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-xs">V</div>
-                  <span className="text-sm font-bold text-foreground tracking-tight">Vincere Dashboard</span>
+                  <span className="text-sm font-bold text-foreground tracking-tight">Sovtre Dashboard</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 border border-green-100">

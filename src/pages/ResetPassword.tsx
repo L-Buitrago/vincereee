@@ -144,7 +144,7 @@ const ResetPassword = () => {
               <KeyRound className="w-8 h-8 text-sky-400" />
             </div>
             <h1 className="text-3xl font-black tracking-tighter text-white font-display mb-2">Redefinir Senha</h1>
-            <p className="text-gray-400 text-sm">Crie uma nova senha forte para proteger sua conta Vincere.</p>
+            <p className="text-gray-400 text-sm">Crie uma nova senha forte para proteger sua conta Sovtre.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">

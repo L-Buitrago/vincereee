@@ -4,14 +4,14 @@ import { Star, Command, Hexagon, Triangle, Circle, Box, Sparkles, Activity, Glob
 
 const testimonials = [
   {
-    quote: "O dashboard analítico que a Vincere entregou superou todas as expectativas. A fluidez dos dados e o design limpo transformaram nossa gestão diária.",
+    quote: "O dashboard analítico que a Sovtre entregou superou todas as expectativas. A fluidez dos dados e o design limpo transformaram nossa gestão diária.",
     author: "TechFlow Systems",
     role: "Inovação Digital",
     rating: 5,
     highlight: false,
   },
   {
-    quote: "Nossa loja virtual de luxo ficou impecável. A velocidade de execução e a estética premium da Vincere são incomparáveis no mercado.",
+    quote: "Nossa loja virtual de luxo ficou impecável. A velocidade de execução e a estética premium da Sovtre são incomparáveis no mercado.",
     author: "LuxLife Boutique",
     role: "E-commerce de Luxo",
     rating: 5,
@@ -32,7 +32,7 @@ const testimonials = [
     highlight: false,
   },
   {
-    quote: "Nossa plataforma de vendas escalou 3x mais rápido após o novo design da Vincere. Eles realmente entendem de conversão e luxo.",
+    quote: "Nossa plataforma de vendas escalou 3x mais rápido após o novo design da Sovtre. Eles realmente entendem de conversão e luxo.",
     author: "DataSynth",
     role: "Plataforma SaaS",
     rating: 5,
@@ -46,14 +46,14 @@ const testimonials = [
     highlight: false,
   },
   {
-    quote: "O dashboard de BI que a Vincere montou é uma obra de arte. Tomar decisões estratégicas agora é visual, rápido e muito prazeroso.",
+    quote: "O dashboard de BI que a Sovtre montou é uma obra de arte. Tomar decisões estratégicas agora é visual, rápido e muito prazeroso.",
     author: "FinTech Solutions",
     role: "Serviços Financeiros",
     rating: 5,
     highlight: true,
   },
   {
-    quote: "Nossa taxa de conversão no mobile subiu 45% após o redesign. A Vincere não entrega apenas sites, entrega máquinas de vendas reais.",
+    quote: "Nossa taxa de conversão no mobile subiu 45% após o redesign. A Sovtre não entrega apenas sites, entrega máquinas de vendas reais.",
     author: "PrimeAuto",
     role: "Marketplace Premium",
     rating: 5,
@@ -81,7 +81,7 @@ const testimonials = [
     highlight: false,
   },
   {
-    quote: "O suporte e a visão estratégica da Vincere são o que os diferencia. Eles pensam no negócio como um todo, não apenas no código.",
+    quote: "O suporte e a visão estratégica da Sovtre são o que os diferencia. Eles pensam no negócio como um todo, não apenas no código.",
     author: "TechNova",
     role: "Consultoria em Tecnologia",
     rating: 5,
@@ -160,7 +160,7 @@ const LogoMarquee = () => {
 
   return (
     <div className="mt-24 pt-12 border-t border-white/5 relative overflow-hidden flex flex-col items-center">
-      <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-8">Empresas que confiam na Vincere</div>
+      <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 mb-8">Empresas que confiam na Sovtre</div>
       
       <div className="relative w-full flex items-center fade-mask-x py-4">
         <motion.div 

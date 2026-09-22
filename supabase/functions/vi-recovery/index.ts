@@ -50,9 +50,9 @@ serve(async (req) => {
       throw new Error("Recovery record not found");
     }
 
-    const business_name = (recovery as any).organizations?.name || "Vincere";
+    const business_name = (recovery as any).organizations?.name || "Sovtre";
 
-    // Generate recovery URL (Asaas payment link or Vincere proposal page)
+    // Generate recovery URL (Asaas payment link or Sovtre proposal page)
     const checkout_url = recovery.checkout_id 
       ? `https://www.asaas.com/i/${recovery.checkout_id}`
       : "https://vincere.com.br/#/plataforma/proposta";
@@ -79,7 +79,7 @@ serve(async (req) => {
             "Authorization": `Bearer ${OPENROUTER_API_KEY.trim()}`,
             "Content-Type": "application/json",
             "HTTP-Referer": "https://vincere.com.br",
-            "X-Title": "Vincere Recovery"
+            "X-Title": "Sovtre Recovery"
           },
           body: JSON.stringify({
             model: "google/gemini-2.5-flash",

@@ -83,7 +83,7 @@ const About = () => {
                transition={{ delay: 2 }}
                className="mt-8 text-sm font-bold uppercase tracking-[0.5em] text-foreground"
              >
-               Vincere Vision & Strategy
+               Sovtre Vision & Strategy
              </motion.p>
           </div>
         </section>

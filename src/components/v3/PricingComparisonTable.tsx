@@ -67,7 +67,7 @@ export default function PricingComparisonTable({ onSelectPlan }: PricingComparis
           <table className="w-full text-center border-collapse table-fixed">
             <thead>
               <tr className="border-b border-gray-50">
-                <th className="w-[28%] px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Plano Vincere</th>
+                <th className="w-[28%] px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Plano Sovtre</th>
                 <th className="px-4 py-5 font-display">
                   <div className="flex flex-col">
                     <span className="text-lg font-black text-[#0f172a]">Starter</span>

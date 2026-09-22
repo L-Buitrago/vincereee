@@ -77,7 +77,7 @@ const KojiHero = () => {
 
       {/* Subtle Metadata for context */}
       <div className="absolute bottom-12 left-12 flex flex-col gap-2 opacity-30 koji-headline-line">
-         <span className="text-[10px] font-black tracking-[0.3em] text-black">VINCERE STUDIO</span>
+         <span className="text-[10px] font-black tracking-[0.3em] text-black">SOVTRE STUDIO</span>
          <span className="text-[10px] font-medium tracking-[0.3em] text-black">CRAFTING DIGITAL ELITES</span>
       </div>
 

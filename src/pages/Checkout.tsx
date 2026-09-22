@@ -15,7 +15,7 @@ export default function Checkout() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
 
-  const planName = searchParams.get("plan") || "Plano Vincere";
+  const planName = searchParams.get("plan") || "Plano Sovtre";
   const priceString = searchParams.get("price") || "0";
   const priceAmount = parseFloat(priceString);
 
