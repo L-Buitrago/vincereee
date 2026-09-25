@@ -38,7 +38,7 @@ const Navigation = () => {
         )}
       >
         <div className="flex items-center">
-          <a href="/" className="text-xl font-serif-display font-bold tracking-tighter mix-blend-difference hover:opacity-80 transition-opacity text-white">
+          <a href="/" className="text-base sm:text-lg font-brand tracking-[0.2em] uppercase mix-blend-difference hover:opacity-80 transition-opacity text-white select-none">
             SOVTRE
           </a>
         </div>

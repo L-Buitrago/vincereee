@@ -17,6 +17,7 @@ export default {
         display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
         body: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
         serif: ['"Instrument Serif"', 'serif'],
+        brand: ['"Michroma"', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

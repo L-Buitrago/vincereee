@@ -29,8 +29,8 @@ const Navbar = () => {
       }`}
     >
       <nav className="container mx-auto flex items-center justify-between py-4 px-4 md:px-8">
-        <Link to="/" className="font-display text-xl font-medium tracking-tight text-white">
-          Sovtre
+        <Link to="/" className="font-brand text-base sm:text-lg font-normal tracking-[0.2em] uppercase text-white hover:opacity-80 transition-opacity">
+          SOVTRE
         </Link>
 
         {/* Desktop */}

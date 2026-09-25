@@ -60,8 +60,8 @@ const ModernMenu: React.FC<ModernMenuProps> = ({ onNavigate, onPageNavigate }) =
     <>
       <header className="absolute lg:fixed top-0 left-0 w-full z-[120] px-3 py-3 sm:px-4 sm:py-4 lg:px-6 lg:py-8 flex justify-between items-center gap-2 max-w-full overflow-x-hidden pointer-events-none">
         <div className="pointer-events-auto shrink-0">
-          <a href="#home" className="block text-base sm:text-xl lg:text-3xl font-serif italic tracking-normal lg:tracking-tighter text-foreground whitespace-nowrap">
-            Sovtre
+          <a href="#home" className="block text-sm sm:text-base lg:text-xl font-brand font-normal tracking-[0.22em] uppercase text-foreground whitespace-nowrap transition-opacity hover:opacity-80 select-none">
+            SOVTRE
           </a>
         </div>
 

@@ -29,10 +29,10 @@ const Index = () => {
   const splashType: SplashType = "neural";
 
   const [showSplash, setShowSplash] = useState(() => {
-    if (sessionStorage.getItem("vincere_splash_shown")) {
+    if (sessionStorage.getItem("sovtre_splash_shown_v3")) {
       return false;
     }
-    sessionStorage.setItem("vincere_splash_shown", "true");
+    sessionStorage.setItem("sovtre_splash_shown_v3", "true");
     return true;
   });
 

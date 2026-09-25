@@ -5,7 +5,7 @@ import { BrandLoader } from "./v3/BrandLoader";
 export type SplashType = "minimal" | "neural";
 
 interface SplashScreenManagerProps {
-  type: SplashType;
+  type?: SplashType;
   onAnimationComplete: () => void;
   isLoading?: boolean;
 }
@@ -17,9 +17,9 @@ const SplashScreenManager = ({ onAnimationComplete, isLoading = false }: SplashS
     const timer = setTimeout(() => {
       if (!isLoading) {
         setIsFinished(true);
-        setTimeout(onAnimationComplete, 800);
+        setTimeout(onAnimationComplete, 700);
       }
-    }, 3200); // Slightly more time for full brand impact
+    }, 2400);
 
     return () => clearTimeout(timer);
   }, [isLoading, onAnimationComplete]);
@@ -29,34 +29,25 @@ const SplashScreenManager = ({ onAnimationComplete, isLoading = false }: SplashS
       {!isFinished && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          exit={{ opacity: 0, scale: 1.02 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-[200] bg-[#FBFCFE] flex items-center justify-center p-4 overflow-hidden"
         >
-          {/* Subtle Grid Overlay */}
-          <div className="absolute inset-0 opacity-[0.05] bg-grid-slate-900/[0.05] pointer-events-none" />
+          {/* Subtle Clean Ambient Background Grid */}
+          <div className="absolute inset-0 opacity-[0.03] bg-grid-slate-900/[0.04] pointer-events-none" />
           
           <div className="relative z-10 w-full flex items-center justify-center">
             <BrandLoader />
           </div>
 
-          {/* Neural Pulse Scanning Line */}
-          <motion.div
-            initial={{ opacity: 0, scaleY: 0 }}
-            animate={{ opacity: [0, 0.4, 0], scaleY: 1 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 w-full h-[100px] bg-gradient-to-b from-transparent via-blue-500/10 to-transparent pointer-events-none"
-            style={{ top: "-10%" }}
-          />
-
-          {/* Progress bar (Precision Line) */}
+          {/* Minimalist Progress Line at bottom */}
           <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-slate-100 overflow-hidden">
-             <motion.div 
-               initial={{ scaleX: 0 }}
-               animate={{ scaleX: 1 }}
-               transition={{ duration: 3, ease: [0.16, 1, 0.3, 1] }}
-               className="h-full bg-blue-500 origin-left shadow-[0_0_15px_rgba(59,130,246,0.2)]"
-             />
+            <motion.div 
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 2.3, ease: [0.16, 1, 0.3, 1] }}
+              className="h-full bg-blue-500 origin-left shadow-[0_0_12px_rgba(59,130,246,0.3)]"
+            />
           </div>
         </motion.div>
       )}
